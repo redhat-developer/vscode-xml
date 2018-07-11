@@ -26,20 +26,53 @@
   "devDependencies": {
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.40",
-    "gulp": "^3.9.1",
-    "gulp-copy": "^1.0.1",
+    "gulp": "^4.0.0",
     "gulp-tslint": "^8.1.2",
-    "mocha": "^2.3.3",
+    "mocha": "^5.2.0",
     "tslint": "^5.7.0",
     "typescript": "^2.0.3",
     "vscode": "^1.1.5"
   },
   "dependencies": {
-    "vscode-languageclient": "^3.2.0",
-    "find-java-home": "0.2.0",
-    "tmp": "^0.0.31",
-    "path-exists": "^3.0.0",
     "expand-home-dir": "^0.0.3",
-    "glob": "^7.1.1"
+    "find-java-home": "0.2.0",
+    "glob": "^7.1.1",
+    "gulp-install": "^1.1.0",
+    "path-exists": "^3.0.0",
+    "tmp": "^0.0.31",
+    "vscode-languageclient": "^3.2.0"
+  },
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "XML configuration",
+      "properties": {
+        "xml.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the XML language server.",
+          "scope": "window"
+        }
+      }
+    },
+    "configurationDefaults": {
+      "[xml]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.quickSuggestions": {
+          "other": true,
+          "comments": false,
+          "strings": true
+        },
+        "editor.autoIndent": false,
+        "editor.autoClosingBrackets": false
+      }
+    }
   }
+  
 }
