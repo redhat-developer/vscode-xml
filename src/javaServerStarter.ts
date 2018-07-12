@@ -1,4 +1,3 @@
-
 import { window, commands, WorkspaceConfiguration, workspace } from 'vscode'
 import { StreamInfo, Executable, ExecutableOptions } from 'vscode-languageclient';
 import { createClientPipeTransport } from 'vscode-jsonrpc';
@@ -31,7 +30,7 @@ function prepareParams(requirements: RequirementsData): string[] {
   }
   let server_home: string = path.resolve(__dirname, '../../server');
   params.push('-jar');
-  let launchersFound: Array<string> = glob.sync('**/xml-ls-*.jar', { cwd: server_home });
+  let launchersFound: Array<string> = glob.sync('**/org.eclipse.lsp4xml-all.jar', { cwd: server_home });
 	if (launchersFound.length) {
     params.push('-jar'); params.push(path.resolve(server_home, launchersFound[0]));
   }else{
