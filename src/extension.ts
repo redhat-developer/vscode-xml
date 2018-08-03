@@ -26,7 +26,8 @@ export function activate(context: ExtensionContext) {
       // Register the server for java
       documentSelector: ['xml'],
       revealOutputChannelOn: RevealOutputChannelOn.Never,
-      initializationOptions: {"lsp4xml.LogPath": logfile}
+      initializationOptions: {"lsp4xml.logPath": logfile}
+      
     }
     
     
