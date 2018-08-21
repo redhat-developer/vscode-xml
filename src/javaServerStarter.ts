@@ -27,15 +27,15 @@ function prepareParams(requirements: RequirementsData): string[] {
 		params.push('-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1054,quiet=y');
 		// suspend=y is the default. Use this form if you need to debug the server startup code:
 		//  params.push('-agentlib:jdwp=transport=dt_socket,server=y,address=1054');
-  }
-  let server_home: string = path.resolve(__dirname, '../../server');
-  params.push('-jar');
-  let launchersFound: Array<string> = glob.sync('**/org.eclipse.lsp4xml-all.jar', { cwd: server_home });
+	}
+	let server_home: string = path.resolve(__dirname, '../../server');
+	params.push('-jar');
+	let launchersFound: Array<string> = glob.sync('**/org.eclipse.lsp4xml-all.jar', { cwd: server_home });
 	if (launchersFound.length) {
-    params.push('-jar'); params.push(path.resolve(server_home, launchersFound[0]));
-  }else{
-    return null;
-  }
+		params.push('-jar'); params.push(path.resolve(server_home, launchersFound[0]));
+	} else {
+		return null;
+	}
 	return params;
 }
 
