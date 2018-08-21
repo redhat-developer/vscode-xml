@@ -60,20 +60,30 @@
           "default": "off",
           "description": "Traces the communication between VS Code and the XML language server.",
           "scope": "window"
-        }
-      }
-    },
-    "configurationDefaults": {
-      "[xml]": {
-        "editor.insertSpaces": true,
-        "editor.tabSize": 2,
-        "editor.quickSuggestions": {
-          "other": true,
-          "comments": false,
-          "strings": true
         },
-        "editor.autoIndent": false,
-        "editor.autoClosingBrackets": false
+        "xml.catalogs": {
+          "type":"array",
+          "default": [],
+          "description": "Array of XML Catalogs",
+          "scope": "window"
+        },
+        "xml.logs.client": {
+         "type": "boolean",
+         "default": true,
+         "description": "Should the server log to client output"
+        },
+        "xml.format.splitAttributes": {
+          "type": "boolean",
+          "default": false,
+          "description": "Split multiple attributes each onto a new line",
+          "scope": "window"
+        },
+        "xml.format.joinCDATALines": {
+          "type": "boolean",
+          "default": false,
+          "description": "Preserve whitespace in tag with CDATA content",
+          "scope": "window"
+        }
       }
     }
   }
