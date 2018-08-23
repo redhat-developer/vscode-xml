@@ -11,7 +11,7 @@ gulp.task('tslint', () => {
 });
 
 gulp.task('build_server', function(done) {
-	cp.execSync(mvnw()+ " clean verify", {cwd:server_dir, stdio:[0,1,2]} );
+	cp.execSync(mvnw()+ " clean verify -DskipTests", {cwd:server_dir, stdio:[0,1,2]} );
   gulp.src(server_dir +'/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-all.jar')
 		.pipe(gulp.dest('./server'));
 	done();
