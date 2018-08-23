@@ -79,9 +79,17 @@ function readJavaConfig() : string {
 function checkJavaVersion(java_home: string): Promise<number> {
     return new Promise((resolve, reject) => {
         cp.execFile(java_home + '/bin/java', ['-version'], {}, (error, stdout, stderr) => {
+            
+            if(stderr.indexOf('version "11') > -1){
+                resolve(11);
+            }
+            if(stderr.indexOf('version "10') > -1){
+                resolve(10);
+            }
             if (stderr.indexOf('version "9') > -1){
                 resolve(9);
-            } if (stderr.indexOf('1.8') < 0){
+            } 
+            if (stderr.indexOf('1.8') < 0){
                 openJDKDownload(reject, 'Java 8 is required to run. Please download and install a JDK 8.');
             }
             else{
