@@ -3,7 +3,9 @@
   "displayName": "XML Support for VS Code",
   "description": "XML editing support",
   "version": "0.1.0",
-  "publisher": "gorkem",
+  "publisher": "redhat",
+  "license": "EPL-1.0",
+  "bugs": "https://github.com/redhat-developer/vscode-xml/issues",
   "preview": true,
   "keywords": [
     "xml"
@@ -11,7 +13,6 @@
   "engines": {
     "vscode": "^1.17.0"
   },
-  "license": "SEE LICENSE IN LICENSE.txt",
   "activationEvents": [
     "onLanguage:xml"
   ],
