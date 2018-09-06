@@ -75,38 +75,51 @@ function readJavaConfig() : string {
     const config = workspace.getConfiguration();
     return config.get<string>('java.home',null);
 }
-
+ 
 function checkJavaVersion(java_home: string): Promise<number> {
     return new Promise((resolve, reject) => {
         cp.execFile(java_home + '/bin/java', ['-version'], {}, (error, stdout, stderr) => {
-            
-            if(stderr.indexOf('version "11') > -1){
-                resolve(11);
-            }
-            else if(stderr.indexOf('version "10') > -1){
-                resolve(10);
-            }
-            else if (stderr.indexOf('version "9') > -1){
-                resolve(9);
-            } 
-            else if (stderr.indexOf('1.8') < 0) {
-                openJDKDownload(reject, 'Java 8 is required to run. Please download and install a JDK 8.');
+            let javaVersion = parseMajorVersion(stderr);
+            if (javaVersion < 8) {
+                openJDKDownload(reject, 'Java 8 or more recent is required to run. Please download and install a recent JDK.');
             }
             else {
-                resolve(8);
+                resolve(javaVersion);
             }
         });
     });
 }
 
+export function parseMajorVersion(content:string):number {
+    let regexp = /version "(.*)"/g;
+    let match = regexp.exec(content);
+    if (!match) {
+        return 0;
+    }
+    let version = match[1];
+    //Ignore '1.' prefix for legacy Java versions
+    if (version.startsWith('1.')) {
+        version = version.substring(2);
+    }
+
+    //look into the interesting bits now
+    regexp = /\d+/g;
+    match = regexp.exec(version);
+    let javaVersion = 0;
+    if (match) {
+        javaVersion = parseInt(match[0]);
+    }
+    return javaVersion;
+}
+
 function openJDKDownload(reject, cause) {
-    let jdkUrl = 'http://developers.redhat.com/products/openjdk/overview/';
+    let jdkUrl = 'https://developers.redhat.com/products/openjdk/download/?sc_cid=701f2000000RWTnAAO';
     if (process.platform === 'darwin') {
         jdkUrl = 'http://www.oracle.com/technetwork/java/javase/downloads/index.html';
     }
     reject({
         message: cause,
-        label: 'Get Java Development Kit',
+        label: 'Get the Java Development Kit',
         openUrl: Uri.parse(jdkUrl),
         replaceClose: false
     });
