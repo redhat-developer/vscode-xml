@@ -22,7 +22,9 @@
     "compile": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "node ./node_modules/vscode/bin/test",
-    "build-server": "./node_modules/.bin/gulp build_server"
+    "build-server": "./node_modules/.bin/gulp build_server",
+    "watch": "tsc -watch -p ./",
+    "tslint": "./node_modules/.bin/gulp tslint"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.32",
