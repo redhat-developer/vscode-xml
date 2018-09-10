@@ -81,7 +81,13 @@
         "xml.format.joinCDATALines": {
           "type": "boolean",
           "default": false,
-          "description": "Preserve whitespace in tag with CDATA content",
+          "description": "Join lines in a CDATA tag's content",
+          "scope": "window"
+        },
+        "xml.format.joinContentLines": {
+          "type": "boolean",
+          "default": false,
+          "description": "Join lines in an element's content",
           "scope": "window"
         }
       }
