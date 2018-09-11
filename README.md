@@ -40,6 +40,12 @@
 
   The Language Server for this client can be [found here](https://github.com/angelozerr/lsp4xml).
 
+## Contributing
+
+This is an open source project open to anyone. Contributions are extremely welcome!
+
+For information on getting started, refer to the [CONTRIBUTING instructions](CONTRIBUTING.md).
+
 ## License
 
   EPL 1.0, See [LICENSE](https://github.com/redhat-developer/vscode-xml/blob/readme/LICENSE) file.
