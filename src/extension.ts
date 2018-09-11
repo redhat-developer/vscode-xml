@@ -9,7 +9,8 @@ import * as os from 'os';
 interface Settings {
   catalogs: String[],
   logs: {},
-  format: {}
+  format: {},
+  fileAssociations: JSON[]
 }
 
 export function activate(context: ExtensionContext) {
@@ -64,10 +65,14 @@ export function activate(context: ExtensionContext) {
     let configLogs = configXML.get('logs');
     configLogs["file"] = logfile;
 
+    let configFileAssociations = configXML.get('fileAssociations') as JSON[];
+    
+
     let settings: Settings = {
       catalogs: configCatalogs,
       logs: configLogs,
-      format: configFormats
+      format: configFormats,
+      fileAssociations: configFileAssociations
     }
 
     return settings;
