@@ -2,7 +2,7 @@
 import { prepareExecutable } from './javaServerStarter';
 import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { workspace, window, commands, ExtensionContext } from "vscode";
+import { workspace, window, commands, ExtensionContext, TextEdit } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 
@@ -53,6 +53,22 @@ export function activate(context: ExtensionContext) {
     let disposable = languageClient.start();
     context.subscriptions.push(disposable);
 
+    commands.registerCommand('_xml.applyCodeAction', applyCodeAction);
+
+    function applyCodeAction(uri: string, documentVersion: number, edits: TextEdit[]) {
+        let textEditor = window.activeTextEditor;
+        if (textEditor && textEditor.document.uri.toString() === uri) {
+            textEditor.edit(mutator => {
+                for (let edit of edits) {
+                    mutator.replace(languageClient.protocol2CodeConverter.asRange(edit.range), edit.newText);
+                }
+            }).then(success => {
+                if (!success) {
+                    window.showErrorMessage('Failed to apply XML fix to the document. Please consider opening an issue with steps to reproduce.');
+                }
+            });
+        }
+	}
   });
 
   function getSettings(): Settings {
