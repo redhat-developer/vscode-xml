@@ -105,7 +105,8 @@
               },
               "pattern": {
                 "type": "string",
-                "description": "File name pattern where you can use '*', '?' (it uses Java 7 glob NIO)"
+                "description": "File glob pattern. Example: **/*.Format.ps1xml",
+                "markdownDescription": "File glob pattern. Example: `**/*.Format.ps1xml`"
               }
             },
             "required": [
