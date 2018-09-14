@@ -105,8 +105,8 @@
               },
               "pattern": {
                 "type": "string",
-                "description": "File glob pattern. Example: **/*.Format.ps1xml",
-                "markdownDescription": "File glob pattern. Example: `**/*.Format.ps1xml`"
+                "description": "File glob pattern. Example: **/*.Format.ps1xml\n\nFull supported glob syntax: https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystem.html#getPathMatcher-java.lang.String-",
+                "markdownDescription": "File glob pattern. Example: `**/*.Format.ps1xml`\n\nFull supported glob syntax: https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystem.html#getPathMatcher-java.lang.String-"
               }
             },
             "required": [
