@@ -62,15 +62,18 @@
           "scope": "window"
         },
         "xml.catalogs": {
-          "type":"array",
+          "type": "array",
           "default": [],
+          "items": {
+            "type": "string"
+          },
           "description": "Array of XML Catalogs",
           "scope": "window"
         },
         "xml.logs.client": {
-         "type": "boolean",
-         "default": true,
-         "description": "Should the server log to client output"
+          "type": "boolean",
+          "default": true,
+          "description": "Should the server log to client output"
         },
         "xml.format.splitAttributes": {
           "type": "boolean",
@@ -93,7 +96,25 @@
         "xml.fileAssociations": {
           "type": "array",
           "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "systemId": {
+                "type": "string",
+                "description": "The path or URL to the XML schema (XSD or DTD)"
+              },
+              "pattern": {
+                "type": "string",
+                "description": "File name pattern where you can use '*', '?' (it uses Java 7 glob NIO)"
+              }
+            },
+            "required": [
+              "systemId",
+              "pattern"
+            ]
+          },
           "description": "Allows XML schemas to be associated to file name patterns.\n\nExample:\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"path/to/file2.xsd\",\n  \"pattern\": \"file2.xml\"\n}]",
+          "markdownDescription": "Allows XML schemas to be associated to file name patterns.\n\nExample:\n```json\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"path/to/file2.xsd\",\n  \"pattern\": \"file2.xml\"\n}]\n```",
           "scope": "window"
         }
       }
