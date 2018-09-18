@@ -10,7 +10,12 @@ interface Settings {
   catalogs: String[],
   logs: {},
   format: {},
-  fileAssociations: JSON[]
+  fileAssociations: JSON[],
+  capabilities: Capabilities
+}
+
+interface Capabilities {
+  client: {}
 }
 
 export function activate(context: ExtensionContext) {
@@ -43,9 +48,9 @@ export function activate(context: ExtensionContext) {
           didChangeConfiguration: () => languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getSettings() })
         }
       }
-
+      
     }
-
+    
     let serverOptions = prepareExecutable(requirements);
     let languageClient = new LanguageClient('xml', 'XML Support', serverOptions, clientOptions);
     languageClient.onReady().then(() => {
@@ -66,13 +71,15 @@ export function activate(context: ExtensionContext) {
     configLogs["file"] = logfile;
 
     let configFileAssociations = configXML.get('fileAssociations') as JSON[];
-    
+
+    let capabilityFormats = configXML.get('capabilities') as Capabilities;
 
     let settings: Settings = {
       catalogs: configCatalogs,
       logs: configLogs,
       format: configFormats,
-      fileAssociations: configFileAssociations
+      fileAssociations: configFileAssociations,
+      capabilities: capabilityFormats
     }
 
     return settings;
