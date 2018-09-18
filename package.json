@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "Red Hat",
   "publisher": "redhat",
+  "icon": "icons/icon128.png",
   "license": "EPL-1.0",
   "bugs": "https://github.com/redhat-developer/vscode-xml/issues",
   "preview": true,
