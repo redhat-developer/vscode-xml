@@ -1,9 +1,11 @@
 {
   "name": "vscode-xml",
   "displayName": "XML Support for VS Code",
-  "description": "XML editing support",
+  "description": "XML linting, Intellisense, formatting and more...",
   "version": "0.1.0",
+  "author": "Red Hat",
   "publisher": "redhat",
+  "icon": "icons/icon128.png",
   "license": "EPL-1.0",
   "bugs": "https://github.com/redhat-developer/vscode-xml/issues",
   "preview": true,
@@ -11,7 +13,7 @@
     "xml"
   ],
   "engines": {
-    "vscode": "^1.17.0"
+    "vscode": "^1.27.0"
   },
   "activationEvents": [
     "onLanguage:xml"
@@ -19,31 +21,40 @@
   "main": "./out/src/extension",
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
     "compile": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "node ./node_modules/vscode/bin/test",
     "build-server": "./node_modules/.bin/gulp build_server",
-    "watch": "tsc -watch -p ./",
     "tslint": "./node_modules/.bin/gulp tslint"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/redhat-developer/vscode-xml"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Formatters",
+    "Snippets"
+  ],
   "devDependencies": {
-    "@types/mocha": "^2.2.32",
+    "@types/mocha": "^5.2.5",
     "@types/node": "^6.0.40",
     "gulp": "^4.0.0",
-    "gulp-tslint": "^8.1.2",
+    "gulp-tslint": "^8.1.3",
     "mocha": "^5.2.0",
-    "tslint": "^5.7.0",
-    "typescript": "^2.0.3",
-    "vscode": "^1.1.5"
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3",
+    "vscode": "^1.1.21"
   },
   "dependencies": {
-    "expand-home-dir": "^0.0.3",
+    "vscode-languageclient": "~5.1.0",
     "find-java-home": "0.2.0",
-    "glob": "^7.1.1",
-    "gulp-install": "^1.1.0",
-    "path-exists": "^3.0.0",
     "tmp": "^0.0.31",
-    "vscode-languageclient": "^3.2.0"
+    "path-exists": "^3.0.0",
+    "expand-home-dir": "^0.0.3",
+    "glob": "^7.1.1"
   },
   "contributes": {
     "configuration": {

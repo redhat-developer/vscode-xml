@@ -11,6 +11,7 @@
           "stopOnEntry": false,
           "sourceMaps": true,
           "outFiles": [ "${workspaceRoot}/out/src/**/*.js" ],
+          "preLaunchTask": "npm: watch"
       },
       {
           "name": "Launch Tests",
@@ -21,6 +22,7 @@
           "stopOnEntry": false,
           "sourceMaps": true,
           "outFiles": [ "${workspaceRoot}/out/test/**/*.js" ],
+          "preLaunchTask": "npm: watch"
       }
   ]
 }
