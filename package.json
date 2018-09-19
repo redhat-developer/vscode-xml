@@ -135,10 +135,10 @@
           "markdownDescription": "Allows XML schemas to be associated to file name patterns.\n\nExample:\n```json\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\",\n  \"pattern\": \"**/*.xsd\"\n}]\n```",
           "scope": "window"
         },
-        "xml.autoClosingTags.enabled": {
+        "xml.completion.autoCloseTags": {
           "type": "boolean",
           "default": true,
-          "description": "Enable/disable ability to autoclose tags",
+          "description": "Enable/disable ability to autoclose tags. \n\n**IMPORTANT: Turn off editor.autoClosingTags for this to work\n**",
           "scope": "window"
         }
       }

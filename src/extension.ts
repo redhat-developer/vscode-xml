@@ -22,7 +22,8 @@ interface Settings {
   catalogs: String[],
   logs: {},
   format: {},
-  fileAssociations: JSON[]
+  fileAssociations: JSON[],
+  completion: {}
 }
 
 namespace TagCloseRequest {
@@ -73,7 +74,7 @@ export function activate(context: ExtensionContext) {
         return languageClient.sendRequest(TagCloseRequest.type, param);
       };
 
-      disposable = activateTagClosing(tagRequestor, { xml: true}, 'xml.autoClosingTags.enabled');
+      disposable = activateTagClosing(tagRequestor, { xml: true}, 'xml.completion.autoCloseTags');
       toDispose.push(disposable);
     });
   });
@@ -89,11 +90,14 @@ export function activate(context: ExtensionContext) {
 
     let configFileAssociations = configXML.get('fileAssociations') as JSON[];
 
+    let configCompletion = configXML.get('completion');
+
     let settings: Settings = {
       catalogs: configCatalogs,
       logs: configLogs,
       format: configFormats,
-      fileAssociations: configFileAssociations
+      fileAssociations: configFileAssociations,
+      completion: configCompletion
     }
 
     return settings;
