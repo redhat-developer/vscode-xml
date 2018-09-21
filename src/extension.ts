@@ -13,18 +13,10 @@
 import { prepareExecutable } from './javaServerStarter';
 import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { workspace, window, commands, ExtensionContext, TextDocument, Position } from "vscode";
+import { workspace, window, commands, ExtensionContext, TextDocument, Position, WorkspaceConfiguration } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing } from './tagClosing';
-
-interface Settings {
-  catalogs: String[],
-  logs: {},
-  format: {},
-  fileAssociations: JSON[],
-  completion: {}
-}
 
 namespace TagCloseRequest {
   export const type: RequestType<TextDocumentPositionParams, string, any, any> = new RequestType('xml/closeTag');
@@ -79,26 +71,12 @@ export function activate(context: ExtensionContext) {
     });
   });
 
-  function getSettings(): Settings {
-
-    let configXML = workspace.getConfiguration('xml');
-    let configCatalogs = configXML.get('catalogs') as String[];
-    let configFormats = configXML.get('format');
-
-    let configLogs = configXML.get('logs');
-    configLogs["file"] = logfile;
-
-    let configFileAssociations = configXML.get('fileAssociations') as JSON[];
-
-    let configCompletion = configXML.get('completion');
-
-    let settings: Settings = {
-      catalogs: configCatalogs,
-      logs: configLogs,
-      format: configFormats,
-      fileAssociations: configFileAssociations,
-      completion: configCompletion
-    }
+  function getSettings(): JSON {
+    let configXML = workspace.getConfiguration();
+    configXML = configXML.get('xml');
+    let x = JSON.stringify(configXML);
+    let settings : JSON = JSON.parse(x);
+    settings['logs']['file'] = logfile;
 
     return settings;
   }
