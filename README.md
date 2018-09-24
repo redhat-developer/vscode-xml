@@ -1,44 +1,34 @@
-# VSCode XML Client
+# XML support for Visual Studio Code
+
+[![Join the chat at https://gitter.im/redhat-developer/vscode-xml](https://badges.gitter.im/redhat-developer/vscode-xml.svg)](https://gitter.im/redhat-developer/vscode-xml?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Description
 
-  This VSCode extension provides support and editing during the creation of XML documents.
+This VS Code extension provides support for creating and editing XML documents, based on the [LSP4XML language server](https://github.com/angelozerr/lsp4xml).
 
+![Basic features](https://user-images.githubusercontent.com/148698/45977901-df208a80-c018-11e8-85ec-71c70ba8a5ca.gif)
 
 ## Features
 
-  * Symbol Highlighting
-  * General Code Completion 
-  * Document Folding
-  * Symbols and Renaming
-  * Syntax Error Reporting
-  * XML Schema Validation
+  * Syntax error reporting
+  * General code completion 
+  * Auto-close tags
+  * Symbol highlighting
+  * Document folding
+  * Document symbols and outline
+  * Renaming support
   * Document Formatting
-  * Schema Based Hover
-  * Schema Based Code Completion 
-
-## How to Install
-
-  1) Download latest development VSIX [from here](http://download.jboss.org/jbosstools/vscode-xml/staging/?C=M;O=D). `(vscode-xml-XXX.vsix)`
-
-  2) Go to Extensions section in VSCode.
-
-  3) At the top right click the 3 dots.
-
-  4) Select 'Install from VSIX...' and choose the VSIX file.
+  * XSD validation
+  * XSD based hover
+  * XSD based code completion 
+  * Code actions
 
 ## Requirements
 
-  * Java 8+
-
+  * Java JDK 8+
   * Ensure Java path is set in either: 
-  
     * `java.home` in VSCode preferences
     * Environment variable `JAVA_HOME` or `JDK_HOME`
-
-## Language Server for XML
-
-  The Language Server for this client can be [found here](https://github.com/angelozerr/lsp4xml).
 
 ## Supported VS Code settings
 
@@ -48,12 +38,12 @@ The following settings are supported:
 * `xml.catalogs` : Register XML catalog files.
 * `xml.logs.client` : Enable/disable logging to the Output view.
 * `xml.fileAssociations` : Associate XML Schemas to XML file patterns.
-* `xml.format.splitAttributes` : Set to true to split node attributes onto multiple lines during formatting. Defaults to false.
-* `xml.format.joinCDATALines` : Set to true to join lines in CDATA content during formatting. Defaults to false.
-* `xml.format.joinContentLines` : Set to true to join lines in node content during formatting. Defaults to false.
-* `xml.format.joinCommentLines` : Set to true to join lines in comments during formatting. Defaults to false.
+* `xml.format.splitAttributes` : Set to `true` to split node attributes onto multiple lines during formatting. Defaults to `false`.
+* `xml.format.joinCDATALines` : Set to `true` to join lines in CDATA content during formatting. Defaults to `false`.
+* `xml.format.joinContentLines` : Set to `true` to join lines in node content during formatting. Defaults to `false`.
+* `xml.format.joinCommentLines` : Set to `true` to join lines in comments during formatting. Defaults to `false`.
 * `xml.format.enabled` : Enable/disable formatting.
-* `xml.autoCloseTags.enabled` : Set to true to enable/disable automatic closing tags.  
+* `xml.autoCloseTags.enabled` : Enable/disable automatic tag closing.  
   **Note** 'editor.autoClosingBrackets' must be turned off to work
 
 ## Contributing
@@ -61,6 +51,22 @@ The following settings are supported:
 This is an open source project open to anyone. Contributions are extremely welcome!
 
 For information on getting started, refer to the [CONTRIBUTING instructions](CONTRIBUTING.md).
+
+CI builds can be installed manually by following these instructions:
+
+  1) Download the latest development VSIX archive [from here](http://download.jboss.org/jbosstools/vscode-xml/staging/?C=M;O=D). `(vscode-xml-XXX.vsix)`
+
+  2) Go to the Extensions section in VSCode.
+
+  3) At the top right click the `...` icon.
+
+  4) Select 'Install from VSIX...' and choose the visx file.
+
+Feedback
+===============
+* File a bug in [GitHub Issues](https://github.com/redhat-developer/vscode-xml/issues),
+* Chat with us on [Gitter](https://gitter.im/redhat-developer/vscode-xml),
+
 
 ## License
 
