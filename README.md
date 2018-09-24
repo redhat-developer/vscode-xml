@@ -40,6 +40,22 @@
 
   The Language Server for this client can be [found here](https://github.com/angelozerr/lsp4xml).
 
+## Supported VS Code settings
+
+The following settings are supported:
+
+* `xml.trace.server` : Trace the communication between VS Code and the XML language server in the Output view.
+* `xml.catalogs` : Register XML catalog files.
+* `xml.logs.client` : Enable/disable logging to the Output view.
+* `xml.fileAssociations` : Associate XML Schemas to XML file patterns.
+* `xml.format.splitAttributes` : Set to true to split node attributes onto multiple lines during formatting. Defaults to false.
+* `xml.format.joinCDATALines` : Set to true to join lines in CDATA content during formatting. Defaults to false.
+* `xml.format.joinContentLines` : Set to true to join lines in node content during formatting. Defaults to false.
+* `xml.format.joinCommentLines` : Set to true to join lines in comments during formatting. Defaults to false.
+* `xml.format.enabled` : Enable/disable formatting.
+* `xml.autoCloseTags.enabled` : Set to true to enable/disable automatic closing tags.  
+  **Note** 'editor.autoClosingBrackets' must be turned off to work
+
 ## Contributing
 
 This is an open source project open to anyone. Contributions are extremely welcome!
