@@ -26,7 +26,7 @@ node('rhel7'){
 	deleteDir()
 	def gitUrl = "${GIT_REPO}"
 
-	git url: gitUrl?:'https://github.com/gorkem/vscode-xml.git'
+	git url: gitUrl?:'https://github.com/redhat-developer/vscode-xml.git'
 
 	stage 'install vscode-xml build requirements'
 	installBuildRequirements()
@@ -55,13 +55,13 @@ node('rhel7'){
 
 node('rhel7'){
 	if(publishToMarketPlace.equals('true')){
-		timeout(time:5, unit:'DAYS') {
+		timeout(time:2, unit:'DAYS') {
 			input message:'Approve deployment?', submitter: 'fbricon'
 		}
 
 		stage "Publish to Marketplace"
 		unstash 'vsix'
-		withCredentials([[$class: 'StringBinding', credentialsId: 'vscode_xml_marketplace', variable: 'TOKEN']]) {
+		withCredentials([[$class: 'StringBinding', credentialsId: 'vscode_java_marketplace', variable: 'TOKEN']]) {
 			def vsix = findFiles(glob: '**.vsix')
 			sh 'vsce publish -p ${TOKEN} --packagePath' + " ${vsix[0].path}"
 		}
