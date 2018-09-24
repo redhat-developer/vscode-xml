@@ -104,6 +104,12 @@
           "description": "Join lines in an element's content",
           "scope": "window"
         },
+        "xml.format.joinCommentLines": {
+          "type": "boolean",
+          "default": false,
+          "description": "Join comment content on format",
+          "scope": "window"
+        },
         "xml.format.enabled": {
           "type": "boolean",
           "default": true,
