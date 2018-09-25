@@ -4,7 +4,7 @@
 
 ## Description
 
-This VS Code extension provides support for creating and editing XML documents, based on the [LSP4XML language server](https://github.com/angelozerr/lsp4xml).
+This VS Code extension provides support for creating and editing XML documents, based on the [LSP4XML language server](https://github.com/angelozerr/lsp4xml), running with Java.
 
 ![Basic features](https://user-images.githubusercontent.com/148698/45977901-df208a80-c018-11e8-85ec-71c70ba8a5ca.gif)
 
@@ -25,7 +25,7 @@ This VS Code extension provides support for creating and editing XML documents, 
 
 ## Requirements
 
-  * Java JDK 8+
+  * Java JDK 8 or more recent
   * Ensure Java path is set in either: 
     * `java.home` in VSCode preferences
     * Environment variable `JAVA_HOME` or `JDK_HOME`

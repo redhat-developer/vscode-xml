@@ -1,6 +1,6 @@
 {
   "name": "vscode-xml",
-  "displayName": "XML Support for VS Code",
+  "displayName": "XML Support by Red Hat",
   "description": "XML linting, Intellisense, formatting and more...",
   "version": "0.1.0",
   "author": "Red Hat",
