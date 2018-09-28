@@ -13,7 +13,7 @@
 import { prepareExecutable } from './javaServerStarter';
 import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { workspace, window, commands, ExtensionContext, TextDocument, Position, WorkspaceConfiguration } from "vscode";
+import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, WorkspaceConfiguration } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing } from './tagClosing';
@@ -66,16 +66,31 @@ export function activate(context: ExtensionContext) {
         return languageClient.sendRequest(TagCloseRequest.type, param);
       };
 
-      disposable = activateTagClosing(tagRequestor, { xml: true}, 'xml.completion.autoCloseTags');
+      disposable = activateTagClosing(tagRequestor, { xml: true }, 'xml.completion.autoCloseTags');
       toDispose.push(disposable);
     });
+    languages.setLanguageConfiguration('xml', {
+      onEnterRules: [
+        {
+          beforeText: new RegExp(`<([_:\\w][_:\\w-.\\d]*)([^/>]*(?!/)>)[^<]*$`, 'i'),
+          afterText: /^<\/([_:\w][_:\w-.\d]*)\s*>/i,
+          action: { indentAction: IndentAction.IndentOutdent }
+        },
+        {
+          beforeText: new RegExp(`<(\\w[\\w\\d]*)([^/>]*(?!/)>)[^<]*$`, 'i'),
+          action: { indentAction: IndentAction.Indent }
+        }
+      ],
+    });
+
+
   });
 
   function getSettings(): JSON {
     let configXML = workspace.getConfiguration();
     configXML = configXML.get('xml');
     let x = JSON.stringify(configXML);
-    let settings : JSON = JSON.parse(x);
+    let settings: JSON = JSON.parse(x);
     settings['logs']['file'] = logfile;
 
     return settings;
