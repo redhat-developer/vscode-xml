@@ -13,14 +13,22 @@
 import { prepareExecutable } from './javaServerStarter';
 import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, WorkspaceConfiguration, LanguageConfiguration } from "vscode";
+import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing } from './tagClosing';
+import { WorkspaceFoldersFeature } from 'vscode-languageclient/lib/workspaceFolders';
+
+export interface ScopeInfo {
+  scope : "default" | "global" | "workspace" | "folder";
+  configurationTarget: boolean;
+}
 
 namespace TagCloseRequest {
   export const type: RequestType<TextDocumentPositionParams, string, any, any> = new RequestType('xml/closeTag');
 }
+
+let ignoreAutoCloseTags = false;
 
 export function activate(context: ExtensionContext) {
   let storagePath = context.storagePath;
@@ -45,11 +53,18 @@ export function activate(context: ExtensionContext) {
       revealOutputChannelOn: RevealOutputChannelOn.Never,
       initializationOptions: { settings: getSettings() },
       synchronize: {
-        configurationSection: ['xml']
+        //preferences starting with these will trigger didChangeConfiguration
+        configurationSection: ['xml', '[xml]']
       },
       middleware: {
         workspace: {
-          didChangeConfiguration: () => languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getSettings() })
+          didChangeConfiguration: () => {
+            languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getSettings() });
+            if(!ignoreAutoCloseTags) {
+              verifyAutoClosing();
+            }
+          }
+
         }
       }
     }
@@ -86,7 +101,7 @@ export function activate(context: ExtensionContext) {
           client: true
         },
         format: {
-          enabled : true,
+          enabled: true,
           splitAttributes: false
         },
         completion: {
@@ -102,11 +117,62 @@ export function activate(context: ExtensionContext) {
     settings['logs']['file'] = logfile;
     return settings;
   }
-
-
-
-
 }
+
+
+function verifyAutoClosing() {
+  let configXML = workspace.getConfiguration();
+  let closeTags = configXML.get("xml.completion.autoCloseTags");
+  let closeBrackets = configXML.get("[xml]")["editor.autoClosingBrackets"];
+  if (closeTags && closeBrackets != "never") {
+    window.showWarningMessage(
+      "The [xml].editor.autoClosingBrackets setting conflicts with xml.completion.autoCloseTags. It's recommended to disable it.",
+      "Disable",
+      "Ignore").then((selection) => {
+        if (selection == "Disable") {
+          let scopeInfo : ScopeInfo = getScopeLevel("", "[xml]");
+          workspace.getConfiguration().update("[xml]", { "editor.autoClosingBrackets": "never" }, scopeInfo.configurationTarget).then(
+            () => console.log('[xml].editor.autoClosingBrackets globally set to never'),
+            (error) => console.log(error)
+          );
+        }
+        else if(selection == "Ignore") {
+          ignoreAutoCloseTags = true;
+        }
+      });
+  }
+}
+
+function getScopeLevel(configurationKey : string, key : string) : ScopeInfo{
+
+  let configXML = workspace.getConfiguration(configurationKey);
+  let result = configXML.inspect(key);
+  let scope, configurationTarget;
+  if(result.workspaceFolderValue == undefined) {
+    if(result.workspaceValue == undefined) {
+      if(result.globalValue == undefined) {
+        scope = "default"
+        configurationTarget = true;
+      }
+      else {
+        scope = "global";
+        configurationTarget = true;
+      }
+    }
+    else {
+      scope = "workspace";
+      configurationTarget = false;
+    }
+  }
+  else {
+    scope = "folder";
+    configurationTarget = undefined;
+  }
+  let scopeInfo : ScopeInfo = {"scope": scope, "configurationTarget": configurationTarget};
+  return scopeInfo;
+  
+}
+
 function getIndentationRules(): LanguageConfiguration {
   return {
     onEnterRules: [
