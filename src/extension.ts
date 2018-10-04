@@ -89,8 +89,34 @@ export function activate(context: ExtensionContext) {
   function getSettings(): JSON {
     let configXML = workspace.getConfiguration();
     configXML = configXML.get('xml');
-    let x = JSON.stringify(configXML);
-    let settings: JSON = JSON.parse(x);
+    let settings: JSON;
+    if (!configXML) {
+      const defaultValue = {
+        logs: {
+
+        },
+        xml: {
+          trace: {
+            server: 'verbose'
+          },
+          logs: {
+            client: true,
+          },
+          format: {
+            enabled : true,
+            splitAttributes: false
+          },
+          completion: {
+            autoCloseTags: false
+          }
+        }
+      }
+      const x = JSON.stringify(defaultValue);
+      settings = JSON.parse(x);
+    } else {
+      const x = JSON.stringify(configXML);
+      settings = JSON.parse(x);
+    }
     settings['logs']['file'] = logfile;
 
     return settings;
