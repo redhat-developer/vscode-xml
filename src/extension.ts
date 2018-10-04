@@ -13,7 +13,7 @@
 import { prepareExecutable } from './javaServerStarter';
 import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, WorkspaceConfiguration } from "vscode";
+import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, WorkspaceConfiguration, LanguageConfiguration } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing } from './tagClosing';
@@ -40,8 +40,8 @@ export function activate(context: ExtensionContext) {
     throw error;
   }).then(requirements => {
     let clientOptions: LanguageClientOptions = {
-      // Register the server for java
-      documentSelector: ['xml'],
+      // Register the server for xml and xsl
+      documentSelector: ['xml', 'xsl'],
       revealOutputChannelOn: RevealOutputChannelOn.Never,
       initializationOptions: { settings: getSettings() },
       synchronize: {
@@ -66,24 +66,11 @@ export function activate(context: ExtensionContext) {
         return languageClient.sendRequest(TagCloseRequest.type, param);
       };
 
-      disposable = activateTagClosing(tagRequestor, { xml: true }, 'xml.completion.autoCloseTags');
+      disposable = activateTagClosing(tagRequestor, { xml: true, xsl: true }, 'xml.completion.autoCloseTags');
       toDispose.push(disposable);
     });
-    languages.setLanguageConfiguration('xml', {
-      onEnterRules: [
-        {
-          beforeText: new RegExp(`<([_:\\w][_:\\w-.\\d]*)([^/>]*(?!/)>)[^<]*$`, 'i'),
-          afterText: /^<\/([_:\w][_:\w-.\d]*)\s*>/i,
-          action: { indentAction: IndentAction.IndentOutdent }
-        },
-        {
-          beforeText: new RegExp(`<(\\w[\\w\\d]*)([^/>]*(?!/)>)[^<]*$`, 'i'),
-          action: { indentAction: IndentAction.Indent }
-        }
-      ],
-    });
-
-
+    languages.setLanguageConfiguration('xml', getIndentationRules());
+    languages.setLanguageConfiguration('xsl', getIndentationRules());
   });
 
   function getSettings(): JSON {
@@ -100,3 +87,19 @@ export function activate(context: ExtensionContext) {
 
 
 }
+function getIndentationRules(): LanguageConfiguration {
+  return {
+    onEnterRules: [
+      {
+        beforeText: new RegExp(`<([_:\\w][_:\\w-.\\d]*)([^/>]*(?!/)>)[^<]*$`, 'i'),
+        afterText: /^<\/([_:\w][_:\w-.\d]*)\s*>/i,
+        action: { indentAction: IndentAction.IndentOutdent }
+      },
+      {
+        beforeText: new RegExp(`<(\\w[\\w\\d]*)([^/>]*(?!/)>)[^<]*$`, 'i'),
+        action: { indentAction: IndentAction.Indent }
+      }
+    ],
+  };
+}
+

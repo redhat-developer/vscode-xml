@@ -10,13 +10,14 @@
   "bugs": "https://github.com/redhat-developer/vscode-xml/issues",
   "preview": true,
   "keywords": [
-    "xml"
+    "xml", "xsl", "xsd"
   ],
   "engines": {
     "vscode": "^1.27.0"
   },
   "activationEvents": [
-    "onLanguage:xml"
+    "onLanguage:xml",
+    "onLanguage:xsl"
   ],
   "main": "./out/src/extension",
   "scripts": {

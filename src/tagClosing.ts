@@ -39,9 +39,9 @@ export function activateTagClosing(tagProvider: (document: TextDocument, positio
 		if (!isEnabled) {
 			return;
 		}
-    let activeDocument = window.activeTextEditor && window.activeTextEditor.document;
-    let a = document !== activeDocument;
-    let b = changes.length === 0;
+		let activeDocument = window.activeTextEditor && window.activeTextEditor.document;
+		let a = document !== activeDocument;
+		let b = changes.length === 0;
 		if (document !== activeDocument || changes.length === 0) {
 			return;
 		}
@@ -49,7 +49,7 @@ export function activateTagClosing(tagProvider: (document: TextDocument, positio
 			clearTimeout(timeout);
 		}
 		let lastChange = changes[changes.length - 1];
-    let lastCharacter = lastChange.text[lastChange.text.length - 1];
+		let lastCharacter = lastChange.text[lastChange.text.length - 1];
 		if (lastChange.rangeLength > 0 || lastCharacter !== '>' && lastCharacter !== '/') {
 			return;
 		}
