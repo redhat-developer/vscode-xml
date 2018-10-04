@@ -146,10 +146,15 @@
         "xml.completion.autoCloseTags": {
           "type": "boolean",
           "default": true,
-          "description": "Enable/disable ability to autoclose tags. \n\n**IMPORTANT: Turn off editor.autoClosingTags for this to work\n**",
+          "description": "Enable/disable autoclosing of XML tags. \n\nIMPORTANT: Turn off editor.autoClosingTags for this to work",
           "scope": "window"
         }
       }
+    },
+    "configurationDefaults": {
+        "[xml]": {
+          "editor.autoClosingBrackets": "never"
+        }
     }
   }
 }
