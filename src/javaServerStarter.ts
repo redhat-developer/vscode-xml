@@ -36,6 +36,8 @@ function prepareParams(requirements: RequirementsData): string[] {
   } else {
     return null;
   }
+  let vmargs = workspace.getConfiguration("xml").get("server.vmargs", '');
+	parseVMargs(params, vmargs);
   return params;
 }
 
@@ -45,4 +47,24 @@ function startedInDebugMode(): boolean {
     return args.some((arg) => /^--debug=?/.test(arg) || /^--debug-brk=?/.test(arg) || /^--inspect-brk=?/.test(arg));
   };
   return false;
+}
+
+//exported for tests
+export function parseVMargs(params: any[], vmargsLine: string) {
+	if (!vmargsLine) {
+		return;
+	}
+	let vmargs = vmargsLine.match(/(?:[^\s"]+|"[^"]*")+/g);
+	if (vmargs === null) {
+		return;
+	}
+	vmargs.forEach(arg => {
+		//remove all standalone double quotes
+		arg = arg.replace(/(\\)?"/g, function ($0, $1) { return ($1 ? $0 : ''); });
+		//unescape all escaped double quotes
+		arg = arg.replace(/(\\)"/g, '"');
+		if (params.indexOf(arg) < 0) {
+			params.push(arg);
+		}
+	});
 }
