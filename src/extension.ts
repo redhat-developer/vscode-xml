@@ -29,6 +29,8 @@ namespace TagCloseRequest {
 }
 
 let ignoreAutoCloseTags = false;
+let vmArgsCache;
+let ignoreVMArgs = false;
 
 export function activate(context: ExtensionContext) {
   let storagePath = context.storagePath;
@@ -63,6 +65,7 @@ export function activate(context: ExtensionContext) {
             if(!ignoreAutoCloseTags) {
               verifyAutoClosing();
             }
+            !ignoreVMArgs ? verifyVMArgs(): undefined;
           }
 
         }
@@ -119,7 +122,6 @@ export function activate(context: ExtensionContext) {
   }
 }
 
-
 function verifyAutoClosing() {
   let configXML = workspace.getConfiguration();
   let closeTags = configXML.get("xml.completion.autoCloseTags");
@@ -143,8 +145,29 @@ function verifyAutoClosing() {
   }
 }
 
-function getScopeLevel(configurationKey : string, key : string) : ScopeInfo{
+function verifyVMArgs() {
+  let currentVMArgs = workspace.getConfiguration("xml.server").get("vmargs");
+  if(vmArgsCache != undefined) {
+    if(vmArgsCache != currentVMArgs) {
+      window.showWarningMessage(
+        "XML Language Server configuration changed, please restart VS Code.",
+        "Restart",
+        "Ignore").then((selection) => {
+          if (selection == "Restart") {
+            commands.executeCommand("workbench.action.reloadWindow");
+          }
+          else if(selection == "Ignore") {
+            ignoreVMArgs = true;
+          }
+        });
+    }
+  }
+  else {
+    vmArgsCache = currentVMArgs;
+  }
+}
 
+function getScopeLevel(configurationKey : string, key : string) : ScopeInfo{
   let configXML = workspace.getConfiguration(configurationKey);
   let result = configXML.inspect(key);
   let scope, configurationTarget;

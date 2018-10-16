@@ -44,7 +44,10 @@ The following settings are supported:
 * `xml.format.joinCommentLines` : Set to `true` to join lines in comments during formatting. Defaults to `false`.
 * `xml.format.enabled` : Enable/disable formatting.
 * `xml.autoCloseTags.enabled` : Enable/disable automatic tag closing.  
-  **Note** 'editor.autoClosingBrackets' must be turned off to work
+  **Note** 'editor.autoClosingBrackets' must be turned off to work.  
+
+Since 0.2.0:
+* `xml.server.vmargs`: Extra VM arguments used to launch the XML Language Server. Requires VS Code restart.
 
 ## Contributing
 
