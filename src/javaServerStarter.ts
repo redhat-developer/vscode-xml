@@ -29,6 +29,8 @@ function prepareParams(requirements: RequirementsData): string[] {
     // suspend=y is the default. Use this form if you need to debug the server startup code:
     //params.push('-agentlib:jdwp=transport=dt_socket,server=y,address=1054');
   }
+  let vmargs = workspace.getConfiguration("xml").get("server.vmargs", '');
+  parseVMargs(params, vmargs);
   let server_home: string = path.resolve(__dirname, '../../server');
   let launchersFound: Array<string> = glob.sync('**/org.eclipse.lsp4xml-all.jar', { cwd: server_home });
   if (launchersFound.length) {
@@ -36,8 +38,6 @@ function prepareParams(requirements: RequirementsData): string[] {
   } else {
     return null;
   }
-  let vmargs = workspace.getConfiguration("xml").get("server.vmargs", '');
-	parseVMargs(params, vmargs);
   return params;
 }
 
