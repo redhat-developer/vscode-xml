@@ -139,7 +139,7 @@
               "pattern"
             ]
           },
-          "description": "Allows XML schemas to be associated to file name patterns.\n\nExample:\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsdd\",\n  \"pattern\": \"**/*.xsd\"\n}]",
+          "description": "Allows XML schemas to be associated to file name patterns.\n\nExample:\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\",\n  \"pattern\": \"**/*.xsd\"\n}]",
           "markdownDescription": "Allows XML schemas to be associated to file name patterns.\n\nExample:\n```json\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\",\n  \"pattern\": \"**/*.xsd\"\n}]\n```",
           "scope": "window"
         },
