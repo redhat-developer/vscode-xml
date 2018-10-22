@@ -30,6 +30,8 @@ This VS Code extension provides support for creating and editing XML documents, 
   * Code actions
   * Schema Caching
 
+See the [changelog](CHANGELOG.md) for the latest release. You might also find useful information in the project [Wiki](https://github.com/redhat-developer/vscode-xml/wiki).
+
 ## Requirements
 
   * Java JDK 8 or more recent
