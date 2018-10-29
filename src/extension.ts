@@ -117,6 +117,7 @@ export function activate(context: ExtensionContext) {
       settings = JSON.parse(x);
     }
     settings['logs']['file'] = logfile;
+    settings['useCache'] = true;
     return settings;
   }
 }
