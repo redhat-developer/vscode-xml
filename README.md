@@ -73,6 +73,6 @@ Feedback
 
 ## License
 
-  EPL 1.0, See [LICENSE](https://github.com/redhat-developer/vscode-xml/blob/readme/LICENSE) file.
+  EPL 1.0, See [LICENSE](https://github.com/redhat-developer/vscode-xml/blob/master/LICENSE) file.
 
 
