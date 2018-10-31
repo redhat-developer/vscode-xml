@@ -22,6 +22,7 @@ This VS Code extension provides support for creating and editing XML documents, 
   * XSD based hover
   * XSD based code completion 
   * Code actions
+  * Schema Caching
 
 ## Requirements
 
