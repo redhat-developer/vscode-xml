@@ -32,6 +32,8 @@ This VS Code extension provides support for creating and editing XML documents, 
 
 ## Supported VS Code settings
 
+More detailed info in [Wiki](https://github.com/redhat-developer/vscode-xml/wiki/Preferences).
+
 The following settings are supported:
 
 * `xml.trace.server` : Trace the communication between VS Code and the XML language server in the Output view.
