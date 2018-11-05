@@ -17,7 +17,6 @@ import { languages, IndentAction, workspace, window, commands, ExtensionContext,
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing } from './tagClosing';
-import { WorkspaceFoldersFeature } from 'vscode-languageclient/lib/workspaceFolders';
 
 export interface ScopeInfo {
   scope : "default" | "global" | "workspace" | "folder";

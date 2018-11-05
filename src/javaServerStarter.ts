@@ -1,10 +1,7 @@
-import { window, commands, WorkspaceConfiguration, workspace } from 'vscode'
-import { StreamInfo, Executable, ExecutableOptions } from 'vscode-languageclient';
-import { createClientPipeTransport } from 'vscode-jsonrpc';
+import { workspace } from 'vscode'
+import { Executable, ExecutableOptions } from 'vscode-languageclient';
 import { RequirementsData } from './requirements';
 import * as path from 'path';
-import * as fs from 'fs';
-import * as net from 'net';
 const glob = require('glob');
 
 declare var v8debug;

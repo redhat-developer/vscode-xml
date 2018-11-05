@@ -10,7 +10,9 @@
   "bugs": "https://github.com/redhat-developer/vscode-xml/issues",
   "preview": true,
   "keywords": [
-    "xml", "xsl", "xsd"
+    "xml",
+    "xsl",
+    "xsd"
   ],
   "engines": {
     "vscode": "^1.27.0"
@@ -54,8 +56,6 @@
     "find-java-home": "0.2.0",
     "glob": "^7.1.1",
     "path-exists": "^3.0.0",
-    "tmp": "^0.0.31",
-    "vsce": "^1.51.1",
     "vscode-languageclient": "~5.1.0"
   },
   "contributes": {
@@ -161,9 +161,9 @@
       }
     },
     "configurationDefaults": {
-        "[xml]": {
-          "editor.autoClosingBrackets": "never"
-        }
+      "[xml]": {
+        "editor.autoClosingBrackets": "never"
+      }
     }
   }
 }
