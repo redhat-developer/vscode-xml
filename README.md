@@ -13,15 +13,20 @@ This VS Code extension provides support for creating and editing XML documents, 
   * Syntax error reporting
   * General code completion 
   * Auto-close tags
+  * Automatic node indentation
   * Symbol highlighting
   * Document folding
+  * Document links
   * Document symbols and outline
   * Renaming support
   * Document Formatting
+  * DTD validation
   * XSD validation
   * XSD based hover
   * XSD based code completion 
-  * DTD validation
+  * XSL support
+  * XML catalogs
+  * File associations
   * Code actions
   * Schema Caching
 
