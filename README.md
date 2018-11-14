@@ -54,9 +54,10 @@ The following settings are supported:
 * `xml.format.enabled` : Enable/disable formatting.
 * `xml.autoCloseTags.enabled` : Enable/disable automatic tag closing.  
   **Note** 'editor.autoClosingBrackets' must be turned off to work.  
-
-Since 0.2.0:
-* `xml.server.vmargs`: Extra VM arguments used to launch the XML Language Server. Requires VS Code restart.
+* `xml.server.vmargs`: Extra VM arguments used to launch the XML Language Server. Requires VS Code restart.  
+  
+Since 0.3.0:
+* `xml.format.spaceBeforeEmptyCloseTag`: Set to `true` to insert space before the end of a self closing tag.
 
 More detailed info in the [Wiki](https://github.com/redhat-developer/vscode-xml/wiki/Preferences).
 
