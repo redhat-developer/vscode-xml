@@ -112,6 +112,12 @@
           "description": "Join comment content on format",
           "scope": "window"
         },
+        "xml.format.spaceBeforeEmptyCloseTag": {
+          "type": "boolean",
+          "default": true,
+          "description": "Insert space before end of self closing tag. \nExample:\n  <tag/> -> <tag />",
+          "scope": "window"
+        },
         "xml.format.enabled": {
           "type": "boolean",
           "default": true,
