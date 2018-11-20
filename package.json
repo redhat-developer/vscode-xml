@@ -163,6 +163,19 @@
           "default": "-noverify -Xmx64M -XX:+UseG1GC -XX:+UseStringDeduplication",
           "description": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-noverify -Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector",
           "scope": "window"
+        },
+        "xml.problems.noGrammar" : {
+          "type": "string",
+          "enum": [
+            "ignore",
+            "hint",
+            "info", 
+            "warning", 
+            "error"
+          ],
+          "default": "hint",
+          "description": "The message severity when a document has no associated grammar.",
+          "scope": "window"
         }
       }
     },

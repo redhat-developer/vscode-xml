@@ -58,6 +58,8 @@ The following settings are supported:
   
 Since 0.3.0:
 * `xml.format.spaceBeforeEmptyCloseTag`: Set to `true` to insert space before the end of a self closing tag.
+* `xml.problems.noGrammar`: Set the message severity when a document has no associated grammar. Default is `hint`.  
+
 
 More detailed info in the [Wiki](https://github.com/redhat-developer/vscode-xml/wiki/Preferences).
 
