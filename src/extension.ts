@@ -52,7 +52,8 @@ export function activate(context: ExtensionContext) {
       // Register the server for xml and xsl
       documentSelector: ['xml', 'xsl'],
       revealOutputChannelOn: RevealOutputChannelOn.Never,
-      initializationOptions: { settings: getSettings() },
+      //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
+      initializationOptions: {"settings": getXMLSettings()}, 
       synchronize: {
         //preferences starting with these will trigger didChangeConfiguration
         configurationSection: ['xml', '[xml]']
@@ -60,7 +61,7 @@ export function activate(context: ExtensionContext) {
       middleware: {
         workspace: {
           didChangeConfiguration: () => {
-            languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getSettings() });
+            languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings() });
             if(!ignoreAutoCloseTags) {
               verifyAutoClosing();
             }
@@ -90,35 +91,45 @@ export function activate(context: ExtensionContext) {
     languages.setLanguageConfiguration('xsl', getIndentationRules());
   });
 
-  function getSettings(): JSON {
-    let configXML = workspace.getConfiguration();
-    configXML = configXML.get('xml');
-    let settings: JSON;
-    if (!configXML) {
-      const defaultValue = {
-        trace: {
-          server: 'verbose'
-        },
-        logs: {
-          client: true
-        },
-        format: {
-          enabled: true,
-          splitAttributes: false
-        },
-        completion: {
-          autoCloseTags: false
+  /**
+   * Returns a json object with key 'xml' and a json object value that
+   * holds all xml. settings.
+   * 
+   * Returns: {
+   *            'xml': {...}
+   *          }
+   */
+  function getXMLSettings(): JSON {
+    let configXML = workspace.getConfiguration().get('xml');
+    configXML = null;
+    let xml;
+    if (!configXML) { //Set default preferences if not provided
+      const defaultValue = 
+      {
+        xml: {
+          trace: {
+            server: 'verbose'
+          },
+          logs: {
+            client: true
+          },
+          format: {
+            enabled: true,
+            splitAttributes: false
+          },
+          completion: {
+            autoCloseTags: false
+          }
         }
       }
-      const x = JSON.stringify(defaultValue);
-      settings = JSON.parse(x);
+      xml = defaultValue;
     } else {
-      const x = JSON.stringify(configXML);
-      settings = JSON.parse(x);
+      let x = JSON.stringify(configXML); //configXML is not a JSON type
+      xml = { "xml" : JSON.parse(x)};
     }
-    settings['logs']['file'] = logfile;
-    settings['useCache'] = true;
-    return settings;
+    xml['xml']['logs']['file'] = logfile;
+    xml['xml']['useCache'] = true;
+    return xml;
   }
 }
 
