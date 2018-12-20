@@ -37,7 +37,8 @@ See the [changelog](CHANGELOG.md) for the latest release. You might also find us
   * Java JDK 8 or more recent
   * Ensure Java path is set in either: 
     * `java.home` in VSCode preferences
-    * Environment variable `JAVA_HOME` or `JDK_HOME`
+    * Environment variable `JAVA_HOME` or `JDK_HOME`  
+    * **Note**: The path should end at the parent folder that contains the `bin` folder.
 
 ## Supported VS Code settings
 
