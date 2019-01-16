@@ -38,7 +38,8 @@ See the [changelog](CHANGELOG.md) for the latest release. You might also find us
   * Ensure Java path is set in either: 
     * `java.home` in VSCode preferences
     * Environment variable `JAVA_HOME` or `JDK_HOME`  
-    * **Note**: The path should end at the parent folder that contains the `bin` folder.
+    * **Note**: The path should end at the parent folder that contains the `bin` folder.  
+      **Example Path**: `/usr/lib/jvm/java-1.8.0` if `bin` exists at `/usr/lib/jvm/java-1.8.0/bin`.
 
 ## Supported VS Code settings
 
