@@ -101,7 +101,6 @@ export function activate(context: ExtensionContext) {
    */
   function getXMLSettings(): JSON {
     let configXML = workspace.getConfiguration().get('xml');
-    configXML = null;
     let xml;
     if (!configXML) { //Set default preferences if not provided
       const defaultValue = 
