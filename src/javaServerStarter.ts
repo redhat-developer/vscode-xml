@@ -29,7 +29,7 @@ function prepareParams(requirements: RequirementsData): string[] {
   let vmargs = workspace.getConfiguration("xml").get("server.vmargs", '');
   parseVMargs(params, vmargs);
   let server_home: string = path.resolve(__dirname, '../../server');
-  let launchersFound: Array<string> = glob.sync('**/org.eclipse.lsp4xml-all.jar', { cwd: server_home });
+  let launchersFound: Array<string> = glob.sync('**/org.eclipse.lsp4xml-uber.jar', { cwd: server_home });
   if (launchersFound.length) {
     params.push('-jar'); params.push(path.resolve(server_home, launchersFound[0]));
   } else {
