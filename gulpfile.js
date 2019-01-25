@@ -11,8 +11,8 @@ gulp.task('tslint', () => {
 });
 
 gulp.task('build_server', function(done) {
-	cp.execSync(mvnw()+ " -o clean verify -DskipTests", {cwd:server_dir, stdio:[0,1,2]} );
-  gulp.src(server_dir +'/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-all.jar')
+	cp.execSync(mvnw()+ " -o clean verify -DskipTests -pl \"!extensions,!extensions/org.eclipse.lsp4xml.extensions.emmet,!extensions/org.eclipse.lsp4xml.extensions.web\"", {cwd:server_dir, stdio:[0,1,2]} );
+  gulp.src(server_dir +'/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-uber.jar')
 		.pipe(gulp.dest('./server'));
 	done();
 });
