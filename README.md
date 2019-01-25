@@ -21,6 +21,8 @@ This VS Code extension provides support for creating and editing XML documents, 
   * Renaming support
   * Document Formatting
   * DTD validation
+  * DTD completion
+  * DTD formatting
   * XSD validation
   * XSD based hover
   * XSD based code completion 
@@ -59,8 +61,10 @@ The following settings are supported:
 * `xml.server.vmargs`: Extra VM arguments used to launch the XML Language Server. Requires VS Code restart.  
   
 Since 0.3.0:
-* `xml.format.spaceBeforeEmptyCloseTag`: Set to `true` to insert space before the end of a self closing tag.
-* `xml.problems.noGrammar`: Set the message severity when a document has no associated grammar. Default is `hint`.  
+* `xml.validation.enabled`: Set to `false` to disable all validation. Defaults to `true`.
+* `xml.validation.schema`: Set to `false` to disable schema validation. Defaults to `true`.
+* `xml.validation.noGrammar`: The message severity when a document has no associated grammar. Defaults to `hint`.
+* `xml.format.spaceBeforeEmptyCloseTag`: Set to `true` to insert space before the end of a self closing tag. Defaults to `true`.
 
 
 More detailed info in the [Wiki](https://github.com/redhat-developer/vscode-xml/wiki/Preferences).
