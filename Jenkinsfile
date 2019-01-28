@@ -17,7 +17,7 @@ node('rhel7'){
 	git url: 'https://github.com/angelozerr/lsp4xml.git'
 	sh "./mvnw clean verify -B -U -e"
 
-	def files = findFiles(glob: '**/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-all.jar')
+	def files = findFiles(glob: '**/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-uber.jar')
 	stash name: 'server_distro', includes :files[0].path
 }
 
@@ -34,7 +34,7 @@ node('rhel7'){
 	stage 'Build vscode-xml'
 	buildVscodeExtension()
 	unstash 'server_distro'
-	def files = findFiles(glob: '**/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-all.jar')
+	def files = findFiles(glob: '**/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-uber.jar')
 	sh "mkdir ./server"
 	sh "mv ${files[0].path} ./server"
 
