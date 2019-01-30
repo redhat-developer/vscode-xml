@@ -124,6 +124,16 @@
           "description": "Enable/disable ability to format document",
           "scope": "window"
         },
+        "xml.format.quotations": {
+          "type": "string",
+          "enum": [
+            "doubleQuotes",
+            "singleQuotes"
+          ],
+          "default": "doubleQuotes",
+          "description": "Which type of quotes to use for attribute values when formatting.",
+          "scope": "window"
+        },
         "xml.fileAssociations": {
           "type": "array",
           "default": [],
