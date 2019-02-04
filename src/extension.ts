@@ -50,7 +50,10 @@ export function activate(context: ExtensionContext) {
   }).then(requirements => {
     let clientOptions: LanguageClientOptions = {
       // Register the server for xml and xsl
-      documentSelector: ['xml', 'xsl'],
+      documentSelector: [
+        { scheme: 'file', language: 'xml' },
+        { scheme: 'file', language: 'xsl' }
+      ],
       revealOutputChannelOn: RevealOutputChannelOn.Never,
       //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
       initializationOptions: {"settings": getXMLSettings()}, 
