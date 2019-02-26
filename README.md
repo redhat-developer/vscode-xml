@@ -53,19 +53,19 @@ The following settings are supported:
 * `xml.fileAssociations` : Associate XML Schemas to XML file patterns.
 * `xml.format.splitAttributes` : Set to `true` to split node attributes onto multiple lines during formatting. Defaults to `false`.
 * `xml.format.joinCDATALines` : Set to `true` to join lines in CDATA content during formatting. Defaults to `false`.
-* `xml.format.joinContentLines` : Set to `true` to join lines in node content during formatting. Defaults to `false`.
 * `xml.format.joinCommentLines` : Set to `true` to join lines in comments during formatting. Defaults to `false`.
 * `xml.format.enabled` : Enable/disable formatting.
 * `xml.autoCloseTags.enabled` : Enable/disable automatic tag closing.  
   **Note** 'editor.autoClosingBrackets' must be turned off to work.  
 * `xml.server.vmargs`: Extra VM arguments used to launch the XML Language Server. Requires VS Code restart.  
-  
-Since 0.3.0:
 * `xml.validation.enabled`: Set to `false` to disable all validation. Defaults to `true`.
 * `xml.validation.schema`: Set to `false` to disable schema validation. Defaults to `true`.
 * `xml.validation.noGrammar`: The message severity when a document has no associated grammar. Defaults to `hint`.
 * `xml.format.spaceBeforeEmptyCloseTag`: Set to `true` to insert space before the end of a self closing tag. Defaults to `true`.
 
+Since 0.4.0:
+* `xml.format.quotations`: Set to `doubleQuotes` to format and only use `"`, or `singleQuotes` to format and only use `'`. Defaults to `doubleQuotes`.
+* `xml.format.preserveEmptyContent`: Set to `true` to preserve standalone whitespace content in an element. Defaults to `false`.
 
 More detailed info in the [Wiki](https://github.com/redhat-developer/vscode-xml/wiki/Preferences).
 
