@@ -1,5 +1,22 @@
 # Change Log
 
+## [0.4.0](https://github.com/redhat-developer/vscode-xml/milestone/4?closed=1) (March 06, 2019)
+
+### Enhancements
+
+* Modified schema validation messages. See [#91](https://github.com/redhat-developer/vscode-xml/issues/91).
+* Preference `xml.format.quotations` to set single vs double quotes for attribute values on format. See [lsp4xml#263](https://github.com/angelozerr/lsp4xml/issues/263).
+* Preference `xml.format.preserveEmptyContent` to preserve a whitespace value in an element's content. See [#96](https://github.com/redhat-developer/vscode-xml/issues/96).
+* Removed support for preference `xml.format.joinContentLines`.
+* Compatibility with OSGi and p2. See [lsp4xml#288](https://github.com/angelozerr/lsp4xml/issues/288).
+
+### Bug Fixes
+
+* Fixed memory leak of file handles. See [#108](https://github.com/redhat-developer/vscode-xml/issues/108).
+* XSI completion item messages were incorrect. See [lsp4xml#296](https://github.com/angelozerr/lsp4xml/issues/296).
+* Removed trailing whitespace from normalized strings on format. See [lsp4xml#300](https://github.com/angelozerr/lsp4xml/pull/300).
+* Format of attribute without value loses data. See [lsp4xml#294](https://github.com/angelozerr/lsp4xml/issues/294).
+
 ## [0.3.0](https://github.com/redhat-developer/vscode-xml/milestone/3?closed=1) (January 28, 2019)
 
 ### Enhancements
