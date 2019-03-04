@@ -100,12 +100,6 @@
           "description": "Join lines in a CDATA tag's content",
           "scope": "window"
         },
-        "xml.format.joinContentLines": {
-          "type": "boolean",
-          "default": false,
-          "description": "Join lines in an element's content",
-          "scope": "window"
-        },
         "xml.format.joinCommentLines": {
           "type": "boolean",
           "default": false,
@@ -116,6 +110,12 @@
           "type": "boolean",
           "default": true,
           "description": "Insert space before end of self closing tag. \nExample:\n  <tag/> -> <tag />",
+          "scope": "window"
+        },
+        "xml.format.preserveEmptyContent": {
+          "type": "boolean",
+          "default": false,
+          "description": "Preserve empty content/whitespace in a tag.",
           "scope": "window"
         },
         "xml.format.enabled": {
