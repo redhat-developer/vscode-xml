@@ -15,7 +15,7 @@ def buildVscodeExtension(){
 node('rhel7'){
 	stage 'Build XML LS'
 	git url: 'https://github.com/angelozerr/lsp4xml.git'
-	sh "./mvnw clean verify -B -U -e -pl \"!extensions,!extensions/org.eclipse.lsp4xml.extensions.emmet,!extensions/org.eclipse.lsp4xml.extensions.web\""
+	sh "./mvnw clean verify -B -U -e -pl \"!extensions,!extensions/org.eclipse.lsp4xml.extensions.emmet,!extensions/org.eclipse.lsp4xml.extensions.web\" -P!jboss-maven-repos,!redhat-ga-repository,!redhat-ea-repository"
 
 	def files = findFiles(glob: '**/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-uber.jar')
 	stash name: 'server_distro', includes :files[0].path
