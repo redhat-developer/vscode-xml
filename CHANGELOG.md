@@ -1,13 +1,12 @@
 # Change Log
 
-## [0.4.0](https://github.com/redhat-developer/vscode-xml/milestone/4?closed=1) (March 06, 2019)
+## [0.4.0](https://github.com/redhat-developer/vscode-xml/milestone/4?closed=1) (March 07, 2019)
 
 ### Enhancements
 
 * Modified schema validation messages. See [#91](https://github.com/redhat-developer/vscode-xml/issues/91).
 * Preference `xml.format.quotations` to set single vs double quotes for attribute values on format. See [lsp4xml#263](https://github.com/angelozerr/lsp4xml/issues/263).
 * Preference `xml.format.preserveEmptyContent` to preserve a whitespace value in an element's content. See [#96](https://github.com/redhat-developer/vscode-xml/issues/96).
-* Removed support for preference `xml.format.joinContentLines`.
 * Compatibility with OSGi and p2. See [lsp4xml#288](https://github.com/angelozerr/lsp4xml/issues/288).
 
 ### Bug Fixes
