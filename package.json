@@ -112,6 +112,12 @@
           "description": "Insert space before end of self closing tag. \nExample:\n  <tag/> -> <tag />",
           "scope": "window"
         },
+        "xml.format.joinContentLines": {
+          "type": "boolean",
+          "default": false,
+          "description": "Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed.",
+          "scope": "window"
+        },
         "xml.format.preserveEmptyContent": {
           "type": "boolean",
           "default": false,

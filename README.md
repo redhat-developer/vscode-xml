@@ -53,6 +53,7 @@ The following settings are supported:
 * `xml.fileAssociations` : Associate XML Schemas to XML file patterns.
 * `xml.format.splitAttributes` : Set to `true` to split node attributes onto multiple lines during formatting. Defaults to `false`.
 * `xml.format.joinCDATALines` : Set to `true` to join lines in CDATA content during formatting. Defaults to `false`.
+* `xml.format.joinContentLines` : Set to `true` to join lines in node content during formatting. Defaults to `false`.
 * `xml.format.joinCommentLines` : Set to `true` to join lines in comments during formatting. Defaults to `false`.
 * `xml.format.enabled` : Enable/disable formatting.
 * `xml.autoCloseTags.enabled` : Enable/disable automatic tag closing.  
