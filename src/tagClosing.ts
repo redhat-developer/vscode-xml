@@ -6,10 +6,15 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
-import { window, workspace, Disposable, TextDocumentContentChangeEvent, TextDocument, Position, SnippetString } from 'vscode';
+import { window, workspace, Disposable, TextDocumentContentChangeEvent, TextDocument, Position, SnippetString, Range } from 'vscode';
 
-export function activateTagClosing(tagProvider: (document: TextDocument, position: Position) => Thenable<string>, supportedLanguages: { [id: string]: boolean }, configName: string): Disposable {
+export interface AutoCloseResult {
+  snippet: string,
+  range?: Range
+}
 
+export function activateTagClosing(tagProvider: (document: TextDocument, position: Position) => Thenable<AutoCloseResult>, supportedLanguages: { [id: string]: boolean }, configName: string): Disposable {
+	const TRIGGER_CHARACTERS = ['>', '/'];
 	let disposables: Disposable[] = [];
 	workspace.onDidChangeTextDocument(event => onDidChangeTextDocument(event.document, event.contentChanges), null, disposables);
 
@@ -50,25 +55,37 @@ export function activateTagClosing(tagProvider: (document: TextDocument, positio
 		}
 		let lastChange = changes[changes.length - 1];
 		let lastCharacter = lastChange.text[lastChange.text.length - 1];
-		if (lastChange.rangeLength > 0 || lastCharacter !== '>' && lastCharacter !== '/') {
+		if (lastChange.rangeLength > 0 || lastChange.text.length > 1 || lastCharacter in TRIGGER_CHARACTERS) {
 			return;
 		}
 		let rangeStart = lastChange.range.start;
 		let version = document.version;
 		timeout = setTimeout(() => {
 			let position = new Position(rangeStart.line, rangeStart.character + lastChange.text.length);
-			tagProvider(document, position).then(text => {
+			tagProvider(document, position).then(result => {
+				let text = result.snippet;
+				let replaceLocation : Position | Range;
+				let range : Range = result.range;
+				if(range != null) {
+					// re-create Range
+					let line = range.start.line;
+					let character = range.start.character;
+					let startPosition = new Position(line, character);
+					line = range.end.line;
+					character = range.end.character;
+					let endPosition = new Position(line, character);
+					replaceLocation = new Range(startPosition, endPosition);
+				}
+				else {
+					replaceLocation = position;
+				}
 				if (text && isEnabled) {
 					let activeEditor = window.activeTextEditor;
 					if (activeEditor) {
 						let activeDocument = activeEditor.document;
 						if (document === activeDocument && activeDocument.version === version) {
-							let selections = activeEditor.selections;
-							if (selections.length && selections.some(s => s.active.isEqual(position))) {
-								activeEditor.insertSnippet(new SnippetString(text), selections.map(s => s.active));
-							} else {
-								activeEditor.insertSnippet(new SnippetString(text), position);
-							}
+							activeEditor.insertSnippet(new SnippetString(text), replaceLocation);
+							
 						}
 					}
 				}

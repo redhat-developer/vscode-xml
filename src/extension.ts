@@ -11,12 +11,12 @@
  */
 
 import { prepareExecutable } from './javaServerStarter';
-import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams } from 'vscode-languageclient';
+import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, RequestType0 } from 'vscode-languageclient';
 import * as requirements from './requirements';
 import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
-import { activateTagClosing } from './tagClosing';
+import { activateTagClosing, AutoCloseResult } from './tagClosing';
 
 export interface ScopeInfo {
   scope : "default" | "global" | "workspace" | "folder";
@@ -24,7 +24,7 @@ export interface ScopeInfo {
 }
 
 namespace TagCloseRequest {
-  export const type: RequestType<TextDocumentPositionParams, string, any, any> = new RequestType('xml/closeTag');
+  export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any, any> = new RequestType('xml/closeTag');
 }
 
 let ignoreAutoCloseTags = false;
@@ -81,13 +81,14 @@ export function activate(context: ExtensionContext) {
     let disposable = languageClient.start();
     toDispose.push(disposable);
     languageClient.onReady().then(() => {
-      //init
-      let tagRequestor = (document: TextDocument, position: Position) => {
+      //Setup autoCloseTags
+      let tagProvider = (document: TextDocument, position: Position) => {
         let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
-        return languageClient.sendRequest(TagCloseRequest.type, param);
+        let text = languageClient.sendRequest(TagCloseRequest.type, param);
+        return text;
       };
 
-      disposable = activateTagClosing(tagRequestor, { xml: true, xsl: true }, 'xml.completion.autoCloseTags');
+      disposable = activateTagClosing(tagProvider, { xml: true, xsl: true }, 'xml.completion.autoCloseTags');
       toDispose.push(disposable);
     });
     languages.setLanguageConfiguration('xml', getIndentationRules());
