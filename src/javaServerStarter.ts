@@ -1,6 +1,7 @@
 import { workspace } from 'vscode'
 import { Executable, ExecutableOptions } from 'vscode-languageclient';
 import { RequirementsData } from './requirements';
+import * as os from 'os';
 import * as path from 'path';
 const glob = require('glob');
 
@@ -27,6 +28,12 @@ function prepareParams(requirements: RequirementsData): string[] {
     //params.push('-agentlib:jdwp=transport=dt_socket,server=y,address=1054');
   }
   let vmargs = workspace.getConfiguration("xml").get("server.vmargs", '');
+  if (os.platform() == 'win32') {
+    const watchParentProcess = '-DwatchParentProcess=';
+    if (vmargs.indexOf(watchParentProcess) < 0) {
+      params.push(watchParentProcess + 'false');
+    }
+  }
   parseVMargs(params, vmargs);
   let server_home: string = path.resolve(__dirname, '../../server');
   let launchersFound: Array<string> = glob.sync('**/org.eclipse.lsp4xml-uber.jar', { cwd: server_home });
