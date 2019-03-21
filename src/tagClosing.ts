@@ -63,6 +63,9 @@ export function activateTagClosing(tagProvider: (document: TextDocument, positio
 		timeout = setTimeout(() => {
 			let position = new Position(rangeStart.line, rangeStart.character + lastChange.text.length);
 			tagProvider(document, position).then(result => {
+				if (!result) {
+					return;
+				}
 				let text = result.snippet;
 				let replaceLocation : Position | Range;
 				let range : Range = result.range;
