@@ -34,7 +34,13 @@ let ignoreVMArgs = false;
 export function activate(context: ExtensionContext) {
   let storagePath = context.storagePath;
   if (!storagePath) {
-    storagePath = os.homedir() + "/.lsp4xml";
+    let preferencePath : string = workspace.getConfiguration().get('xml.storagePath');
+    if(preferencePath && preferencePath.length > 0) {
+      storagePath = preferencePath;
+    }
+    else {
+      storagePath = os.homedir() + "/.lsp4xml";
+    }
   }
   let logfile = path.resolve(storagePath + '/lsp4xml.log');
 

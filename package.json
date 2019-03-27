@@ -204,6 +204,12 @@
           "default": true,
           "description": "Enable/disable schema based validation. Ignored if \"xml.validation.enabled\": false.",
           "scope": "window"
+        },
+        "xml.storagePath" : {
+          "type": "string",
+          "default": null,
+          "description": "In the case that the default storage path can't be created, it will default to this path. If empty, the path is `~/.lsp4xml`.",
+          "scope": "window"
         }
       }
     },
