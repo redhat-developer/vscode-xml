@@ -180,6 +180,12 @@
           "description": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-noverify -Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector",
           "scope": "window"
         },
+        "xml.server.workDir": {
+          "type": "string",
+          "default": "~/.lsp4xml",
+          "description": "Set a custom folder path for cached XML Schemas. An absolute path is expected, although the ~ prefix (for the user home directory) is supported.",
+          "scope": "window"
+        },
         "xml.validation.noGrammar": {
           "type": "string",
           "enum": [
