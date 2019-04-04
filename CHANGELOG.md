@@ -1,5 +1,35 @@
 # Change Log
 
+## [0.5.0](https://github.com/redhat-developer/vscode-xml/milestone/5?closed=1) (April 05, 2019)
+
+### Enhancements
+
+* More detailed completion for prolog. See [lsp4xml#155](https://github.com/angelozerr/lsp4xml/issues/155).
+* Added completion for xmlns attribute. See [lsp4xml#208](https://github.com/angelozerr/lsp4xml/issues/208).
+* Have value completion for `xmlns:xsi`. See [lsp4xml#326](https://github.com/angelozerr/lsp4xml/issues/326).
+* Disabled ParentProcessWatcher on Windows. See [#116](https://github.com/redhat-developer/vscode-xml/pull/116).
+* Autoclose self-closing tags. See [#113](https://github.com/redhat-developer/vscode-xml/pull/113).
+* Don't autoclose tag if the closing tag already exists. See [#113](https://github.com/redhat-developer/vscode-xml/pull/113).
+* Changing the content of an XML Schema triggers validation. See [lsp4xml#213](https://github.com/angelozerr/lsp4xml/issues/213).
+* Preference `xml.server.workDir` to set schema cache folder. See [lsp4xml#222](https://github.com/angelozerr/lsp4xml/issues/222).
+* Code action to close missing quotes for attributes. See [lsp4xml#137](https://github.com/angelozerr/lsp4xml/issues/137).
+* Hover for attribute value documentation from XSD's. See [lsp4xml#12](https://github.com/angelozerr/lsp4xml/issues/12).
+* Autocompletion for `xsi:nil` values. See [lsp4xml#247](https://github.com/angelozerr/lsp4xml/issues/247).
+
+### Bug Fixes
+
+* `textDocument/publishDiagnostics` failed with message: Illegal argument: line must be non-negative. See [lsp4xml#157](https://github.com/angelozerr/lsp4xml/pull/157).
+* XSI completion item messages were incorrect. See [lsp4xml#296](https://github.com/angelozerr/lsp4xml/issues/296).
+* Removed trailing whitespace from normalized strings on format. See [lsp4xml#300](https://github.com/angelozerr/lsp4xml/pull/300).
+* Formatting an attribute without value loses data. See [lsp4xml#294](https://github.com/angelozerr/lsp4xml/issues/294).
+* Fixed error range of cvc-type.3.1.2. See [lsp4xml#318](https://github.com/angelozerr/lsp4xml/issues/318).
+* Fixed error range of ETagUnterminated. See [lsp4xml#317](https://github.com/angelozerr/lsp4xml/issues/317).
+* Fixed error range of cvc-elt.3.2.1. See [lsp4xml#321](https://github.com/angelozerr/lsp4xml/issues/321).
+* Multiple `'insert required attribute'` code actions shown when multiple attributes are missing. See [lsp4xml#209](https://github.com/angelozerr/lsp4xml/issues/209).
+* Self closing tag causes NPE in `cvc_complex_type_2_1CodeAction.doCodeAction`. See [lsp4xml#339](https://github.com/angelozerr/lsp4xml/issues/339).
+* Formatting removes xml-stylesheet processing instruction attributes. See [#115](https://github.com/redhat-developer/vscode-xml/issues/115).
+* Prevent rejected Promise during tag autoclose call. See [#117](https://github.com/redhat-developer/vscode-xml/issues/117).
+
 ## [0.4.0](https://github.com/redhat-developer/vscode-xml/milestone/4?closed=1) (March 07, 2019)
 
 ### Enhancements
