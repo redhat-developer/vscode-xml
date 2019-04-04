@@ -63,10 +63,11 @@ The following settings are supported:
 * `xml.validation.schema`: Set to `false` to disable schema validation. Defaults to `true`.
 * `xml.validation.noGrammar`: The message severity when a document has no associated grammar. Defaults to `hint`.
 * `xml.format.spaceBeforeEmptyCloseTag`: Set to `true` to insert space before the end of a self closing tag. Defaults to `true`.
-
-Since 0.4.0:
 * `xml.format.quotations`: Set to `doubleQuotes` to format and only use `"`, or `singleQuotes` to format and only use `'`. Defaults to `doubleQuotes`.
 * `xml.format.preserveEmptyContent`: Set to `true` to preserve standalone whitespace content in an element. Defaults to `false`.
+
+Since 0.5.0:
+* `xml.server.workDir`: Set an absolute path for all cached schemas to be stored. Defaults to `~/.lsp4xml`.
 
 More detailed info in the [Wiki](https://github.com/redhat-developer/vscode-xml/wiki/Preferences).
 
