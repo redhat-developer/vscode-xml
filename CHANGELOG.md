@@ -1,5 +1,13 @@
 # Change Log
 
+
+## [0.5.1](https://github.com/redhat-developer/vscode-xml/milestone/6?closed=1) (April 08, 2019)
+
+### Bug Fixes
+
+* Fixed incorrect expansion of the `~` directory on Windows, for `xml.server.workDir`. See [#125](https://github.com/redhat-developer/vscode-xml/issues/125).
+
+
 ## [0.5.0](https://github.com/redhat-developer/vscode-xml/milestone/5?closed=1) (April 05, 2019)
 
 ### Enhancements
