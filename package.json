@@ -124,6 +124,18 @@
           "description": "Preserve empty content/whitespace in a tag.",
           "scope": "window"
         },
+        "xml.format.preservedNewlines": {
+          "type": "integer",
+          "enum": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "default": 2,
+          "description": "Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines.",
+          "scope": "window"
+        },
         "xml.format.enabled": {
           "type": "boolean",
           "default": true,
