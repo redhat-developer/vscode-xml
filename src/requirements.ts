@@ -8,7 +8,7 @@ const pathExists = require('path-exists');
 const expandHomeDir = require('expand-home-dir');
 const findJavaHome = require('find-java-home');
 const isWindows = process.platform.indexOf('win') === 0;
-const JAVAC_FILENAME = 'javac' + (isWindows?'.exe':'');
+const JAVA_FILENAME = 'java' + (isWindows?'.exe':'');
 
 export interface RequirementsData {
     java_home: string;
@@ -54,7 +54,7 @@ function checkJavaRuntime(): Promise<string> {
             if(!pathExists.sync(javaHome)){
                 openJDKDownload(reject, source+' points to a missing folder');
             }
-            if(!pathExists.sync(path.resolve(javaHome, 'bin', JAVAC_FILENAME))){
+            if(!pathExists.sync(path.resolve(javaHome, 'bin', JAVA_FILENAME))){
                 openJDKDownload(reject, source+ ' does not point to a JDK.');
             }
             return resolve(javaHome);
