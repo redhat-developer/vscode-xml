@@ -36,13 +36,14 @@ See the [changelog](CHANGELOG.md) for the latest release. You might also find us
 
 ## Requirements
 
-  * Java JDK 8 or more recent
+  * Java JDK (or JRE) 8 or more recent
   * Ensure Java path is set in either: 
     * `xml.java.home` in VSCode preferences
     * `java.home` in VSCode preferences
     * Environment variable `JAVA_HOME` or `JDK_HOME`  
     * **Note**: The path should end at the parent folder that contains the `bin` folder.  
-      **Example Path**: `/usr/lib/jvm/java-1.8.0` if `bin` exists at `/usr/lib/jvm/java-1.8.0/bin`.
+      **Example Path**: `/usr/lib/jvm/java-1.8.0` if `bin` exists at `/usr/lib/jvm/java-1.8.0/bin`.  
+    * **Note**: If the path is not set, the extension will attempt to find the path to the JDK or JRE.
 
 ## Supported VS Code settings
 
