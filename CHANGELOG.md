@@ -1,5 +1,23 @@
 # Change Log
 
+## [0.6.0](https://github.com/redhat-developer/vscode-xml/milestone/7?closed=1) (May 22, 2019)
+
+### Enhancements
+
+* Attribute completion for both `xsi:schemaLocation` and `xsi:noNamespaceSchemaLocation` are independent of each other. See [#129](https://github.com/redhat-developer/vscode-xml/issues/129).
+* Upgraded to lsp4j version 0.7.1. See [lsp4xml#370](https://github.com/angelozerr/lsp4xml/issues/370).
+* Preference `xml.format.preservedNewLines` to preserve new lines on format. See [#133](https://github.com/redhat-developer/vscode-xml/pull/133).
+
+### Bug Fixes
+
+* Fixed error range for `cvc-complex-type.2.4.f`. See [lsp4xml#368](https://github.com/angelozerr/lsp4xml/issues/368).
+* Fixed error range for `SchemaLocation` warning. See [lsp4xml#343](https://github.com/angelozerr/lsp4xml/issues/343).
+* Fixed error range for `MarkupEntityMismatch`. See [lsp4xml#367](https://github.com/angelozerr/lsp4xml/issues/367).
+* Missing schema would generate too many/redundant warnings. See [lsp4xml#336](https://github.com/angelozerr/lsp4xml/issues/336).
+* Self-closing tag did not remove end tag if tag name contained uppercase characters. See [lsp4xml#354](https://github.com/angelozerr/lsp4xml/issues/354).
+* Placing a `/` in an attribute value triggered autoclosing. See [#126](https://github.com/redhat-developer/vscode-xml/issues/126).
+* Fixed 4 vulnerable npm dependencies. See [#139](https://github.com/redhat-developer/vscode-xml/pull/139).
+
 
 ## [0.5.1](https://github.com/redhat-developer/vscode-xml/milestone/6?closed=1) (April 08, 2019)
 
