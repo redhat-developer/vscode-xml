@@ -212,6 +212,10 @@ function getScopeLevel(configurationKey : string, key : string) : ScopeInfo{
 
 function getIndentationRules(): LanguageConfiguration {
   return {
+    indentationRules: {
+			increaseIndentPattern: /<([-_\.A-Za-z0-9]+)(?=\s|>)\b[^>]*>(?!.*<\/\1>)|<!--(?!.*-->)|\{[^}"']*$/,
+			decreaseIndentPattern: /^\s*(<\/[-_\.A-Za-z0-9]+\b[^>]*>|-->|\})/
+		},
     onEnterRules: [
       {
         beforeText: new RegExp(`<([_:\\w][_:\\w-.\\d]*)([^/>]*(?!/)>)[^<]*$`, 'i'),
