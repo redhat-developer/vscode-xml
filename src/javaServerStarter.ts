@@ -35,7 +35,7 @@ function prepareParams(requirements: RequirementsData): string[] {
     }
   }
   parseVMargs(params, vmargs);
-  let server_home: string = path.resolve(__dirname, '../../server');
+  let server_home: string = path.resolve(__dirname, '../server');
   let launchersFound: Array<string> = glob.sync('**/org.eclipse.lsp4xml-uber.jar', { cwd: server_home });
   if (launchersFound.length) {
     params.push('-jar'); params.push(path.resolve(server_home, launchersFound[0]));
