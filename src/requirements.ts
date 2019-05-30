@@ -29,51 +29,76 @@ interface ErrorData {
  *
  */
 export async function resolveRequirements(): Promise<RequirementsData> {
-    let java_home = await checkJavaRuntime();
-    let javaVersion = await checkJavaVersion(java_home);
-    return Promise.resolve({ 'java_home': java_home, 'java_version': javaVersion});
+    const javaHome = await checkJavaRuntime();
+    const javaVersion = await checkJavaVersion(javaHome);
+    return Promise.resolve({ 'java_home': javaHome, 'java_version': javaVersion});
 }
 
 function checkJavaRuntime(): Promise<string> {
     return new Promise((resolve, reject) => {
-        let source : string;
-        let javaHome : string = readJavaConfig();
-        if (javaHome) {
-            source = 'The java.home variable defined in VS Code settings';
-        } else {
-            javaHome = process.env['JDK_HOME'];
-            if (javaHome) {
-                source = 'The JDK_HOME environment variable';
-            } else {
-                javaHome = process.env['JAVA_HOME'];
-                source = 'The JAVA_HOME environment variable';
-            }
-        }
-        if(javaHome ){
-            javaHome = expandHomeDir(javaHome);
-            if(!pathExists.sync(javaHome)){
-                openJDKDownload(reject, source+' points to a missing folder');
-            }
-            if(!pathExists.sync(path.resolve(javaHome, 'bin', JAVAC_FILENAME))){
-                openJDKDownload(reject, source+ ' does not point to a JDK.');
-            }
-            return resolve(javaHome);
-        }
+        
+        checkXMLJavaHome(resolve, reject);
+        checkJavaHome(resolve, reject);
+        checkEnvVariable('JDK_HOME', resolve, reject);
+        checkEnvVariable('JAVA_HOME', resolve, reject);
+
         //No settings, let's try to detect as last resort.
         findJavaHome(function (err, home) {
-                if (err){
-                    openJDKDownload(reject,'Java runtime could not be located');
-                }
-                else {
-                    resolve(home);
-                }
-            });
+            if (err){
+                openJDKDownload(reject, 'Java runtime could not be located.');
+            }
+            else {
+                resolve(home);
+            }
+        });
     });
 }
 
-function readJavaConfig() : string {
+function checkXMLJavaHome(resolve, reject) {
+    const javaHome = readXMLJavaHomeConfig();
+    if (!javaHome) {
+        return;
+    }
+    const source = 'The xml.java.home variable defined in VS Code settings';
+    handleJavaPath(javaHome, source, resolve, reject);
+}
+
+function checkJavaHome(resolve, reject) {
+    const javaHome = readJavaHomeConfig();
+    if (!javaHome) {
+        return;
+    }
+    const source = 'The java.home variable defined in VS Code settings';
+    handleJavaPath(javaHome, source, resolve, reject);
+}
+
+function checkEnvVariable(name : string, resolve, reject) {
+    if (!process.env[name]) {
+        return;
+    } 
+    const source = `The ${name} environment variable`;
+    handleJavaPath(process.env[name], source, resolve, reject);
+}
+
+function readXMLJavaHomeConfig() : string {
+    return workspace.getConfiguration('xml').java.home;
+}
+
+function readJavaHomeConfig() : string {
     const config = workspace.getConfiguration();
     return config.get<string>('java.home',null);
+}
+
+function handleJavaPath(javaHome : string, source : string, resolve, reject) {
+    const javaHomeExpanded = expandHomeDir(javaHome);
+
+    if (!pathExists.sync(javaHomeExpanded)) {
+        openJDKDownload(reject, source + ' points to a missing folder.');
+    }
+    if (!pathExists.sync(path.resolve(javaHomeExpanded, 'bin', JAVAC_FILENAME))) {
+        openJDKDownload(reject, source + ' does not point to a JDK.');
+    }
+    return resolve(javaHomeExpanded);
 }
  
 function checkJavaVersion(java_home: string): Promise<number> {
@@ -112,7 +137,7 @@ export function parseMajorVersion(content:string):number {
     return javaVersion;
 }
 
-function openJDKDownload(reject, cause) {
+function openJDKDownload(reject, cause : string) {
     let jdkUrl = 'https://developers.redhat.com/products/openjdk/download/?sc_cid=701f2000000RWTnAAO';
     if (process.platform === 'darwin') {
         jdkUrl = 'http://www.oracle.com/technetwork/java/javase/downloads/index.html';

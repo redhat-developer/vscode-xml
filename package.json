@@ -188,6 +188,15 @@
           "description": "Enable/disable autoclosing of XML tags. \n\nIMPORTANT: Turn off editor.autoClosingTags for this to work",
           "scope": "window"
         },
+        "xml.java.home": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server.\nOn Windows, backslashes must be escaped, i.e.\n\"xml.java.home\": \"C:\\\\Program Files\\\\Java\\\\jdk1.8.0_161\"",
+          "scope": "window"
+        },
         "xml.server.vmargs": {
           "type": [
             "string",

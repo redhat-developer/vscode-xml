@@ -4,7 +4,7 @@
 
 ## Description
 
-This VS Code extension provides support for creating and editing XML documents, based on the [LSP4XML language server](https://github.com/angelozerr/lsp4xml), running with Java.
+This VS Code extension provides support for creating and editing XML documents, based on the [LSP4XML Language Server](https://github.com/angelozerr/lsp4xml), running with Java.
 
 ![Basic features](https://user-images.githubusercontent.com/148698/45977901-df208a80-c018-11e8-85ec-71c70ba8a5ca.gif)
 
@@ -38,6 +38,7 @@ See the [changelog](CHANGELOG.md) for the latest release. You might also find us
 
   * Java JDK 8 or more recent
   * Ensure Java path is set in either: 
+    * `xml.java.home` in VSCode preferences
     * `java.home` in VSCode preferences
     * Environment variable `JAVA_HOME` or `JDK_HOME`  
     * **Note**: The path should end at the parent folder that contains the `bin` folder.  
@@ -46,8 +47,8 @@ See the [changelog](CHANGELOG.md) for the latest release. You might also find us
 ## Supported VS Code settings
 
 The following settings are supported:
-
-* `xml.trace.server` : Trace the communication between VS Code and the XML language server in the Output view.
+  
+* `xml.trace.server` : Trace the communication between VS Code and the XML Language Server in the Output view.
 * `xml.catalogs` : Register XML catalog files.
 * `xml.logs.client` : Enable/disable logging to the Output view.
 * `xml.fileAssociations` : Associate XML Schemas to XML file patterns.
@@ -55,6 +56,10 @@ The following settings are supported:
 * `xml.format.joinCDATALines` : Set to `true` to join lines in CDATA content during formatting. Defaults to `false`.
 * `xml.format.joinContentLines` : Set to `true` to join lines in node content during formatting. Defaults to `false`.
 * `xml.format.joinCommentLines` : Set to `true` to join lines in comments during formatting. Defaults to `false`.
+* `xml.format.preservedNewLines`: Set the maximum amount of newlines between elements. Defaults to `2`.
+* `xml.format.preserveEmptyContent`: Set to `true` to preserve standalone whitespace content in an element. Defaults to `false`.
+* `xml.format.spaceBeforeEmptyCloseTag`: Set to `true` to insert space before the end of a self closing tag. Defaults to `true`.
+* `xml.format.quotations`: Set to `doubleQuotes` to format and only use `"`, or `singleQuotes` to format and only use `'`. Defaults to `doubleQuotes`.
 * `xml.format.enabled` : Enable/disable formatting.
 * `xml.autoCloseTags.enabled` : Enable/disable automatic tag closing.  
   **Note** 'editor.autoClosingBrackets' must be turned off to work.  
@@ -62,13 +67,10 @@ The following settings are supported:
 * `xml.validation.enabled`: Set to `false` to disable all validation. Defaults to `true`.
 * `xml.validation.schema`: Set to `false` to disable schema validation. Defaults to `true`.
 * `xml.validation.noGrammar`: The message severity when a document has no associated grammar. Defaults to `hint`.
-* `xml.format.spaceBeforeEmptyCloseTag`: Set to `true` to insert space before the end of a self closing tag. Defaults to `true`.
-* `xml.format.quotations`: Set to `doubleQuotes` to format and only use `"`, or `singleQuotes` to format and only use `'`. Defaults to `doubleQuotes`.
-* `xml.format.preserveEmptyContent`: Set to `true` to preserve standalone whitespace content in an element. Defaults to `false`.
 * `xml.server.workDir`: Set an absolute path for all cached schemas to be stored. Defaults to `~/.lsp4xml`.
   
-Since 0.6.0:
-* `xml.format.preservedNewLines`: Set the maximum amount of newlines between elements. Defaults to `2`.
+Since 0.7.0:
+* `xml.java.home`: Set the Java path required to run the XML Language Server. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
 
 More detailed info in the [Wiki](https://github.com/redhat-developer/vscode-xml/wiki/Preferences).
 
