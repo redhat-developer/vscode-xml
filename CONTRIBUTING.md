@@ -9,6 +9,7 @@ Contributions are essential for keeping this extension great. We try to keep it 
   * latest [Visual Studio Code](https://code.visualstudio.com/)
   * [Node.js](https://nodejs.org/) v4.0.0 or higher
   * [JDK 8+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+  * [Maven](https://maven.apache.org/)
 
 ### Steps
 1. Fork and clone this repository
@@ -24,21 +25,28 @@ Contributions are essential for keeping this extension great. We try to keep it 
               ├──── vscode-xml/
   ```
 
-3. `cd vscode-xml/`
-   
-4. Install the dependencies:
+3. `cd lsp4xml/`
 
-	```bash
+4. Install the maven dependencies:
+	```bash  
+	$ mvn install
+	```
+       
+
+5. `cd vscode-xml/`
+   
+6. Install the dependencies:  
+	```bash  
 	$ npm install
 	```
 
-5. In `vscode-xml/`, build the server by running:
+7. In `vscode-xml/`, build the server by running:
 
-	```bash
+	```bash   
 	$ npm run build-server
 	```
 
-6. To run the extension, open the Debugging tab in VSCode.
-7. Select and run 'Launch Extension (vscode-xml)' at the top left:
+8. To run the extension, open the Debugging tab in VSCode.
+9. Select and run 'Launch Extension (vscode-xml)' at the top left:
 
     ![ Launch Extension ](./images/LaunchExtension.png)
