@@ -71,6 +71,8 @@ The following settings are supported:
   
 Since 0.7.0:
 * `xml.java.home`: Set the Java path required to run the XML Language Server. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
+* `xml.symbols.enabled`: Enable/disable document symbols (Outline). Default is `true`.
+
 
 More detailed info in the [Wiki](https://github.com/redhat-developer/vscode-xml/wiki/Preferences).
 
