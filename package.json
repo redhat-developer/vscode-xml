@@ -236,6 +236,12 @@
           "default": true,
           "description": "Enable/disable schema based validation. Ignored if \"xml.validation.enabled\": false.",
           "scope": "window"
+        },
+        "xml.symbols.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable document symbols (Outline). No symbols are given if `\"xml.symbol.enabled\": false`.",
+          "scope": "window"
         }
       }
     },
