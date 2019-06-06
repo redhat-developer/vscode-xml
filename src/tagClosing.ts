@@ -45,8 +45,6 @@ export function activateTagClosing(tagProvider: (document: TextDocument, positio
 			return;
 		}
 		let activeDocument = window.activeTextEditor && window.activeTextEditor.document;
-		let a = document !== activeDocument;
-		let b = changes.length === 0;
 		if (document !== activeDocument || changes.length === 0) {
 			return;
 		}
@@ -55,7 +53,7 @@ export function activateTagClosing(tagProvider: (document: TextDocument, positio
 		}
 		let lastChange = changes[changes.length - 1];
 		let lastCharacter = lastChange.text[lastChange.text.length - 1];
-		if (lastChange.rangeLength > 0 || lastChange.text.length > 1 || lastCharacter in TRIGGER_CHARACTERS) {
+		if (lastChange.rangeLength > 0 || lastChange.text.length > 1 || TRIGGER_CHARACTERS.indexOf(lastCharacter) < 0) {
 			return;
 		}
 		let rangeStart = lastChange.range.start;
