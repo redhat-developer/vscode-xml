@@ -1,5 +1,36 @@
 # Change Log
 
+## [0.7.0](https://github.com/redhat-developer/vscode-xml/milestone/8?closed=1) (June 11, 2019)
+
+### Enhancements
+
+* Display Java runtime used to launch the server. See [lsp4xml#415](https://github.com/angelozerr/lsp4xml/pull/415).
+* Preference, `xml.symbols.enabled`, to enable/disable Document Symbols. See [#151](https://github.com/redhat-developer/vscode-xml/pull/151).
+* Preference, `xml.java.home`, to set the Java path. See [#145](https://github.com/redhat-developer/vscode-xml/issues/145).
+* File completion in attribute value. See [lsp4xml#345](https://github.com/angelozerr/lsp4xml/issues/345).
+* Support for JRE's. See [#152](https://github.com/redhat-developer/vscode-xml/pull/152).
+* Validation for an XML Schema. See [lsp4xml#190](https://github.com/angelozerr/lsp4xml/issues/190).
+* Ability for XML Prolog completion in DTD files. See [lsp4xml#267](https://github.com/angelozerr/lsp4xml/issues/267).
+* Ability to rename a namespace/namespace renaming improvements. See [lsp4xml#366](https://github.com/angelozerr/lsp4xml/issues/366).
+* Startup time for SVG DTD file completion was too slow. See [lsp4xml#397](https://github.com/angelozerr/lsp4xml/issues/397).
+* Mark element source coming from XML Schema/DTD for completion. See [lsp4xml#210](https://github.com/angelozerr/lsp4xml/issues/210).
+* Added Webpack support. See [#122](https://github.com/redhat-developer/vscode-xml/issues/122).
+
+### Bug Fixes
+
+* `XSDValidator` aggressively logs validation error stacktrace. See [lsp4xml#416](https://github.com/angelozerr/lsp4xml/issues/416).
+* Ignore `XMLParserException` to fix #416. See [lsp4xml#417](https://github.com/angelozerr/lsp4xml/pull/417).
+* Memory usage improvements. See [lsp4xml#389](https://github.com/angelozerr/lsp4xml/issues/389).
+* Fix completion source crash on Windows OS. See [lsp4xml#408](https://github.com/angelozerr/lsp4xml/pull/408).
+* Fix error range for `ETagRequired`. See [lsp4xml#387](https://github.com/angelozerr/lsp4xml/issues/387).
+* Fix error range for `cos-all-limited.2`. See [lsp4xml#407](https://github.com/angelozerr/lsp4xml/issues/407).
+* Fix `normalizePath` test for Windows OS. See [lsp4xml#399](https://github.com/angelozerr/lsp4xml/pull/399).
+* Document Symbols only returns the 1st `ATTLIST` value. See [lsp4xml#265](https://github.com/angelozerr/lsp4xml/issues/265).
+* Completion in SVG DTD file proposed duplicate completions. See [#141](https://github.com/redhat-developer/vscode-xml/issues/141).
+* Indentation wasn't working properly on a certain case. See [#137](https://github.com/redhat-developer/vscode-xml/issues/137).
+* Fix excessive autoclose calls. See [#153](https://github.com/redhat-developer/vscode-xml/pull/153).
+* Fixed formatting range issues. See [#76](https://github.com/angelozerr/lsp4xml/issues/76).
+
 ## [0.6.0](https://github.com/redhat-developer/vscode-xml/milestone/7?closed=1) (May 22, 2019)
 
 ### Enhancements
