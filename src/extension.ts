@@ -52,7 +52,9 @@ export function activate(context: ExtensionContext) {
       // Register the server for xml and xsl
       documentSelector: [
         { scheme: 'file', language: 'xml' },
-        { scheme: 'file', language: 'xsl' }
+        { scheme: 'file', language: 'xsl' },
+        { scheme: 'untitled', language: 'xml' },
+        { scheme: 'untitled', language: 'xsl' }
       ],
       revealOutputChannelOn: RevealOutputChannelOn.Never,
       //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
