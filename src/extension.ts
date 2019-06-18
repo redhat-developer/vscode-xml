@@ -18,6 +18,7 @@ import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
 import { Commands } from './commands';
+import { onConfigurationChange, subscribeJDKChangeConfiguration } from './settings';
 
 export interface ScopeInfo {
   scope : "default" | "global" | "workspace" | "folder";
@@ -28,9 +29,7 @@ namespace TagCloseRequest {
   export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any, any> = new RequestType('xml/closeTag');
 }
 
-let ignoreAutoCloseTags = false;
-let vmArgsCache;
-let ignoreVMArgs = false;
+
 
 export function activate(context: ExtensionContext) {
   let storagePath = context.storagePath;
@@ -79,12 +78,8 @@ export function activate(context: ExtensionContext) {
         workspace: {
           didChangeConfiguration: () => {
             languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings() });
-            if(!ignoreAutoCloseTags) {
-              verifyAutoClosing();
-            }
-            !ignoreVMArgs ? verifyVMArgs(): undefined;
+            onConfigurationChange();
           }
-
         }
       }
     }
@@ -95,6 +90,9 @@ export function activate(context: ExtensionContext) {
     let disposable = languageClient.start();
     toDispose.push(disposable);
     languageClient.onReady().then(() => {
+      //Detect JDK configuration changes
+      disposable = subscribeJDKChangeConfiguration();
+      toDispose.push(disposable);
 
       // Code Lens actions
       context.subscriptions.push(commands.registerCommand(Commands.SHOW_REFERENCES, (uriString: string, position: Position) => {
@@ -161,80 +159,6 @@ export function activate(context: ExtensionContext) {
     xml['xml']['useCache'] = true;
     return xml;
   }
-}
-
-function verifyAutoClosing() {
-  let configXML = workspace.getConfiguration();
-  let closeTags = configXML.get("xml.completion.autoCloseTags");
-  let closeBrackets = configXML.get("[xml]")["editor.autoClosingBrackets"];
-  if (closeTags && closeBrackets != "never") {
-    window.showWarningMessage(
-      "The [xml].editor.autoClosingBrackets setting conflicts with xml.completion.autoCloseTags. It's recommended to disable it.",
-      "Disable",
-      "Ignore").then((selection) => {
-        if (selection == "Disable") {
-          let scopeInfo : ScopeInfo = getScopeLevel("", "[xml]");
-          workspace.getConfiguration().update("[xml]", { "editor.autoClosingBrackets": "never" }, scopeInfo.configurationTarget).then(
-            () => console.log('[xml].editor.autoClosingBrackets globally set to never'),
-            (error) => console.log(error)
-          );
-        }
-        else if(selection == "Ignore") {
-          ignoreAutoCloseTags = true;
-        }
-      });
-  }
-}
-
-function verifyVMArgs() {
-  let currentVMArgs = workspace.getConfiguration("xml.server").get("vmargs");
-  if(vmArgsCache != undefined) {
-    if(vmArgsCache != currentVMArgs) {
-      window.showWarningMessage(
-        "XML Language Server configuration changed, please restart VS Code.",
-        "Restart",
-        "Ignore").then((selection) => {
-          if (selection == "Restart") {
-            commands.executeCommand("workbench.action.reloadWindow");
-          }
-          else if(selection == "Ignore") {
-            ignoreVMArgs = true;
-          }
-        });
-    }
-  }
-  else {
-    vmArgsCache = currentVMArgs;
-  }
-}
-
-function getScopeLevel(configurationKey : string, key : string) : ScopeInfo{
-  let configXML = workspace.getConfiguration(configurationKey);
-  let result = configXML.inspect(key);
-  let scope, configurationTarget;
-  if(result.workspaceFolderValue == undefined) {
-    if(result.workspaceValue == undefined) {
-      if(result.globalValue == undefined) {
-        scope = "default"
-        configurationTarget = true;
-      }
-      else {
-        scope = "global";
-        configurationTarget = true;
-      }
-    }
-    else {
-      scope = "workspace";
-      configurationTarget = false;
-    }
-  }
-  else {
-    scope = "folder";
-    configurationTarget = undefined;
-  }
-  let scopeInfo : ScopeInfo = {"scope": scope, "configurationTarget": configurationTarget};
-  return scopeInfo;
-  
 }
 
 function getIndentationRules(): LanguageConfiguration {
