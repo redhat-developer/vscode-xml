@@ -64,15 +64,16 @@ The following settings are supported:
 * `xml.format.enabled` : Enable/disable formatting.
 * `xml.autoCloseTags.enabled` : Enable/disable automatic tag closing.  
   **Note** 'editor.autoClosingBrackets' must be turned off to work.  
+* `xml.java.home`: Set the Java path required to run the XML Language Server. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
 * `xml.server.vmargs`: Extra VM arguments used to launch the XML Language Server. Requires VS Code restart.  
+* `xml.symbols.enabled`: Enable/disable document symbols (Outline). Default is `true`.
 * `xml.validation.enabled`: Set to `false` to disable all validation. Defaults to `true`.
 * `xml.validation.schema`: Set to `false` to disable schema validation. Defaults to `true`.
 * `xml.validation.noGrammar`: The message severity when a document has no associated grammar. Defaults to `hint`.
 * `xml.server.workDir`: Set an absolute path for all cached schemas to be stored. Defaults to `~/.lsp4xml`.
   
-Since 0.7.0:
-* `xml.java.home`: Set the Java path required to run the XML Language Server. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
-* `xml.symbols.enabled`: Enable/disable document symbols (Outline). Default is `true`.
+Since 0.8.0:
+* `xml.codeLens.enabled`: Enable/disable XML CodeLens. Default is `false`.
 
 
 More detailed info in the [Wiki](https://github.com/redhat-developer/vscode-xml/wiki/Preferences).

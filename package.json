@@ -188,6 +188,11 @@
           "description": "Enable/disable autoclosing of XML tags. \n\nIMPORTANT: Turn off editor.autoClosingTags for this to work",
           "scope": "window"
         },
+        "xml.codeLens.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable/disable XML CodeLens"
+        },
         "xml.java.home": {
           "type": [
             "string",
