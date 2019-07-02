@@ -74,7 +74,7 @@ The following settings are supported:
   
 Since 0.8.0:
 * `xml.codeLens.enabled`: Enable/disable XML CodeLens. Default is `false`.
-
+* `xml.symbols.excluded`: Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.
 
 More detailed info in the [Wiki](https://github.com/redhat-developer/vscode-xml/wiki/Preferences).
 
