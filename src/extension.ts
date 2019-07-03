@@ -11,12 +11,13 @@
  */
 
 import { prepareExecutable } from './javaServerStarter';
-import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, RequestType0 } from 'vscode-languageclient';
+import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration } from "vscode";
+import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
+import { Commands } from './commands';
 
 export interface ScopeInfo {
   scope : "default" | "global" | "workspace" | "folder";
@@ -58,7 +59,18 @@ export function activate(context: ExtensionContext) {
       ],
       revealOutputChannelOn: RevealOutputChannelOn.Never,
       //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
-      initializationOptions: {"settings": getXMLSettings()}, 
+      initializationOptions: {
+        settings: getXMLSettings(),
+        extendedClientCapabilities: {
+          codeLens: {
+            codeLensKind: {
+              valueSet: [
+                'references'
+              ]
+            }
+          }
+        }
+      }, 
       synchronize: {
         //preferences starting with these will trigger didChangeConfiguration
         configurationSection: ['xml', '[xml]']
@@ -83,6 +95,19 @@ export function activate(context: ExtensionContext) {
     let disposable = languageClient.start();
     toDispose.push(disposable);
     languageClient.onReady().then(() => {
+
+      // Code Lens actions
+      context.subscriptions.push(commands.registerCommand(Commands.SHOW_REFERENCES, (uriString: string, position: Position) => {
+        const uri = Uri.parse(uriString);
+        workspace.openTextDocument(uri).then(document => {
+          // Consume references service from the XML Language Server
+          let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
+          languageClient.sendRequest(ReferencesRequest.type, param).then(locations => {
+            commands.executeCommand(Commands.EDITOR_SHOW_REFERENCES, uri, languageClient.protocol2CodeConverter.asPosition(position), locations.map(languageClient.protocol2CodeConverter.asLocation));
+          })
+        })
+      }));
+
       //Setup autoCloseTags
       let tagProvider = (document: TextDocument, position: Position) => {
         let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
@@ -90,7 +115,7 @@ export function activate(context: ExtensionContext) {
         return text;
       };
 
-      disposable = activateTagClosing(tagProvider, { xml: true, xsl: true }, 'xml.completion.autoCloseTags');
+      disposable = activateTagClosing(tagProvider, { xml: true, xsl: true }, Commands.AUTO_CLOSE_TAGS);
       toDispose.push(disposable);
     });
     languages.setLanguageConfiguration('xml', getIndentationRules());
