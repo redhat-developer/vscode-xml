@@ -12,7 +12,8 @@
   "keywords": [
     "xml",
     "xsl",
-    "xsd"
+    "xsd",
+    "dtd"
   ],
   "engines": {
     "vscode": "^1.27.0"
@@ -263,6 +264,15 @@
       "[xml]": {
         "editor.autoClosingBrackets": "never"
       }
-    }
+    },
+    "languages": [
+      {
+        "id": "xml",
+        "extensions": [
+          ".ent",
+          ".mod"
+        ]
+      }
+    ]
   }
 }
