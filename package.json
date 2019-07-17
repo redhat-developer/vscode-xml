@@ -243,6 +243,17 @@
           "description": "Enable/disable schema based validation. Ignored if \"xml.validation.enabled\": false.",
           "scope": "window"
         },
+        "xml.validation.schemaVersion": {
+          "type": "string",
+          "enum": [
+            "1.0",
+            "1.1",
+            "1.0EX"
+          ],
+          "default": "1.0",
+          "description": "The XML Schema version to use.",
+          "scope": "window"
+        },        
         "xml.symbols.enabled": {
           "type": "boolean",
           "default": true,
