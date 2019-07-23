@@ -1,5 +1,67 @@
 # Change Log
 
+## [0.8.0](https://github.com/redhat-developer/vscode-xml/milestone/9?closed=1) (July 23, 2019)
+
+### Enhancements
+
+ * `Markdown` support for `completion` and `hover` documentation. See [#32](https://github.com/redhat-developer/vscode-xml/issues/32)
+ * Add completion for `comment` and `#region`. See [lsp4xml#54](https://github.com/angelozerr/lsp4xml/issues/54)
+ * Add completion for `CDATA` block. See [#168](https://github.com/redhat-developer/vscode-xml/issues/168)
+ * Find definition for start/end tag element. See [lsp4xml#535](https://github.com/angelozerr/lsp4xml/issues/535)
+ * Show `relevant XML` completion options based on XML Schema. See [lsp4xm#347](https://github.com/angelozerr/lsp4xml/issues/347) 
+ * Improve `XSD source` information for XML completion. See [lsp4xm#529](https://github.com/angelozerr/lsp4xml/issues/529)
+ * Add support for `textDocument/documentHighlight` for XML Schema types. See [lsp4xm#470](https://github.com/angelozerr/lsp4xml/issues/470)
+ * Add support for `textDocument/completion` for xs:element/@name / xs:extension/@base. See [lsp4xm#451](https://github.com/angelozerr/lsp4xml/issues/451)
+ * Add support for selective outline enablement per file. See [lsp4xm#427](https://github.com/angelozerr/lsp4xml/issues/427)
+ * Parse `.ent` and `.mod` files as DTD files. See [lsp4xm#380](https://github.com/angelozerr/lsp4xml/issues/380)
+ * Add support for `textDocument/typeDefinition` from XML to XMLSchema/DTD. See [lsp4xm#371](https://github.com/angelozerr/lsp4xml/issues/371)
+ * Add support for `textDocument/definition` for XML Schema. See [lsp4xm#148](https://github.com/angelozerr/lsp4xml/issues/148)
+ * Add support for `textDocument/references` for XML Schema types. See [lsp4xm#58](https://github.com/angelozerr/lsp4xml/issues/58)
+ * Add support for `textDocument/codelens` for XML Schema types. See [lsp4xm#55](https://github.com/angelozerr/lsp4xml/issues/55)
+ * Add support for clickable`XSD CodeLens`. See [lsp4xm#490](https://github.com/angelozerr/lsp4xml/issues/490)
+ * Active editor cannot provide outline information. See [#166](https://github.com/redhat-developer/vscode-xml/issues/166)
+ * Add XML support for unsaved XML, XSD and XSL files. See [#156](https://github.com/redhat-developer/vscode-xml/issues/156) 
+ * Trigger `textDocument/didSave` if an XSD file was changed externally from a different editor. See [#132](https://github.com/redhat-developer/vscode-xml/issues/132)
+ * Improved XML validation when XSD files are saved. See [lsp4xm#506](https://github.com/angelozerr/lsp4xml/issues/506)
+
+### Bug Fixes
+
+ * Hover markup response ignored the hover client capability. See [lsp4xm#525](https://github.com/angelozerr/lsp4xml/issues/525)
+ * Completion capability was lost in specific scenarios. See [lsp4xm#522](https://github.com/angelozerr/lsp4xml/issues/522)
+ * Fixed NPE in  `textDocument/definition` in XSD files. See [lsp4xm#488](https://github.com/angelozerr/lsp4xml/issues/488)
+ * Fix test with markdown on Windows OS. See [lsp4xm#487](https://github.com/angelozerr/lsp4xml/issues/487)
+ * Fixed case sensitivity problems for element and attribute names. See [lsp4xm#433](https://github.com/angelozerr/lsp4xml/issues/433)
+ * Selection formatting ignores attribute indentation preference. See [lsp4xm#429](https://github.com/angelozerr/lsp4xml/issues/429) 
+ * Fixed error range for `src-import.1.2`. See [lsp4xm#499](https://github.com/angelozerr/lsp4xml/issues/499)
+ * Fixed error range for `s4s-elt-invalid-content.3`. See [lsp4xm#496](https://github.com/angelozerr/lsp4xml/issues/496)
+ * Fixed error range for `EntityNotDeclared`. See [lsp4xm#518](https://github.com/angelozerr/lsp4xml/issues/518)
+ * Fixed error range for `cvc-pattern-valid`. See [lsp4xm#477](https://github.com/angelozerr/lsp4xml/issues/477)
+ * Fixed error range for `AttributePrefixUnbound`. See [lsp4xm#476](https://github.com/angelozerr/lsp4xml/issues/476)
+ * Fixed error range for `EmptyTargetNamespace`. See [lsp4xm#472](https://github.com/angelozerr/lsp4xml/issues/472)
+ * Fixed error range for `ct-props-correct.3`. See [lsp4xm#467](https://github.com/angelozerr/lsp4xml/issues/467)
+ * Fixed error range for `sch-props-correct.2`. See [lsp4xm#462](https://github.com/angelozerr/lsp4xml/issues/462)
+ * Fixed error range for `s4s-elt-must-match.2`. See [lsp4xm#458](https://github.com/angelozerr/lsp4xml/issues/458)
+ * Fixed error range for `ct-props-correct.3`. See [lsp4xm#455](https://github.com/angelozerr/lsp4xml/issues/455)
+ * Fixed error range for `src-ct.1`. See [lsp4xm#453](https://github.com/angelozerr/lsp4xml/issues/453)
+ * Fixed error range for `duplicate attribute`. See [lsp4xm#452](https://github.com/angelozerr/lsp4xml/issues/452)
+ * Fixed error range for `p-props-correct.2.1`. See [lsp4xm#436](https://github.com/angelozerr/lsp4xml/issues/436)
+ * Fixed error range for `cos-all-limited.2`. See [lsp4xm#428](https://github.com/angelozerr/lsp4xml/issues/428)
+ * Fixed error range for `src-element.3`. See [lsp4xm#420](https://github.com/angelozerr/lsp4xml/issues/420)
+ * Documents with an Internal Subset DOCTYPE had stopped trying to bind. See [lsp4xm#379](https://github.com/angelozerr/lsp4xml/issues/379)
+ * XML did not validate when bounded DTD file was not found. See [#167](https://github.com/redhat-developer/vscode-xml/issues/167)
+ * Unexpected indentation after empty element and attribute. See [#159](https://github.com/redhat-developer/vscode-xml/issues/159)
+ * Formatter inserts spaces in empty lines. See [lsp4xm#157](https://github.com/redhat-developer/vscode-xml/issues/157)
+ * Plugin is not recognized as a XML formatter. See [#154](https://github.com/redhat-developer/vscode-xml/issues/154)
+ * Fixed discrepancy in completion between prefixed and default namespaces. See [#87](https://github.com/redhat-developer/vscode-xml/issues/87)
+
+### Performance
+
+ * Improve XML Scanner performance. See [lsp4xm#444](https://github.com/angelozerr/lsp4xml/issues/444)
+ * Use CompletableFuture to load DOMDocument. See [lsp4xm#439](https://github.com/angelozerr/lsp4xml/issues/439)
+ * Feedback from memory. See [lsp4xm#438](https://github.com/angelozerr/lsp4xml/issues/438)
+ * Improve performance of TextDocument update (in async) with TreeLineTracker. See [lsp4xm#426](https://github.com/angelozerr/lsp4xml/issues/426)
+ * Test Large Files for Performance. See [lsp4xm#48](https://github.com/angelozerr/lsp4xml/issues/48)
+
 ## [0.7.0](https://github.com/redhat-developer/vscode-xml/milestone/8?closed=1) (June 11, 2019)
 
 ### Enhancements
