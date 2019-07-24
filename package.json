@@ -2,7 +2,7 @@
   "name": "vscode-xml",
   "displayName": "XML",
   "description": "XML Language Support by Red Hat",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "author": "Red Hat",
   "publisher": "redhat",
   "icon": "icons/icon128.png",
@@ -257,7 +257,7 @@
           },
           "description": "Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.\n\nExample:\n[\n \"**/*LargeFile.xml\"\n]",
           "scope": "window"
-        }        
+        }
       }
     },
     "configurationDefaults": {
