@@ -29,7 +29,11 @@ Contributions are essential for keeping this extension great. We try to keep it 
 
 4. Install the maven dependencies:
 	```bash  
-	$ mvn install
+	$ ./mvnw verify
+	```
+	or
+	```bash  
+	$ mvnw.cmd verify
 	```
        
 
