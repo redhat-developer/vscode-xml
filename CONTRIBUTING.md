@@ -27,12 +27,12 @@ Contributions are essential for keeping this extension great. We try to keep it 
 
 3. `cd lsp4xml/`
 
-4. Install the maven dependencies:
-	```bash  
+4. Install the maven dependencies Mac/Linux:
+	```bash
 	$ ./mvnw verify
 	```
-	or
-	```bash  
+	or for Windows:
+	```bash
 	$ mvnw.cmd verify
 	```
        
