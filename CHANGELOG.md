@@ -1,5 +1,25 @@
 # Change Log
 
+## [0.9.0](https://github.com/redhat-developer/vscode-xml/milestone/10?closed=1) (September 10, 2019)
+
+### Enhancements
+
+ * Add support for `textDocument/documentHighlight` for DTD. See [lsp4xml#545](https://github.com/angelozerr/lsp4xml/issues/545)
+ * Ability to `rename` a `complexType/@name` inside XML Schema. See [lsp4xml#454](https://github.com/angelozerr/lsp4xml/issues/454)
+ * Add support for `textDocument/codeLens` for XML DTD. See [lsp4xml#252](https://github.com/angelozerr/lsp4xml/issues/252)
+ * Add support for `textDocument/references` for DTD. See [lsp4xml#234](https://github.com/angelozerr/lsp4xml/issues/234)
+ * Add support for `textDocument/definition` for DTD. See [lsp4xml#233](https://github.com/angelozerr/lsp4xml/issues/233)
+ * `JDK changes` (xml.java.home or java.home) should be detected. See [#150](https://github.com/redhat-developer/vscode-xml/issues/150)
+
+### Bug Fixes
+
+ * Fix error range for `cvc-datatype-valid-1-2-1`. See [lsp4xml#323](https://github.com/angelozerr/lsp4xml/issues/323)
+ * Support completion with `xs:any`. See [#177](https://github.com/redhat-developer/vscode-xml/issues/177)
+ * Cache completion based on XML Schema/DTD. See [#172](https://github.com/redhat-developer/vscode-xml/issues/172)
+ * Fixes issue with error messages not showing. See [lsp4xml#557](https://github.com/angelozerr/lsp4xml/pull/557)
+ * Validation Error Message Fails on Certain Cases. See [lsp4xml#553](https://github.com/angelozerr/lsp4xml/issues/553)
+ * Error range for `RootElementTypeMustMatchDoctypedecl`. See [lsp4xml#537](https://github.com/angelozerr/lsp4xml/issues/537)
+
 ## [0.8.0](https://github.com/redhat-developer/vscode-xml/milestone/9?closed=1) (July 23, 2019)
 
 ### Enhancements
