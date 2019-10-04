@@ -76,8 +76,10 @@ Since 0.8.0:
 * `xml.codeLens.enabled`: Enable/disable XML CodeLens. Default is `false`.
 * `xml.symbols.excluded`: Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.
 
-More detailed info in the [Wiki](https://github.com/redhat-developer/vscode-xml/wiki/Preferences).
-
+Since 0.9.1:
+* `xml.validation.disallowDocTypeDecl`: Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`.
+* `xml.validation.resolveExternalEntities`: Enable/disable resolve of external entities. Default is `false`.
+        
 ## Contributing
 
 This is an open source project open to anyone. Contributions are extremely welcome!
