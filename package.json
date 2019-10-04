@@ -243,6 +243,18 @@
           "description": "Enable/disable schema based validation. Ignored if \"xml.validation.enabled\": false.",
           "scope": "window"
         },
+        "xml.validation.disallowDocTypeDecl": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration.",
+          "scope": "window"
+        },
+        "xml.validation.resolveExternalEntities": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable resolve of external entities.",
+          "scope": "window"
+        },
         "xml.symbols.enabled": {
           "type": "boolean",
           "default": true,
