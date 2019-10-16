@@ -1,5 +1,23 @@
 # Change Log
 
+## [0.9.1](https://github.com/redhat-developer/vscode-xml/milestone/11?closed=1) (October 17, 2019)
+
+### Bug Fixes
+
+ * XSD: IntelliSense and element substitutions. See [#186](https://github.com/redhat-developer/vscode-xml/issues/186)
+ * Completion doesn't use file cache for included XML schema. See [lsp4xml#570](https://github.com/angelozerr/lsp4xml/pull/570)
+ * Prevent from NPE validation with schemaLocaton and "schema.reference.4" error. See [lsp4xml#569](https://github.com/angelozerr/lsp4xml/pull/569)
+
+### Performances
+
+ * Improve performance and memory for validation by caching XML Schema / DTD. See [lsp4xml#534](https://github.com/angelozerr/lsp4xml/issues/534)
+
+### Others
+
+ * Reject download of resource which are not in the cache folder. See [lsp4xml#567](https://github.com/angelozerr/lsp4xml/pull/567)
+ * Add xml.validation.disallowDocTypeDecl & xml.validation.resolveExternalEntities settings. See [#187](https://github.com/redhat-developer/vscode-xml/pull/187)
+ * Added maven info. See [#148](https://github.com/redhat-developer/vscode-xml/pull/148)
+
 ## [0.9.0](https://github.com/redhat-developer/vscode-xml/milestone/10?closed=1) (September 10, 2019)
 
 ### Enhancements
