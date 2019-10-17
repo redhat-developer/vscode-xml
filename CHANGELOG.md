@@ -8,7 +8,7 @@
  * Completion doesn't use file cache for included XML schema. See [lsp4xml#570](https://github.com/angelozerr/lsp4xml/pull/570)
  * Prevent from NPE validation with schemaLocaton and "schema.reference.4" error. See [lsp4xml#569](https://github.com/angelozerr/lsp4xml/pull/569)
 
-### Performances
+### Performance
 
  * Improve performance and memory for validation by caching XML Schema / DTD. See [lsp4xml#534](https://github.com/angelozerr/lsp4xml/issues/534)
 
