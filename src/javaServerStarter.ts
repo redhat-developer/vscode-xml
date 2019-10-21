@@ -9,18 +9,18 @@ declare var v8debug;
 
 const DEBUG = (typeof v8debug === 'object') || startedInDebugMode();
 
-export function prepareExecutable(requirements: RequirementsData): Executable {
+export function prepareExecutable(requirements: RequirementsData, xmlJavaExtensions: string[]): Executable {
   let executable: Executable = Object.create(null);
   let options: ExecutableOptions = Object.create(null);
   options.env = process.env;
   options.stdio = 'pipe';
   executable.options = options;
   executable.command = path.resolve(requirements.java_home + '/bin/java');
-  executable.args = prepareParams(requirements);
+  executable.args = prepareParams(requirements, xmlJavaExtensions);
   return executable;
 }
 
-function prepareParams(requirements: RequirementsData): string[] {
+function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string[]): string[] {
   let params: string[] = [];
   if (DEBUG) {
     params.push('-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1054,quiet=y');
@@ -38,7 +38,13 @@ function prepareParams(requirements: RequirementsData): string[] {
   let server_home: string = path.resolve(__dirname, '../server');
   let launchersFound: Array<string> = glob.sync('**/org.eclipse.lsp4xml-uber.jar', { cwd: server_home });
   if (launchersFound.length) {
-    params.push('-jar'); params.push(path.resolve(server_home, launchersFound[0]));
+    let xmlJavaExtensionsClasspath = '';
+    if (xmlJavaExtensions.length > 0) {
+      const pathSeparator = os.platform() == 'win32' ? ';' : ':';
+      xmlJavaExtensionsClasspath = pathSeparator + xmlJavaExtensions.join(pathSeparator);
+    }    
+    params.push('-cp'); params.push(path.resolve(server_home, launchersFound[0]) + xmlJavaExtensionsClasspath);
+    params.push('org.eclipse.lsp4xml.XMLServerLauncher');
   } else {
     return null;
   }

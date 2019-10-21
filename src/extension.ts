@@ -13,12 +13,13 @@
 import { prepareExecutable } from './javaServerStarter';
 import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri } from "vscode";
+import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
 import { Commands } from './commands';
 import { onConfigurationChange, subscribeJDKChangeConfiguration } from './settings';
+import { collectXmlJavaExtensions, onExtensionChange } from './plugin';
 
 export interface ScopeInfo {
   scope : "default" | "global" | "workspace" | "folder";
@@ -84,7 +85,7 @@ export function activate(context: ExtensionContext) {
       }
     }
 
-    let serverOptions = prepareExecutable(requirements);
+    let serverOptions = prepareExecutable(requirements, collectXmlJavaExtensions(extensions.all));
     let languageClient = new LanguageClient('xml', 'XML Support', serverOptions, clientOptions);
     let toDispose = context.subscriptions;
     let disposable = languageClient.start();
@@ -112,6 +113,12 @@ export function activate(context: ExtensionContext) {
         let text = languageClient.sendRequest(TagCloseRequest.type, param);
         return text;
       };
+
+      if (extensions.onDidChange) {// Theia doesn't support this API yet
+        extensions.onDidChange(() => {
+          onExtensionChange(extensions.all);
+        });
+      }
 
       disposable = activateTagClosing(tagProvider, { xml: true, xsl: true }, Commands.AUTO_CLOSE_TAGS);
       toDispose.push(disposable);
