@@ -30,4 +30,9 @@ export namespace Commands {
      */
     export const EDITOR_SHOW_REFERENCES = 'editor.action.showReferences';
 
+    /**
+     * Reload VS Code window
+     */
+    export const RELOAD_WINDOW = 'workbench.action.reloadWindow';
+
 }

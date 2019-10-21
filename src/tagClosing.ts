@@ -40,7 +40,7 @@ export function activateTagClosing(tagProvider: (document: TextDocument, positio
 		isEnabled = true;
 	}
 
-	function onDidChangeTextDocument(document: TextDocument, changes: TextDocumentContentChangeEvent[]) {
+	function onDidChangeTextDocument(document: TextDocument, changes: ReadonlyArray<TextDocumentContentChangeEvent>) {
 		if (!isEnabled) {
 			return;
 		}
