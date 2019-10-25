@@ -251,7 +251,7 @@
         },
         "xml.validation.resolveExternalEntities": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Enable/disable resolve of external entities.",
           "scope": "window"
         },
