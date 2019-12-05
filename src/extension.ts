@@ -39,7 +39,7 @@ export function activate(context: ExtensionContext) {
   }
   let logfile = path.resolve(storagePath + '/lsp4xml.log');
 
-  return requirements.resolveRequirements().catch(error => {
+  return requirements.resolveRequirements(context).catch(error => {
     //show error
     window.showErrorMessage(error.message, error.label).then((selection) => {
       if (error.label && error.label === selection && error.openUrl) {
@@ -60,7 +60,7 @@ export function activate(context: ExtensionContext) {
       revealOutputChannelOn: RevealOutputChannelOn.Never,
       //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
       initializationOptions: {
-        settings: getXMLSettings(),
+        settings: getXMLSettings(requirements.java_home),
         extendedClientCapabilities: {
           codeLens: {
             codeLensKind: {
@@ -78,14 +78,14 @@ export function activate(context: ExtensionContext) {
       middleware: {
         workspace: {
           didChangeConfiguration: () => {
-            languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings() });
+            languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
             onConfigurationChange();
           }
         }
       }
     }
 
-    let serverOptions = prepareExecutable(requirements, collectXmlJavaExtensions(extensions.all));
+    let serverOptions = prepareExecutable(requirements, collectXmlJavaExtensions(extensions.all), context);
     let languageClient = new LanguageClient('xml', 'XML Support', serverOptions, clientOptions);
     let toDispose = context.subscriptions;
     let disposable = languageClient.start();
@@ -135,7 +135,7 @@ export function activate(context: ExtensionContext) {
    *            'xml': {...}
    *          }
    */
-  function getXMLSettings(): JSON {
+  function getXMLSettings(javaHome: string): JSON {
     let configXML = workspace.getConfiguration().get('xml');
     let xml;
     if (!configXML) { //Set default preferences if not provided
@@ -164,6 +164,7 @@ export function activate(context: ExtensionContext) {
     }
     xml['xml']['logs']['file'] = logfile;
     xml['xml']['useCache'] = true;
+    xml['xml']['java']['home'] = javaHome;
     return xml;
   }
 }
