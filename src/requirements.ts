@@ -1,8 +1,9 @@
 'use strict';
 
-import { workspace, Uri } from 'vscode';
+import { window, workspace, Uri, ExtensionContext, ConfigurationTarget, env } from 'vscode';
 import * as cp from 'child_process';
 import * as path from 'path';
+import { IS_WORKSPACE_JDK_XML_ALLOWED, getKey, IS_WORKSPACE_VMARGS_XML_ALLOWED, getJavaagentFlag, IS_WORKSPACE_JDK_ALLOWED, getXMLConfiguration, getJavaConfiguration, xmlServerVmargs } from './settings';
 
 const pathExists = require('path-exists');
 const expandHomeDir = require('expand-home-dir');
@@ -28,21 +29,20 @@ interface ErrorData {
  * if any of the requirements fails to resolve.
  *
  */
-export async function resolveRequirements(): Promise<RequirementsData> {
-    const javaHome = await checkJavaRuntime();
+export async function resolveRequirements(context: ExtensionContext): Promise<RequirementsData> {
+    const javaHome = await checkJavaRuntime(context);
     const javaVersion = await checkJavaVersion(javaHome);
     return Promise.resolve({ 'java_home': javaHome, 'java_version': javaVersion});
 }
 
-function checkJavaRuntime(): Promise<string> {
-    return new Promise((resolve, reject) => {
+function checkJavaRuntime(context: ExtensionContext): Promise<string> {
+    return new Promise(async (resolve, reject) => {
         let source : string;
-        let javaHome: string = readXMLJavaHomeConfig();
-
+        let javaHome = await readXMLJavaHomeConfig(context);
         if (javaHome) {
             source = 'The xml.java.home variable defined in VS Code settings';
         } else {
-            javaHome = readJavaHomeConfig();
+            javaHome = await readJavaHomeConfig(context);
             if (javaHome) {
                 source = 'The java.home variable defined in VS Code settings';
             } else {
@@ -77,14 +77,70 @@ function checkJavaRuntime(): Promise<string> {
     });
 }
 
-
-function readXMLJavaHomeConfig() : string {
-    return workspace.getConfiguration('xml').java.home;
+export async function readXMLJavaHomeConfig(context: ExtensionContext) {
+    const xmlJavaHome = 'xml.java.home';
+    let javaHome = workspace.getConfiguration().inspect<string>(xmlJavaHome).workspaceValue;
+    let isVerified = javaHome === undefined || javaHome === null;
+    if (isVerified) {
+        javaHome = getXMLConfiguration().get("java.home");
+    }
+    const allow = 'Allow';
+    const disallow = 'Disallow';
+    const key = getKey(IS_WORKSPACE_JDK_XML_ALLOWED, context.storagePath, javaHome);
+    const globalState = context.globalState;
+    if (!isVerified) {
+        isVerified = globalState.get(key);
+        if (isVerified === undefined) {
+            await window.showErrorMessage(`Security Warning! Do you allow this workspace to set the ${xmlJavaHome} variable? \n ${xmlJavaHome}: ${javaHome}`, disallow, allow).then(async selection => {
+                if (selection === allow) {
+                    globalState.update(key, true);
+                } else if (selection === disallow) {
+                    globalState.update(key, false);
+                    await workspace.getConfiguration().update(xmlJavaHome, undefined, ConfigurationTarget.Workspace);
+                }
+            });
+            isVerified = globalState.get(key);
+        }
+    }
+    const vmargs = workspace.getConfiguration().inspect(xmlServerVmargs).workspaceValue;
+    if (vmargs !== undefined) {
+        const agentFlag = getJavaagentFlag(vmargs);
+        if (agentFlag !== null) {
+            const keyVmargs = getKey(IS_WORKSPACE_VMARGS_XML_ALLOWED, context.storagePath, vmargs);
+            const vmargsVerified = globalState.get(keyVmargs);
+            if (vmargsVerified === undefined || vmargsVerified === null) {
+                await window.showErrorMessage(`Security Warning! The ${xmlServerVmargs} variable defined in ${env.appName} settings includes the (${agentFlag}) javagent preference. Do you allow it to be used?`, disallow, allow).then(async selection => {
+                    if (selection === allow) {
+                        globalState.update(keyVmargs, true);
+                    } else if (selection === disallow) {
+                        globalState.update(keyVmargs, false);
+                        await workspace.getConfiguration().update(xmlServerVmargs, undefined, ConfigurationTarget.Workspace);
+                    }
+                });
+            }
+        }
+    }
+    if (isVerified) {
+        return javaHome;
+    } else {
+        return workspace.getConfiguration().inspect<string>('xml.java.home').globalValue;
+    }
 }
 
-function readJavaHomeConfig() : string {
-    const config = workspace.getConfiguration();
-    return config.get<string>('java.home',null);
+async function readJavaHomeConfig(context: ExtensionContext) {
+    let javaHome = workspace.getConfiguration().inspect<string>('java.home').workspaceValue;
+    let isVerified = javaHome === undefined || javaHome === null;
+    if (isVerified) {
+        javaHome = getJavaConfiguration().get('home');
+    }
+    const key = getKey(IS_WORKSPACE_JDK_ALLOWED, context.storagePath, javaHome);
+    const globalState = context.globalState;
+    isVerified = globalState.get(key);
+    if (isVerified) {
+        return javaHome;
+    } else {
+        return workspace.getConfiguration().inspect<string>('java.home').globalValue;
+    }
 }
  
 function checkJavaVersion(java_home: string): Promise<number> {

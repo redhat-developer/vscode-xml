@@ -1,5 +1,6 @@
 import { WorkspaceConfiguration, workspace, window, commands, extensions, Extension } from "vscode";
 import { ScopeInfo } from "./extension";
+import * as path from 'path';
 
 let vmArgsCache;
 let ignoreAutoCloseTags = false;
@@ -10,7 +11,10 @@ let oldJavaConfig: WorkspaceConfiguration = getJavaConfiguration();
 const restartButton = 'Restart Now';
 const ignoreButton = 'Ignore'
 const restartId = "workbench.action.reloadWindow";
-
+export const IS_WORKSPACE_JDK_ALLOWED = "java.ls.isJdkAllowed";
+export const IS_WORKSPACE_JDK_XML_ALLOWED = "java.ls.isJdkXmlAllowed";
+export const IS_WORKSPACE_VMARGS_XML_ALLOWED = "java.ls.isVmargsXmlAllowed";
+export const xmlServerVmargs = 'xml.server.vmargs';
 
 export function getXMLConfiguration(): WorkspaceConfiguration {
   return getXConfiguration("xml")
@@ -143,4 +147,27 @@ function getScopeLevel(configurationKey : string, key : string) : ScopeInfo{
   }
   let scopeInfo : ScopeInfo = {"scope": scope, "configurationTarget": configurationTarget};
   return scopeInfo;
+}
+
+export function getKey(prefix, storagePath, value) {
+  const workspacePath = path.resolve(storagePath + '/jdt_ws');
+  if (workspace.name !== undefined) {
+    return `${prefix}::${workspacePath}::${value}`;
+  }
+  else {
+    return `${prefix}::${value}`;
+  }
+}
+
+export function getJavaagentFlag(vmargs) {
+  const javaagent = '-javaagent:';
+  const args = vmargs.split(" ");
+  let agentFlag = null;
+  for (const arg of args) {
+    if (arg.startsWith(javaagent)) {
+      agentFlag = arg.substring(javaagent.length);
+      break;
+    }
+  }
+  return agentFlag;
 }
