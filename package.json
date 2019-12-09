@@ -192,6 +192,12 @@
           "description": "Enable/disable autoclosing of XML tags. \n\nIMPORTANT: Turn off editor.autoClosingTags for this to work",
           "scope": "window"
         },
+        "xml.matchingTagEditing": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "description": "Adds an additional cursor on the matching tag, allows for start/end tag editing."
+        },
         "xml.codeLens.enabled": {
           "type": "boolean",
           "default": false,
@@ -293,6 +299,14 @@
       {
         "fileMatch": "package.json",
         "url": "./schemas/package.schema.json"
+      }
+    ],
+    "keybindings":[
+      {
+        "command": "xml.toggleMatchingTagEdit",
+        "key": "ctrl+shift+f2",
+        "mac": "cmd+shift+f2",
+        "when": "editorFocus"
       }
     ]
   }

@@ -20,9 +20,11 @@ import { activateTagClosing, AutoCloseResult } from './tagClosing';
 import { Commands } from './commands';
 import { onConfigurationChange, subscribeJDKChangeConfiguration } from './settings';
 import { collectXmlJavaExtensions, onExtensionChange } from './plugin';
+import { activateMirrorCursor } from './mirrorCursor';
+import { error } from 'util';
 
 export interface ScopeInfo {
-  scope : "default" | "global" | "workspace" | "folder";
+  scope: "default" | "global" | "workspace" | "folder";
   configurationTarget: boolean;
 }
 
@@ -30,7 +32,9 @@ namespace TagCloseRequest {
   export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any, any> = new RequestType('xml/closeTag');
 }
 
-
+namespace MatchingTagPositionRequest {
+  export const type: RequestType<TextDocumentPositionParams, Position | null, any, any> = new RequestType('xml/matchingTagPosition');
+}
 
 export function activate(context: ExtensionContext) {
   let storagePath = context.storagePath;
@@ -70,7 +74,7 @@ export function activate(context: ExtensionContext) {
             }
           }
         }
-      }, 
+      },
       synchronize: {
         //preferences starting with these will trigger didChangeConfiguration
         configurationSection: ['xml', '[xml]']
@@ -114,14 +118,33 @@ export function activate(context: ExtensionContext) {
         return text;
       };
 
+      disposable = activateTagClosing(tagProvider, { xml: true, xsl: true }, Commands.AUTO_CLOSE_TAGS);
+      toDispose.push(disposable);
+
+      //Setup mirrored tag rename request
+      const matchingTagPositionRequestor = (document: TextDocument, position: Position) => {
+        let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
+        return languageClient.sendRequest(MatchingTagPositionRequest.type, param);
+      };
+      
+      disposable = activateMirrorCursor(matchingTagPositionRequestor, { xml: true }, 'xml.matchingTagEditing');
+      toDispose.push(disposable);
+
+      const matchingTagEditCommand = 'xml.toggleMatchingTagEdit';
+
+      const matchingTagEditHandler = () => {
+        const xmlConfiguration = workspace.getConfiguration('xml');
+        const current = xmlConfiguration.matchingTagEditing;
+        xmlConfiguration.update("matchingTagEditing", !current);
+      }
+
+      toDispose.push(commands.registerCommand(matchingTagEditCommand, matchingTagEditHandler));
+
       if (extensions.onDidChange) {// Theia doesn't support this API yet
         extensions.onDidChange(() => {
           onExtensionChange(extensions.all);
         });
       }
-
-      disposable = activateTagClosing(tagProvider, { xml: true, xsl: true }, Commands.AUTO_CLOSE_TAGS);
-      toDispose.push(disposable);
     });
     languages.setLanguageConfiguration('xml', getIndentationRules());
     languages.setLanguageConfiguration('xsl', getIndentationRules());
@@ -139,7 +162,7 @@ export function activate(context: ExtensionContext) {
     let configXML = workspace.getConfiguration().get('xml');
     let xml;
     if (!configXML) { //Set default preferences if not provided
-      const defaultValue = 
+      const defaultValue =
       {
         xml: {
           trace: {
@@ -160,7 +183,7 @@ export function activate(context: ExtensionContext) {
       xml = defaultValue;
     } else {
       let x = JSON.stringify(configXML); //configXML is not a JSON type
-      xml = { "xml" : JSON.parse(x)};
+      xml = { "xml": JSON.parse(x) };
     }
     xml['xml']['logs']['file'] = logfile;
     xml['xml']['useCache'] = true;
@@ -170,7 +193,7 @@ export function activate(context: ExtensionContext) {
 
 function getIndentationRules(): LanguageConfiguration {
   return {
-    
+
     // indentationRules referenced from:
     // https://github.com/microsoft/vscode/blob/d00558037359acceea329e718036c19625f91a1a/extensions/html-language-features/client/src/htmlMain.ts#L114-L115
     indentationRules: {
