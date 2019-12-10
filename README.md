@@ -71,14 +71,17 @@ The following settings are supported:
 * `xml.validation.schema`: Set to `false` to disable schema validation. Defaults to `true`.
 * `xml.validation.noGrammar`: The message severity when a document has no associated grammar. Defaults to `hint`.
 * `xml.server.workDir`: Set an absolute path for all cached schemas to be stored. Defaults to `~/.lsp4xml`.
-  
-Since 0.8.0:
 * `xml.codeLens.enabled`: Enable/disable XML CodeLens. Default is `false`.
 * `xml.symbols.excluded`: Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.
 
 Since 0.9.1:
 * `xml.validation.disallowDocTypeDecl`: Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`.
 * `xml.validation.resolveExternalEntities`: Enable/disable resolve of external entities. Default is `false`.
+
+Since 0.10.0:
+* `xml.mirrorCursorOnMatchingTag`: (Experimental) Enable/disable ability to simultaneously edit the start and end tag of an element. Default is `true`. Can be toggled on/off on Windows/Linux through `ctrl+shift+f2` and on Mac `cmd+shift+f2`.
+  * **Note**: XML tag name completion is currently not working with mirror cursors on.
+  * **Note**: In a multi-root workspace, cursors do not immediately enable or disable when editing XML files located in separate workspace folders.
         
 ## Custom XML Extensions
 
