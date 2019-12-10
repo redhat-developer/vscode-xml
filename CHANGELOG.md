@@ -1,5 +1,27 @@
 # Change Log
 
+## [0.10.0](https://github.com/angelozerr/lsp4xml/milestone/11?closed=1) (December 11, 2019)
+
+### Enhancements
+
+* (Experimental) Ability to edit start/end tag simultaneously under `xml.mirrorCursorOnMatchingTag` preference. Can be toggled on/off on Windows/Linux through `ctrl+shift+f2` and on Mac `cmd+shift+f2`. See [#130](https://github.com/redhat-developer/vscode-xml/issues/130).
+* Allows File Associations to be used without Workspace. See [#202](https://github.com/redhat-developer/vscode-xml/issues/202).
+* CodeAction for missing root end tag. See [#lsp4xml/595](https://github.com/angelozerr/lsp4xml/pull/595).
+* DTD hover/completion support for documentation. See [#lsp4xml/592](https://github.com/angelozerr/lsp4xml/pull/592).
+* CodeAction for similar looking element names if it doesn't match the schema. See [#lsp4xml/591](https://github.com/angelozerr/lsp4xml/pull/591).
+* Navigation and intellisense for xs:include-ed types. See [#lsp4xml/579](https://github.com/angelozerr/lsp4xml/pull/579).
+* Contribute to completion, hover .. with external JAR. See [#193](https://github.com/redhat-developer/vscode-xml/pull/193).
+* Added documentation on how to contribute extensions to the XML LS. See [#197](https://github.com/redhat-developer/vscode-xml/pull/197).
+
+
+### Bug Fixes
+
+* xs:import code action was inserting inside the tag name. See [#lsp4xml/593](https://github.com/angelozerr/lsp4xml/pull/593).
+* Prolog attribute completion was providing invalid values. See [#lsp4xml/587](https://github.com/angelozerr/lsp4xml/pull/587).
+* getCurrentAttribute method was not returning the correct attribute name. See [#lsp4xml/584](https://github.com/angelozerr/lsp4xml/pull/584).
+* Hover was not returning all hover responses. See [#lsp4xml/582](https://github.com/angelozerr/lsp4xml/pull/582).
+* cvc-pattern error range fix. See [#lsp4xml/580](https://github.com/angelozerr/lsp4xml/pull/580).
+
 ## [0.9.1](https://github.com/redhat-developer/vscode-xml/milestone/11?closed=1) (October 17, 2019)
 
 ### Bug Fixes
