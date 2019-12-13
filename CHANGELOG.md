@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.10.0](https://github.com/angelozerr/lsp4xml/milestone/11?closed=1) (December 11, 2019)
+## [0.10.0](https://github.com/angelozerr/lsp4xml/milestone/11?closed=1) (December 13, 2019)
 
 ### Enhancements
 
