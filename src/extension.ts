@@ -13,17 +13,16 @@
 import { prepareExecutable } from './javaServerStarter';
 import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { languages, ConfigurationTarget, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, WorkspaceConfiguration, extensions } from "vscode";
+import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
 import { Commands } from './commands';
 import { onConfigurationChange, subscribeJDKChangeConfiguration } from './settings';
 import { collectXmlJavaExtensions, onExtensionChange } from './plugin';
-import { activateMirrorCursor } from './mirrorCursor';
 
 export interface ScopeInfo {
-  scope: "default" | "global" | "workspace" | "folder";
+  scope : "default" | "global" | "workspace" | "folder";
   configurationTarget: boolean;
 }
 
@@ -31,9 +30,7 @@ namespace TagCloseRequest {
   export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any, any> = new RequestType('xml/closeTag');
 }
 
-namespace MatchingTagPositionRequest {
-  export const type: RequestType<TextDocumentPositionParams, Position | null, any, any> = new RequestType('xml/matchingTagPosition');
-}
+
 
 export function activate(context: ExtensionContext) {
   let storagePath = context.storagePath;
@@ -73,7 +70,7 @@ export function activate(context: ExtensionContext) {
             }
           }
         }
-      },
+      }, 
       synchronize: {
         //preferences starting with these will trigger didChangeConfiguration
         configurationSection: ['xml', '[xml]']
@@ -117,38 +114,14 @@ export function activate(context: ExtensionContext) {
         return text;
       };
 
-      disposable = activateTagClosing(tagProvider, { xml: true, xsl: true }, Commands.AUTO_CLOSE_TAGS);
-      toDispose.push(disposable);
-
-      //Setup mirrored tag rename request
-      const matchingTagPositionRequestor = (document: TextDocument, position: Position) => {
-        let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
-        return languageClient.sendRequest(MatchingTagPositionRequest.type, param);
-      };
-      
-      disposable = activateMirrorCursor(context, matchingTagPositionRequestor, { xml: true }, 'xml.mirrorCursorOnMatchingTag');
-      toDispose.push(disposable);
-
-      const matchingTagEditCommand = 'xml.toggleMatchingTagEdit';
-
-      const matchingTagEditHandler = async () => {
-        let xmlConfiguration: WorkspaceConfiguration;
-        if (window.activeTextEditor) {
-          xmlConfiguration = workspace.getConfiguration('xml', window.activeTextEditor.document.uri);
-        } else {
-          xmlConfiguration = workspace.getConfiguration('xml');
-        }
-        const current = xmlConfiguration.mirrorCursorOnMatchingTag;
-        await updateConfig(xmlConfiguration, 'mirrorCursorOnMatchingTag', !current);
-      }
-
-      toDispose.push(commands.registerCommand(matchingTagEditCommand, matchingTagEditHandler));
-
       if (extensions.onDidChange) {// Theia doesn't support this API yet
         extensions.onDidChange(() => {
           onExtensionChange(extensions.all);
         });
       }
+
+      disposable = activateTagClosing(tagProvider, { xml: true, xsl: true }, Commands.AUTO_CLOSE_TAGS);
+      toDispose.push(disposable);
     });
     languages.setLanguageConfiguration('xml', getIndentationRules());
     languages.setLanguageConfiguration('xsl', getIndentationRules());
@@ -166,7 +139,7 @@ export function activate(context: ExtensionContext) {
     let configXML = workspace.getConfiguration().get('xml');
     let xml;
     if (!configXML) { //Set default preferences if not provided
-      const defaultValue =
+      const defaultValue = 
       {
         xml: {
           trace: {
@@ -187,7 +160,7 @@ export function activate(context: ExtensionContext) {
       xml = defaultValue;
     } else {
       let x = JSON.stringify(configXML); //configXML is not a JSON type
-      xml = { "xml": JSON.parse(x) };
+      xml = { "xml" : JSON.parse(x)};
     }
     xml['xml']['logs']['file'] = logfile;
     xml['xml']['useCache'] = true;
@@ -198,7 +171,7 @@ export function activate(context: ExtensionContext) {
 
 function getIndentationRules(): LanguageConfiguration {
   return {
-
+    
     // indentationRules referenced from:
     // https://github.com/microsoft/vscode/blob/d00558037359acceea329e718036c19625f91a1a/extensions/html-language-features/client/src/htmlMain.ts#L114-L115
     indentationRules: {
@@ -219,24 +192,3 @@ function getIndentationRules(): LanguageConfiguration {
   };
 }
 
-/**
- * Update config with the following precedence: WorkspaceFolder -> Workspace -> Global
- * @param config  config containing the section to update
- * @param section section to update
- * @param value   new value
- */
-async function updateConfig(config: WorkspaceConfiguration, section: string, value: any): Promise<void> {
-  try {
-    await config.update(section, value);
-    return;
-  } catch(e) {
-    // try ConfigurationTarget.Global
-  }
- 
-  try {
-    await config.update(section, value, ConfigurationTarget.Global);
-    return;
-  } catch(e) {
-    throw 'Failed to update config';
-  }
-}
