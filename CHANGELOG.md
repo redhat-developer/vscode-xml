@@ -1,6 +1,12 @@
 # Change Log
 
-## [0.10.0](https://github.com/angelozerr/lsp4xml/milestone/11?closed=1) (December 13, 2019)
+## [0.10.1](https://github.com/angelozerr/lsp4xml/milestone/13?closed=1) (December 15, 2019)
+
+### Bug Fixes
+
+* Temporarily removed experimental simultaneously editing of start/end tags causing editing issues in all of VS Code. See [#211](https://github.com/redhat-developer/vscode-xml/issues/211). 
+
+## [0.10.0](https://github.com/angelozerr/lsp4xml/milestone/12?closed=1) (December 13, 2019)
 
 ### Enhancements
 
