@@ -13,13 +13,14 @@
 import { prepareExecutable } from './javaServerStarter';
 import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions } from "vscode";
+import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions, WorkspaceConfiguration, ConfigurationTarget } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
 import { Commands } from './commands';
 import { onConfigurationChange, subscribeJDKChangeConfiguration } from './settings';
 import { collectXmlJavaExtensions, onExtensionChange } from './plugin';
+import { setupMirrorCursor } from './mirrorCursor';
 
 export interface ScopeInfo {
   scope : "default" | "global" | "workspace" | "folder";
@@ -30,7 +31,9 @@ namespace TagCloseRequest {
   export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any, any> = new RequestType('xml/closeTag');
 }
 
-
+namespace MatchingTagPositionRequest {
+  export const type: RequestType<TextDocumentPositionParams, Position | null, any, any> = new RequestType('xml/matchingTagPosition');
+}
 
 export function activate(context: ExtensionContext) {
   let storagePath = context.storagePath;
@@ -122,6 +125,30 @@ export function activate(context: ExtensionContext) {
 
       disposable = activateTagClosing(tagProvider, { xml: true, xsl: true }, Commands.AUTO_CLOSE_TAGS);
       toDispose.push(disposable);
+
+      //Setup mirrored tag rename request
+      const matchingTagPositionRequestor = (document: TextDocument, position: Position) => {
+      let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
+      return languageClient.sendRequest(MatchingTagPositionRequest.type, param);
+    };
+    
+      toDispose.push(setupMirrorCursor(matchingTagPositionRequestor, ['xml', 'xsl']));
+
+      const matchingTagEditCommand = 'xml.toggleMatchingTagEdit';
+
+      const matchingTagEditHandler = async () => {
+        let xmlConfiguration: WorkspaceConfiguration;
+        if (window.activeTextEditor) {
+          xmlConfiguration = workspace.getConfiguration('xml', window.activeTextEditor.document.uri);
+        } else {
+          xmlConfiguration = workspace.getConfiguration('xml');
+        }
+        const current = xmlConfiguration.mirrorCursorOnMatchingTag;
+        await updateConfig(xmlConfiguration, 'mirrorCursorOnMatchingTag', !current);
+      }
+
+      toDispose.push(commands.registerCommand(matchingTagEditCommand, matchingTagEditHandler));
+
     });
     languages.setLanguageConfiguration('xml', getIndentationRules());
     languages.setLanguageConfiguration('xsl', getIndentationRules());
@@ -192,3 +219,24 @@ function getIndentationRules(): LanguageConfiguration {
   };
 }
 
+/**
+ * Update config with the following precedence: WorkspaceFolder -> Workspace -> Global
+ * @param config  config containing the section to update
+ * @param section section to update
+ * @param value   new value
+ */
+async function updateConfig(config: WorkspaceConfiguration, section: string, value: any): Promise<void> {
+  try {
+    await config.update(section, value);
+    return;
+  } catch(e) {
+    // try ConfigurationTarget.Global
+  }
+
+  try {
+    await config.update(section, value, ConfigurationTarget.Global);
+    return;
+  } catch(e) {
+    throw 'Failed to update config';
+  }
+} 
