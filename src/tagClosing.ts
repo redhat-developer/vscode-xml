@@ -90,6 +90,8 @@ export function activateTagClosing(tagProvider: (document: TextDocument, positio
 						}
 					}
 				}
+			}, (reason: any) => {
+				console.log('xml/closeTag request has been cancelled');
 			});
 			timeout = void 0;
 		}, 100);
