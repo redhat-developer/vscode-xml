@@ -2,7 +2,7 @@
 const gulp = require('gulp');
 const gulp_tslint = require('gulp-tslint');
 const cp = require('child_process');
-const server_dir = '../lsp4xml';
+const server_dir = '../lemminx';
 
 gulp.task('tslint', () => {
     return gulp.src(['**/*.ts', '!**/*.d.ts', '!node_modules/**'])
@@ -11,8 +11,8 @@ gulp.task('tslint', () => {
 });
 
 gulp.task('build_server', function(done) {
-	cp.execSync(mvnw()+ " -o clean verify -DskipTests -pl \"!extensions,!extensions/org.eclipse.lsp4xml.extensions.emmet,!extensions/org.eclipse.lsp4xml.extensions.web\"", {cwd:server_dir, stdio:[0,1,2]} );
-  gulp.src(server_dir +'/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-uber.jar')
+	cp.execSync(mvnw()+ " -o clean verify -DskipTests", {cwd:server_dir, stdio:[0,1,2]} );
+  gulp.src(server_dir +'/org.eclipse.lemminx/target/org.eclipse.lemminx-uber.jar')
 		.pipe(gulp.dest('./server'));
 	done();
 });

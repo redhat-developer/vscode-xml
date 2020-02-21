@@ -4,7 +4,7 @@
 
 ## Description
 
-This VS Code extension provides support for creating and editing XML documents, based on the [LSP4XML Language Server](https://github.com/angelozerr/lsp4xml), running with Java.
+This VS Code extension provides support for creating and editing XML documents, based on the [LemMinX XML Language Server](https://github.com/eclipse/lemminx), running with Java.
 
 ![Basic features](https://user-images.githubusercontent.com/148698/45977901-df208a80-c018-11e8-85ec-71c70ba8a5ca.gif)
 
@@ -72,20 +72,20 @@ The following settings are supported:
 * `xml.validation.noGrammar`: The message severity when a document has no associated grammar. Defaults to `hint`.
 * `xml.validation.disallowDocTypeDecl`: Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`.
 * `xml.validation.resolveExternalEntities`: Enable/disable resolve of external entities. Default is `false`.
-* `xml.server.workDir`: Set an absolute path for all cached schemas to be stored. Defaults to `~/.lsp4xml`.
+* `xml.server.workDir`: Set an absolute path for all cached schemas to be stored. Defaults to `~/.lemminx`.
 * `xml.codeLens.enabled`: Enable/disable XML CodeLens. Default is `false`.
 * `xml.symbols.excluded`: Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.
         
 ## Custom XML Extensions
 
-The [LSP4XML Language Server](https://github.com/angelozerr/lsp4xml) can be extended to support custom completion, hover, validation, rename, etc by using the [Java Service Provider Interface (SPI)](https://www.baeldung.com/java-spi) mechanism. vscode-xml provides the ability use your custom XML support provider, by adding external jars to the XML language server's classpath.
+The [LemMinX - XML Language Server](https://github.com/eclipse/lemminx) can be extended to support custom completion, hover, validation, rename, etc by using the [Java Service Provider Interface (SPI)](https://www.baeldung.com/java-spi) mechanism. vscode-xml provides the ability use your custom XML support provider, by adding external jars to the XML language server's classpath.
 
 To do that:
 
  * create a Java project which provides a custom XML extension providing your custom completion, hover, validation, rename, etc:
     * create the XML extension like [MavenPlugin](https://github.com/angelozerr/lsp4xml-extensions-maven/blob/master/org.eclipse.lsp4xml.extensions.maven/src/main/java/org/eclipse/lsp4xml/extensions/maven/MavenPlugin.java).
     * register your custom completion participant in the XML extension like [MavenCompletionParticipant](https://github.com/angelozerr/lsp4xml-extensions-maven/blob/master/org.eclipse.lsp4xml.extensions.maven/src/main/java/org/eclipse/lsp4xml/extensions/maven/MavenCompletionParticipant.java#L28)
-    * register your custom XML extension with [Java Service Provider Interface (SPI)](https://www.baeldung.com/java-spi) mechanism in the [/META-INF/services/org.eclipse.lsp4xml.services.extensions.IXMLExtension](https://github.com/angelozerr/lsp4xml-extensions-maven/blob/master/org.eclipse.lsp4xml.extensions.maven/src/main/resources/META-INF/services/org.eclipse.lsp4xml.services.extensions.IXMLExtension) file.
+    * register your custom XML extension with [Java Service Provider Interface (SPI)](https://www.baeldung.com/java-spi) mechanism in the [/META-INF/services/org.eclipse.lemminx.services.extensions.IXMLExtension](https://github.com/angelozerr/lsp4xml-extensions-maven/blob/master/org.eclipse.lsp4xml.extensions.maven/src/main/resources/META-INF/services/org.eclipse.lsp4xml.services.extensions.IXMLExtension) file.
     * build a JAR `your-custom-xml-extension.jar`.
  
  * create a `vscode extension` which embeds the `your-custom-xml-extension.jar` JAR and declares this JAR path in the `package.json`:

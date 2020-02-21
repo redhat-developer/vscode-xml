@@ -14,18 +14,18 @@ Contributions are essential for keeping this extension great. We try to keep it 
 ### Steps
 1. Fork and clone this repository
    
-2. Fork and clone the [XML Language Server (lsp4xml)](https://github.com/angelozerr/lsp4xml)
+2. Fork and clone the [LemMinX - XML Language Server ](https://github.com/eclipse/lemminx)
 
 * **Note:** The directory format has to match the following:
 
   ```
     YOUR_FOLDER/
-              ├──── lsp4xml/
+              ├──── lemminx/
               │      
               ├──── vscode-xml/
   ```
 
-3. `cd lsp4xml/`
+3. `cd lemminx/`
 
 4. Install the maven dependencies Mac/Linux:
 	```bash

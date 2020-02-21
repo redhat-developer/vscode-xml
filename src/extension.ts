@@ -35,9 +35,9 @@ namespace TagCloseRequest {
 export function activate(context: ExtensionContext) {
   let storagePath = context.storagePath;
   if (!storagePath) {
-    storagePath = os.homedir() + "/.lsp4xml";
+    storagePath = os.homedir() + "/.lemminx";
   }
-  let logfile = path.resolve(storagePath + '/lsp4xml.log');
+  let logfile = path.resolve(storagePath + '/lemminx.log');
 
   return requirements.resolveRequirements(context).catch(error => {
     //show error

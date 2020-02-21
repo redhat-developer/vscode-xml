@@ -14,10 +14,10 @@ def buildVscodeExtension(){
 
 node('rhel7'){
 	stage 'Build XML LS'
-	git url: 'https://github.com/angelozerr/lsp4xml.git'
-	sh "./mvnw clean verify -B -U -e -pl \"!extensions,!extensions/org.eclipse.lsp4xml.extensions.emmet,!extensions/org.eclipse.lsp4xml.extensions.web\" -P!jboss-maven-repos,!redhat-ga-repository,!redhat-ea-repository"
+	git url: 'https://github.com/eclipse/lemminx.git'
+	sh "./mvnw clean verify -B -U -e -P!jboss-maven-repos,!redhat-ga-repository,!redhat-ea-repository"
 
-	def files = findFiles(glob: '**/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-uber.jar')
+	def files = findFiles(glob: '**/org.eclipse.lemminx/target/org.eclipse.lemminx-uber.jar')
 	stash name: 'server_distro', includes :files[0].path
 }
 
@@ -34,7 +34,7 @@ node('rhel7'){
 	stage 'Build vscode-xml'
 	buildVscodeExtension()
 	unstash 'server_distro'
-	def files = findFiles(glob: '**/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-uber.jar')
+	def files = findFiles(glob: '**/org.eclipse.lemminx/target/org.eclipse.lemminx-uber.jar')
 	sh "mkdir ./server"
 	sh "mv ${files[0].path} ./server"
 
