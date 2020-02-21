@@ -218,7 +218,7 @@
         },
         "xml.server.workDir": {
           "type": "string",
-          "default": "~/.lsp4xml",
+          "default": "~/.lemminx",
           "description": "Set a custom folder path for cached XML Schemas. An absolute path is expected, although the ~ prefix (for the user home directory) is supported.",
           "scope": "window"
         },
