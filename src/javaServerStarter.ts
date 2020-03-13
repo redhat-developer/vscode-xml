@@ -39,7 +39,7 @@ function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string
       }
     }
   } else {
-    vmargsCheck = getXMLConfiguration().get('')
+    vmargsCheck = getXMLConfiguration().get('server.vmargs');
   }
   let vmargs;
   if (vmargsCheck !== undefined) {
