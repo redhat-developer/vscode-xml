@@ -1,12 +1,28 @@
 # Change Log
 
-## [0.10.1](https://github.com/angelozerr/lsp4xml/milestone/13?closed=1) (December 15, 2019)
+## [0.11.0](https://github.com/redhat-developer/vscode-xml/milestone/14?closed=1) (March 25, 2020)
+
+### Enhancements
+
+ * Switched XML Language server from lsp4xml to [Eclipse LemMinX](https://github.com/eclipse/lemminx). See [lemminx#283](https://github.com/eclipse/lemminx/issues/283)
+
+### Bug Fixes
+
+ * Enumeration documentation is not displayed. See [lemminx#233](https://github.com/redhat-developer/vscode-xml/issues/233)
+ * XSD download fails in recent versions. See [#226](https://github.com/redhat-developer/vscode-xml/issues/226)
+ * Gracefully handle cancelled  `xml/closeTag` requests. See [#149](https://github.com/redhat-developer/vscode-xml/issues/149)
+ * NPE when typing <?. See [lemminx#614](https://github.com/eclipse/lemminx/issues/614)
+ * NPE when document contains an empty tag. See [lemminx#613](https://github.com/eclipse/lemminx/issues/613)
+ * In Maven <configuration>, all known XML elements from schema are suggested as completion. See [lemminx#612](https://github.com/eclipse/lemminx/issues/612)
+ * UTF-16 not supported. See [lemminx#611](https://github.com/eclipse/lemminx/issues/611)
+
+## [0.10.1](https://github.com/redhat-developer/vscode-xml/milestone/13?closed=1) (December 15, 2019)
 
 ### Bug Fixes
 
 * Temporarily removed experimental simultaneously editing of start/end tags causing editing issues in all of VS Code. See [#211](https://github.com/redhat-developer/vscode-xml/issues/211). 
 
-## [0.10.0](https://github.com/angelozerr/lsp4xml/milestone/12?closed=1) (December 13, 2019)
+## [0.10.0](https://github.com/redhat-developer/vscode-xml/milestone/12?closed=1) (December 13, 2019)
 
 ### Enhancements
 
