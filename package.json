@@ -2,7 +2,7 @@
   "name": "vscode-xml",
   "displayName": "XML",
   "description": "XML Language Support by Red Hat",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "author": "Red Hat",
   "publisher": "redhat",
   "icon": "icons/icon128.png",

@@ -60,7 +60,7 @@ node('rhel7'){
 	//	sh "npm test --silent"
 	//}
 	
-	stage 'Upload vscode-xml to staging'
+	stage 'Upload to /vscode-xml/staging'
 	def vsix = findFiles(glob: '**.vsix')
 	sh "rsync -Pzrlt --rsh=ssh --protocol=28 ${vsix[0].path} ${UPLOAD_LOCATION}/vscode-xml/staging"
 	stash name:'vsix', includes:vsix[0].path
@@ -80,7 +80,7 @@ node('rhel7'){
 		}
 		archive includes:"**.vsix"
 
-		stage "Publish to http://download.jboss.org/jbosstools/static/vscode-xml/stable/"
+		stage "Upload to /vscode-xml/stable"
 		// copy this stable build to Akamai-mirrored /static/ URL, so staging can be cleaned out more easily
 		def vsix = findFiles(glob: '**.vsix')
 		sh "rsync -Pzrlt --rsh=ssh --protocol=28 ${vsix[0].path} ${UPLOAD_LOCATION}/static/vscode-xml/stable/"
