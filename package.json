@@ -24,6 +24,7 @@
   ],
   "main": "./dist/extension",
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "vscode:prepublish": "webpack --mode production",
     "compile": "webpack --mode none",
     "watch": "webpack --mode development --watch --info-verbosity verbose",
@@ -44,6 +45,9 @@
     "Formatters",
     "Snippets"
   ],
+  "resolutions": {
+    "minimist": "^1.2.5"
+  },
   "devDependencies": {
     "@types/mocha": "^5.2.6",
     "@types/node": "^10.14.16",
@@ -59,7 +63,8 @@
     "typescript-tslint-plugin": "^0.3.1",
     "vscode-test": "^1.2.0",
     "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.2"
+    "webpack-cli": "^3.3.2",
+    "minimist": ">=1.2.5"
   },
   "dependencies": {
     "expand-home-dir": "^0.0.3",
