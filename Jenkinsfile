@@ -13,11 +13,23 @@ def buildVscodeExtension(){
 }
 
 node('rhel7'){
-	stage 'Build XML LS'
-	git url: 'https://github.com/eclipse/lemminx.git'
-	sh "./mvnw clean verify -B -U -e -P!jboss-maven-repos,!redhat-ga-repository,!redhat-ea-repository"
+	def packageJson = readJSON file: 'package.json'
+	def serverVersion = packageJson?.xmlServer?.version
+	def files = []
+	if (serverVersion && publishToMarketPlace.equals('true')) {
+		stage 'Download XML LS'
+		def serverUrl = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/${serverVersion}/org.eclipse.lemminx-${serverVersion}-uber.jar"
+		sh "curl -Lo org.eclipse.lemminx-${serverVersion}-uber.jar ${serverUrl}"
+		files = findFiles(glob: 'org.eclipse.lemminx*-uber.jar')
+	}
 
-	def files = findFiles(glob: '**/org.eclipse.lemminx/target/org.eclipse.lemminx-uber.jar')
+	if (!files[0]) {
+		stage 'Build XML LS'
+		git url: 'https://github.com/eclipse/lemminx.git'
+		sh "./mvnw clean verify -B -U -e -P!jboss-maven-repos,!redhat-ga-repository,!redhat-ea-repository"
+		sh "mv org.eclipse.lemminx/target/org.eclipse.lemminx*-uber.jar ."
+		files = findFiles(glob: 'org.eclipse.lemminx*-uber.jar')
+	}
 	stash name: 'server_distro', includes :files[0].path
 }
 
@@ -34,7 +46,7 @@ node('rhel7'){
 	stage 'Build vscode-xml'
 	buildVscodeExtension()
 	unstash 'server_distro'
-	def files = findFiles(glob: '**/org.eclipse.lemminx/target/org.eclipse.lemminx-uber.jar')
+	def files = findFiles(glob: '**/org.eclipse.lemminx*-uber.jar')
 	sh "mkdir ./server"
 	sh "mv ${files[0].path} ./server"
 

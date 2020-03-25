@@ -55,7 +55,7 @@ function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string
   }
   parseVMargs(params, vmargs);
   let server_home: string = path.resolve(__dirname, '../server');
-  let launchersFound: Array<string> = glob.sync('**/org.eclipse.lemminx-uber.jar', { cwd: server_home });
+  let launchersFound: Array<string> = glob.sync('**/org.eclipse.lemminx*-uber.jar', { cwd: server_home });
   if (launchersFound.length) {
     let xmlJavaExtensionsClasspath = '';
     if (xmlJavaExtensions.length > 0) {
