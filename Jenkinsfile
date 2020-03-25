@@ -13,6 +13,7 @@ def buildVscodeExtension(){
 }
 
 node('rhel7'){
+	sh "curl -Lo package.json https://raw.githubusercontent.com/redhat-developer/vscode-xml/master/package.json"
 	def packageJson = readJSON file: 'package.json'
 	def serverVersion = packageJson?.xmlServer?.version
 	def files = []
