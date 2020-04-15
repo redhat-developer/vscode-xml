@@ -281,6 +281,11 @@
           },
           "description": "Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.\n\nExample:\n[\n \"**/*LargeFile.xml\"\n]",
           "scope": "window"
+        },
+        "xml.symbols.maxItemsComputed": {
+          "type": "integer",
+          "default": 5000,
+          "description": "The maximum number of outline symbols and folding regions computed (limited for performance reasons)."
         }
       }
     },
