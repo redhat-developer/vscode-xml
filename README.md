@@ -53,6 +53,7 @@ The following settings are supported:
 * `xml.catalogs` : Register XML catalog files.
 * `xml.logs.client` : Enable/disable logging to the Output view.
 * `xml.fileAssociations` : Associate XML Schemas to XML file patterns.
+* `xml.format.emptyElements` : Expand/collapse empty elements during formatting. Defaults to `ignore`.
 * `xml.format.splitAttributes` : Set to `true` to split node attributes onto multiple lines during formatting. Defaults to `false`.
 * `xml.format.joinCDATALines` : Set to `true` to join lines in CDATA content during formatting. Defaults to `false`.
 * `xml.format.joinContentLines` : Set to `true` to join lines in node content during formatting. Defaults to `false`.
