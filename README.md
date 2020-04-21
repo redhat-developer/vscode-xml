@@ -54,6 +54,7 @@ The following settings are supported:
 * `xml.logs.client` : Enable/disable logging to the Output view.
 * `xml.fileAssociations` : Associate XML Schemas to XML file patterns.
 * `xml.format.splitAttributes` : Set to `true` to split node attributes onto multiple lines during formatting. Defaults to `false`.
+* `xml.format.emptyElements` : Expand/collapse empty elements during formatting. Defaults to `ignore`.
 * `xml.format.joinCDATALines` : Set to `true` to join lines in CDATA content during formatting. Defaults to `false`.
 * `xml.format.joinContentLines` : Set to `true` to join lines in node content during formatting. Defaults to `false`.
 * `xml.format.joinCommentLines` : Set to `true` to join lines in comments during formatting. Defaults to `false`.
