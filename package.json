@@ -106,6 +106,17 @@
           "default": true,
           "description": "Should the server log to client output"
         },
+        "xml.format.emptyElements": {
+          "type": "string",
+          "enum": [
+            "ignore",
+            "collapse",
+            "expand"
+          ],
+          "default": "ignore",
+          "description": "Expand/collapse empty elements.",
+          "scope": "window"
+        },
         "xml.format.splitAttributes": {
           "type": "boolean",
           "default": false,
