@@ -35,11 +35,4 @@ export namespace Commands {
      */
     export const RELOAD_WINDOW = 'workbench.action.reloadWindow';
 
-    /**
-     * Open settings command
-     * 
-     * A `settingId: string` parameter can be optionally provided
-     */
-    export const OPEN_SETTINGS = 'xml.open.settings';
-
 }

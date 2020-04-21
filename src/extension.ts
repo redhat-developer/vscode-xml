@@ -11,9 +11,9 @@
  */
 
 import { prepareExecutable } from './javaServerStarter';
-import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest, NotificationType, MessageType } from 'vscode-languageclient';
+import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions, Disposable, Command } from "vscode";
+import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
@@ -22,7 +22,7 @@ import { onConfigurationChange, subscribeJDKChangeConfiguration } from './settin
 import { collectXmlJavaExtensions, onExtensionChange } from './plugin';
 
 export interface ScopeInfo {
-  scope: "default" | "global" | "workspace" | "folder";
+  scope : "default" | "global" | "workspace" | "folder";
   configurationTarget: boolean;
 }
 
@@ -31,20 +31,6 @@ namespace TagCloseRequest {
 }
 
 
-namespace SymbolsLimitExceededNotification {
-  export const type: NotificationType<{commandId: string, message: string}, any> = new NotificationType('xml/symbolsLimitExceeded');
-}
-
-interface ActionableMessage {
-	severity: MessageType;
-	message: string;
-	data?: any;
-	commands?: Command[];
-}
-
-namespace ActionableNotification {
-  export const type = new NotificationType<ActionableMessage, void>('xml/actionableNotification');
-}
 
 export function activate(context: ExtensionContext) {
   let storagePath = context.storagePath;
@@ -82,11 +68,9 @@ export function activate(context: ExtensionContext) {
                 'references'
               ]
             }
-          },
-          actionableNotificationSupport: true,
-          openSettingsCommandSupport: true
+          }
         }
-      },
+      }, 
       synchronize: {
         //preferences starting with these will trigger didChangeConfiguration
         configurationSection: ['xml', '[xml]']
@@ -123,19 +107,12 @@ export function activate(context: ExtensionContext) {
         })
       }));
 
-      setupActionableNotificationListener(languageClient);
-
-      context.subscriptions.push(commands.registerCommand(Commands.OPEN_SETTINGS, async (settingId?: string) => {
-        commands.executeCommand('workbench.action.openSettings', settingId);
-      }));
-
-      // Setup autoCloseTags
-      const tagProvider = (document: TextDocument, position: Position) => {
+      //Setup autoCloseTags
+      let tagProvider = (document: TextDocument, position: Position) => {
         let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
         let text = languageClient.sendRequest(TagCloseRequest.type, param);
         return text;
       };
-      context.subscriptions.push(activateTagClosing(tagProvider, { xml: true, xsl: true }, Commands.AUTO_CLOSE_TAGS));
 
       if (extensions.onDidChange) {// Theia doesn't support this API yet
         extensions.onDidChange(() => {
@@ -143,6 +120,8 @@ export function activate(context: ExtensionContext) {
         });
       }
 
+      disposable = activateTagClosing(tagProvider, { xml: true, xsl: true }, Commands.AUTO_CLOSE_TAGS);
+      toDispose.push(disposable);
     });
     languages.setLanguageConfiguration('xml', getIndentationRules());
     languages.setLanguageConfiguration('xsl', getIndentationRules());
@@ -160,7 +139,7 @@ export function activate(context: ExtensionContext) {
     let configXML = workspace.getConfiguration().get('xml');
     let xml;
     if (!configXML) { //Set default preferences if not provided
-      const defaultValue =
+      const defaultValue = 
       {
         xml: {
           trace: {
@@ -181,7 +160,7 @@ export function activate(context: ExtensionContext) {
       xml = defaultValue;
     } else {
       let x = JSON.stringify(configXML); //configXML is not a JSON type
-      xml = { "xml": JSON.parse(x) };
+      xml = { "xml" : JSON.parse(x)};
     }
     xml['xml']['logs']['file'] = logfile;
     xml['xml']['useCache'] = true;
@@ -192,7 +171,7 @@ export function activate(context: ExtensionContext) {
 
 function getIndentationRules(): LanguageConfiguration {
   return {
-
+    
     // indentationRules referenced from:
     // https://github.com/microsoft/vscode/blob/d00558037359acceea329e718036c19625f91a1a/extensions/html-language-features/client/src/htmlMain.ts#L114-L115
     indentationRules: {
@@ -213,32 +192,3 @@ function getIndentationRules(): LanguageConfiguration {
   };
 }
 
-function setupActionableNotificationListener(languageClient: LanguageClient): void {
-  languageClient.onNotification(ActionableNotification.type, (notification: ActionableMessage) => {
-    let show = null;
-    switch (notification.severity) {
-      case MessageType.Info:
-        show = window.showInformationMessage;
-        break;
-      case MessageType.Warning:
-        show = window.showWarningMessage;
-        break;
-      case MessageType.Error:
-        show = window.showErrorMessage;
-        break;
-    }
-    if (!show) {
-      return;
-    }
-    const titles: string[] = notification.commands.map(a => a.title);
-    show(notification.message, ...titles).then((selection) => {
-      for (const action of notification.commands) {
-        if (action.title === selection) {
-          const args: any[] = (action.arguments) ? action.arguments : [];
-          commands.executeCommand(action.command, ...args);
-          break;
-        }
-      }
-    });
-  });
-}
