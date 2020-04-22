@@ -19,7 +19,7 @@ This VS Code extension provides support for creating and editing XML documents, 
   * Document links
   * Document symbols and outline
   * Renaming support
-  * Document Formatting
+  * Document Formatting (see [formatting settings](https://github.com/redhat-developer/vscode-xml/wiki/Formatting))
   * DTD validation
   * DTD completion
   * DTD formatting
