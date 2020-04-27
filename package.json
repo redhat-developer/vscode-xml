@@ -15,8 +15,8 @@
     "xsd",
     "dtd"
   ],
-  "xmlServer":{
-    "version":"0.11.1"
+  "xmlServer": {
+    "version": "0.11.1"
   },
   "engines": {
     "vscode": "^1.37.0"

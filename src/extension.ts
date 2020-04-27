@@ -13,7 +13,7 @@
 import { prepareExecutable } from './javaServerStarter';
 import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest, NotificationType, MessageType } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions, Disposable, Command } from "vscode";
+import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions, Command } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
@@ -89,7 +89,7 @@ export function activate(context: ExtensionContext) {
       },
       synchronize: {
         //preferences starting with these will trigger didChangeConfiguration
-        configurationSection: ['xml', '[xml]']
+        configurationSection: ['xml', '[xml]', 'files.trimFinalNewlines', 'files.insertFinalNewline']
       },
       middleware: {
         workspace: {
@@ -151,7 +151,7 @@ export function activate(context: ExtensionContext) {
   /**
    * Returns a json object with key 'xml' and a json object value that
    * holds all xml. settings.
-   * 
+   *
    * Returns: {
    *            'xml': {...}
    *          }
@@ -186,6 +186,8 @@ export function activate(context: ExtensionContext) {
     xml['xml']['logs']['file'] = logfile;
     xml['xml']['useCache'] = true;
     xml['xml']['java']['home'] = javaHome;
+    xml['xml']['format']['trimFinalNewlines'] = workspace.getConfiguration('files').get('trimFinalNewlines', true);
+    xml['xml']['format']['insertFinalNewline'] = workspace.getConfiguration('files').get('insertFinalNewline', true);
     return xml;
   }
 }
