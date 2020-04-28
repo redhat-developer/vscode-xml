@@ -79,6 +79,10 @@ The following settings are supported:
 
 Since 0.12.0:
 * `xml.symbols.maxItemsComputed`: The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.
+* `files.insertFinalNewline`: now affects XML formatting. Enable/disable inserting a final newline
+when formatting an XML document. Default is `false`.
+* `files.trimFinalNewlines`: now affects XML formatting. Enable/disable final newline trimming when
+formatting an XML document. Default is `false`.
 
 ## Custom XML Extensions
 
