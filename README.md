@@ -61,7 +61,6 @@ The following settings are supported:
 * `xml.format.preservedNewLines`: Set the maximum amount of newlines between elements. Defaults to `2`.
 * `xml.format.preserveEmptyContent`: Set to `true` to preserve standalone whitespace content in an element. Defaults to `false`.
 * `xml.format.spaceBeforeEmptyCloseTag`: Set to `true` to insert space before the end of a self closing tag. Defaults to `true`.
-* `xml.format.quotations`: Set to `doubleQuotes` to format and only use `"`, or `singleQuotes` to format and only use `'`. Defaults to `doubleQuotes`.
 * `xml.format.enabled` : Enable/disable formatting.
 * `xml.autoCloseTags.enabled` : Enable/disable automatic tag closing.  
   **Note** 'editor.autoClosingBrackets' must be turned off to work.  
@@ -78,6 +77,8 @@ The following settings are supported:
 * `xml.symbols.excluded`: Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.
 
 Since 0.12.0:
+* `xml.format.enforceQuoteStyle`: preferred|ignore : Enforce preferred quote style / ignore quote formatting.
+* `xml.preferences.quoteStyle`: Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.
 * `xml.symbols.maxItemsComputed`: The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.
 * `files.insertFinalNewline`: now affects XML formatting. Enable/disable inserting a final newline
 when formatting an XML document. Default is `false`.
@@ -135,5 +136,3 @@ Feedback
 ## License
 
   EPL 1.0, See [LICENSE](https://github.com/redhat-developer/vscode-xml/blob/master/LICENSE) file.
-
-

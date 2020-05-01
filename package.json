@@ -98,13 +98,13 @@
           "items": {
             "type": "string"
           },
-          "description": "Array of XML Catalogs",
+          "description": "Array of XML Catalogs.",
           "scope": "window"
         },
         "xml.logs.client": {
           "type": "boolean",
           "default": true,
-          "description": "Should the server log to client output"
+          "description": "Should the server log to client output."
         },
         "xml.format.emptyElements": {
           "type": "string",
@@ -120,19 +120,19 @@
         "xml.format.splitAttributes": {
           "type": "boolean",
           "default": false,
-          "description": "Split multiple attributes each onto a new line",
+          "description": "Split multiple attributes each onto a new line.",
           "scope": "window"
         },
         "xml.format.joinCDATALines": {
           "type": "boolean",
           "default": false,
-          "description": "Join lines in a CDATA tag's content",
+          "description": "Join lines in a CDATA tag's content.",
           "scope": "window"
         },
         "xml.format.joinCommentLines": {
           "type": "boolean",
           "default": false,
-          "description": "Join comment content on format",
+          "description": "Join comment content on format.",
           "scope": "window"
         },
         "xml.format.spaceBeforeEmptyCloseTag": {
@@ -168,17 +168,31 @@
         "xml.format.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable/disable ability to format document",
+          "description": "Enable/disable ability to format document.",
           "scope": "window"
         },
-        "xml.format.quotations": {
+        "xml.format.enforceQuoteStyle": {
           "type": "string",
           "enum": [
-            "doubleQuotes",
-            "singleQuotes"
+            "preferred",
+            "ignore"
           ],
-          "default": "doubleQuotes",
-          "description": "Which type of quotes to use for attribute values when formatting.",
+          "markdownEnumDescriptions": [
+            "Use preferred quote style set by `xml.preferences.quoteStyle` when formatting.",
+            "Ignore quote style formatting."
+          ],
+          "default": "preferred",
+          "description": "Set quote style rule when formatting.",
+          "scope": "window"
+        },
+        "xml.preferences.quoteStyle": {
+          "type": "string",
+          "enum": [
+            "single",
+            "double"
+          ],
+          "default": "double",
+          "markdownDescription": "Preferred quote style to use for completion: `single` quotes, `double` quotes.",
           "scope": "window"
         },
         "xml.fileAssociations": {
@@ -189,7 +203,7 @@
             "properties": {
               "systemId": {
                 "type": "string",
-                "description": "The path or URL to the XML schema (XSD or DTD)"
+                "description": "The path or URL to the XML schema (XSD or DTD)."
               },
               "pattern": {
                 "type": "string",
@@ -209,13 +223,13 @@
         "xml.completion.autoCloseTags": {
           "type": "boolean",
           "default": true,
-          "description": "Enable/disable autoclosing of XML tags. \n\nIMPORTANT: Turn off editor.autoClosingTags for this to work",
+          "description": "Enable/disable autoclosing of XML tags. \n\nIMPORTANT: Turn off editor.autoClosingTags for this to work.",
           "scope": "window"
         },
         "xml.codeLens.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable/disable XML CodeLens"
+          "description": "Enable/disable XML CodeLens."
         },
         "xml.java.home": {
           "type": [
@@ -232,7 +246,7 @@
             "null"
           ],
           "default": "-noverify -Xmx64M -XX:+UseG1GC -XX:+UseStringDeduplication",
-          "description": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-noverify -Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector",
+          "description": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-noverify -Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector.",
           "scope": "window"
         },
         "xml.server.workDir": {
