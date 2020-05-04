@@ -16,8 +16,23 @@ export function prepareExecutable(requirements: RequirementsData, xmlJavaExtensi
   options.env = process.env;
   options.stdio = 'pipe';
   executable.options = options;
-  executable.command = path.resolve(requirements.java_home + '/bin/java');
-  executable.args = prepareParams(requirements, xmlJavaExtensions, context);
+  const useBinary = getXMLConfiguration().get("server.binary.enabled", false);
+  if (useBinary) {
+    //TODO handle case when other extensions contributing jars expect to force JVM mode 
+    const binaryPath = findServerBinary(); 
+    if (binaryPath) {
+      executable.command = binaryPath;
+    } else {
+      //TODO handle missing binary
+      console.log("Missing xml.server.binary.path");
+    }
+    //TODO handle binary args
+  } 
+  // Fall back to JVM Mode
+  if(!(executable.command)) {
+    executable.command = path.resolve(requirements.java_home + '/bin/java');
+    executable.args = prepareParams(requirements, xmlJavaExtensions, context);
+  }
   return executable;
 }
 
@@ -69,6 +84,21 @@ function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string
   }
   return params;
 }
+
+function findServerBinary(): string {
+  const config = getXMLConfiguration();
+  let binaryPath:string = config.get("server.binary.path");
+  if (!binaryPath) {
+    let server_home: string = path.resolve(__dirname, '../server');
+    let binariesFound: Array<string> = glob.sync('**/lemminx*', { cwd: server_home });
+    if (binariesFound.length) {
+      binaryPath = path.resolve(server_home, binariesFound[0]);
+    } 
+    //TODO handle missing binary
+  }
+  return (binaryPath)?binaryPath: null;
+}
+
 
 function startedInDebugMode(): boolean {
   let args = (process as any).execArgv;

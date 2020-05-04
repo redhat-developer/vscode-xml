@@ -30,6 +30,7 @@ interface ErrorData {
  *
  */
 export async function resolveRequirements(context: ExtensionContext): Promise<RequirementsData> {
+    //TODO Handle different requirements if using binary
     const javaHome = await checkJavaRuntime(context);
     const javaVersion = await checkJavaVersion(javaHome);
     return Promise.resolve({ 'java_home': javaHome, 'java_version': javaVersion});
