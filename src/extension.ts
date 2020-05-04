@@ -186,7 +186,7 @@ export function activate(context: ExtensionContext) {
     xml['xml']['logs']['file'] = logfile;
     xml['xml']['useCache'] = true;
     xml['xml']['java']['home'] = javaHome;
-    xml['xml']['format']['trimFinalNewlines'] = workspace.getConfiguration('files').get('trimFinalNewlines', false);
+    xml['xml']['format']['trimFinalNewlines'] = workspace.getConfiguration('files').get('trimFinalNewlines', true);
     xml['xml']['format']['insertFinalNewline'] = workspace.getConfiguration('files').get('insertFinalNewline', false);
     return xml;
   }
