@@ -13,12 +13,12 @@
 import * as os from 'os';
 import * as path from 'path';
 import { Command, commands, ExtensionContext, extensions, IndentAction, LanguageConfiguration, languages, Position, TextDocument, TextEditor, Uri, window, workspace } from "vscode";
-import { CancellationToken, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, ExecuteCommandParams, ExecuteCommandRequest, LanguageClient, LanguageClientOptions, MessageType, NotificationType, ReferencesRequest, RequestType, RevealOutputChannelOn, TextDocumentIdentifier, TextDocumentPositionParams } from 'vscode-languageclient';
+import { CancellationToken, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, Executable, ExecuteCommandParams, ExecuteCommandRequest, LanguageClient, LanguageClientOptions, MessageType, NotificationType, ReferencesRequest, RequestType, RevealOutputChannelOn, TextDocumentIdentifier, TextDocumentPositionParams } from 'vscode-languageclient';
 import { Commands } from './commands';
-import { prepareExecutable } from './javaServerStarter';
 import { markdownPreviewProvider } from "./markdownPreviewProvider";
 import { collectXmlJavaExtensions, onExtensionChange } from './plugin';
 import * as requirements from './requirements';
+import { prepareExecutable } from './serverStarter';
 import { getXMLConfiguration, onConfigurationChange, subscribeJDKChangeConfiguration } from './settings';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
 import { containsVariableReferenceToCurrentFile, getVariableSubstitutedAssociations } from './variableSubstitution';
@@ -168,224 +168,222 @@ export function activate(context: ExtensionContext) {
   }
   let logfile = path.resolve(storagePath + '/lemminx.log');
 
-  return requirements.resolveRequirements(context).catch(error => {
-    //show error
-    window.showErrorMessage(error.message, error.label).then((selection) => {
-      if (error.label && error.label === selection && error.openUrl) {
-        commands.executeCommand('vscode.open', error.openUrl);
-      }
-    });
-    // rethrow to disrupt the chain.
-    throw error;
-  }).then(requirements => {
+  return requirements.resolveRequirements(context)
+    .catch(error => {
+      // continue with blank requirements to signal that there is no java
+      return {} as requirements.RequirementsData;
+    })
+    .then(requirements => {
 
-    let clientOptions: LanguageClientOptions = {
-      // Register the server for xml and xsl
-      documentSelector: [
-        { scheme: 'file', language: 'xml' },
-        { scheme: 'file', language: 'xsl' },
-        { scheme: 'untitled', language: 'xml' },
-        { scheme: 'untitled', language: 'xsl' }
-      ],
-      revealOutputChannelOn: RevealOutputChannelOn.Never,
-      //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
-      initializationOptions: {
-        settings: getXMLSettings(requirements.java_home),
-        extendedClientCapabilities: {
-          codeLens: {
-            codeLensKind: {
-              valueSet: [
-                'references'
-              ]
+      let clientOptions: LanguageClientOptions = {
+        // Register the server for xml and xsl
+        documentSelector: [
+          { scheme: 'file', language: 'xml' },
+          { scheme: 'file', language: 'xsl' },
+          { scheme: 'untitled', language: 'xml' },
+          { scheme: 'untitled', language: 'xsl' }
+        ],
+        revealOutputChannelOn: RevealOutputChannelOn.Never,
+        //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
+        initializationOptions: {
+          settings: getXMLSettings(requirements.java_home),
+          extendedClientCapabilities: {
+            codeLens: {
+              codeLensKind: {
+                valueSet: [
+                  'references'
+                ]
+              }
+            },
+            actionableNotificationSupport: true,
+            openSettingsCommandSupport: true
+          }
+        },
+        synchronize: {
+          //preferences starting with these will trigger didChangeConfiguration
+          configurationSection: ['xml', '[xml]', 'files.trimFinalNewlines', 'files.trimTrailingWhitespace', 'files.insertFinalNewline']
+        },
+        middleware: {
+          workspace: {
+            didChangeConfiguration: () => {
+              languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+              onConfigurationChange();
             }
-          },
-          actionableNotificationSupport: true,
-          openSettingsCommandSupport: true
-        }
-      },
-      synchronize: {
-        //preferences starting with these will trigger didChangeConfiguration
-        configurationSection: ['xml', '[xml]', 'files.trimFinalNewlines', 'files.trimTrailingWhitespace', 'files.insertFinalNewline']
-      },
-      middleware: {
-        workspace: {
-          didChangeConfiguration: () => {
-            languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
-            onConfigurationChange();
           }
         }
       }
-    }
 
-    let serverOptions = prepareExecutable(requirements, collectXmlJavaExtensions(extensions.all, getXMLConfiguration().get("extension.jars", [])), context);
-    languageClient = new LanguageClient('xml', 'XML Support', serverOptions, clientOptions);
-    let toDispose = context.subscriptions;
-    let disposable = languageClient.start();
-    toDispose.push(disposable);
+      prepareExecutable(requirements, collectXmlJavaExtensions(extensions.all, getXMLConfiguration().get("extension.jars", [])), context)
+        .then((serverOptions: Executable) => {
+          languageClient = new LanguageClient('xml', 'XML Support', serverOptions, clientOptions);
+          let toDispose = context.subscriptions;
+          let disposable = languageClient.start();
+          toDispose.push(disposable);
 
-    languages.setLanguageConfiguration('xml', getIndentationRules());
-    languages.setLanguageConfiguration('xsl', getIndentationRules());
+          languages.setLanguageConfiguration('xml', getIndentationRules());
+          languages.setLanguageConfiguration('xsl', getIndentationRules());
 
-    return languageClient.onReady().then(() => {
-      //Detect JDK configuration changes
-      disposable = subscribeJDKChangeConfiguration();
-      toDispose.push(disposable);
+          return languageClient.onReady().then(() => {
+            //Detect JDK configuration changes
+            disposable = subscribeJDKChangeConfiguration();
+            toDispose.push(disposable);
 
-      // Code Lens actions
-      context.subscriptions.push(commands.registerCommand(Commands.SHOW_REFERENCES, (uriString: string, position: Position) => {
-        const uri = Uri.parse(uriString);
-        workspace.openTextDocument(uri).then(document => {
-          // Consume references service from the XML Language Server
-          let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
-          languageClient.sendRequest(ReferencesRequest.type, param).then(locations => {
-            commands.executeCommand(Commands.EDITOR_SHOW_REFERENCES, uri, languageClient.protocol2CodeConverter.asPosition(position), locations.map(languageClient.protocol2CodeConverter.asLocation));
-          })
-        })
-      }));
+            // Code Lens actions
+            context.subscriptions.push(commands.registerCommand(Commands.SHOW_REFERENCES, (uriString: string, position: Position) => {
+              const uri = Uri.parse(uriString);
+              workspace.openTextDocument(uri).then(document => {
+                // Consume references service from the XML Language Server
+                let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
+                languageClient.sendRequest(ReferencesRequest.type, param).then(locations => {
+                  commands.executeCommand(Commands.EDITOR_SHOW_REFERENCES, uri, languageClient.protocol2CodeConverter.asPosition(position), locations.map(languageClient.protocol2CodeConverter.asLocation));
+                })
+              })
+            }));
 
-      setupActionableNotificationListener(languageClient);
+            setupActionableNotificationListener(languageClient);
 
-      // Handler for 'xml/executeClientCommand` request message that executes a command on the client
-      languageClient.onRequest(ExecuteClientCommandRequest.type, async (params: ExecuteCommandParams) => {
-        return await commands.executeCommand(params.command, ...params.arguments);
-      });
+            // Handler for 'xml/executeClientCommand` request message that executes a command on the client
+            languageClient.onRequest(ExecuteClientCommandRequest.type, async (params: ExecuteCommandParams) => {
+              return await commands.executeCommand(params.command, ...params.arguments);
+            });
 
-      // Register custom XML commands
-      context.subscriptions.push(commands.registerCommand(Commands.VALIDATE_CURRENT_FILE, async (params) => {
-        const uri = window.activeTextEditor.document.uri;
-        const identifier = TextDocumentIdentifier.create(uri.toString());
-        commands.executeCommand(Commands.EXECUTE_WORKSPACE_COMMAND, Commands.VALIDATE_CURRENT_FILE, identifier).
-          then(() => {
-            window.showInformationMessage('The current XML file was successfully validated.');
-          }, error => {
-            window.showErrorMessage('Error during XML validation ' + error.message);
-          });
-      }));
-      context.subscriptions.push(commands.registerCommand(Commands.VALIDATE_ALL_FILES, async () => {
-        commands.executeCommand(Commands.EXECUTE_WORKSPACE_COMMAND, Commands.VALIDATE_ALL_FILES).
-          then(() => {
-            window.showInformationMessage('All open XML files were successfully validated.');
-          }, error => {
-            window.showErrorMessage('Error during XML validation: ' + error.message);
-          });
-      }));
+            // Register custom XML commands
+            context.subscriptions.push(commands.registerCommand(Commands.VALIDATE_CURRENT_FILE, async (params) => {
+              const uri = window.activeTextEditor.document.uri;
+              const identifier = TextDocumentIdentifier.create(uri.toString());
+              commands.executeCommand(Commands.EXECUTE_WORKSPACE_COMMAND, Commands.VALIDATE_CURRENT_FILE, identifier).
+                then(() => {
+                  window.showInformationMessage('The current XML file was successfully validated.');
+                }, error => {
+                  window.showErrorMessage('Error during XML validation ' + error.message);
+                });
+            }));
+            context.subscriptions.push(commands.registerCommand(Commands.VALIDATE_ALL_FILES, async () => {
+              commands.executeCommand(Commands.EXECUTE_WORKSPACE_COMMAND, Commands.VALIDATE_ALL_FILES).
+                then(() => {
+                  window.showInformationMessage('All open XML files were successfully validated.');
+                }, error => {
+                  window.showErrorMessage('Error during XML validation: ' + error.message);
+                });
+            }));
 
-      // Register client command to execute custom XML Language Server command
-      context.subscriptions.push(commands.registerCommand(Commands.EXECUTE_WORKSPACE_COMMAND, (command, ...rest) => {
-        let token: CancellationToken;
-        let commandArgs: any[] = rest;
-        if (rest && rest.length && CancellationToken.is(rest[rest.length - 1])) {
-          token = rest[rest.length - 1];
-          commandArgs = rest.slice(0, rest.length - 1);
-        }
-        const params: ExecuteCommandParams = {
-          command,
-          arguments: commandArgs
-        };
-        if (token) {
-          return languageClient.sendRequest(ExecuteCommandRequest.type, params, token);
-        } else {
-          return languageClient.sendRequest(ExecuteCommandRequest.type, params);
-        }
-      }));
+            // Register client command to execute custom XML Language Server command
+            context.subscriptions.push(commands.registerCommand(Commands.EXECUTE_WORKSPACE_COMMAND, (command, ...rest) => {
+              let token: CancellationToken;
+              let commandArgs: any[] = rest;
+              if (rest && rest.length && CancellationToken.is(rest[rest.length - 1])) {
+                token = rest[rest.length - 1];
+                commandArgs = rest.slice(0, rest.length - 1);
+              }
+              const params: ExecuteCommandParams = {
+                command,
+                arguments: commandArgs
+              };
+              if (token) {
+                return languageClient.sendRequest(ExecuteCommandRequest.type, params, token);
+              } else {
+                return languageClient.sendRequest(ExecuteCommandRequest.type, params);
+              }
+            }));
 
-      context.subscriptions.push(commands.registerCommand(Commands.OPEN_SETTINGS, async (settingId?: string) => {
-        commands.executeCommand('workbench.action.openSettings', settingId);
-      }));
+            context.subscriptions.push(commands.registerCommand(Commands.OPEN_SETTINGS, async (settingId?: string) => {
+              commands.executeCommand('workbench.action.openSettings', settingId);
+            }));
 
+            // Setup autoCloseTags
+            const tagProvider = (document: TextDocument, position: Position) => {
+              let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
+              let text = languageClient.sendRequest(TagCloseRequest.type, param);
+              return text;
+            };
+            context.subscriptions.push(activateTagClosing(tagProvider, { xml: true, xsl: true }, Commands.AUTO_CLOSE_TAGS));
 
-      // Setup autoCloseTags
-      const tagProvider = (document: TextDocument, position: Position) => {
-        let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
-        let text = languageClient.sendRequest(TagCloseRequest.type, param);
-        return text;
-      };
-      context.subscriptions.push(activateTagClosing(tagProvider, { xml: true, xsl: true }, Commands.AUTO_CLOSE_TAGS));
-
-      if (extensions.onDidChange) {// Theia doesn't support this API yet
-        context.subscriptions.push(extensions.onDidChange(() => {
-          onExtensionChange(extensions.all, getXMLConfiguration().get("extension.jars", []));
-        }));
-      }
-
-      // Copied from:
-      // https://github.com/redhat-developer/vscode-java/pull/1081/files
-      languageClient.onRequest(ConfigurationRequest.type, (params: ConfigurationParams) => {
-        const result: any[] = [];
-        const activeEditor: TextEditor | undefined = window.activeTextEditor;
-        for (const item of params.items) {
-          if (activeEditor && activeEditor.document.uri.toString() === Uri.parse(item.scopeUri).toString()) {
-            if (item.section === "xml.format.insertSpaces") {
-              result.push(activeEditor.options.insertSpaces);
-            } else if (item.section === "xml.format.tabSize") {
-              result.push(activeEditor.options.tabSize);
+            if (extensions.onDidChange) {// Theia doesn't support this API yet
+              context.subscriptions.push(extensions.onDidChange(() => {
+                onExtensionChange(extensions.all, getXMLConfiguration().get("extension.jars", []));
+              }));
             }
-          } else {
-            result.push(workspace.getConfiguration(null, Uri.parse(item.scopeUri)).get(item.section));
-          }
-        }
-        return result;
-      });
-      // When the current document changes, update variable values that refer to the current file if these variables are referenced,
-      // and send the updated settings to the server
-      context.subscriptions.push(window.onDidChangeActiveTextEditor(() => {
-        if (containsVariableReferenceToCurrentFile(getXMLConfiguration().get('fileAssociations') as XMLFileAssociation[])) {
-          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
-          onConfigurationChange();
-        }
-      }));
 
-      const api: XMLExtensionApi = {
-        // add API set catalogs to internal memory
-        addXMLCatalogs: (catalogs: string[]) => {
-          const externalXmlCatalogs = externalXmlSettings.xmlCatalogs;
-          catalogs.forEach(element => {
-            if (!externalXmlCatalogs.includes(element)) {
-              externalXmlCatalogs.push(element);
-            }
+            // Copied from:
+            // https://github.com/redhat-developer/vscode-java/pull/1081/files
+            languageClient.onRequest(ConfigurationRequest.type, (params: ConfigurationParams) => {
+              const result: any[] = [];
+              const activeEditor: TextEditor | undefined = window.activeTextEditor;
+              for (const item of params.items) {
+                if (activeEditor && activeEditor.document.uri.toString() === Uri.parse(item.scopeUri).toString()) {
+                  if (item.section === "xml.format.insertSpaces") {
+                    result.push(activeEditor.options.insertSpaces);
+                  } else if (item.section === "xml.format.tabSize") {
+                    result.push(activeEditor.options.tabSize);
+                  }
+                } else {
+                  result.push(workspace.getConfiguration(null, Uri.parse(item.scopeUri)).get(item.section));
+                }
+              }
+              return result;
+            });
+
+            // When the current document changes, update variable values that refer to the current file if these variables are referenced,
+            // and send the updated settings to the server
+            context.subscriptions.push(window.onDidChangeActiveTextEditor(() => {
+              if (containsVariableReferenceToCurrentFile(getXMLConfiguration().get('fileAssociations') as XMLFileAssociation[])) {
+                languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+                onConfigurationChange();
+              }
+            }));
+
+            const api: XMLExtensionApi = {
+              // add API set catalogs to internal memory
+              addXMLCatalogs: (catalogs: string[]) => {
+                const externalXmlCatalogs = externalXmlSettings.xmlCatalogs;
+                catalogs.forEach(element => {
+                  if (!externalXmlCatalogs.includes(element)) {
+                    externalXmlCatalogs.push(element);
+                  }
+                });
+                languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+                onConfigurationChange();
+              },
+              // remove API set catalogs to internal memory
+              removeXMLCatalogs: (catalogs: string[]) => {
+                catalogs.forEach(element => {
+                  const externalXmlCatalogs = externalXmlSettings.xmlCatalogs;
+                  if (externalXmlCatalogs.includes(element)) {
+                    const itemIndex = externalXmlCatalogs.indexOf(element);
+                    externalXmlCatalogs.splice(itemIndex, 1);
+                  }
+                });
+                languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+                onConfigurationChange();
+              },
+              // add API set fileAssociations to internal memory
+              addXMLFileAssociations: (fileAssociations: XMLFileAssociation[]) => {
+                const externalfileAssociations = externalXmlSettings.xmlFileAssociations;
+                fileAssociations.forEach(element => {
+                  if (!externalfileAssociations.some(fileAssociation => fileAssociation.systemId === element.systemId)) {
+                    externalfileAssociations.push(element);
+                  }
+                });
+                languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+                onConfigurationChange();
+              },
+              // remove API set fileAssociations to internal memory
+              removeXMLFileAssociations: (fileAssociations: XMLFileAssociation[]) => {
+                const externalfileAssociations = externalXmlSettings.xmlFileAssociations;
+                fileAssociations.forEach(element => {
+                  const itemIndex = externalfileAssociations.findIndex(fileAssociation => fileAssociation.systemId === element.systemId) //returns -1 if item not found
+                  if (itemIndex > -1) {
+                    externalfileAssociations.splice(itemIndex, 1);
+                  }
+                });
+                languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+                onConfigurationChange();
+              }
+            };
+            return api;
           });
-          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
-          onConfigurationChange();
-        },
-        // remove API set catalogs to internal memory
-        removeXMLCatalogs: (catalogs: string[]) => {
-          catalogs.forEach(element => {
-            const externalXmlCatalogs = externalXmlSettings.xmlCatalogs;
-            if (externalXmlCatalogs.includes(element)) {
-              const itemIndex = externalXmlCatalogs.indexOf(element);
-              externalXmlCatalogs.splice(itemIndex, 1);
-            }
-          });
-          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
-          onConfigurationChange();
-        },
-        // add API set fileAssociations to internal memory
-        addXMLFileAssociations: (fileAssociations: XMLFileAssociation[]) => {
-          const externalfileAssociations = externalXmlSettings.xmlFileAssociations;
-          fileAssociations.forEach(element => {
-            if (!externalfileAssociations.some(fileAssociation => fileAssociation.systemId === element.systemId)) {
-              externalfileAssociations.push(element);
-            }
-          });
-          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
-          onConfigurationChange();
-        },
-        // remove API set fileAssociations to internal memory
-        removeXMLFileAssociations: (fileAssociations: XMLFileAssociation[]) => {
-          const externalfileAssociations = externalXmlSettings.xmlFileAssociations;
-          fileAssociations.forEach(element => {
-            const itemIndex = externalfileAssociations.findIndex(fileAssociation => fileAssociation.systemId === element.systemId) //returns -1 if item not found
-            if (itemIndex > -1) {
-              externalfileAssociations.splice(itemIndex, 1);
-            }
-          });
-          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
-          onConfigurationChange();
-        }
-      };
-      return api;
+        });
     });
-  });
 
   /**
    * Returns a json object with key 'xml' and a json object value that
@@ -395,7 +393,7 @@ export function activate(context: ExtensionContext) {
    *            'xml': {...}
    *          }
    */
-  function getXMLSettings(javaHome: string): JSON {
+  function getXMLSettings(javaHome: string | undefined): JSON {
     let configXML = workspace.getConfiguration().get('xml');
     let xml;
     if (!configXML) { //Set default preferences if not provided
