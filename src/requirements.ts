@@ -1,15 +1,15 @@
 'use strict';
 
-import { window, workspace, Uri, ExtensionContext, ConfigurationTarget, env } from 'vscode';
 import * as cp from 'child_process';
 import * as path from 'path';
-import { IS_WORKSPACE_JDK_XML_ALLOWED, getKey, IS_WORKSPACE_VMARGS_XML_ALLOWED, getJavaagentFlag, IS_WORKSPACE_JDK_ALLOWED, getXMLConfiguration, getJavaConfiguration, xmlServerVmargs } from './settings';
+import { ConfigurationTarget, env, ExtensionContext, Uri, window, workspace } from 'vscode';
+import { getJavaagentFlag, getJavaConfiguration, getKey, getXMLConfiguration, IS_WORKSPACE_JDK_ALLOWED, IS_WORKSPACE_JDK_XML_ALLOWED, IS_WORKSPACE_VMARGS_XML_ALLOWED, xmlServerVmargs } from './settings';
 
 const pathExists = require('path-exists');
 const expandHomeDir = require('expand-home-dir');
 const findJavaHome = require('find-java-home');
 const isWindows = process.platform.indexOf('win') === 0;
-const JAVA_FILENAME = 'java' + (isWindows?'.exe':'');
+const JAVA_FILENAME = 'java' + (isWindows ? '.exe' : '');
 
 export interface RequirementsData {
     java_home: string;
@@ -32,12 +32,12 @@ interface ErrorData {
 export async function resolveRequirements(context: ExtensionContext): Promise<RequirementsData> {
     const javaHome = await checkJavaRuntime(context);
     const javaVersion = await checkJavaVersion(javaHome);
-    return Promise.resolve({ 'java_home': javaHome, 'java_version': javaVersion});
+    return Promise.resolve({ 'java_home': javaHome, 'java_version': javaVersion });
 }
 
 function checkJavaRuntime(context: ExtensionContext): Promise<string> {
     return new Promise(async (resolve, reject) => {
-        let source : string;
+        let source: string;
         let javaHome = await readXMLJavaHomeConfig(context);
         if (javaHome) {
             source = 'The xml.java.home variable defined in VS Code settings';
@@ -55,19 +55,19 @@ function checkJavaRuntime(context: ExtensionContext): Promise<string> {
                 }
             }
         }
-        
+
         if (javaHome) {
             javaHome = expandHomeDir(javaHome);
             if (!pathExists.sync(javaHome)) {
-                openJDKDownload(reject, source+' points to a missing folder');
-            } else if (!pathExists.sync(path.resolve(javaHome, 'bin', JAVA_FILENAME))){
-                openJDKDownload(reject, source+ ' does not point to a Java runtime.');
+                openJDKDownload(reject, source + ' points to a missing folder');
+            } else if (!pathExists.sync(path.resolve(javaHome, 'bin', JAVA_FILENAME))) {
+                openJDKDownload(reject, source + ' does not point to a Java runtime.');
             }
             return resolve(javaHome);
         }
         //No settings, let's try to detect as last resort.
         findJavaHome({ allowJre: true }, function (err, home) {
-            if (err){
+            if (err) {
                 openJDKDownload(reject, 'Java runtime could not be located.');
             }
             else {
@@ -142,7 +142,7 @@ async function readJavaHomeConfig(context: ExtensionContext) {
         return workspace.getConfiguration().inspect<string>('java.home').globalValue;
     }
 }
- 
+
 function checkJavaVersion(java_home: string): Promise<number> {
     return new Promise((resolve, reject) => {
         cp.execFile(java_home + '/bin/java', ['-version'], {}, (error, stdout, stderr) => {
@@ -157,7 +157,7 @@ function checkJavaVersion(java_home: string): Promise<number> {
     });
 }
 
-export function parseMajorVersion(content:string):number {
+export function parseMajorVersion(content: string): number {
     let regexp = /version "(.*)"/g;
     let match = regexp.exec(content);
     if (!match) {
@@ -179,15 +179,19 @@ export function parseMajorVersion(content:string):number {
     return javaVersion;
 }
 
-function openJDKDownload(reject, cause : string) {
+function openJDKDownload(reject, cause: string) {
+    reject({
+        message: cause,
+        label: 'Get the Java runtime',
+        openUrl: getOpenJDKDownloadLink(),
+        replaceClose: false
+    });
+}
+
+export function getOpenJDKDownloadLink(): Uri {
     let jdkUrl = 'https://developers.redhat.com/products/openjdk/download/?sc_cid=701f2000000RWTnAAO';
     if (process.platform === 'darwin') {
         jdkUrl = 'https://adoptopenjdk.net/releases.html';
     }
-    reject({
-        message: cause,
-        label: 'Get the Java runtime',
-        openUrl: Uri.parse(jdkUrl),
-        replaceClose: false
-    });
+    return Uri.parse(jdkUrl);
 }

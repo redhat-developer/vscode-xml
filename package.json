@@ -18,6 +18,11 @@
   "xmlServer": {
     "version": "0.14.1"
   },
+  "binaryServerDownloadUrl": {
+    "linux": "https://download.jboss.org/jbosstools/vscode/snapshots/lemminx-binary/LATEST/lemminx-linux",
+    "osx-x86_64": "https://download.jboss.org/jbosstools/vscode/snapshots/lemminx-binary/LATEST/lemminx-osx-x86_64",
+    "win32": "https://download.jboss.org/jbosstools/vscode/snapshots/lemminx-binary/LATEST/lemminx-win32.exe"
+  },
   "engines": {
     "vscode": "^1.37.0"
   },
@@ -58,6 +63,7 @@
     "@types/fs-extra": "^8.0.0",
     "@types/node": "^10.14.16",
     "@types/vscode": "^1.37.0",
+    "@types/yauzl": "^2.9.1",
     "gulp": "^4.0.2",
     "gulp-rename": "^1.4.0",
     "gulp-tslint": "^8.1.3",
@@ -72,12 +78,13 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "fs-extra": "^8.1.0",
     "expand-home-dir": "^0.0.3",
     "find-java-home": "1.1.0",
+    "fs-extra": "^8.1.0",
     "glob": "^7.1.4",
     "path-exists": "^4.0.0",
-    "vscode-languageclient": "^5.2.1"
+    "vscode-languageclient": "^5.2.1",
+    "yauzl": "^2.10.0"
   },
   "contributes": {
     "configuration": {
@@ -107,6 +114,37 @@
           "default": "~/.lemminx",
           "markdownDescription": "Set a custom folder path for cached XML Schemas. An absolute path is expected, although the `~` prefix (for the user home directory) is supported. Default is `~/.lemminx`. Please refer to the [cache documentation](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22server-cache-path%22%7D%5D) for more information.",
           "scope": "window"
+        },
+        "xml.server.preferBinary": {
+          "type": "boolean",
+          "default": false,
+          "description": "By default, vscode-xml tries to run the Java version of the XML Language Server. If no Java is detected, vscode-xml runs the binary XML language server. When this setting is enabled, the binary will also be used even if Java is installed. If there are additions to the XML Language Server provided by other extensions, Java will be used (if available) even if this setting is enabled.",
+          "scope": "window"
+        },
+        "xml.server.silenceExtensionWarning": {
+          "type": "boolean",
+          "default": false,
+          "description": "The XML Language server allows other VSCode extensions to extend its functionality. It requires Java-specific features in order to do this. If extensions to the XML language server are detected, but a binary XML language server is run, a warning will appear. This setting can be used to disable this warning.",
+          "scope": "window"
+        },
+        "xml.server.binary.path": {
+          "type": "string",
+          "description": "Specify the path of a custom binary version of the XML server to use. A binary will be downloaded if this is not set.",
+          "scope": "machine"
+        },
+        "xml.server.binary.args": {
+          "type": "string",
+          "markdownDescription": "Command line arguments to supply to the binary server when the binary server is being used. Takes into effect after relaunching VSCode. Please refer to [this website for the available options](https://www.graalvm.org/reference-manual/native-image/HostedvsRuntimeOptions/). For example, you can increase the maximum memory that the server can use to 1 GB by adding `-Xmx1g`",
+          "scope": "machine"
+        },
+        "xml.server.binary.trustedHashes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "List of the SHA256 hashes of trusted copies of the lemminx (XML language server) binary. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22trusted-binary-hashes%22%7D%5D) for more information",
+          "default": [],
+          "scope": "application"
         },
         "xml.trace.server": {
           "type": "string",

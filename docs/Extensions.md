@@ -194,6 +194,12 @@ You can debug your Java LemMinX extension in any Java IDE that supports remote d
 8. Debug
 
    ![](images/Extensions/DebugLemMinXExtensionInEclipse.png)
+## Binary Server
+
+Unfortunately, classes cannot be loaded dynamically through SPI in the binary version of the LemMinX language server.
+This means that you can't use LemMinX extensions with the binary server.
+vscode-xml will always launch the Java version of the server if LemMinX extensions are detected and Java is present.
+If you launch vscode-xml in binary mode with LemMinX extensions installed, a warning will be displayed that extensions are found but can't be used without Java.
 
 ## XML extension API (TypeScript)
 

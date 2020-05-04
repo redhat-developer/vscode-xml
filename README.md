@@ -41,6 +41,11 @@ or you can read this documentation inside vscode with the command `Open XML Docu
 
 ## Requirements
 
+For running the binary version:
+  * Windows, macOS, or Linux, on a x86_64 CPU
+    * We don't make a binary specific for Apple ARM (Apple Silicon), but the x86_64 binary seems to work through the Rosetta 2 translation layer.
+
+For running the Java version (required if you want to run [extensions](./docs/Extensions#custom-xml-extensions) to the base XML features):
   * Java JDK (or JRE) 8 or more recent
   * Ensure Java path is set in either:
     * `xml.java.home` in VSCode preferences
@@ -60,6 +65,11 @@ The following settings are supported:
 * [`xml.server.vmargs`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-vm-arguments): Specifies extra VM arguments used to launch the XML Language Server.
    Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector.
 * [`xml.server.workDir`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-cache-path): Set a custom folder path for cached XML Schemas. An absolute path is expected, although the `~` prefix (for the user home directory) is supported. Default is `~/.lemminx`.
+* [`xml.server.preferBinary`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-binary-mode): If this setting is enabled, a binary version of the server will be launched even if Java is installed.
+* [`xml.server.binary.path`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-binary-mode): Specify the path of a custom binary version of the XML server to use. A binary will be downloaded if this is not set.
+* [`xml.server.binary.args`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-binary-mode): Command line arguments to supply to the binary server when the binary server is being used. Takes into effect after relaunching VSCode. Please refer to [this website for the available options](https://www.graalvm.org/reference-manual/native-image/HostedvsRuntimeOptions/). For example, you can increase the maximum memory that the server can use to 1 GB by adding `-Xmx1g`
+* [`xml.server.silenceExtensionWarning`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-binary-mode): If this setting is enabled, do not warn about launching the binary server when there are extensions to the XML language server installed.
+* [`xml.server.binary.trustedHashes`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-binary-mode): List of the SHA256 hashes of trusted copies of the lemminx (XML language server) binary.
 * `xml.trace.server`: Trace the communication between VS Code and the XML language server in the Output view. Default is `off`.
 * `xml.logs.client`: Enable/disable logging to the Output view. Default is `true`.
 * [`xml.catalogs`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#catalogs): Register XML catalog files.
