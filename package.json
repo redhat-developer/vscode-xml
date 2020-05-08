@@ -231,6 +231,24 @@
           "default": false,
           "description": "Enable/disable XML CodeLens."
         },
+        "xml.preferences.showSchemaDocumentationType": {
+          "type": "string",
+          "default": "all",
+          "enum": [
+            "documentation",
+            "appinfo",
+            "all",
+            "none"
+          ],
+          "markdownEnumDescriptions": [
+            "Documentation comes from the `xs:documentation` element.",
+            "Documentation comes from the `xs:appinfo` element.",
+            "Documentation comes from the `xs:documentation` and `xs:appinfo` elements.",
+            "Displays no documentation."
+          ],
+          "description": "Specifies the source of the XML schema documentation displayed on hover and completion.",
+          "scope": "window"
+        },
         "xml.java.home": {
           "type": [
             "string",

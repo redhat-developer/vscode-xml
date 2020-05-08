@@ -79,11 +79,11 @@ The following settings are supported:
 Since 0.12.0:
 * `xml.format.enforceQuoteStyle`: Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting. Default is `ignore`.
 * `xml.preferences.quoteStyle`: Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.
+* `xml.preferences.showSchemaDocumentationType`: Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.
 * `xml.symbols.maxItemsComputed`: The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.
-* `files.insertFinalNewline`: now affects XML formatting. Enable/disable inserting a final newline
+* `files.insertFinalNewline`: Now affects XML formatting. Enable/disable inserting a final newline
 when formatting an XML document. Default is `false`.
-* `files.trimFinalNewlines`: now affects XML formatting. Enable/disable final newline trimming when
-formatting an XML document. Default is `false`.
+* `files.trimFinalNewlines`: Now affects XML formatting. Enable/disable final newline trimming when formatting an XML document. Default is `false`.
 
 ## Custom XML Extensions
 
