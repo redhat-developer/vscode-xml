@@ -53,6 +53,12 @@ function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string
       params.push(watchParentProcess + 'false');
     }
   }
+  // "OpenJDK 64-Bit Server VM warning: Options -Xverify:none and -noverify
+  // were deprecated in JDK 13 and will likely be removed in a future release."
+  // so only add -noverify for older versions
+  if (params.indexOf('-noverify') < 0 && params.indexOf('-Xverify:none') < 0 && requirements.java_version < 13) {
+    params.push('-noverify');
+  }
   parseVMargs(params, vmargs);
   let server_home: string = path.resolve(__dirname, '../server');
   let launchersFound: Array<string> = glob.sync('**/org.eclipse.lemminx*-uber.jar', { cwd: server_home });
