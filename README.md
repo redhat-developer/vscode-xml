@@ -77,7 +77,7 @@ The following settings are supported:
 * `xml.symbols.excluded`: Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.
 
 Since 0.12.0:
-* `xml.format.enforceQuoteStyle`: preferred|ignore : Enforce preferred quote style / ignore quote formatting.
+* `xml.format.enforceQuoteStyle`: Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting. Default is `ignore`.
 * `xml.preferences.quoteStyle`: Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.
 * `xml.symbols.maxItemsComputed`: The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.
 * `files.insertFinalNewline`: now affects XML formatting. Enable/disable inserting a final newline

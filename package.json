@@ -181,8 +181,8 @@
             "Use preferred quote style set by `xml.preferences.quoteStyle` when formatting.",
             "Ignore quote style formatting."
           ],
-          "default": "preferred",
-          "description": "Set quote style rule when formatting.",
+          "default": "ignore",
+          "markdownDescription": "Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting. Default is `ignore`",
           "scope": "window"
         },
         "xml.preferences.quoteStyle": {
