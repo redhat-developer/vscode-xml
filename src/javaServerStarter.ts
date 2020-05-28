@@ -77,29 +77,34 @@ function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string
 }
 
 function startedInDebugMode(): boolean {
-  let args = (process as any).execArgv;
+  const args = (process as any).execArgv as string[];
+  return hasDebugFlag(args);
+}
+
+function hasDebugFlag(args: string[]): boolean {
   if (args) {
-    return args.some((arg) => /^--debug=?/.test(arg) || /^--debug-brk=?/.test(arg) || /^--inspect-brk=?/.test(arg));
-  };
+    // See https://nodejs.org/en/docs/guides/debugging-getting-started/
+    return args.some( arg => /^--inspect/.test(arg) || /^--debug/.test(arg));
+  }
   return false;
 }
 
 //exported for tests
 export function parseVMargs(params: any[], vmargsLine: string) {
-	if (!vmargsLine) {
-		return;
-	}
-	let vmargs = vmargsLine.match(/(?:[^\s"]+|"[^"]*")+/g);
-	if (vmargs === null) {
-		return;
-	}
-	vmargs.forEach(arg => {
-		//remove all standalone double quotes
-		arg = arg.replace(/(\\)?"/g, function ($0, $1) { return ($1 ? $0 : ''); });
-		//unescape all escaped double quotes
-		arg = arg.replace(/(\\)"/g, '"');
-		if (params.indexOf(arg) < 0) {
-			params.push(arg);
-		}
-	});
+  if (!vmargsLine) {
+    return;
+  }
+  let vmargs = vmargsLine.match(/(?:[^\s"]+|"[^"]*")+/g);
+  if (vmargs === null) {
+    return;
+  }
+  vmargs.forEach(arg => {
+    //remove all standalone double quotes
+    arg = arg.replace(/(\\)?"/g, function ($0, $1) { return ($1 ? $0 : ''); });
+    //unescape all escaped double quotes
+    arg = arg.replace(/(\\)"/g, '"');
+    if (params.indexOf(arg) < 0) {
+      params.push(arg);
+    }
+  });
 }
