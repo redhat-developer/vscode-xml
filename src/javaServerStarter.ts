@@ -24,9 +24,11 @@ export function prepareExecutable(requirements: RequirementsData, xmlJavaExtensi
 function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string[], context: ExtensionContext): string[] {
   let params: string[] = [];
   if (DEBUG) {
-    params.push('-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1054,quiet=y');
-    // suspend=y is the default. Use this form if you need to debug the server startup code:
-    //params.push('-agentlib:jdwp=transport=dt_socket,server=y,address=1054');
+    if (process.env['SUSPEND_SERVER'] === 'true') {
+      params.push('-agentlib:jdwp=transport=dt_socket,server=y,address=1054');
+    } else {
+      params.push('-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1054,quiet=y');
+    }
   }
   let vmargsCheck = workspace.getConfiguration().inspect(xmlServerVmargs).workspaceValue;
   if (vmargsCheck !== undefined) {
