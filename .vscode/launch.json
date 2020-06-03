@@ -14,6 +14,20 @@
           "preLaunchTask": "npm: watch"
       },
       {
+        "name": "Launch Extension & Wait for remote debugger",
+        "type": "extensionHost",
+        "request": "launch",
+        "runtimeExecutable": "${execPath}",
+        "args": ["--extensionDevelopmentPath=${workspaceRoot}" ],
+        "stopOnEntry": false,
+        "sourceMaps": true,
+        "outFiles": [ "${workspaceRoot}/dist/**/*.js" ],
+        "preLaunchTask": "npm: watch",
+        "env": {
+            "SUSPEND_SERVER":"true"
+        }
+    },
+      {
           "name": "Launch Tests",
           "type": "extensionHost",
           "request": "launch",
