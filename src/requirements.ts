@@ -148,7 +148,7 @@ function checkJavaVersion(java_home: string): Promise<number> {
         cp.execFile(java_home + '/bin/java', ['-version'], {}, (error, stdout, stderr) => {
             let javaVersion = parseMajorVersion(stderr);
             if (javaVersion < 8) {
-                openJDKDownload(reject, 'Java 8 or more recent is required to run. Please download and install a recent JDK.');
+                openJDKDownload(reject, 'Java 8 or more recent is required to run. Please download and install a recent Java runtime.');
             }
             else {
                 resolve(javaVersion);
@@ -182,11 +182,11 @@ export function parseMajorVersion(content:string):number {
 function openJDKDownload(reject, cause : string) {
     let jdkUrl = 'https://developers.redhat.com/products/openjdk/download/?sc_cid=701f2000000RWTnAAO';
     if (process.platform === 'darwin') {
-        jdkUrl = 'http://www.oracle.com/technetwork/java/javase/downloads/index.html';
+        jdkUrl = 'https://adoptopenjdk.net/releases.html';
     }
     reject({
         message: cause,
-        label: 'Get the Java Development Kit',
+        label: 'Get the Java runtime',
         openUrl: Uri.parse(jdkUrl),
         replaceClose: false
     });
