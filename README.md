@@ -78,6 +78,7 @@ The following settings are supported:
 
 Since 0.12.0:
 * `xml.format.enforceQuoteStyle`: Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting. Default is `ignore`.
+* `xml.format.preserveAttributeLineBreaks`: Preserve line breaks that appear before and after attributes. This setting is overridden if `xml.format.splitAttributes` is set to `true`. Default is `false`.
 * `xml.preferences.quoteStyle`: Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.
 * `xml.preferences.showSchemaDocumentationType`: Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.
 * `xml.symbols.maxItemsComputed`: The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.
