@@ -117,6 +117,12 @@
           "description": "Expand/collapse empty elements.",
           "scope": "window"
         },
+        "xml.format.preserveAttributeLineBreaks": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Preserve line breaks that appear before and after attributes. This setting is overridden if `#xml.format.splitAttributes#` is set to `true`.",
+          "scope": "window"
+        },
         "xml.format.splitAttributes": {
           "type": "boolean",
           "default": false,
@@ -182,7 +188,7 @@
             "Ignore quote style formatting."
           ],
           "default": "ignore",
-          "markdownDescription": "Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting. Default is `ignore`",
+          "markdownDescription": "Enforce `preferred` quote style (set by `#xml.preferences.quoteStyle#`) or `ignore` quote style when formatting. Default is `ignore`",
           "scope": "window"
         },
         "xml.preferences.quoteStyle": {
