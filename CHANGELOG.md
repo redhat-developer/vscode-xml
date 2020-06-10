@@ -1,5 +1,54 @@
 # Change Log
 
+## [0.12.0](https://github.com/redhat-developer/vscode-xml/milestone/15?closed=1) (June 10, 2020)
+
+### Enhancements
+
+ * Add `xml.format.preserveAttributeLineBreaks` setting. See [#271](https://github.com/redhat-developer/vscode-xml/pull/271)
+ * Missing Java now links to adoptopenjdk.net, for Mac Users. See [#270](https://github.com/redhat-developer/vscode-xml/pull/270)
+ * Don't return hover when there's no documentation. See [#258](https://github.com/redhat-developer/vscode-xml/issues/258)
+ * Improve formatting for processing instructions. See [#240](https://github.com/redhat-developer/vscode-xml/issues/240)
+ * Provide `xml.symbols.maxItemsComputed` setting for outline. See [#237](https://github.com/redhat-developer/vscode-xml/issues/237)
+ * Formatter expand/collapse/ignore empty XML tags. See [#219](https://github.com/redhat-developer/vscode-xml/issues/219)
+ * Completion for xsd:enumeration inside of text node. See [#218](https://github.com/redhat-developer/vscode-xml/issues/218)
+ * Formatting of newlines at EOF. See [#196](https://github.com/redhat-developer/vscode-xml/issues/196)
+ * Disable cdata autocompletion when typing period. See [#179](https://github.com/redhat-developer/vscode-xml/issues/179)
+ * Provide more server/build info on startup. See [lemminx#755](https://github.com/eclipse/lemminx/pull/755)
+ * Add support for `textDocument/documentLink` for xs:import/schemaLocation. See [lemminx#733](https://github.com/eclipse/lemminx/issues/733)
+ * Add support for `textDocument/documentLink` for xml-model/href. See [lemminx#712](https://github.com/eclipse/lemminx/issues/712)
+ * Find definition for external declared entity. See [lemminx#706](https://github.com/eclipse/lemminx/issues/706)
+ * Snippet to generate xml-model. See [lemminx#699](https://github.com/eclipse/lemminx/issues/699)
+ * XML Completion based on DTD/XML Schema by using xml-model . See [lemminx#698](https://github.com/eclipse/lemminx/issues/698)
+ * Validate XML with DTD/XML Schema by using xml-model. See [lemminx#697](https://github.com/eclipse/lemminx/issues/697)
+ * Create hyperlink to DTD source on hover. See [lemminx#693](https://github.com/eclipse/lemminx/issues/693)
+ * Add support for `textDocument/documentLink` for xs:include/schemaLocation. See [#689](https://github.com/eclipse/lemminx/issues/689)
+ * Validate XML with DTD/XML Schema by using xml-model. See [lemminx#688](https://github.com/eclipse/lemminx/pull/688)
+
+### Bug Fixes
+
+ * Don't set the -noverify flag on startup. See [#259](https://github.com/redhat-developer/vscode-xml/issues/259)
+ * XML entities declared in a DTD are marked undeclared after XML file change. See [#234](https://github.com/redhat-developer/vscode-xml/issues/234)
+ * Formatting breaks attributes containing quotes. See [#182](https://github.com/redhat-developer/vscode-xml/issues/182)
+ * Too many logs after completion, hover with XML that contains DTD subset. See [lemminx#750](https://github.com/eclipse/lemminx/issues/750)
+ * Fix collection of external entities depending on line ending. See [lemminx#744](https://github.com/eclipse/lemminx/pull/744)
+ * No entity completion for externally declared SYSTEM and PUBLIC entities. See [lemminx#742](https://github.com/eclipse/lemminx/issues/742)
+ * Entity documentation has no value for entities declared with SYSTEM OR PUBLIC. See [lemminx#741](https://github.com/eclipse/lemminx/issues/741)
+ * Error while loading DOCTYPE subset : java.lang.NullPointerException. See [lemminx#739](https://github.com/eclipse/lemminx/issues/739)
+ * NPE in ContentModelCompletionParticipant.addCompletionItem. See [lemminx#720](https://github.com/eclipse/lemminx/issues/720)
+ * NPE in XMLCompletions collectAttributeNameSuggestions(). See [lemminx#719](https://github.com/eclipse/lemminx/issues/719)
+ * Support advanced characters for entity name. See [lemminx#718](https://github.com/eclipse/lemminx/pull/718)
+ * Fix error range TargetNamespace.1. See [lemminx#704](https://github.com/eclipse/lemminx/issues/704)
+ * Fix error range TargetNamespace.2. See [lemminx#703](https://github.com/eclipse/lemminx/issues/703)
+ * Fix cache result of external grammar info. See [lemminx#696](https://github.com/eclipse/lemminx/pull/696)
+ * Read the cached XSD, DTD grammar file with lazy mode. See [lemminx#687](https://github.com/eclipse/lemminx/pull/687)
+ * NPE with Codelens in empty XSD file. See [lemminx#684](https://github.com/eclipse/lemminx/issues/684)
+ * NPE with TypeDefinition. See [lemminx#629](https://github.com/eclipse/lemminx/issues/629)
+
+### Build
+
+* Fix debug mode detection. See [#266](https://github.com/redhat-developer/vscode-xml/pull/266)
+* Make it easier to start XML language server with suspend. See [#257](https://github.com/redhat-developer/vscode-xml/issues/257)
+
 ## [0.11.0](https://github.com/redhat-developer/vscode-xml/milestone/14?closed=1) (March 25, 2020)
 
 ### Enhancements
