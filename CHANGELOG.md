@@ -10,7 +10,7 @@
  * Improve formatting for processing instructions. See [#240](https://github.com/redhat-developer/vscode-xml/issues/240)
  * Provide `xml.symbols.maxItemsComputed` setting for outline. See [#237](https://github.com/redhat-developer/vscode-xml/issues/237)
  * Formatter expand/collapse/ignore empty XML tags. See [#219](https://github.com/redhat-developer/vscode-xml/issues/219)
- * Completion for xsd:enumeration inside of text node. See [#218](https://github.com/redhat-developer/vscode-xml/issues/218)
+ * Completion for `xsd:enumeration` inside of text node. See [#218](https://github.com/redhat-developer/vscode-xml/issues/218)
  * Formatting of newlines at EOF. See [#196](https://github.com/redhat-developer/vscode-xml/issues/196)
  * Disable cdata autocompletion when typing period. See [#179](https://github.com/redhat-developer/vscode-xml/issues/179)
  * Provide more server/build info on startup. See [lemminx#755](https://github.com/eclipse/lemminx/pull/755)
@@ -23,6 +23,17 @@
  * Create hyperlink to DTD source on hover. See [lemminx#693](https://github.com/eclipse/lemminx/issues/693)
  * Add support for `textDocument/documentLink` for xs:include/schemaLocation. See [#689](https://github.com/eclipse/lemminx/issues/689)
  * Validate XML with DTD/XML Schema by using xml-model. See [lemminx#688](https://github.com/eclipse/lemminx/pull/688)
+ * Remove spacing when formatting processing instruction. See [lemminx#670](https://github.com/eclipse/lemminx/pull/670)
+ * Hover for referenced entities. See [lemminx#663](https://github.com/eclipse/lemminx/issues/663)
+ * Completion for external declared entity. See [lemminx#660](https://github.com/eclipse/lemminx/issues/660)
+ * Insert final newline depending on lsp4j formatting settings. See [lemminx#649](https://github.com/eclipse/lemminx/pull/649)
+ * Hyperlink to open declared DTD files. See [lemminx#641](https://github.com/eclipse/lemminx/issues/641)
+ * Manage snippet registry to write snippet in JSON. Adds new snippets. See [lemminx#640](https://github.com/eclipse/lemminx/issues/640)
+ * Separate xsd:documentation and xsd:appinfo contents on hover and completion. See [lemminx#630](https://github.com/eclipse/lemminx/issues/630)
+ * Find definition for locally declared entity. See [lemminx#625](https://github.com/eclipse/lemminx/issues/625)
+ * CodeActions for RootElementTypeMustMatchDoctypedecl. See [lemminx#561](https://github.com/eclipse/lemminx/issues/561)
+ * CodeAction for EntityNotDeclared. See [lemminx#532](https://github.com/eclipse/lemminx/issues/532)
+ * Completion for locally declared entity. See [lemminx#520](https://github.com/eclipse/lemminx/issues/520)
 
 ### Bug Fixes
 
@@ -42,7 +53,13 @@
  * Fix cache result of external grammar info. See [lemminx#696](https://github.com/eclipse/lemminx/pull/696)
  * Read the cached XSD, DTD grammar file with lazy mode. See [lemminx#687](https://github.com/eclipse/lemminx/pull/687)
  * NPE with Codelens in empty XSD file. See [lemminx#684](https://github.com/eclipse/lemminx/issues/684)
+ * Range formatting inserts `<null>` when formatting inside DOCTYPE element. See [lemminx#682](https://github.com/eclipse/lemminx/issues/682)
+ * NPE in ContentModelCodeActionParticipant.doCodeAction#L47. See [lemminx#671](https://github.com/eclipse/lemminx/issues/671)
+ * Fix error range for `SemicolonRequiredInReference`. See [lemminx#664](https://github.com/eclipse/lemminx/issues/664)
+ * Don't generate end element on apply completion if it exists. See [lemminx#651](https://github.com/eclipse/lemminx/issues/651)
+ * Quickfix to close open tag doesn't deal with attributes. See [lemminx#646](https://github.com/eclipse/lemminx/issues/646)
  * NPE with TypeDefinition. See [lemminx#629](https://github.com/eclipse/lemminx/issues/629)
+ * MSG_ATTRIBUTE_NOT_DECLARED must highlight attribute name instead of attribute value. See [lemminx#623](https://github.com/eclipse/lemminx/pull/634)
 
 ### Build
 
