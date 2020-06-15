@@ -89,7 +89,7 @@ export function activate(context: ExtensionContext) {
       },
       synchronize: {
         //preferences starting with these will trigger didChangeConfiguration
-        configurationSection: ['xml', '[xml]', 'files.trimFinalNewlines', 'files.insertFinalNewline']
+        configurationSection: ['xml', '[xml]', 'files.trimFinalNewlines', 'files.trimTrailingWhitespace', 'files.insertFinalNewline']
       },
       middleware: {
         workspace: {
@@ -187,6 +187,7 @@ export function activate(context: ExtensionContext) {
     xml['xml']['useCache'] = true;
     xml['xml']['java']['home'] = javaHome;
     xml['xml']['format']['trimFinalNewlines'] = workspace.getConfiguration('files').get('trimFinalNewlines', true);
+    xml['xml']['format']['trimTrailingWhitespace'] = workspace.getConfiguration('files').get('trimTrailingWhitespace', false);
     xml['xml']['format']['insertFinalNewline'] = workspace.getConfiguration('files').get('insertFinalNewline', false);
     return xml;
   }
