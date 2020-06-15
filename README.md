@@ -11,7 +11,7 @@ This VS Code extension provides support for creating and editing XML documents, 
 ## Features
 
   * Syntax error reporting
-  * General code completion 
+  * General code completion
   * Auto-close tags
   * Automatic node indentation
   * Symbol highlighting
@@ -25,7 +25,7 @@ This VS Code extension provides support for creating and editing XML documents, 
   * DTD formatting
   * XSD validation
   * XSD based hover
-  * XSD based code completion 
+  * XSD based code completion
   * XSL support
   * XML catalogs
   * File associations
@@ -37,18 +37,18 @@ See the [changelog](CHANGELOG.md) for the latest release. You might also find us
 ## Requirements
 
   * Java JDK (or JRE) 8 or more recent
-  * Ensure Java path is set in either: 
+  * Ensure Java path is set in either:
     * `xml.java.home` in VSCode preferences
     * `java.home` in VSCode preferences
-    * Environment variable `JAVA_HOME` or `JDK_HOME`  
-    * **Note**: The path should end at the parent folder that contains the `bin` folder.  
-      **Example Path**: `/usr/lib/jvm/java-1.8.0` if `bin` exists at `/usr/lib/jvm/java-1.8.0/bin`.  
+    * Environment variable `JAVA_HOME` or `JDK_HOME`
+    * **Note**: The path should end at the parent folder that contains the `bin` folder.
+      **Example Path**: `/usr/lib/jvm/java-1.8.0` if `bin` exists at `/usr/lib/jvm/java-1.8.0/bin`.
     * **Note**: If the path is not set, the extension will attempt to find the path to the JDK or JRE.
 
 ## Supported VS Code settings
 
 The following settings are supported:
-  
+
 * `xml.trace.server` : Trace the communication between VS Code and the XML Language Server in the Output view.
 * `xml.catalogs` : Register XML catalog files.
 * `xml.logs.client` : Enable/disable logging to the Output view.
@@ -62,10 +62,14 @@ The following settings are supported:
 * `xml.format.preserveEmptyContent`: Set to `true` to preserve standalone whitespace content in an element. Defaults to `false`.
 * `xml.format.spaceBeforeEmptyCloseTag`: Set to `true` to insert space before the end of a self closing tag. Defaults to `true`.
 * `xml.format.enabled` : Enable/disable formatting.
-* `xml.autoCloseTags.enabled` : Enable/disable automatic tag closing.  
-  **Note** 'editor.autoClosingBrackets' must be turned off to work.  
+* `xml.format.enforceQuoteStyle`: Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting. Default is `ignore`.
+* `xml.format.preserveAttributeLineBreaks`: Preserve line breaks that appear before and after attributes. This setting is overridden if `xml.format.splitAttributes` is set to `true`. Default is `false`.
+* `xml.autoCloseTags.enabled` : Enable/disable automatic tag closing.
+  **Note**: `editor.autoClosingBrackets` must be turned off to work.
 * `xml.java.home`: Set the Java path required to run the XML Language Server. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
-* `xml.server.vmargs`: Extra VM arguments used to launch the XML Language Server. Requires VS Code restart.  
+* `xml.preferences.showSchemaDocumentationType`: Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.
+* `xml.preferences.quoteStyle`: Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.
+* `xml.server.vmargs`: Extra VM arguments used to launch the XML Language Server. Requires VS Code restart.
 * `xml.symbols.enabled`: Enable/disable document symbols (Outline). Default is `true`.
 * `xml.validation.enabled`: Set to `false` to disable all validation. Defaults to `true`.
 * `xml.validation.schema`: Set to `false` to disable schema validation. Defaults to `true`.
@@ -73,18 +77,12 @@ The following settings are supported:
 * `xml.validation.disallowDocTypeDecl`: Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`.
 * `xml.validation.resolveExternalEntities`: Enable/disable resolve of external entities. Default is `false`.
 * `xml.server.workDir`: Set an absolute path for all cached schemas to be stored. Defaults to `~/.lemminx`.
+* `xml.symbols.maxItemsComputed`: The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.
 * `xml.codeLens.enabled`: Enable/disable XML CodeLens. Default is `false`.
 * `xml.symbols.excluded`: Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.
 
-Since 0.12.0:
-* `xml.format.enforceQuoteStyle`: Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting. Default is `ignore`.
-* `xml.format.preserveAttributeLineBreaks`: Preserve line breaks that appear before and after attributes. This setting is overridden if `xml.format.splitAttributes` is set to `true`. Default is `false`.
-* `xml.preferences.quoteStyle`: Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.
-* `xml.preferences.showSchemaDocumentationType`: Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.
-* `xml.symbols.maxItemsComputed`: The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.
-* `files.insertFinalNewline`: Now affects XML formatting. Enable/disable inserting a final newline
-when formatting an XML document. Default is `false`.
-* `files.trimFinalNewlines`: Now affects XML formatting. Enable/disable final newline trimming when formatting an XML document. Default is `false`.
+Since 0.13.0:
+* `files.trimTrailingWhitespace`: Now affects XML formatting. Enable/disable trailing whitespace trimming when formatting an XML document. Default is `false`.
 
 ## Custom XML Extensions
 
@@ -97,9 +95,9 @@ To do that:
     * register your custom completion participant in the XML extension like [MavenCompletionParticipant](https://github.com/angelozerr/lsp4xml-extensions-maven/blob/master/org.eclipse.lsp4xml.extensions.maven/src/main/java/org/eclipse/lsp4xml/extensions/maven/MavenCompletionParticipant.java#L28)
     * register your custom XML extension with [Java Service Provider Interface (SPI)](https://www.baeldung.com/java-spi) mechanism in the [/META-INF/services/org.eclipse.lemminx.services.extensions.IXMLExtension](https://github.com/angelozerr/lsp4xml-extensions-maven/blob/master/org.eclipse.lsp4xml.extensions.maven/src/main/resources/META-INF/services/org.eclipse.lsp4xml.services.extensions.IXMLExtension) file.
     * build a JAR `your-custom-xml-extension.jar`.
- 
+
  * create a `vscode extension` which embeds the `your-custom-xml-extension.jar` JAR and declares this JAR path in the `package.json`:
- 
+
 ```json
 "contributes": {
 	"xml.javaExtensions": [

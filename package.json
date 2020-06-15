@@ -341,7 +341,8 @@
     "configurationDefaults": {
       "[xml]": {
         "editor.autoClosingBrackets": "never",
-        "files.trimFinalNewlines": true
+        "files.trimFinalNewlines": true,
+        "files.trimTrailingWhitespace": false
       }
     },
     "languages": [
