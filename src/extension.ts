@@ -13,7 +13,7 @@
 import { prepareExecutable } from './javaServerStarter';
 import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest, NotificationType, MessageType } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions, Command } from "vscode";
+import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions, Command, WorkspaceEdit } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
@@ -122,6 +122,13 @@ export function activate(context: ExtensionContext) {
           })
         })
       }));
+
+      context.subscriptions.push(commands.registerCommand(Commands.APPLY_WORKSPACE_EDIT, async (obj) => {
+        const edit: WorkspaceEdit = languageClient.protocol2CodeConverter.asWorkspaceEdit(obj);
+        if (edit) {
+          await workspace.applyEdit(edit);
+        }
+      }))
 
       setupActionableNotificationListener(languageClient);
 

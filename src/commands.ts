@@ -26,6 +26,11 @@ export namespace Commands {
     export const SHOW_REFERENCES = 'xml.show.references';
 
     /**
+     * Apply the given WorkspaceEdit
+     */
+    export const APPLY_WORKSPACE_EDIT = 'xml.apply.workspaceEdit';
+
+    /**
      * Show editor references
      */
     export const EDITOR_SHOW_REFERENCES = 'editor.action.showReferences';
