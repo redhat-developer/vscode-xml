@@ -1,5 +1,27 @@
 # Change Log
 
+## [0.13.0](https://github.com/redhat-developer/vscode-xml/milestone/16?closed=1) (July 6, 2020)
+
+### Enhancements
+
+ * Formatting support for trim trailing whitespace. See [#250](https://github.com/redhat-developer/vscode-xml/issues/250).
+ * Warning message when one of the `xml.catalogs` paths cannot be found. See [#217](https://github.com/redhat-developer/vscode-xml/issues/217).
+ * Grammar generator: generate a grammar from an XML document. See [lemminx#778](https://github.com/eclipse/lemminx/issues/778).
+ * Bind XML document with no grammar constraints to generated XSD / DTD. See [lemminx#151](https://github.com/eclipse/lemminx/issues/151).
+ * Quick fix to create missing `xsi:noNamespaceSchemaLocation` and generate XSD that adheres to current XML document. See [lemminx#702](https://github.com/eclipse/lemminx/issues/702).
+ * Highlight the XSD file name in `xsi:schemaLocation` when reporting an invalid or missing XSD file. See [lemminx#782](https://github.com/eclipse/lemminx/issues/782).
+ * Add support for `textDocument/documentLink` for `xsi:schemaLocation`. See [lemminx#666](https://github.com/eclipse/lemminx/issues/666).
+ * Sort snippets. See [lemminx#692](https://github.com/eclipse/lemminx/issues/692).
+ * New snippet to generate a catalog. See [lemminx#708](https://github.com/eclipse/lemminx/issues/708).
+ * New snippets for `xml-stylesheet`. See [lemminx#728](https://github.com/eclipse/lemminx/issues/728).
+
+###  Bug Fixes
+
+ * Missing `xml-model` reference generates multiple similar warnings. See [#795](https://github.com/eclipse/lemminx/issues/795).
+ * Fix line break being incorrectly added when `preserveAttrLineBreaks` is `true`. See [#780](https://github.com/eclipse/lemminx/pull/780).
+ * Fix cases where spaces in file paths weren't accounted for. See [lemminx#749](https://github.com/eclipse/lemminx/issues/749).
+ * Fix documentation "information" typo. See [lemminx#812](https://github.com/eclipse/lemminx/pull/812).
+
 ## [0.12.0](https://github.com/redhat-developer/vscode-xml/milestone/15?closed=1) (June 10, 2020)
 
 ### Enhancements
