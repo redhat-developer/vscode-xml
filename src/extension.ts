@@ -26,20 +26,116 @@ export interface ScopeInfo {
   configurationTarget: boolean;
 }
 
+/**
+ * Interface for the FileAssociation shape.
+ * @param systemId - The path to a valid XSD.
+ * @param pattern - The file pattern associated with the XSD.
+ * 
+ * @returns None
+ */
+export interface XMLFileAssociation {
+  systemId: string,
+  pattern: string;
+}
+
+/**
+ * Interface for APIs exposed from the extension.
+ * 
+ * @remarks
+ * A sample code to use these APIs are as following:
+ * const ext = await vscode.extensions.getExtension('redhat.vscode-xml').activate();
+ * ext.addXMLCatalogs(...);
+ * ext.removeXMLCatalogs(...);
+ * ext.addXMLFileAssociations(...);
+ * ext.removeXMLFileAssociations(...);
+ */
+export interface XMLExtensionApi {
+  /**
+   * Adds XML Catalogs in addition to the catalogs defined in the settings.json file.
+   * 
+   * @remarks
+   * An example is to call this API:
+   * ```ts
+   * addXMLCatalogs(['path/to/catalog.xml', 'path/to/anotherCatalog.xml'])
+   * ``` 
+   * @param catalogs - A list of path to XML catalogs
+   * @returns None
+   */
+  addXMLCatalogs(catalogs: string[]): void;
+  /**
+   * Removes XML Catalogs from the extension.
+   * 
+   * @remarks
+   * An example is to call this API:
+   * ```ts
+   * removeXMLCatalogs(['path/to/catalog.xml', 'path/to/anotherCatalog.xml'])
+   * ``` 
+   * @param catalogs - A list of path to XML catalogs
+   * @returns None
+   */
+  removeXMLCatalogs(catalogs: string[]): void;
+  /**
+   * Adds XML File Associations in addition to the catalogs defined in the settings.json file.
+   * 
+   * @remarks
+   * An example is to call this API:
+   * ```ts
+   * addXMLFileAssociations([{
+   *    "systemId": "path/to/file.xsd", 
+   *    "pattern": "file1.xml"
+   *  },{
+   *    "systemId": "http://www.w3.org/2001/XMLSchema.xsd",
+   *    "pattern": "file2.xml"
+   *  }])
+   * ``` 
+   * @param fileAssociations - A list of file association 
+   * @returns None
+   */
+  addXMLFileAssociations(fileAssociations: XMLFileAssociation[]): void;
+  /**
+   * Removes XML File Associations from the extension.
+   * 
+   * @remarks
+   * An example is to call this API:
+   * ```ts
+   * removeXMLFileAssociations([{
+   *    "systemId": "path/to/file.xsd", 
+   *    "pattern": "file1.xml"
+   *  },{
+   *    "systemId": "http://www.w3.org/2001/XMLSchema.xsd",
+   *    "pattern": "file2.xml"
+   *  }])
+   * ``` 
+   * @param fileAssociations - A list of file association 
+   * @returns None
+   */
+  removeXMLFileAssociations(fileAssociations: XMLFileAssociation[]): void;
+  /**
+   * Returns the status of the Language Client
+   * 
+   * @remarks
+   * An example is to call this API:
+   * ```ts
+   * isReady()
+   * ``` 
+   * @returns Boolean
+   */
+  isReady(): boolean;
+}
+
 namespace TagCloseRequest {
   export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any, any> = new RequestType('xml/closeTag');
 }
 
-
 namespace SymbolsLimitExceededNotification {
-  export const type: NotificationType<{commandId: string, message: string}, any> = new NotificationType('xml/symbolsLimitExceeded');
+  export const type: NotificationType<{ commandId: string, message: string }, any> = new NotificationType('xml/symbolsLimitExceeded');
 }
 
 interface ActionableMessage {
-	severity: MessageType;
-	message: string;
-	data?: any;
-	commands?: Command[];
+  severity: MessageType;
+  message: string;
+  data?: any;
+  commands?: Command[];
 }
 
 namespace ActionableNotification {
@@ -48,6 +144,11 @@ namespace ActionableNotification {
 
 export function activate(context: ExtensionContext) {
   let storagePath = context.storagePath;
+  const externalXmlSettings = {
+    "xmlCatalogs": [],
+    "xmlFileAssociations": []
+  };
+
   if (!storagePath) {
     storagePath = os.homedir() + "/.lemminx";
   }
@@ -63,6 +164,7 @@ export function activate(context: ExtensionContext) {
     // rethrow to disrupt the chain.
     throw error;
   }).then(requirements => {
+
     let clientOptions: LanguageClientOptions = {
       // Register the server for xml and xsl
       documentSelector: [
@@ -105,6 +207,7 @@ export function activate(context: ExtensionContext) {
     let languageClient = new LanguageClient('xml', 'XML Support', serverOptions, clientOptions);
     let toDispose = context.subscriptions;
     let disposable = languageClient.start();
+    let clientIsReady = false;
     toDispose.push(disposable);
     languageClient.onReady().then(() => {
       //Detect JDK configuration changes
@@ -142,10 +245,65 @@ export function activate(context: ExtensionContext) {
           onExtensionChange(extensions.all);
         });
       }
-
+      clientIsReady = true;
     });
     languages.setLanguageConfiguration('xml', getIndentationRules());
     languages.setLanguageConfiguration('xsl', getIndentationRules());
+
+    const api: XMLExtensionApi = {
+      // add API set catalogs to internal memory
+      addXMLCatalogs: (catalogs: string[]) => {
+        const externalXmlCatalogs = externalXmlSettings.xmlCatalogs;
+        catalogs.forEach(element => {
+          if (!externalXmlCatalogs.includes(element)) {
+            externalXmlCatalogs.push(element);
+          }
+        });
+        languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+        onConfigurationChange();
+      },
+      // remove API set catalogs to internal memory
+      removeXMLCatalogs: (catalogs: string[]) => {
+        catalogs.forEach(element => {
+          const externalXmlCatalogs = externalXmlSettings.xmlCatalogs;
+          if (externalXmlCatalogs.includes(element)) {
+            const itemIndex = externalXmlCatalogs.indexOf(element);
+            externalXmlCatalogs.splice(itemIndex, 1);
+          }
+        });
+        languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+        onConfigurationChange();
+      },
+      // add API set fileAssociations to internal memory
+      addXMLFileAssociations: (fileAssociations: XMLFileAssociation[]) => {
+        const externalfileAssociations = externalXmlSettings.xmlFileAssociations;
+        fileAssociations.forEach(element => {
+          if (!externalfileAssociations.some(fileAssociation => fileAssociation.systemId === element.systemId)) {
+            externalfileAssociations.push(element);
+          }
+        });
+        languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+        onConfigurationChange();
+      },
+      // remove API set fileAssociations to internal memory
+      removeXMLFileAssociations: (fileAssociations: XMLFileAssociation[]) => {
+        const externalfileAssociations = externalXmlSettings.xmlFileAssociations;
+        fileAssociations.forEach(element => {
+          const itemIndex = externalfileAssociations.findIndex(fileAssociation => fileAssociation.systemId === element.systemId) //returns -1 if item not found
+          if (itemIndex > -1) {
+            externalfileAssociations.splice(itemIndex, 1);
+          }
+        });
+        languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+        onConfigurationChange();
+      },
+      // return if Language Client is ready
+      isReady: () => {
+        return clientIsReady;
+      }
+    };
+
+    return api
   });
 
   /**
@@ -189,6 +347,19 @@ export function activate(context: ExtensionContext) {
     xml['xml']['format']['trimFinalNewlines'] = workspace.getConfiguration('files').get('trimFinalNewlines', true);
     xml['xml']['format']['trimTrailingWhitespace'] = workspace.getConfiguration('files').get('trimTrailingWhitespace', false);
     xml['xml']['format']['insertFinalNewline'] = workspace.getConfiguration('files').get('insertFinalNewline', false);
+
+    //applying externalXmlSettings to the xmlSettings
+    externalXmlSettings.xmlCatalogs.forEach(catalog => {
+      if (!xml['xml']['catalogs'].includes(catalog)) {
+        xml['xml']['catalogs'].push(catalog);
+      }
+    })
+    externalXmlSettings.xmlFileAssociations.forEach(element => {
+      if (!xml['xml']['fileAssociations'].some(fileAssociation => fileAssociation.systemId === element.systemId)) {
+        xml['xml']['fileAssociations'].push(element);
+      }
+    });
+
     return xml;
   }
 }
