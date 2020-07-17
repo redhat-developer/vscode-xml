@@ -234,9 +234,9 @@ export function activate(context: ExtensionContext) {
       context.subscriptions.push(activateTagClosing(tagProvider, { xml: true, xsl: true }, Commands.AUTO_CLOSE_TAGS));
 
       if (extensions.onDidChange) {// Theia doesn't support this API yet
-        extensions.onDidChange(() => {
+        context.subscriptions.push(extensions.onDidChange(() => {
           onExtensionChange(extensions.all);
-        });
+        }));
       }
 
       const api: XMLExtensionApi = {
