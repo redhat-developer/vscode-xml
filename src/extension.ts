@@ -110,17 +110,7 @@ export interface XMLExtensionApi {
    * @returns None
    */
   removeXMLFileAssociations(fileAssociations: XMLFileAssociation[]): void;
-  /**
-   * Returns the status of the Language Client
-   * 
-   * @remarks
-   * An example is to call this API:
-   * ```ts
-   * isReady()
-   * ``` 
-   * @returns Boolean
-   */
-  isReady(): boolean;
+
 }
 
 namespace TagCloseRequest {
@@ -207,9 +197,12 @@ export function activate(context: ExtensionContext) {
     let languageClient = new LanguageClient('xml', 'XML Support', serverOptions, clientOptions);
     let toDispose = context.subscriptions;
     let disposable = languageClient.start();
-    let clientIsReady = false;
     toDispose.push(disposable);
-    languageClient.onReady().then(() => {
+
+    languages.setLanguageConfiguration('xml', getIndentationRules());
+    languages.setLanguageConfiguration('xsl', getIndentationRules());
+
+    return languageClient.onReady().then(() => {
       //Detect JDK configuration changes
       disposable = subscribeJDKChangeConfiguration();
       toDispose.push(disposable);
@@ -245,65 +238,57 @@ export function activate(context: ExtensionContext) {
           onExtensionChange(extensions.all);
         });
       }
-      clientIsReady = true;
-    });
-    languages.setLanguageConfiguration('xml', getIndentationRules());
-    languages.setLanguageConfiguration('xsl', getIndentationRules());
 
-    const api: XMLExtensionApi = {
-      // add API set catalogs to internal memory
-      addXMLCatalogs: (catalogs: string[]) => {
-        const externalXmlCatalogs = externalXmlSettings.xmlCatalogs;
-        catalogs.forEach(element => {
-          if (!externalXmlCatalogs.includes(element)) {
-            externalXmlCatalogs.push(element);
-          }
-        });
-        languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
-        onConfigurationChange();
-      },
-      // remove API set catalogs to internal memory
-      removeXMLCatalogs: (catalogs: string[]) => {
-        catalogs.forEach(element => {
+      const api: XMLExtensionApi = {
+        // add API set catalogs to internal memory
+        addXMLCatalogs: (catalogs: string[]) => {
           const externalXmlCatalogs = externalXmlSettings.xmlCatalogs;
-          if (externalXmlCatalogs.includes(element)) {
-            const itemIndex = externalXmlCatalogs.indexOf(element);
-            externalXmlCatalogs.splice(itemIndex, 1);
-          }
-        });
-        languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
-        onConfigurationChange();
-      },
-      // add API set fileAssociations to internal memory
-      addXMLFileAssociations: (fileAssociations: XMLFileAssociation[]) => {
-        const externalfileAssociations = externalXmlSettings.xmlFileAssociations;
-        fileAssociations.forEach(element => {
-          if (!externalfileAssociations.some(fileAssociation => fileAssociation.systemId === element.systemId)) {
-            externalfileAssociations.push(element);
-          }
-        });
-        languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
-        onConfigurationChange();
-      },
-      // remove API set fileAssociations to internal memory
-      removeXMLFileAssociations: (fileAssociations: XMLFileAssociation[]) => {
-        const externalfileAssociations = externalXmlSettings.xmlFileAssociations;
-        fileAssociations.forEach(element => {
-          const itemIndex = externalfileAssociations.findIndex(fileAssociation => fileAssociation.systemId === element.systemId) //returns -1 if item not found
-          if (itemIndex > -1) {
-            externalfileAssociations.splice(itemIndex, 1);
-          }
-        });
-        languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
-        onConfigurationChange();
-      },
-      // return if Language Client is ready
-      isReady: () => {
-        return clientIsReady;
-      }
-    };
-
-    return api
+          catalogs.forEach(element => {
+            if (!externalXmlCatalogs.includes(element)) {
+              externalXmlCatalogs.push(element);
+            }
+          });
+          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+          onConfigurationChange();
+        },
+        // remove API set catalogs to internal memory
+        removeXMLCatalogs: (catalogs: string[]) => {
+          catalogs.forEach(element => {
+            const externalXmlCatalogs = externalXmlSettings.xmlCatalogs;
+            if (externalXmlCatalogs.includes(element)) {
+              const itemIndex = externalXmlCatalogs.indexOf(element);
+              externalXmlCatalogs.splice(itemIndex, 1);
+            }
+          });
+          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+          onConfigurationChange();
+        },
+        // add API set fileAssociations to internal memory
+        addXMLFileAssociations: (fileAssociations: XMLFileAssociation[]) => {
+          const externalfileAssociations = externalXmlSettings.xmlFileAssociations;
+          fileAssociations.forEach(element => {
+            if (!externalfileAssociations.some(fileAssociation => fileAssociation.systemId === element.systemId)) {
+              externalfileAssociations.push(element);
+            }
+          });
+          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+          onConfigurationChange();
+        },
+        // remove API set fileAssociations to internal memory
+        removeXMLFileAssociations: (fileAssociations: XMLFileAssociation[]) => {
+          const externalfileAssociations = externalXmlSettings.xmlFileAssociations;
+          fileAssociations.forEach(element => {
+            const itemIndex = externalfileAssociations.findIndex(fileAssociation => fileAssociation.systemId === element.systemId) //returns -1 if item not found
+            if (itemIndex > -1) {
+              externalfileAssociations.splice(itemIndex, 1);
+            }
+          });
+          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+          onConfigurationChange();
+        }
+      };
+      return api;
+    });
   });
 
   /**
