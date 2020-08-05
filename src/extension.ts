@@ -11,9 +11,9 @@
  */
 
 import { prepareExecutable } from './javaServerStarter';
-import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest, NotificationType, MessageType } from 'vscode-languageclient';
+import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest, NotificationType, MessageType, DocumentSelector } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions, Command } from "vscode";
+import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, Range, LanguageConfiguration, Uri, extensions, Command } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
@@ -81,32 +81,32 @@ export interface XMLExtensionApi {
    * An example is to call this API:
    * ```ts
    * addXMLFileAssociations([{
-   *    "systemId": "path/to/file.xsd", 
+   *    "systemId": "path/to/file.xsd",
    *    "pattern": "file1.xml"
    *  },{
    *    "systemId": "http://www.w3.org/2001/XMLSchema.xsd",
    *    "pattern": "file2.xml"
    *  }])
-   * ``` 
-   * @param fileAssociations - A list of file association 
+   * ```
+   * @param fileAssociations - A list of file association
    * @returns None
    */
   addXMLFileAssociations(fileAssociations: XMLFileAssociation[]): void;
   /**
    * Removes XML File Associations from the extension.
-   * 
+   *
    * @remarks
    * An example is to call this API:
    * ```ts
    * removeXMLFileAssociations([{
-   *    "systemId": "path/to/file.xsd", 
+   *    "systemId": "path/to/file.xsd",
    *    "pattern": "file1.xml"
    *  },{
    *    "systemId": "http://www.w3.org/2001/XMLSchema.xsd",
    *    "pattern": "file2.xml"
    *  }])
-   * ``` 
-   * @param fileAssociations - A list of file association 
+   * ```
+   * @param fileAssociations - A list of file association
    * @returns None
    */
   removeXMLFileAssociations(fileAssociations: XMLFileAssociation[]): void;
@@ -116,6 +116,22 @@ export interface XMLExtensionApi {
 namespace TagCloseRequest {
   export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any, any> = new RequestType('xml/closeTag');
 }
+
+namespace MatchingTagRangeRequest {
+  export const type: RequestType<TextDocumentPositionParams, IRange[] | null, any, any> = new RequestType('xml/matchingTagRanges');
+}
+
+// The range we get from MatchingTagPositionRequest's response is not a `vscode.Range` class instance,
+// its an object with the same keys as the `vscode.Range` type.
+interface IRange {
+  start: IPosition,
+  end: IPosition
+}
+
+interface IPosition {
+  line: number,
+  character: number
+};
 
 namespace SymbolsLimitExceededNotification {
   export const type: NotificationType<{ commandId: string, message: string }, any> = new NotificationType('xml/symbolsLimitExceeded');
@@ -155,14 +171,16 @@ export function activate(context: ExtensionContext) {
     throw error;
   }).then(requirements => {
 
-    let clientOptions: LanguageClientOptions = {
+    const documentSelector: DocumentSelector = [
+      { scheme: 'file', language: 'xml' },
+      { scheme: 'file', language: 'xsl' },
+      { scheme: 'untitled', language: 'xml' },
+      { scheme: 'untitled', language: 'xsl' }
+    ];
+
+    const clientOptions: LanguageClientOptions = {
       // Register the server for xml and xsl
-      documentSelector: [
-        { scheme: 'file', language: 'xml' },
-        { scheme: 'file', language: 'xsl' },
-        { scheme: 'untitled', language: 'xml' },
-        { scheme: 'untitled', language: 'xsl' }
-      ],
+      documentSelector,
       revealOutputChannelOn: RevealOutputChannelOn.Never,
       //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
       initializationOptions: {
@@ -238,6 +256,23 @@ export function activate(context: ExtensionContext) {
           onExtensionChange(extensions.all);
         }));
       }
+
+      context.subscriptions.push(languages.registerOnTypeRenameProvider(documentSelector, {
+        async provideOnTypeRenameRanges(document: TextDocument, position: Position) {
+          const params: TextDocumentPositionParams = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
+          const response: IRange[] | null = await languageClient.sendRequest(MatchingTagRangeRequest.type, params);
+
+          if (!response) {
+            return [];
+          }
+
+          // convert IRange to vscode.Range
+          const ranges: Range[] = response.map((range: IRange) => {
+            return new Range(range.start.line, range.start.character, range.end.line, range.end.character);
+          });
+          return ranges;
+        }
+      }));
 
       const api: XMLExtensionApi = {
         // add API set catalogs to internal memory
