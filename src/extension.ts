@@ -132,6 +132,8 @@ namespace ActionableNotification {
   export const type = new NotificationType<ActionableMessage, void>('xml/actionableNotification');
 }
 
+let languageClient: LanguageClient;
+
 export function activate(context: ExtensionContext) {
   let storagePath = context.storagePath;
   const externalXmlSettings = {
@@ -194,7 +196,7 @@ export function activate(context: ExtensionContext) {
     }
 
     let serverOptions = prepareExecutable(requirements, collectXmlJavaExtensions(extensions.all), context);
-    let languageClient = new LanguageClient('xml', 'XML Support', serverOptions, clientOptions);
+    languageClient = new LanguageClient('xml', 'XML Support', serverOptions, clientOptions);
     let toDispose = context.subscriptions;
     let disposable = languageClient.start();
     toDispose.push(disposable);
@@ -347,6 +349,10 @@ export function activate(context: ExtensionContext) {
 
     return xml;
   }
+}
+
+export function deactivate(): void {
+  languageClient.stop();
 }
 
 function getIndentationRules(): LanguageConfiguration {
