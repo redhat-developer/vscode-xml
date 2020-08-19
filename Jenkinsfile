@@ -59,7 +59,7 @@ node('rhel7'){
 	//wrap([$class: 'Xvnc']) {
 	//	sh "npm test --silent"
 	//}
-	
+
 	stage 'Upload to /vscode-xml/staging'
 	def vsix = findFiles(glob: '**.vsix')
 	sh "rsync -Pzrlt --rsh=ssh --protocol=28 ${vsix[0].path} ${UPLOAD_LOCATION}/vscode-xml/staging"
@@ -89,7 +89,6 @@ node('rhel7'){
 
 		stage "Upload to /vscode-xml/stable"
 		// copy this stable build to Akamai-mirrored /static/ URL, so staging can be cleaned out more easily
-		def vsix = findFiles(glob: '**.vsix')
 		sh "rsync -Pzrlt --rsh=ssh --protocol=28 ${vsix[0].path} ${UPLOAD_LOCATION}/static/vscode-xml/stable/"
 	}// if publishToMarketPlace
 }
