@@ -80,9 +80,11 @@ The following settings are supported:
 * `xml.symbols.maxItemsComputed`: The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.
 * `xml.codeLens.enabled`: Enable/disable XML CodeLens. Default is `false`.
 * `xml.symbols.excluded`: Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.
-
-Since 0.13.0:
 * `files.trimTrailingWhitespace`: Now affects XML formatting. Enable/disable trailing whitespace trimming when formatting an XML document. Default is `false`.
+
+Since 0.14.0:
+
+* `xml.format.xsiSchemaLocationSplit`: Split `xsi:schemaLocation` content. Default is `none`.
 
 ## Articles
 
