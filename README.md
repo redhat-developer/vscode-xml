@@ -49,42 +49,40 @@ See the [changelog](CHANGELOG.md) for the latest release. You might also find us
 
 The following settings are supported:
 
-* `xml.trace.server` : Trace the communication between VS Code and the XML Language Server in the Output view.
-* `xml.catalogs` : Register XML catalog files.
-* `xml.logs.client` : Enable/disable logging to the Output view.
-* `xml.fileAssociations` : Associate XML Schemas to XML file patterns.
-* `xml.format.splitAttributes` : Set to `true` to split node attributes onto multiple lines during formatting. Defaults to `false`.
-* `xml.format.emptyElements` : Expand/collapse empty elements during formatting. Defaults to `ignore`.
-* `xml.format.joinCDATALines` : Set to `true` to join lines in CDATA content during formatting. Defaults to `false`.
-* `xml.format.joinContentLines` : Set to `true` to join lines in node content during formatting. Defaults to `false`.
-* `xml.format.joinCommentLines` : Set to `true` to join lines in comments during formatting. Defaults to `false`.
-* `xml.format.preservedNewLines`: Set the maximum amount of newlines between elements. Defaults to `2`.
-* `xml.format.preserveEmptyContent`: Set to `true` to preserve standalone whitespace content in an element. Defaults to `false`.
-* `xml.format.spaceBeforeEmptyCloseTag`: Set to `true` to insert space before the end of a self closing tag. Defaults to `true`.
-* `xml.format.enabled` : Enable/disable formatting.
-* `xml.format.enforceQuoteStyle`: Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting. Default is `ignore`.
-* `xml.format.preserveAttributeLineBreaks`: Preserve line breaks that appear before and after attributes. This setting is overridden if `xml.format.splitAttributes` is set to `true`. Default is `false`.
-* `xml.autoCloseTags.enabled` : Enable/disable automatic tag closing.
-  **Note**: `editor.autoClosingBrackets` must be turned off to work.
 * `xml.java.home`: Set the Java path required to run the XML Language Server. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
-* `xml.preferences.showSchemaDocumentationType`: Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.
+* `xml.server.vmargs`: Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector.
+* `xml.server.workDir`: Set a custom folder path for cached XML Schemas. An absolute path is expected, although the `~` prefix (for the user home directory) is supported. Default is `~/.lemminx`.
+* `xml.trace.server` : Trace the communication between VS Code and the XML language server in the Output view. Default is `off`.
+* `xml.logs.client` : Enable/disable logging to the Output view. Default is `true`.
+* `xml.catalogs` : Register XML catalog files. See how to configure [XML catalog with XSD](https://github.com/redhat-developer/vscode-xml/wiki/XMLValidation#xml-catalog-with-xsd) or [XML catalog with DTD](https://github.com/redhat-developer/vscode-xml/wiki/XMLValidation#xml-catalog-with-dtd) for more information.
+* `xml.fileAssociations` : Allows XML schemas/ DTD to be associated to file name patterns.
+* `xml.format.enabled` : Enable/disable ability to format document. Default is `true`.
+* `xml.format.emptyElements` : Expand/collapse empty elements. Default is `ignore`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatemptyelements) for more information.
+* `xml.format.enforceQuoteStyle`: Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting. Default is `ignore`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatenforcequotestyle) for more information.
+* `xml.format.joinCDATALines` : Set to `true` to join lines in CDATA content during formatting. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatjoincdatalines-) for more information.
+* `xml.format.joinCommentLines` : Set to `true` to join lines in comments during formatting. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatjoincommentlines-) for more information.
+* `xml.format.joinContentLines` : Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatjoincontentlines) for more information.
+* `xml.format.preserveAttributeLineBreaks`: Preserve line breaks that appear before and after attributes. This setting is overridden if `xml.format.splitAttributes` is set to `true`. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatpreserveattributelinebreaks) for more information.
+* `xml.format.preserveEmptyContent`: Preserve empty content/whitespace in a tag. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatpreserveemptycontent-) for more information.
+* `xml.format.preservedNewLines`: Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines. Default is `2`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatpreservednewlines) for more information.
+* `xml.format.spaceBeforeEmptyCloseTag`: Insert space before end of self closing tag. \nExample:\n  ```<tag/> -> <tag />```. Default is `true`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatspacebeforeemptyclosetag-) for more information.
+* `xml.format.splitAttributes` : Split multiple attributes each onto a new line. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatsplitattributes-) for more information.
 * `xml.preferences.quoteStyle`: Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.
-* `xml.server.vmargs`: Extra VM arguments used to launch the XML Language Server. Requires VS Code restart.
-* `xml.symbols.enabled`: Enable/disable document symbols (Outline). Default is `true`.
-* `xml.validation.enabled`: Set to `false` to disable all validation. Defaults to `true`.
-* `xml.validation.schema`: Set to `false` to disable schema validation. Defaults to `true`.
-* `xml.validation.noGrammar`: The message severity when a document has no associated grammar. Defaults to `hint`.
+* `xml.autoCloseTags.enabled` : Enable/disable autoclosing of XML tags. Default is `true`. \n\nIMPORTANT: Turn off `#editor.autoClosingTags#` for this to work.
+  **Note**: `editor.autoClosingBrackets` must be turned off to work.
+* `xml.codeLens.enabled`: Enable/disable XML CodeLens. Default is `false`.
+* `xml.preferences.showSchemaDocumentationType`: Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.
+* `xml.validation.enabled`: Enable/disable all validation. Default is `true`.
+* `xml.validation.schema`: Enable/disable schema based validation. Default is `true`. Ignored if `xml.validation.enabled` is set to `false`
 * `xml.validation.disallowDocTypeDecl`: Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`.
 * `xml.validation.resolveExternalEntities`: Enable/disable resolve of external entities. Default is `false`.
-* `xml.server.workDir`: Set an absolute path for all cached schemas to be stored. Defaults to `~/.lemminx`.
-* `xml.symbols.maxItemsComputed`: The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.
-* `xml.codeLens.enabled`: Enable/disable XML CodeLens. Default is `false`.
+* `xml.validation.noGrammar`: The message severity when a document has no associated grammar. Defaults to `hint`.
+* `xml.symbols.enabled`: Enable/disable document symbols (Outline). Default is `true`.
 * `xml.symbols.excluded`: Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.
+* `xml.symbols.maxItemsComputed`: The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.
+
+Since 0.13.0:
 * `files.trimTrailingWhitespace`: Now affects XML formatting. Enable/disable trailing whitespace trimming when formatting an XML document. Default is `false`.
-
-Since 0.14.0:
-
-* `xml.format.xsiSchemaLocationSplit`: Split `xsi:schemaLocation` content. Default is `none`.
 
 ## Articles
 

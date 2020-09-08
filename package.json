@@ -80,6 +80,30 @@
       "type": "object",
       "title": "XML configuration",
       "properties": {
+        "xml.java.home": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "markdownDescription": "Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server.\nOn Windows, backslashes must be escaped, i.e.\n`\"xml.java.home\": \"C:\\\\Program Files\\\\Java\\\\jdk1.8.0_161\"`",
+          "scope": "window"
+        },
+        "xml.server.vmargs": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": "-Xmx64M -XX:+UseG1GC -XX:+UseStringDeduplication",
+          "markdownDescription": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector.",
+          "scope": "window"
+        },
+        "xml.server.workDir": {
+          "type": "string",
+          "default": "~/.lemminx",
+          "markdownDescription": "Set a custom folder path for cached XML Schemas. An absolute path is expected, although the `~` prefix (for the user home directory) is supported. Default is `~/.lemminx`.",
+          "scope": "window"
+        },
         "xml.trace.server": {
           "type": "string",
           "enum": [
@@ -88,8 +112,13 @@
             "verbose"
           ],
           "default": "off",
-          "description": "Traces the communication between VS Code and the XML language server.",
+          "markdownDescription": "Traces the communication between VS Code and the XML language server in the Output view. Default is `off`.",
           "scope": "window"
+        },
+        "xml.logs.client": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable/disable logging to the Output view. Default is `true`."
         },
         "xml.catalogs": {
           "type": "array",
@@ -97,123 +126,7 @@
           "items": {
             "type": "string"
           },
-          "description": "Array of XML Catalogs.",
-          "scope": "window"
-        },
-        "xml.logs.client": {
-          "type": "boolean",
-          "default": true,
-          "description": "Should the server log to client output."
-        },
-        "xml.format.emptyElements": {
-          "type": "string",
-          "enum": [
-            "ignore",
-            "collapse",
-            "expand"
-          ],
-          "default": "ignore",
-          "description": "Expand/collapse empty elements.",
-          "scope": "window"
-        },
-        "xml.format.preserveAttributeLineBreaks": {
-          "type": "boolean",
-          "default": false,
-          "markdownDescription": "Preserve line breaks that appear before and after attributes. This setting is overridden if `#xml.format.splitAttributes#` is set to `true`.",
-          "scope": "window"
-        },
-        "xml.format.splitAttributes": {
-          "type": "boolean",
-          "default": false,
-          "description": "Split multiple attributes each onto a new line.",
-          "scope": "window"
-        },
-        "xml.format.joinCDATALines": {
-          "type": "boolean",
-          "default": false,
-          "description": "Join lines in a CDATA tag's content.",
-          "scope": "window"
-        },
-        "xml.format.joinCommentLines": {
-          "type": "boolean",
-          "default": false,
-          "description": "Join comment content on format.",
-          "scope": "window"
-        },
-        "xml.format.spaceBeforeEmptyCloseTag": {
-          "type": "boolean",
-          "default": true,
-          "description": "Insert space before end of self closing tag. \nExample:\n  <tag/> -> <tag />",
-          "scope": "window"
-        },
-        "xml.format.joinContentLines": {
-          "type": "boolean",
-          "default": false,
-          "description": "Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed.",
-          "scope": "window"
-        },
-        "xml.format.preserveEmptyContent": {
-          "type": "boolean",
-          "default": false,
-          "description": "Preserve empty content/whitespace in a tag.",
-          "scope": "window"
-        },
-        "xml.format.preservedNewlines": {
-          "type": "integer",
-          "enum": [
-            0,
-            1,
-            2,
-            3
-          ],
-          "default": 2,
-          "description": "Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines.",
-          "scope": "window"
-        },
-        "xml.format.enabled": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable/disable ability to format document.",
-          "scope": "window"
-        },
-        "xml.format.enforceQuoteStyle": {
-          "type": "string",
-          "enum": [
-            "preferred",
-            "ignore"
-          ],
-          "markdownEnumDescriptions": [
-            "Use preferred quote style set by `xml.preferences.quoteStyle` when formatting.",
-            "Ignore quote style formatting."
-          ],
-          "default": "ignore",
-          "markdownDescription": "Enforce `preferred` quote style (set by `#xml.preferences.quoteStyle#`) or `ignore` quote style when formatting. Default is `ignore`",
-          "scope": "window"
-        },
-        "xml.format.xsiSchemaLocationSplit": {
-          "type": "string",
-          "enum": [
-            "onNamespace",
-            "onLocation",
-            "none"
-          ],
-          "markdownEnumDescriptions": [
-            "Split `xsi:schemaLocation` content after each namespace declaration",
-            "Split `xsi:schemaLocation` content after each location declaration",
-            "Ignore `xsi:schemaLocation` content formatting."
-          ],
-          "default": "none",
-          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `none`",
-          "scope": "window"
-        },
-        "xml.preferences.quoteStyle": {
-          "type": "string",
-          "enum": [
-            "single",
-            "double"
-          ],
-          "default": "double",
-          "markdownDescription": "Preferred quote style to use for completion: `single` quotes, `double` quotes.",
+          "markdownDescription": "Register XML catalog files. See how to configure [XML catalog with XSD](https://github.com/redhat-developer/vscode-xml/wiki/XMLValidation#xml-catalog-with-xsd) or [XML catalog with DTD](https://github.com/redhat-developer/vscode-xml/wiki/XMLValidation#xml-catalog-with-dtd) for more information.",
           "scope": "window"
         },
         "xml.fileAssociations": {
@@ -228,7 +141,6 @@
               },
               "pattern": {
                 "type": "string",
-                "description": "File glob pattern. Example: **/*.Format.ps1xml\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob",
                 "markdownDescription": "File glob pattern. Example: `**/*.Format.ps1xml`\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
               }
             },
@@ -237,20 +149,114 @@
               "pattern"
             ]
           },
-          "description": "Allows XML schemas to be associated to file name patterns.\n\nExample:\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\",\n  \"pattern\": \"**/*.xsd\"\n}]",
-          "markdownDescription": "Allows XML schemas to be associated to file name patterns.\n\nExample:\n```json\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\",\n  \"pattern\": \"**/*.xsd\"\n}]\n```",
+          "markdownDescription": "Allows XML schemas/ DTD to be associated to file name patterns.\n\nExample:\n```json\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\",\n  \"pattern\": \"**/*.xsd\"\n}]\n```",
+          "scope": "window"
+        },
+        "xml.format.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable/disable ability to format document. Default is `true`.",
+          "scope": "window"
+        },
+        "xml.format.emptyElements": {
+          "type": "string",
+          "enum": [
+            "ignore",
+            "collapse",
+            "expand"
+          ],
+          "default": "ignore",
+          "markdownDescription": "Expand/collapse empty elements. Default is `ignore`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatemptyelements) for more information.",
+          "scope": "window"
+        },
+        "xml.format.enforceQuoteStyle": {
+          "type": "string",
+          "enum": [
+            "preferred",
+            "ignore"
+          ],
+          "markdownEnumDescriptions": [
+            "Use preferred quote style set by `xml.preferences.quoteStyle` when formatting.",
+            "Ignore quote style formatting."
+          ],
+          "default": "ignore",
+          "markdownDescription": "Enforce `preferred` quote style (set by `#xml.preferences.quoteStyle#`) or `ignore` quote style when formatting. Default is `ignore`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatenforcequotestyle) for more information.",
+          "scope": "window"
+        },
+        "xml.format.joinCDATALines": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Set to `true` to join lines in CDATA content during formatting. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatjoincdatalines-) for more information.",
+          "scope": "window"
+        },
+        "xml.format.joinCommentLines": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Join comment content on format. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatjoincommentlines-) for more information.",
+          "scope": "window"
+        },
+        "xml.format.joinContentLines": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatjoincontentlines) for more information.",
+          "scope": "window"
+        },
+        "xml.format.preserveAttributeLineBreaks": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Preserve line breaks that appear before and after attributes. This setting is overridden if `#xml.format.splitAttributes#` is set to `true`. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatpreserveattributelinebreaks) for more information.",
+          "scope": "window"
+        },
+        "xml.format.preserveEmptyContent": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Preserve empty content/whitespace in a tag. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatpreserveemptycontent-) for more information.",
+          "scope": "window"
+        },
+        "xml.format.preservedNewlines": {
+          "type": "integer",
+          "enum": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "default": 2,
+          "markdownDescription": "Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines. Default is `2`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatpreservednewlines) for more information.",
+          "scope": "window"
+        },
+        "xml.format.spaceBeforeEmptyCloseTag": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Insert space before end of self closing tag. \nExample:\n  ```<tag/> -> <tag />```. Default is `true`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatspacebeforeemptyclosetag-) for more information.",
+          "scope": "window"
+        },
+        "xml.format.splitAttributes": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Split multiple attributes each onto a new line. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatsplitattributes-) for more information.",
+          "scope": "window"
+        },
+        "xml.preferences.quoteStyle": {
+          "type": "string",
+          "enum": [
+            "single",
+            "double"
+          ],
+          "default": "double",
+          "markdownDescription": "Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.",
           "scope": "window"
         },
         "xml.completion.autoCloseTags": {
           "type": "boolean",
           "default": true,
-          "description": "Enable/disable autoclosing of XML tags. \n\nIMPORTANT: Turn off editor.autoClosingTags for this to work.",
+          "markdownDescription": "Enable/disable autoclosing of XML tags. Default is `true`. \n\nIMPORTANT: Turn off `#editor.autoClosingTags#` for this to work.",
           "scope": "window"
         },
         "xml.codeLens.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable/disable XML CodeLens."
+          "description": "Enable/disable XML CodeLens. Default is `false`."
         },
         "xml.preferences.showSchemaDocumentationType": {
           "type": "string",
@@ -267,31 +273,31 @@
             "Documentation comes from the `xs:documentation` and `xs:appinfo` elements.",
             "Displays no documentation."
           ],
-          "description": "Specifies the source of the XML schema documentation displayed on hover and completion.",
+          "markdownDescription": "Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.",
           "scope": "window"
         },
-        "xml.java.home": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": null,
-          "description": "Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server.\nOn Windows, backslashes must be escaped, i.e.\n\"xml.java.home\": \"C:\\\\Program Files\\\\Java\\\\jdk1.8.0_161\"",
+        "xml.validation.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable/disable all validation. Default is `true`.",
           "scope": "window"
         },
-        "xml.server.vmargs": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": "-Xmx64M -XX:+UseG1GC -XX:+UseStringDeduplication",
-          "description": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector.",
+        "xml.validation.schema": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable/disable schema based validation. Default is `true`. Ignored if `#xml.validation.enabled#` is set to `false`",
           "scope": "window"
         },
-        "xml.server.workDir": {
-          "type": "string",
-          "default": "~/.lemminx",
-          "description": "Set a custom folder path for cached XML Schemas. An absolute path is expected, although the ~ prefix (for the user home directory) is supported.",
+        "xml.validation.disallowDocTypeDecl": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`.",
+          "scope": "window"
+        },
+        "xml.validation.resolveExternalEntities": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Enable/disable resolve of external entities. Default is `false`.",
           "scope": "window"
         },
         "xml.validation.noGrammar": {
@@ -304,37 +310,13 @@
             "error"
           ],
           "default": "hint",
-          "description": "The message severity when a document has no associated grammar.",
-          "scope": "window"
-        },
-        "xml.validation.enabled": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable/disable all validation.",
-          "scope": "window"
-        },
-        "xml.validation.schema": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable/disable schema based validation. Ignored if \"xml.validation.enabled\": false.",
-          "scope": "window"
-        },
-        "xml.validation.disallowDocTypeDecl": {
-          "type": "boolean",
-          "default": false,
-          "description": "Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration.",
-          "scope": "window"
-        },
-        "xml.validation.resolveExternalEntities": {
-          "type": "boolean",
-          "default": false,
-          "description": "Enable/disable resolve of external entities.",
+          "markdownDescription": "The message severity when a document has no associated grammar. Default is `hint`.",
           "scope": "window"
         },
         "xml.symbols.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable/disable document symbols (Outline). No symbols are given if `\"xml.symbol.enabled\": false`.",
+          "markdownDescription": "Enable/disable document symbols (Outline). Default is `true`. No symbols are given if `\"xml.symbol.enabled\": false`.",
           "scope": "window"
         },
         "xml.symbols.excluded": {
@@ -343,13 +325,13 @@
           "items": {
             "type": "string"
           },
-          "description": "Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.\n\nExample:\n[\n \"**/*LargeFile.xml\"\n]",
+          "markdownDescription": "Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.\n\nExample:\n```\n[\n \"**/*LargeFile.xml\"\n]```.",
           "scope": "window"
         },
         "xml.symbols.maxItemsComputed": {
           "type": "integer",
           "default": 5000,
-          "description": "The maximum number of outline symbols and folding regions computed (limited for performance reasons)."
+          "markdownDescription": "The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`."
         }
       }
     },
