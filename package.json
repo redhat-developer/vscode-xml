@@ -190,6 +190,22 @@
           "markdownDescription": "Enforce `preferred` quote style (set by `#xml.preferences.quoteStyle#`) or `ignore` quote style when formatting. Default is `ignore`",
           "scope": "window"
         },
+        "xml.format.xsiSchemaLocationSplit": {
+          "type": "string",
+          "enum": [
+            "onNamespace",
+            "onLocation",
+            "none"
+          ],
+          "markdownEnumDescriptions": [
+            "Split `xsi:schemaLocation` content after each namespace declaration",
+            "Split `xsi:schemaLocation` content after each location declaration",
+            "Ignore `xsi:schemaLocation` content formatting."
+          ],
+          "default": "none",
+          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `none`",
+          "scope": "window"
+        },
         "xml.preferences.quoteStyle": {
           "type": "string",
           "enum": [
