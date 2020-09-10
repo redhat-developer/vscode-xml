@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { Commands } from './commands';
+const glob = require('glob');
 
 let existingExtensions: Array<string>;
 
@@ -15,7 +16,7 @@ export function collectXmlJavaExtensions(extensions: readonly vscode.Extension<a
 				const xmlJavaExtensions = contributesSection['xml.javaExtensions'];
 				if (Array.isArray(xmlJavaExtensions) && xmlJavaExtensions.length) {
 					for (const xmLJavaExtensionPath of xmlJavaExtensions) {
-						result.push(path.resolve(extension.extensionPath, xmLJavaExtensionPath));
+						result.push(...glob.sync(path.resolve(extension.extensionPath, xmLJavaExtensionPath)));
 					}
 				}
 			}
