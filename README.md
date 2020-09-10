@@ -107,11 +107,23 @@ To do that:
 
 ```json
 "contributes": {
-	"xml.javaExtensions": [
-		"./jar/your-custom-xml-extension.jar"
-	]
+  "xml.javaExtensions": [
+    "./jar/your-custom-xml-extension.jar"
+  ]
 }
 ```
+
+  * You can also list multiple jars or use glob patterns to specify the jars:
+
+```json
+"contributes": {
+  "xml.javaExtensions": [
+    "./jar/dependencies/*.jar",
+    "./jar/my-xml-extension.jar"
+  ]
+}
+```
+
 
 You can see the [vscode-xml-maven](https://github.com/angelozerr/vscode-xml-maven) sample which registers custom maven completion [MavenCompletionParticipant](https://github.com/angelozerr/lsp4xml-extensions-maven/blob/master/org.eclipse.lsp4xml.extensions.maven/src/main/java/org/eclipse/lsp4xml/extensions/maven/MavenCompletionParticipant.java#L28) for scope:
 
