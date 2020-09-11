@@ -231,6 +231,22 @@
           "markdownDescription": "Insert space before end of self closing tag. \nExample:\n  ```<tag/> -> <tag />```. Default is `true`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatspacebeforeemptyclosetag-) for more information.",
           "scope": "window"
         },
+        "xml.format.xsiSchemaLocationSplit": {
+          "type": "string",
+          "enum": [
+            "onNamespace",
+            "onLocation",
+            "none"
+          ],
+          "markdownEnumDescriptions": [
+            "Split `xsi:schemaLocation` content after each namespace declaration",
+            "Split `xsi:schemaLocation` content after each location declaration",
+            "Ignore `xsi:schemaLocation` content formatting."
+          ],
+          "default": "none",
+          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `none`",
+          "scope": "window"
+        },
         "xml.format.splitAttributes": {
           "type": "boolean",
           "default": false,
