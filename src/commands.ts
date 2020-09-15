@@ -14,11 +14,11 @@
  * Commonly used commands
  */
 export namespace Commands {
- 
+
     /**
      * Auto close tags
      */
-    export const AUTO_CLOSE_TAGS= 'xml.completion.autoCloseTags';
+    export const AUTO_CLOSE_TAGS = 'xml.completion.autoCloseTags';
 
     /**
      * Show XML references
@@ -37,9 +37,15 @@ export namespace Commands {
 
     /**
      * Open settings command
-     * 
+     *
      * A `settingId: string` parameter can be optionally provided
      */
     export const OPEN_SETTINGS = 'xml.open.settings';
 
+    /**
+     * Render markdown string to html string
+     */
+    export const MARKDOWN_API_RENDER = 'markdown.api.render';
+
+    export const OPEN_DOCS = "xml.open.docs";
 }

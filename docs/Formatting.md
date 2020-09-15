@@ -1,0 +1,283 @@
+## Formatting
+
+### xml.format.enabled
+
+  Set to `false` to disable XML formatting. Defaults to `true`.
+
+***
+
+### xml.format.enforceQuoteStyle
+
+Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting.
+
+For instance, when set to `preferred` with `xml.preferences.quoteStyle` set to `single`, the following document:
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <root>
+    <child attribute='value' otherAttribute="otherValue"></child>
+  </root>
+  ```
+
+will be formatted to:
+
+  ```xml
+  <?xml version='1.0' encoding='UTF-8'?>
+  <root>
+    <child attribute='value' otherAttribute='otherValue'></child>
+  </root>
+  ```
+
+No changes to quotes will occur during formatting if `xml.format.enforceQuoteStyle` is set to `ignore`.
+
+***
+
+### xml.format.emptyElements
+
+Expand/collapse empty elements. Available values are `ignore`, `collapse` and `expand`. Defaults to `ignore`.
+An empty element is an element which is empty or which contains only white spaces.
+
+Set to `collapse` to collapse empty elements during formatting.
+
+  ```xml
+  <example attr="value" ></example>
+  ```
+  becomes...
+  ```xml
+    <example attr="value" />
+  ```
+
+Set to `expand` to expand empty elements during formatting.
+
+  ```xml
+  <example attr="value" />
+  ```
+  becomes...
+  ```xml
+   <example attr="value" ></example>
+  ```
+***
+
+### xml.format.preserveAttributeLineBreaks
+
+Preserve line breaks that appear before and after attributes. This setting is overridden if [xml.format.splitAttributes](Formatting#xmlformatsplitattributes-) is set to `true`. Default is `false`.
+
+If set to `true`, formatting does not change the following document:
+
+  ```xml
+  <?xml version='1.0' encoding='UTF-8'?>
+  <root>
+    <child
+      attr1='value1'
+      attr2='value2'
+      attr3='value3'></child>
+  </root>
+  ```
+
+If set to `false`, the document above becomes:
+
+  ```xml
+  <?xml version='1.0' encoding='UTF-8'?>
+  <root>
+    <child attr1='value1' attr2='value2' attr3='value3'></child>
+  </root>
+  ```
+
+***
+
+### xml.format.preservedNewlines
+
+The number of blank lines to leave between tags during formatting.
+
+The default is 2. This means that if more than two consecutive empty lines are left in a document, then the number of blank lines will become 2.
+
+  For example, this document:
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+
+
+
+  <root>
+
+
+
+    <child></child>
+
+
+
+  </root>
+  ```
+
+  Will be replaced with:
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+
+
+  <root>
+
+
+    <child></child>
+
+
+  </root>
+  ```
+
+If this value is set to 0, then all blank lines will be removed during formatting.
+
+  For example, this document:
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+
+  <root>
+
+    <child></child>
+
+  </root>
+  ```
+
+  Will be replaced with:
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <root>
+    <child></child>
+  </root>
+  ```
+
+***
+
+### xml.format.splitAttributes
+
+  Set to `true` to split node attributes onto multiple lines during formatting. Defaults to `false`.
+  Overrides the behaviour of [xml.format.preserveAttributeLineBreaks](Formatting#xmlformatpreserveattributelinebreaks)
+
+  ```xml
+  <project a="1" b="2" c="3"></project>
+  ```
+  becomes...
+  ```xml
+  <project
+      a="1"
+      b="2"
+      c="3"></project>
+  ```
+
+***
+
+### xml.format.joinCDATALines
+
+  Set to `true` to join lines in CDATA content during formatting. Defaults to `false`.
+  ```xml
+  <![CDATA[This
+  is
+  a
+  test
+  ]]>
+  ```
+  becomes...
+  ```xml
+  <![CDATA[This is a test ]]>
+  ```
+***
+
+### xml.format.preserveEmptyContent
+
+  Set to `true` to preserve empty whitespace content.
+  ```xml
+  <project>    </project>
+
+  <a> </a>
+  ```
+  becomes...
+  ```xml
+  <project>    </project>
+  <a> </a>
+  ```
+***
+### xml.format.joinCommentLines
+
+  Set to `true` to join lines in comments during formatting. Defaults to `false`.
+  ```xml
+  <!-- This
+  is
+  my
+
+  comment -->
+  ```
+  becomes...
+  ```xml
+  <!-- This is my comment -->
+  ```
+
+***
+
+### xml.format.joinContentLines
+
+Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed. Default is `false`.
+
+For example, the following document doesn't change if it is set to `false`:
+
+  ```xml
+  <?xml version='1.0' encoding='UTF-8'?>
+  <root>
+    Interesting text      content
+
+
+
+    values     and     1234 numbers
+
+  </root>
+  ```
+
+If it is set to `true`, the above document becomes:
+
+  ```xml
+  <?xml version='1.0' encoding='UTF-8'?>
+  <root>Interesting text content values and 1234 numbers</root>
+  ```
+
+***
+
+### xml.format.spaceBeforeEmptyCloseTag
+
+  Set to `true` to insert a space before the end of self closing tags.  Defaults to `true`
+  ```xml
+  <tag/>
+  ```
+  becomes...
+  ```xml
+  <tag />
+  ```
+
+***
+
+### files.insertFinalNewline
+
+  Set to `true` to insert a final newline at the end of the document.  Defaults to `false`
+  ```xml
+  <a><a/>
+  ```
+  becomes...
+  ```xml
+  <a><a/>
+
+
+  ```
+
+***
+
+### files.trimFinalNewlines
+
+  Set to `true` to trim final newlines at the end of the document.  Defaults to `false`
+  ```xml
+  <a><a/>
+
+
+
+
+  ```
+  becomes...
+  ```xml
+  <a><a/>
+  ```
+
+***
