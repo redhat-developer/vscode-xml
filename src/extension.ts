@@ -20,6 +20,7 @@ import { activateTagClosing, AutoCloseResult } from './tagClosing';
 import { Commands } from './commands';
 import { onConfigurationChange, subscribeJDKChangeConfiguration } from './settings';
 import { collectXmlJavaExtensions, onExtensionChange } from './plugin';
+import { markdownPreviewProvider } from "./markdownPreviewProvider";
 
 export interface ScopeInfo {
   scope: "default" | "global" | "workspace" | "folder";
@@ -30,7 +31,7 @@ export interface ScopeInfo {
  * Interface for the FileAssociation shape.
  * @param systemId - The path to a valid XSD.
  * @param pattern - The file pattern associated with the XSD.
- * 
+ *
  * @returns None
  */
 export interface XMLFileAssociation {
@@ -40,7 +41,7 @@ export interface XMLFileAssociation {
 
 /**
  * Interface for APIs exposed from the extension.
- * 
+ *
  * @remarks
  * A sample code to use these APIs are as following:
  * const ext = await vscode.extensions.getExtension('redhat.vscode-xml').activate();
@@ -52,61 +53,61 @@ export interface XMLFileAssociation {
 export interface XMLExtensionApi {
   /**
    * Adds XML Catalogs in addition to the catalogs defined in the settings.json file.
-   * 
+   *
    * @remarks
    * An example is to call this API:
    * ```ts
    * addXMLCatalogs(['path/to/catalog.xml', 'path/to/anotherCatalog.xml'])
-   * ``` 
+   * ```
    * @param catalogs - A list of path to XML catalogs
    * @returns None
    */
   addXMLCatalogs(catalogs: string[]): void;
   /**
    * Removes XML Catalogs from the extension.
-   * 
+   *
    * @remarks
    * An example is to call this API:
    * ```ts
    * removeXMLCatalogs(['path/to/catalog.xml', 'path/to/anotherCatalog.xml'])
-   * ``` 
+   * ```
    * @param catalogs - A list of path to XML catalogs
    * @returns None
    */
   removeXMLCatalogs(catalogs: string[]): void;
   /**
    * Adds XML File Associations in addition to the catalogs defined in the settings.json file.
-   * 
+   *
    * @remarks
    * An example is to call this API:
    * ```ts
    * addXMLFileAssociations([{
-   *    "systemId": "path/to/file.xsd", 
+   *    "systemId": "path/to/file.xsd",
    *    "pattern": "file1.xml"
    *  },{
    *    "systemId": "http://www.w3.org/2001/XMLSchema.xsd",
    *    "pattern": "file2.xml"
    *  }])
-   * ``` 
-   * @param fileAssociations - A list of file association 
+   * ```
+   * @param fileAssociations - A list of file association
    * @returns None
    */
   addXMLFileAssociations(fileAssociations: XMLFileAssociation[]): void;
   /**
    * Removes XML File Associations from the extension.
-   * 
+   *
    * @remarks
    * An example is to call this API:
    * ```ts
    * removeXMLFileAssociations([{
-   *    "systemId": "path/to/file.xsd", 
+   *    "systemId": "path/to/file.xsd",
    *    "pattern": "file1.xml"
    *  },{
    *    "systemId": "http://www.w3.org/2001/XMLSchema.xsd",
    *    "pattern": "file2.xml"
    *  }])
-   * ``` 
-   * @param fileAssociations - A list of file association 
+   * ```
+   * @param fileAssociations - A list of file association
    * @returns None
    */
   removeXMLFileAssociations(fileAssociations: XMLFileAssociation[]): void;
@@ -135,6 +136,13 @@ namespace ActionableNotification {
 let languageClient: LanguageClient;
 
 export function activate(context: ExtensionContext) {
+  context.subscriptions.push(markdownPreviewProvider);
+  context.subscriptions.push(commands.registerCommand(Commands.OPEN_DOCS, async (params) => {
+    const uri = params.page + '.md';
+    const sectionId = params.section || '';
+    const title = 'XML ' + params.page;
+    markdownPreviewProvider.show(context.asAbsolutePath(path.join('docs', uri)), title, sectionId, context);
+  }));
   let storagePath = context.storagePath;
   const externalXmlSettings = {
     "xmlCatalogs": [],
