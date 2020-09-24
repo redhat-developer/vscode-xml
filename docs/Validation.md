@@ -4,11 +4,11 @@
 
 [vscode-xml](https://github.com/redhat-developer/vscode-xml) provides the capability to `report XML syntax errors` when the XML is not valid:
 
-![XML Syntax Error](images/validation/XMLSyntaxError.png)
+![XML Syntax Error](images/Validation/XMLSyntaxError.png)
 
 For many of the errors, you can use a `Quick Fix` (code action) to help you fix the XML:
 
-![XML Syntax Error Code Action](images/validation/XMLSyntaxErrorCodeAction.gif)
+![XML Syntax Error Code Action](images/Validation/XMLSyntaxErrorCodeAction.gif)
 
 ## Validation with a given grammar
 
@@ -45,7 +45,7 @@ with the XSD `foo.xsd` file (in the same folder as foo.xml) :
 
 in order to benefit from validation, completion, and hover based on the XSD:
 
-![XML Grammar Error](images/validation/XMLGrammarError.png)
+![XML Grammar Error](images/Validation/XMLGrammarError.png)
 
 To associate your XML document with an XSD grammar, you can use several strategies:
 
@@ -53,11 +53,11 @@ To associate your XML document with an XSD grammar, you can use several strategi
  * [xsi:schemaLocation](#xsischemalocation)
  * [xml-model with XSD](#xml-model-with-XSD) processing instruction
  * [XML catalog with XSD](#XML-catalog-with-XSD)
- * [XML file association](#XML-file-association)
+ * [XML file association](#XML-file-association-with-xsd)
 
 If you have an XML without an XSD, you can generate the XSD with a `Quick Fix` (code action):
 
-![Generate XSD](images/validation/GenerateXSD.gif)
+![Generate XSD](images/Validation/GenerateXSD.gif)
 
 The Quick Fix will generate the XSD file and associate the XML with the XSD using the chosen strategy.
 
@@ -98,7 +98,7 @@ You can bind the XSD like this:
 ```xml
 <foo
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="htp://foo foo.xsd">
+    xsi:schemaLocation="http://foo foo.xsd">
   <bar />
 </foo>
 ```
@@ -173,7 +173,7 @@ You can also register the catalog using its absolute path:
 
 Please note that you can declare your catalog path with `file:///` if you need it.
 
-### XML file association
+### XML file association with XSD
 
 You can use the XML file association strategy to bind the XML file `foo.xml` with the XSD file `foo.xsd` by adding the following into your vscode `settings.json`:
 
@@ -206,7 +206,7 @@ To associate your XML with a DTD grammar you can use several strategies:
  * [DOCTYPE](#DOCTYPE)
  * [xml-model with DTD](#xml-model-with-DTD) processing instruction
  * [XML catalog with DTD](#XML-catalog-with-DTD)
- * XML file association is not supported for DTD at the moment. Please see [issue 184](https://github.com/redhat-developer/vscode-xml/issues/184))
+ * [XML file association with DTD](#xml-file-association-with-DTD)
 
 In the following sections we would like to validate the XML `foo.xml` file:
 
@@ -294,3 +294,52 @@ You can also register the catalog using its absolute path:
 | Windows                            | MacOS                        | Linux                       |
 | ---------------------------------- | ---------------------------- | --------------------------- |
 | `C:\\Users\\path\\to\\catalog.xml` | `/Users/path/to/catalog.xml` | `/home/path/to/catalog.xml` |
+
+
+### XML file association with DTD
+
+You can use the XML file association strategy to bind the XML file `foo.xml` with the DTD file `foo.dtd` by adding the following into your vscode `settings.json`:
+
+```json
+"xml.fileAssociations": [
+  {
+      "pattern": "foo.xml",
+      "systemId": "foo.dtd"
+  }
+]
+```
+
+Please note that you can use wildcards in the pattern (ex: `foo*.xml`):
+
+```json
+"xml.fileAssociations": [
+  {
+      "pattern": "foo*.xml",
+      "systemId": "foo.dtd"
+  }
+]
+```
+
+In this case, all XML files that start with foo and end with .xml will be associated with the DTD (foo1.xml, foo2.xml, etc)
+
+
+
+# Other Validation Settings
+
+## Disallow Doc Type Declarations
+
+If `xml.validation.disallowDocTypeDeclaration` is set to `true` (default is `false`), all Doc Type Declarations (DTD) will be marked as errors. The DOCTYPE is marked as an error regardless if the doctype is an internally declared or a reference to an external DTD. Standalone `.dtd` files are not marked as an error.
+
+Here are some examples of files with `xml.validation.disallowDocTypeDeclaration` set to true:
+
+![A DOCTYPE declared inline is marked as an error](./images/Validation/DoctypeError1.png)
+
+![A reference to an external DOCTYPE is marked as an error](./images/Validation/DoctypeError2.png)
+
+## Resolve External Entities
+
+If `xml.validation.resolveExternalEntities` is set to `true` (default is `false`), then the value of [external entities](https://www.w3schools.com/xml/xml_dtd_entities.asp) are resolved for validation. This means that the file referenced in the external entity declaration will be downloaded. The default is `false` due to [the xml external entity attack](https://en.wikipedia.org/wiki/XML_external_entity_attack).
+
+Demonstration of the different behaviour:
+
+![When using the default settings, an external entity that has an XML element as its content will not produce a validation error when nested in an element that expects character content. If `xml.validation.resolveExternalEntities` is enabled, then an error will be produced](./images/Validation/ExternalEntityResolvingDemonstration.gif)

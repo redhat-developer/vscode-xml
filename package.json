@@ -89,7 +89,7 @@
             "null"
           ],
           "default": null,
-          "markdownDescription": "Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server.\nOn Windows, backslashes must be escaped, i.e.\n`\"xml.java.home\": \"C:\\\\Program Files\\\\Java\\\\jdk1.8.0_161\"`",
+          "markdownDescription": "Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server.\nOn Windows, backslashes must be escaped, i.e.\n`\"xml.java.home\": \"C:\\\\Program Files\\\\Java\\\\jdk1.8.0_161\"`. For more information, please refer to [this document](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22java-home%22%7D%5D).",
           "scope": "window"
         },
         "xml.server.vmargs": {
@@ -98,13 +98,13 @@
             "null"
           ],
           "default": "-Xmx64M -XX:+UseG1GC -XX:+UseStringDeduplication",
-          "markdownDescription": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector.",
+          "markdownDescription": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector. Please refer to [this document](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22server-vm-arguments%22%7D%5D) for more information on the Java server arguments.",
           "scope": "window"
         },
         "xml.server.workDir": {
           "type": "string",
           "default": "~/.lemminx",
-          "markdownDescription": "Set a custom folder path for cached XML Schemas. An absolute path is expected, although the `~` prefix (for the user home directory) is supported. Default is `~/.lemminx`.",
+          "markdownDescription": "Set a custom folder path for cached XML Schemas. An absolute path is expected, although the `~` prefix (for the user home directory) is supported. Default is `~/.lemminx`. Please refer to the [cache documentation](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22server-cache-path%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.trace.server": {
@@ -152,7 +152,7 @@
               "pattern"
             ]
           },
-          "markdownDescription": "Allows XML schemas/ DTD to be associated to file name patterns.\n\nExample:\n```json\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\",\n  \"pattern\": \"**/*.xsd\"\n}]\n```",
+          "markdownDescription": "Allows XML schemas/ DTD to be associated to file name patterns. Please refer to [XML file association with XSD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-xsd%22%7D%5D) or [XML file association with DTD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-dtd%22%7D%5D) for more information. \n\nExample:\n```json\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\",\n  \"pattern\": \"**/*.xsd\"\n}]\n```",
           "scope": "window"
         },
         "xml.format.enabled": {
@@ -247,7 +247,7 @@
             "Ignore `xsi:schemaLocation` content formatting."
           ],
           "default": "none",
-          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `none`",
+          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `none`. Please see [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatxsischemalocationsplit%22%7D%5D) for more information",
           "scope": "window"
         },
         "xml.format.splitAttributes": {
@@ -275,7 +275,7 @@
         "xml.codeLens.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable/disable XML CodeLens. Default is `false`."
+          "markdownDescription": "Enable/disable XML CodeLens. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22CodeLens%22%2C%22section%22%3A%22Code%20Lens%22%7D%5D) for information about CodeLens features"
         },
         "xml.preferences.showSchemaDocumentationType": {
           "type": "string",
@@ -292,7 +292,7 @@
             "Documentation comes from the `xs:documentation` and `xs:appinfo` elements.",
             "Displays no documentation."
           ],
-          "markdownDescription": "Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.",
+          "markdownDescription": "Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`. Please see [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22documentation-type%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.validation.enabled": {
@@ -310,13 +310,13 @@
         "xml.validation.disallowDocTypeDecl": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`.",
+          "markdownDescription": "Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22disallow-doc-type-declarations%22%7D%5D) for more information",
           "scope": "window"
         },
         "xml.validation.resolveExternalEntities": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Enable/disable resolve of external entities. Default is `false`.",
+          "markdownDescription": "Enable/disable resolve of external entities. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22resolve-external-entities%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.validation.noGrammar": {

@@ -19,6 +19,7 @@ class MarkdownPreviewProvider implements Disposable {
                 retainContextWhenHidden: true,
                 enableFindWidget: true,
                 enableScripts: true,
+                enableCommandUris: true
             });
         }
 
@@ -48,6 +49,14 @@ class MarkdownPreviewProvider implements Disposable {
         if (!body) {
             let markdownString: string = await fse.readFile(markdownFilePath, 'utf8');
             markdownString = markdownString.replace(/__VSCODE_ENV_APPNAME_PLACEHOLDER__/, env.appName);
+            // HACK: This will not replace cross-page links if they don't have a section
+            // i.e. [here](OtherPage#section) gets replaced, but [here](OtherPage) doesn't
+            // Captures markdown links like this: [$1]($2#$3)
+            // where $1, $2, $3 are non empty strings that are then passed to the replace function
+            markdownString = markdownString.replace(/\[([^\]]+)\]\(([^#\)]+)#([^)]*)\)/g,
+                    (_match: string, linkText: string, page: string, section: string) => {
+                return `<a href="command:xml.open.docs?%5B%7B%22page%22%3A%22${page}%22%2C%22section%22%3A%22${section}%22%7D%5D">${linkText}</a>`
+            });
             body = await commands.executeCommand(Commands.MARKDOWN_API_RENDER, markdownString);
             this.documentCache.set(markdownFilePath, body);
         }
