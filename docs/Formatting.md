@@ -60,7 +60,7 @@ Set to `expand` to expand empty elements during formatting.
 
 ### xml.format.preserveAttributeLineBreaks
 
-Preserve line breaks that appear before and after attributes. This setting is overridden if [xml.format.splitAttributes](Formatting#xmlformatsplitattributes-) is set to `true`. Default is `false`.
+Preserve line breaks that appear before and after attributes. This setting is overridden if [xml.format.splitAttributes](#xmlformatsplitattributes) is set to `true`. Default is `false`.
 
 If set to `true`, formatting does not change the following document:
 
@@ -148,7 +148,7 @@ If this value is set to 0, then all blank lines will be removed during formattin
 ### xml.format.splitAttributes
 
   Set to `true` to split node attributes onto multiple lines during formatting. Defaults to `false`.
-  Overrides the behaviour of [xml.format.preserveAttributeLineBreaks](Formatting#xmlformatpreserveattributelinebreaks)
+  Overrides the behaviour of [xml.format.preserveAttributeLineBreaks](#xmlformatpreserveattributelinebreaks)
 
   ```xml
   <project a="1" b="2" c="3"></project>
@@ -281,3 +281,55 @@ If it is set to `true`, the above document becomes:
   ```
 
 ***
+### xml.format.xsiSchemaLocationSplit
+
+  Used to configure how to format the content of `xsi:schemaLocation`.
+
+  To explain the different settings, we will use this xml document as an example:
+  ```xml
+  <ROOT:root
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:ROOT='http://example.org/schema/root'
+    xmlns:BISON='http://example.org/schema/bison'
+    xsi:schemaLocation='http://example.org/schema/root root.xsd http://example.org/schema/bison bison.xsd'>
+  <BISON:bison
+      name='Simon'
+      weight='20' />
+  </ROOT:root>
+  ```
+  Note that it references two different external schemas. Additionally, the setting [`xml.format.splitAttributes`](#xmlformatsplitattributes) will be set to true for the formatted examples in order to make the formatted result easier to see.
+
+  * When it is set to `none`, the formatter does not change the content of `xsi:schemaLocation`. The above file would not change after formatting.
+
+  * When it is set to `onPair`, the formatter groups the content into pairs of namespace and URI, and inserts a new line after each pair. Assuming the other formatting settings are left at their default, the above file would look like this:
+    ```xml
+    <ROOT:root
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns:ROOT='http://example.org/schema/root'
+        xmlns:BISON='http://example.org/schema/bison'
+        xsi:schemaLocation='http://example.org/schema/root root.xsd
+                            http://example.org/schema/bison bison.xsd'>
+      <BISON:bison
+          name='Simon'
+          weight='20' />
+    </ROOT:root>
+    ```
+
+  * When it is set to `onElement`, the formatter inserts a new line after each namespace and each URI.
+    ```xml
+    <ROOT:root
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns:ROOT='http://example.org/schema/root'
+        xmlns:BISON='http://example.org/schema/bison'
+        xsi:schemaLocation='http://example.org/schema/root
+                            root.xsd
+                            http://example.org/schema/bison
+                            bison.xsd'>
+      <BISON:bison
+          name='Simon'
+          weight='20' />
+    </ROOT:root>
+    ```
+
+***
+
