@@ -351,6 +351,12 @@
           "type": "integer",
           "default": 5000,
           "markdownDescription": "The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`."
+        },
+        "xml.symbols.showReferencedGrammars": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show referenced grammars in the Outline. Default is `true.",
+          "scope": "window"
         }
       }
     },
