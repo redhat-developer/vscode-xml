@@ -10,32 +10,18 @@
  *  Microsoft Corporation - Auto Closing Tags
  */
 
-import { prepareExecutable } from './javaServerStarter';
-import {
-  LanguageClientOptions,
-  RevealOutputChannelOn,
-  LanguageClient,
-  DidChangeConfigurationNotification,
-  RequestType,
-  TextDocumentPositionParams,
-  ReferencesRequest,
-  NotificationType,
-  MessageType,
-  ConfigurationRequest,
-  ConfigurationParams,
-  ExecuteCommandParams,
-  CancellationToken,
-  ExecuteCommandRequest, TextDocumentIdentifier
-} from 'vscode-languageclient';
-import * as requirements from './requirements';
-import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions, Command, TextEditor } from "vscode";
-import * as path from 'path';
 import * as os from 'os';
-import { activateTagClosing, AutoCloseResult } from './tagClosing';
+import * as path from 'path';
+import { Command, commands, ExtensionContext, extensions, IndentAction, LanguageConfiguration, languages, Position, TextDocument, TextEditor, Uri, window, workspace } from "vscode";
+import { CancellationToken, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, ExecuteCommandParams, ExecuteCommandRequest, LanguageClient, LanguageClientOptions, MessageType, NotificationType, ReferencesRequest, RequestType, RevealOutputChannelOn, TextDocumentIdentifier, TextDocumentPositionParams } from 'vscode-languageclient';
 import { Commands } from './commands';
-import { getXMLConfiguration, onConfigurationChange, subscribeJDKChangeConfiguration } from './settings';
-import { collectXmlJavaExtensions, onExtensionChange } from './plugin';
+import { prepareExecutable } from './javaServerStarter';
 import { markdownPreviewProvider } from "./markdownPreviewProvider";
+import { collectXmlJavaExtensions, onExtensionChange } from './plugin';
+import * as requirements from './requirements';
+import { getXMLConfiguration, onConfigurationChange, subscribeJDKChangeConfiguration } from './settings';
+import { activateTagClosing, AutoCloseResult } from './tagClosing';
+import { containsVariableReferenceToCurrentFile, getVariableSubstitutedAssociations } from './variableSubstitution';
 
 export interface ScopeInfo {
   scope: "default" | "global" | "workspace" | "folder";
@@ -340,6 +326,14 @@ export function activate(context: ExtensionContext) {
         }
         return result;
       });
+      // When the current document changes, update variable values that refer to the current file if these variables are referenced,
+      // and send the updated settings to the server
+      context.subscriptions.push(window.onDidChangeActiveTextEditor(() => {
+        if (containsVariableReferenceToCurrentFile(getXMLConfiguration().get('fileAssociations') as XMLFileAssociation[])) {
+          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirements.java_home) });
+          onConfigurationChange();
+        }
+      }));
 
       const api: XMLExtensionApi = {
         // add API set catalogs to internal memory
@@ -441,11 +435,8 @@ export function activate(context: ExtensionContext) {
         xml['xml']['catalogs'].push(catalog);
       }
     })
-    externalXmlSettings.xmlFileAssociations.forEach(element => {
-      if (!xml['xml']['fileAssociations'].some(fileAssociation => fileAssociation.systemId === element.systemId)) {
-        xml['xml']['fileAssociations'].push(element);
-      }
-    });
+    // Apply variable substitutions for file associations
+    xml['xml']['fileAssociations'] = [...getVariableSubstitutedAssociations(xml['xml']['fileAssociations'])];
 
     return xml;
   }

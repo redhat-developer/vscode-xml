@@ -202,6 +202,18 @@ Please note that you can use wildcards in the pattern (ex: `foo*.xml`):
 
 In this case, all XML files that start with foo and end with .xml will be associated with the XSD (foo1.xml, foo2.xml, etc)
 
+You can also use the following three variables in either the `pattern` or `systemId`:
+
+ | Variable                    | Meaning                                                                  |
+ | --------------------------- | ------------------------------------------------------------------------ |
+ | ${workspaceFolder}          | The absolute path to root folder of the workspace that is currently open |
+ | ${fileDirname}              | The absolute path to the folder of the file that is currently opened     |
+ | ${fileBasenameNoExtension}  | The current opened file's basename with no file extension                |
+
+If one of the variables for an association can't be expanded (eg. because vscode is opened in rootless mode),
+the association is ignored.
+This feature is specific to the VSCode client.
+
 ## Validation with DTD grammar
 
 To associate your XML with a DTD grammar you can use several strategies:
@@ -325,7 +337,17 @@ Please note that you can use wildcards in the pattern (ex: `foo*.xml`):
 
 In this case, all XML files that start with foo and end with .xml will be associated with the DTD (foo1.xml, foo2.xml, etc)
 
+You can also use the following three variables in either the `pattern` or `systemId`:
 
+ | Variable                    | Meaning                                                                  |
+ | --------------------------- | ------------------------------------------------------------------------ |
+ | ${workspaceFolder}          | The absolute path to root folder of the workspace that is currently open |
+ | ${fileDirname}              | The absolute path to the folder of the file that is currently opened     |
+ | ${fileBasenameNoExtension}  | The current opened file's basename with no file extension                |
+
+If one of the variables for an association can't be expanded (eg. because vscode is opened in rootless mode),
+the association is ignored.
+This feature is specific to the VSCode client.
 
 # Other Validation Settings
 
