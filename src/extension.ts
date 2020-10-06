@@ -18,7 +18,7 @@ import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
 import { Commands } from './commands';
-import { onConfigurationChange, subscribeJDKChangeConfiguration } from './settings';
+import { getXMLConfiguration, onConfigurationChange, subscribeJDKChangeConfiguration } from './settings';
 import { collectXmlJavaExtensions, onExtensionChange } from './plugin';
 import { markdownPreviewProvider } from "./markdownPreviewProvider";
 
@@ -203,7 +203,7 @@ export function activate(context: ExtensionContext) {
       }
     }
 
-    let serverOptions = prepareExecutable(requirements, collectXmlJavaExtensions(extensions.all), context);
+    let serverOptions = prepareExecutable(requirements, collectXmlJavaExtensions(extensions.all, getXMLConfiguration().get("extension.jars", [])), context);
     languageClient = new LanguageClient('xml', 'XML Support', serverOptions, clientOptions);
     let toDispose = context.subscriptions;
     let disposable = languageClient.start();
@@ -245,7 +245,7 @@ export function activate(context: ExtensionContext) {
 
       if (extensions.onDidChange) {// Theia doesn't support this API yet
         context.subscriptions.push(extensions.onDidChange(() => {
-          onExtensionChange(extensions.all);
+          onExtensionChange(extensions.all, getXMLConfiguration().get("extension.jars", []));
         }));
       }
 
