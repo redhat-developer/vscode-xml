@@ -161,3 +161,16 @@ The different options are:
 Here is a demonstration of the effects of the setting on hovering. The above schema is used in the example:
 
 ![Changing the documentation type setting changes which text the hover shows when hovering over an element that is in a schema document](./images/Preferences/HoverDocumentationQuickDemo.gif)
+
+## Extension JARs
+
+The LemMinX XML Language Server can be extended with custom plugins to provide additional validation and assistance.
+Typically this is done for specific files or contexts.
+External extensions are are contributed via an external JAR.
+Please see [the extension development documentation](https://github.com/eclipse/lemminx/blob/master/docs/LemMinX-Extensions.md) for more information on how this works.
+
+JARs can be contributed to the LemMinX classpath using the `xml.extension.jars` preference.
+These paths can include globs.
+This feature is only intended to be used for LemMinX extension development purposes.
+Distributing vscode-xml extensions is best done through the mechanism described in the
+[vscode-xml extension development documentation](Extensions#custom-xml-extensions).

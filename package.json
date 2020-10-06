@@ -355,7 +355,13 @@
         "xml.symbols.showReferencedGrammars": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Show referenced grammars in the Outline. Default is `true.",
+          "markdownDescription": "Show referenced grammars in the Outline. Default is `true`.",
+          "scope": "window"
+        },
+        "xml.extension.jars": {
+          "type": "array",
+          "default": [],
+          "markdownDescription": "An array of paths to JARs that should be contributed to the LemMinX classpath. The paths can include glob patterns. This is intended to be used as a tool for developing extensions to vscode-xml. Please see [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22extension-jars%22%7D%5D) for more information",
           "scope": "window"
         }
       }
