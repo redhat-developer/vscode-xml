@@ -11,9 +11,9 @@
  */
 
 import { prepareExecutable } from './javaServerStarter';
-import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest, NotificationType, MessageType } from 'vscode-languageclient';
+import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest, NotificationType, MessageType, ConfigurationRequest, ConfigurationParams } from 'vscode-languageclient';
 import * as requirements from './requirements';
-import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions, Command } from "vscode";
+import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions, Command, TextEditor } from "vscode";
 import * as path from 'path';
 import * as os from 'os';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
@@ -248,6 +248,25 @@ export function activate(context: ExtensionContext) {
           onExtensionChange(extensions.all, getXMLConfiguration().get("extension.jars", []));
         }));
       }
+
+      // Copied from:
+      // https://github.com/redhat-developer/vscode-java/pull/1081/files
+      languageClient.onRequest(ConfigurationRequest.type, (params: ConfigurationParams) => {
+        const result: any[] = [];
+        const activeEditor: TextEditor | undefined = window.activeTextEditor;
+        for (const item of params.items) {
+          if (activeEditor && activeEditor.document.uri.toString() === Uri.parse(item.scopeUri).toString()) {
+            if (item.section === "xml.format.insertSpaces") {
+              result.push(activeEditor.options.insertSpaces);
+            } else if (item.section === "xml.format.tabSize") {
+              result.push(activeEditor.options.tabSize);
+            }
+          } else {
+            result.push(workspace.getConfiguration(null, Uri.parse(item.scopeUri)).get(item.section));
+          }
+        }
+        return result;
+      });
 
       const api: XMLExtensionApi = {
         // add API set catalogs to internal memory
