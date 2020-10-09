@@ -50,4 +50,9 @@ export namespace Commands {
     export const OPEN_DOCS = "xml.open.docs";
 
     export const OPEN_DOCS_HOME = "xml.open.docs.home";
+    
+    /**
+     * VSCode client command to executes an LSP command on the XML Language Server
+     */
+    export const EXECUTE_WORKSPACE_COMMAND = "xml.workspace.executeCommand";
 }
