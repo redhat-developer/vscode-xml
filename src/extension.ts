@@ -11,7 +11,22 @@
  */
 
 import { prepareExecutable } from './javaServerStarter';
-import { LanguageClientOptions, RevealOutputChannelOn, LanguageClient, DidChangeConfigurationNotification, RequestType, TextDocumentPositionParams, ReferencesRequest, NotificationType, MessageType, ConfigurationRequest, ConfigurationParams } from 'vscode-languageclient';
+import { 
+  LanguageClientOptions,
+  RevealOutputChannelOn,
+  LanguageClient,
+  DidChangeConfigurationNotification,
+  RequestType,
+  TextDocumentPositionParams,
+  ReferencesRequest,
+  NotificationType,
+  MessageType,
+  ConfigurationRequest,
+  ConfigurationParams,
+  ExecuteCommandParams,
+  CancellationToken,
+  ExecuteCommandRequest
+} from 'vscode-languageclient';
 import * as requirements from './requirements';
 import { languages, IndentAction, workspace, window, commands, ExtensionContext, TextDocument, Position, LanguageConfiguration, Uri, extensions, Command, TextEditor } from "vscode";
 import * as path from 'path';
@@ -112,6 +127,10 @@ export interface XMLExtensionApi {
    */
   removeXMLFileAssociations(fileAssociations: XMLFileAssociation[]): void;
 
+}
+
+namespace ExecuteClientCommandRequest {
+  export const type: RequestType<ExecuteCommandParams, any, void, void> = new RequestType('xml/executeClientCommand')
 }
 
 namespace TagCloseRequest {
@@ -239,6 +258,30 @@ export function activate(context: ExtensionContext) {
       }));
 
       setupActionableNotificationListener(languageClient);
+
+      // Handler for 'xml/executeClientCommand` request message that executes a command on the client
+      languageClient.onRequest(ExecuteClientCommandRequest.type, async (params: ExecuteCommandParams) => {
+        return await commands.executeCommand(params.command, ...params.arguments);
+      });    
+
+      // Register client command to execute custom XML Language Server command
+      context.subscriptions.push(commands.registerCommand(Commands.EXECUTE_WORKSPACE_COMMAND, (command, ...rest) => {
+				let token: CancellationToken;
+				let commandArgs: any[] = rest;
+				if (rest && rest.length && CancellationToken.is(rest[rest.length - 1])) {
+					token = rest[rest.length - 1];
+					commandArgs = rest.slice(0, rest.length - 1);
+				}
+				const params: ExecuteCommandParams = {
+					command,
+					arguments: commandArgs
+				};
+				if (token) {
+					return languageClient.sendRequest(ExecuteCommandRequest.type, params, token);
+				} else {
+					return languageClient.sendRequest(ExecuteCommandRequest.type, params);
+				}
+      }));
 
       context.subscriptions.push(commands.registerCommand(Commands.OPEN_SETTINGS, async (settingId?: string) => {
         commands.executeCommand('workbench.action.openSettings', settingId);

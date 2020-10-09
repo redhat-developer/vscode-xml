@@ -40,3 +40,9 @@ You can see the [vscode-xml-maven](https://github.com/angelozerr/vscode-xml-mave
 ## XML extension API (TypeScript)
 
 See [PR 292](https://github.com/redhat-developer/vscode-xml/pull/292)
+
+### Commands
+
+`xml.workspace.executeCommand` - command registered on VSCode client (via **vscode-xml** extension) to let other extensions execute commands on XML Language server
+
+`xml/executeClientCommand` - XML Language server LSP extension to let XML LS extenders execute commands on the client. The command is made available via `IXMLCommandService` on the server side. See [XML LS extensions docs](https://github.com/eclipse/lemminx/blob/master/docs/LemMinX-Extensions.md#xml-language-server-services-available-for-extensions)
