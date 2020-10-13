@@ -81,7 +81,7 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "XML configuration",
+      "title": "XML",
       "properties": {
         "xml.java.home": {
           "type": [
