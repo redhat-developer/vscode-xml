@@ -379,8 +379,26 @@
         "command": "xml.open.docs.home",
         "title": "Open XML Documentation",
         "category": "XML"
+      },
+      {
+        "command": "xml.validation.current.file",
+        "title": "Revalidate current XML file",
+        "category": "XML"
+      },
+      {
+        "command": "xml.validation.all.files",
+        "title": "Revalidate all opened XML files",
+        "category": "XML"
       }
     ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "xml.validation.current.file",
+          "when": "editorLangId == xml"
+        }
+      ]
+    },
     "languages": [
       {
         "id": "xml",
