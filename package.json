@@ -24,7 +24,8 @@
   "activationEvents": [
     "onLanguage:xml",
     "onLanguage:xsl",
-    "onCommand:xml.open.docs"
+    "onCommand:xml.open.docs",
+    "onCommand:xml.open.docs.home"
   ],
   "main": "./dist/extension",
   "scripts": {
@@ -373,6 +374,13 @@
         "files.trimTrailingWhitespace": false
       }
     },
+    "commands": [
+      {
+        "command": "xml.open.docs.home",
+        "title": "Open XML Documentation",
+        "category": "XML"
+      }
+    ],
     "languages": [
       {
         "id": "xml",

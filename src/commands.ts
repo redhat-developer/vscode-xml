@@ -48,4 +48,6 @@ export namespace Commands {
     export const MARKDOWN_API_RENDER = 'markdown.api.render';
 
     export const OPEN_DOCS = "xml.open.docs";
+
+    export const OPEN_DOCS_HOME = "xml.open.docs.home";
 }
