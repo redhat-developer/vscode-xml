@@ -1,4 +1,6 @@
-# Custom XML Extensions
+# Extensions
+
+## Custom XML Extensions
 
 The [LemMinX - XML Language Server](https://github.com/eclipse/lemminx) can be extended to support custom completion, hover, validation, rename, etc by using the [Java Service Provider Interface (SPI)](https://www.baeldung.com/java-spi) mechanism.
 vscode-xml provides the ability to use your custom XML support provider, by adding external jars to the XML language server's classpath.
@@ -34,3 +36,7 @@ To do that:
 You can see the [vscode-xml-maven](https://github.com/angelozerr/vscode-xml-maven) sample which registers custom maven completion [MavenCompletionParticipant](https://github.com/eclipse/lemminx-maven/blob/master/lemminx-maven/src/main/java/org/eclipse/lemminx/extensions/maven/MavenCompletionParticipant.java#L210) for scope:
 
 ![demo of vscode xml maven suggesting different scopes for a dependency](./images/vscode-xml-maven.gif)
+
+## XML extension API (TypeScript)
+
+See [PR 292](https://github.com/redhat-developer/vscode-xml/pull/292)

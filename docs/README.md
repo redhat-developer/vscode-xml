@@ -1,0 +1,16 @@
+# XML Documentation
+
+Welcome to the [vscode-xml](https://github.com/redhat-developer/vscode-xml) documentation.
+
+## User Guide
+
+As [vscode-xml](https://github.com/redhat-developer/vscode-xml) consumes the [LemMinX XML Language Server](https://github.com/eclipse/lemminx) written in `Java`, it requires `Java`. Please start reading [here](Preferences.md#java-home).
+
+  * [XML Validation](Validation.md#xml-validation): How to validate XML with a grammar (XSD/DTD)?
+  * [Preferences](Preferences.md#preferences): More info on available [vscode-xml](https://github.com/redhat-developer/vscode-xml) preferences.
+  * [Formatting](Formatting.md#formatting): More info on the available formatting preferences.
+  * [Troubleshooting](Troubleshooting.md#troubleshooting): Info on troubleshooting and fixes to issues.
+
+## Developer Guide
+
+  * [Extensions](Extensions.md#extensions): How to extend vscode-xml settings and XML features (completion, validation, hover, etc)?

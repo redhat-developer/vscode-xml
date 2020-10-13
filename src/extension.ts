@@ -136,13 +136,22 @@ namespace ActionableNotification {
 let languageClient: LanguageClient;
 
 export function activate(context: ExtensionContext) {
+  // Register commands for XML documentation
   context.subscriptions.push(markdownPreviewProvider);
-  context.subscriptions.push(commands.registerCommand(Commands.OPEN_DOCS, async (params) => {
-    const uri = params.page + '.md';
-    const sectionId = params.section || '';
-    const title = 'XML ' + params.page;
+  context.subscriptions.push(commands.registerCommand(Commands.OPEN_DOCS_HOME, async () => {
+    const uri = 'README.md';
+    const title = 'XML Documentation';
+    const sectionId = '';
     markdownPreviewProvider.show(context.asAbsolutePath(path.join('docs', uri)), title, sectionId, context);
   }));
+  context.subscriptions.push(commands.registerCommand(Commands.OPEN_DOCS, async (params: {page: string, section: string}) => {
+    const page = params.page.endsWith('.md') ? params.page.substr(0, params.page.length - 3) : params.page;
+    const uri = page  + '.md';
+    const sectionId = params.section || '';
+    const title = 'XML ' + page;
+    markdownPreviewProvider.show(context.asAbsolutePath(path.join('docs', uri)), title, sectionId, context);
+  }));
+
   let storagePath = context.storagePath;
   const externalXmlSettings = {
     "xmlCatalogs": [],

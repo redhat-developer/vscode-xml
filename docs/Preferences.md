@@ -1,3 +1,5 @@
+# Preferences
+
 ## Java Home
 
   vscode-xml requires Java JDK (or JRE) 8 or more recent in order to run.
@@ -63,7 +65,7 @@
   ]
   ```
 
-  Please see [XSD file associations](Validation#xml-file-association-with-xsd) and [DTD file associations](Validation#xml-file-association-with-dtd) for more information.
+  Please see [XSD file associations](Validation.md#xml-file-association-with-xsd) and [DTD file associations](Validation.md#xml-file-association-with-dtd) for more information.
 
 ## Catalogs
 
@@ -96,11 +98,11 @@
 
 ## Formatting
 
-See the [Formatting page](Formatting#formatting).
+See the [Formatting page](Formatting.md#formatting).
 
 ## Code Lens
 
-Use `xml.codeLens.enabled` in order to enable or disable code lens. Please see [the Code Lens page](CodeLens#code-lens) for more information.
+Use `xml.codeLens.enabled` in order to enable or disable code lens. Please see [the Code Lens page](CodeLens.md#code-lens) for more information.
 
 ## Documentation Type
 
@@ -173,4 +175,4 @@ JARs can be contributed to the LemMinX classpath using the `xml.extension.jars` 
 These paths can include globs.
 This feature is only intended to be used for LemMinX extension development purposes.
 Distributing vscode-xml extensions is best done through the mechanism described in the
-[vscode-xml extension development documentation](Extensions#custom-xml-extensions).
+[vscode-xml extension development documentation](Extensions.md#custom-xml-extensions).
