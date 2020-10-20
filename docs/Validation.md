@@ -18,6 +18,9 @@ You can `validate your XML with a grammar` (XSD, DTD). In order to do so, you mu
  * XML `completion` based on the grammar.
  * XML `hover` based on the grammar in order to show the documentation.
 
+If the `xml.symbols.showReferencedGrammars` setting is enabled, the method used to associate each grammar is listed in the document symbols.
+Please see the [Show Referenced Grammars documentation](Symbols.md#show-referenced-grammars) for more information.
+
 ## Validation with XSD grammar
 
 In the following sections, we would like to validate the XML `foo.xml` file:
