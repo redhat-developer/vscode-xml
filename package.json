@@ -356,7 +356,7 @@
         "xml.symbols.showReferencedGrammars": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Show referenced grammars in the Outline. Default is `true`.",
+          "markdownDescription": "Show referenced grammars in the Outline. Default is `true`. Please see [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22show-referenced-grammars%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.extension.jars": {
