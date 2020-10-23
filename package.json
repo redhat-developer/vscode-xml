@@ -139,21 +139,21 @@
           "items": {
             "type": "object",
             "properties": {
-              "systemId": {
-                "type": "string",
-                "description": "The path or URL to the XML schema (XSD or DTD)."
-              },
               "pattern": {
                 "type": "string",
                 "markdownDescription": "File glob pattern. Example: `**/*.Format.ps1xml`\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
+              },
+              "systemId": {
+                "type": "string",
+                "description": "The path or URL to the XML schema (XSD or DTD)."
               }
             },
             "required": [
-              "systemId",
-              "pattern"
+              "pattern",
+              "systemId"
             ]
           },
-          "markdownDescription": "Allows XML schemas/ DTD to be associated to file name patterns. Please refer to [XML file association with XSD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-xsd%22%7D%5D) or [XML file association with DTD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-dtd%22%7D%5D) for more information. \n\nExample:\n```json\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\",\n  \"pattern\": \"**/*.xsd\"\n}]\n```",
+          "markdownDescription": "Allows XML schemas/ DTD to be associated to file name patterns. Please refer to [XML file association with XSD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-xsd%22%7D%5D) or [XML file association with DTD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-dtd%22%7D%5D) for more information. \n\nExample:\n```json\n[{\n  \"pattern\": \"file1.xml\",\n  \"systemId\": \"path/to/file.xsd\"\n},\n{\n  \"pattern\": \"**/*.xsd\",\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\"\n}]\n```",
           "scope": "window"
         },
         "xml.format.enabled": {
@@ -336,7 +336,7 @@
         "xml.symbols.enabled": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Enable/disable document symbols (Outline). Default is `true`. No symbols are given if `\"xml.symbol.enabled\": false`.",
+          "markdownDescription": "Enable/disable document symbols (Outline). Default is `true`. No symbols are given if `\"xml.symbols.enabled\": false`.",
           "scope": "window"
         },
         "xml.symbols.excluded": {
@@ -357,6 +357,44 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "Show referenced grammars in the Outline. Default is `true`. Please see [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22xmlsymbolsshowreferencedgrammars%22%7D%5D) for more information.",
+          "scope": "window"
+        },
+        "xml.symbols.filters": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "pattern": {
+                "type": "string",
+                "markdownDescription": "File glob pattern. Example: `**/*.Format.ps1xml`\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
+              },
+              "expressions": {
+                "type": "array",
+                "default": [],
+                "items": {
+                  "type": "object",
+                  "description": "The XML symbol expression.",
+                  "properties": {
+                    "xpath": {
+                      "type": "string",
+                      "markdownDescription": "The XPath expression of the filter."
+                    },
+                    "excluded": {
+                      "type": "boolean",
+                      "description": "Exclude/Include the node which matches the XPath expression ."
+                    }
+                  }
+                },
+                "markdownDescription": "Array of XML symbol expressions"
+              }
+            },
+            "required": [
+              "pattern",
+              "expressions"
+            ]
+          },
+          "markdownDescription": "Allows XML symbols filter to be associated to file name patterns. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22xmlsymbolsfilters%22%7D%5D) for more information.. \n\nExample:\n```json\n[\n  {\n    \"pattern\": \"pom.xml\",\n    \"expressions\": [\n      {\n        \"xpath\": \"//text()\"\n      }\n    ]\n  }\n]\n```",
           "scope": "window"
         },
         "xml.extension.jars": {
