@@ -1,5 +1,58 @@
 # Change Log
 
+## [0.14.0](https://github.com/redhat-developer/vscode-xml/milestone/17?closed=1) (6 November, 2020)
+
+### Enhancements
+
+ * Allow globs in `xml.javaExtensions`. See [#324](https://github.com/redhat-developer/vscode-xml/pull/324).
+ * Add links to the wiki in the settings. See [#322](https://github.com/redhat-developer/vscode-xml/issues/322).
+ * Support file path variables in `xml.fileAssociations`. See [#307](https://github.com/redhat-developer/vscode-xml/issues/307).
+ * Command to reload remote schema. See [#284](https://github.com/redhat-developer/vscode-xml/issues/284).
+ * Customize symbols in the outline. See [#220](https://github.com/redhat-developer/vscode-xml/issues/220).
+ * Publish releases to open-vsx.org. See [#287](https://github.com/redhat-developer/vscode-xml/pull/287).
+ * Add documentation for `xml.symbols.showReferencedGrammar` setting. See [#335](https://github.com/redhat-developer/vscode-xml/issues/335).
+ * Embed docs in vscode-xml. See [#326](https://github.com/redhat-developer/vscode-xml/issues/326).
+ * Add LemMinX extensions via vscode user settings. See [#251](https://github.com/redhat-developer/vscode-xml/issues/251).
+ * Outline should display referenced DTD / XSD from the current XML. See [lemminx#892](https://github.com/eclipse/lemminx/issues/892).
+ * XML catalog `nextCatalog/@catalog` documentLink support. See [lemminx#845](https://github.com/eclipse/lemminx/issues/845).
+ * Format for `xsi:schemaLocation`. See [lemminx#825](https://github.com/eclipse/lemminx/issues/825).
+ * Document links in catalog's `<system uri="..." />`. See [lemminx#220](https://github.com/eclipse/lemminx/issues/220).
+
+### Bug Fixes
+
+ * Formatting comments which have no end should not generate `-->`. See [#347](https://github.com/redhat-developer/vscode-xml/issues/347).
+ * Completion & hover based on XSD with `elementFormDefault="unqualified"` doesn't work. See [#311](https://github.com/redhat-developer/vscode-xml/issues/311).
+ * Don't send invalid catalog notifications for paths with file schemes. See [#289](https://github.com/redhat-developer/vscode-xml/issues/289).
+ * EntityNotDeclared quick fix doesn't use the proper indentation settings. See [#267](https://github.com/redhat-developer/vscode-xml/issues/267).
+ * XSD with `targetNamespace` cannot be used with `xml.fileAssociations`. See [#223](https://github.com/redhat-developer/vscode-xml/issues/223).
+ * `xml.fileAssociations` does not work with DTD files. See [#184](https://github.com/redhat-developer/vscode-xml/issues/184).
+ * Remove 'Configuration' from XML preferences category name. See [#341](https://github.com/redhat-developer/vscode-xml/pull/341).
+ * Avoid duplication of documentation between extension and wiki. See [#331](https://github.com/redhat-developer/vscode-xml/issues/331).
+ * Stop the XMLServerLauncher process when the extension is deactivated. See [#303](https://github.com/redhat-developer/vscode-xml/issues/303).
+ * Update dependencies to fix security vulnerabilities. See [#300](https://github.com/redhat-developer/vscode-xml/pull/300).
+ * When associating a DTD through `<?xml-model...?>`, DTD-related errors should be aggregated. See [lemminx#918](https://github.com/eclipse/lemminx/issues/918).
+ * Can't use XML catalog with XSD files that have `<xs:include />`. See [lemminx#914](https://github.com/eclipse/lemminx/issues/914).
+ * Empty log file string crashes the server. See [lemminx#904](https://github.com/eclipse/lemminx/issues/904).
+ * Incorrect diagnostic error range for `MSG_SPACE_REQUIRED_BEFORE_ELEMENT_TYPE_IN_ELEMENTDECL`. See [lemminx#902](https://github.com/eclipse/lemminx/issues/902).
+ * CodeAction which raises an Exception prevents other CodeActions from being generated. See [lemminx#900](https://github.com/eclipse/lemminx/issues/900).
+ * Symbols Max Items Computed doesn't work for 0. See [lemminx#898](https://github.com/eclipse/lemminx/issues/898).
+ * Code Action for `</` with no matching open tag doesn't fix content. See [lemminx#889](https://github.com/eclipse/lemminx/issues/889).
+ * Incorrect error range for cvc-complex-type.2.3. See [lemminx#885](https://github.com/eclipse/lemminx/issues/885).
+ * Code Action to close root element closing tag inserts wrong closing tag. See [lemminx#878](https://github.com/eclipse/lemminx/issues/878).
+ * Improve ETagRequired error range. See [lemminx#876](https://github.com/eclipse/lemminx/issues/876).
+ * Improve error range for ETagUnterminated . See [lemminx#875](https://github.com/eclipse/lemminx/issues/875).
+ * Error range for empty element cvc-datatype-valid.1.2.3. See [lemminx#871](https://github.com/eclipse/lemminx/issues/871).
+ * Incorrect error range for cvc-datatype-valid.1.2.3. See [lemminx#864](https://github.com/eclipse/lemminx/issues/864).
+ * `StringIndexOutOfBoundsException` in `EntityNotDeclaredCodeAction.getEntityName`. See [lemminx#862](https://github.com/eclipse/lemminx/issues/862).
+ * Infinite loop inside `LSPMessageFormatter` for some cases. See [lemminx#856](https://github.com/eclipse/lemminx/issues/856).
+ * XML validation should aggregate DTD errors in doctype. See [lemminx#853](https://github.com/eclipse/lemminx/issues/853).
+ * DTD hyperlink with XML catalog and `PUBLIC` declaration doesn't work. See [lemminx#850](https://github.com/eclipse/lemminx/issues/850).
+ * XML completion based on DTD with XML catalog and `PUBLIC` declaration doesn't work. See [lemminx#849](https://github.com/eclipse/lemminx/issues/849).
+ * DTD validation doesn't work with XML catalog and `PUBLIC` declaration. See [lemminx#847](https://github.com/eclipse/lemminx/issues/847).
+ * Null Pointer Exception in catalog extension. See [lemminx#833](https://github.com/eclipse/lemminx/issues/833).
+ * XML validation should aggregate XSD errors where is referenced. See [lemminx#768](https://github.com/eclipse/lemminx/issues/768).
+ * `completionRequest.getReplaceRange()` is erroneous in text that contains `/`. See [lemminx#723](https://github.com/eclipse/lemminx/issues/723).
+
 ## [0.13.0](https://github.com/redhat-developer/vscode-xml/milestone/16?closed=1) (July 6, 2020)
 
 ### Enhancements
@@ -15,7 +68,7 @@
  * New snippet to generate a catalog. See [lemminx#708](https://github.com/eclipse/lemminx/issues/708).
  * New snippets for `xml-stylesheet`. See [lemminx#728](https://github.com/eclipse/lemminx/issues/728).
 
-###  Bug Fixes
+### Bug Fixes
 
  * Missing `xml-model` reference generates multiple similar warnings. See [#795](https://github.com/eclipse/lemminx/issues/795).
  * Fix line break being incorrectly added when `preserveAttrLineBreaks` is `true`. See [#780](https://github.com/eclipse/lemminx/pull/780).
@@ -108,7 +161,7 @@
 
 ### Bug Fixes
 
-* Temporarily removed experimental simultaneously editing of start/end tags causing editing issues in all of VS Code. See [#211](https://github.com/redhat-developer/vscode-xml/issues/211). 
+* Temporarily removed experimental simultaneously editing of start/end tags causing editing issues in all of VS Code. See [#211](https://github.com/redhat-developer/vscode-xml/issues/211).
 
 ## [0.10.0](https://github.com/redhat-developer/vscode-xml/milestone/12?closed=1) (December 13, 2019)
 
@@ -178,7 +231,7 @@
  * Add completion for `comment` and `#region`. See [lsp4xml#54](https://github.com/angelozerr/lsp4xml/issues/54)
  * Add completion for `CDATA` block. See [#168](https://github.com/redhat-developer/vscode-xml/issues/168)
  * Find definition for start/end tag element. See [lsp4xml#535](https://github.com/angelozerr/lsp4xml/issues/535)
- * Show `relevant XML` completion options based on XML Schema. See [lsp4xm#347](https://github.com/angelozerr/lsp4xml/issues/347) 
+ * Show `relevant XML` completion options based on XML Schema. See [lsp4xm#347](https://github.com/angelozerr/lsp4xml/issues/347)
  * Improve `XSD source` information for XML completion. See [lsp4xm#529](https://github.com/angelozerr/lsp4xml/issues/529)
  * Add support for `textDocument/documentHighlight` for XML Schema types. See [lsp4xm#470](https://github.com/angelozerr/lsp4xml/issues/470)
  * Add support for `textDocument/completion` for xs:element/@name / xs:extension/@base. See [lsp4xm#451](https://github.com/angelozerr/lsp4xml/issues/451)
@@ -190,7 +243,7 @@
  * Add support for `textDocument/codelens` for XML Schema types. See [lsp4xm#55](https://github.com/angelozerr/lsp4xml/issues/55)
  * Add support for clickable`XSD CodeLens`. See [lsp4xm#490](https://github.com/angelozerr/lsp4xml/issues/490)
  * Active editor cannot provide outline information. See [#166](https://github.com/redhat-developer/vscode-xml/issues/166)
- * Add XML support for unsaved XML, XSD and XSL files. See [#156](https://github.com/redhat-developer/vscode-xml/issues/156) 
+ * Add XML support for unsaved XML, XSD and XSL files. See [#156](https://github.com/redhat-developer/vscode-xml/issues/156)
  * Trigger `textDocument/didSave` if an XSD file was changed externally from a different editor. See [#132](https://github.com/redhat-developer/vscode-xml/issues/132)
  * Improved XML validation when XSD files are saved. See [lsp4xm#506](https://github.com/angelozerr/lsp4xml/issues/506)
 
@@ -201,7 +254,7 @@
  * Fixed NPE in  `textDocument/definition` in XSD files. See [lsp4xm#488](https://github.com/angelozerr/lsp4xml/issues/488)
  * Fix test with markdown on Windows OS. See [lsp4xm#487](https://github.com/angelozerr/lsp4xml/issues/487)
  * Fixed case sensitivity problems for element and attribute names. See [lsp4xm#433](https://github.com/angelozerr/lsp4xml/issues/433)
- * Selection formatting ignores attribute indentation preference. See [lsp4xm#429](https://github.com/angelozerr/lsp4xml/issues/429) 
+ * Selection formatting ignores attribute indentation preference. See [lsp4xm#429](https://github.com/angelozerr/lsp4xml/issues/429)
  * Fixed error range for `src-import.1.2`. See [lsp4xm#499](https://github.com/angelozerr/lsp4xml/issues/499)
  * Fixed error range for `s4s-elt-invalid-content.3`. See [lsp4xm#496](https://github.com/angelozerr/lsp4xml/issues/496)
  * Fixed error range for `EntityNotDeclared`. See [lsp4xm#518](https://github.com/angelozerr/lsp4xml/issues/518)
