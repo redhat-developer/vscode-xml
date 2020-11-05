@@ -23,16 +23,17 @@ This VS Code extension provides support for creating and editing XML documents, 
   * DTD validation
   * DTD completion
   * DTD formatting
-  * XSD validation
+  * [XSD validation](https://github.com/redhat-developer/vscode-xml/wiki/XMLValidation)
   * XSD based hover
   * XSD based code completion
   * XSL support
-  * XML catalogs
+  * [XML catalogs](https://github.com/redhat-developer/vscode-xml/wiki/XMLValidation#xml-catalog-with-xsd)
   * File associations
   * Code actions
   * Schema Caching
 
-See the [changelog](CHANGELOG.md) for the latest release. You might also find useful information in the project [Wiki](https://github.com/redhat-developer/vscode-xml/wiki).
+See the [changelog](CHANGELOG.md) for the latest release.  
+You might also find useful information in the project [Wiki](https://github.com/redhat-developer/vscode-xml/wiki).
 
 ## Requirements
 
@@ -65,10 +66,12 @@ The following settings are supported:
 * `xml.format.preserveAttributeLineBreaks`: Preserve line breaks that appear before and after attributes. This setting is overridden if `xml.format.splitAttributes` is set to `true`. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatpreserveattributelinebreaks) for more information.
 * `xml.format.preserveEmptyContent`: Preserve empty content/whitespace in a tag. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatpreserveemptycontent) for more information.
 * `xml.format.preservedNewLines`: Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines. Default is `2`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatpreservednewlines) for more information.
-* `xml.format.spaceBeforeEmptyCloseTag`: Insert space before end of self closing tag. \nExample:\n  ```<tag/> -> <tag />```. Default is `true`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatspacebeforeemptyclosetag) for more information.
+* `xml.format.spaceBeforeEmptyCloseTag`: Insert space before end of self closing tag.  
+  Example:  ```<tag/> -> <tag />```. Default is `true`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatspacebeforeemptyclosetag) for more information.
 * `xml.format.splitAttributes` : Split multiple attributes each onto a new line. Default is `false`. See [here](https://github.com/redhat-developer/vscode-xml/wiki/Formatting#xmlformatsplitattributes) for more information.
 * `xml.preferences.quoteStyle`: Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.
-* `xml.autoCloseTags.enabled` : Enable/disable autoclosing of XML tags. Default is `true`. \n\nIMPORTANT: Turn off `#editor.autoClosingTags#` for this to work.
+* `xml.autoCloseTags.enabled` : Enable/disable autoclosing of XML tags. Default is `true`.  
+  **IMPORTANT**: Turn off `#editor.autoClosingTags#` for this to work.  
   **Note**: `editor.autoClosingBrackets` must be turned off to work.
 * `xml.codeLens.enabled`: Enable/disable XML CodeLens. Default is `false`.
 * `xml.preferences.showSchemaDocumentationType`: Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.
