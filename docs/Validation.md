@@ -123,7 +123,6 @@ Using an XML catalog can be helpful when you wish to use elements from a namespa
 
 In other words you want to write this XML file:
 
-
 ```xml
 <foo xmlns="http://foo" >
   <bar />
@@ -213,6 +212,43 @@ You can also use the following three variables in either the `pattern` or `syste
 If one of the variables for an association can't be expanded (eg. because vscode is opened in rootless mode),
 the association is ignored.
 This feature is specific to the VSCode client.
+
+Please note that if the XSD defines a `targetNamespace="http://foo"` like the following `foo.xsd` XSD file:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    targetNamespace="http://foo">
+  <xs:element name="foo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="bar" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+```
+
+the following XML file association:
+
+```json
+"xml.fileAssociations": [
+   {
+       "pattern": "foo*.xml",
+       "systemId": "foo.xsd"
+   }
+]
+```
+
+will work with the following `foo.xml` XML file only if it declares the `http://foo` namespace:
+
+```xml
+<foo xmlns="http://foo" >
+  <bar />
+</foo>
+```
 
 ## Validation with DTD grammar
 
