@@ -119,7 +119,7 @@ To bind the XML file `foo.xml` to the XSD file `foo.xsd`, you can use [xml-model
 
 ### XML catalog with XSD
 
-Using an XML catalog can be helpful when you wish to use elements from a namespace but  don't want to set the real path of the XSD file for each XML document.
+Using an XML catalog can be helpful when you wish to use elements from a namespace but don't want to set the real path of the XSD file for each XML document.
 
 In other words you want to write this XML file:
 
@@ -175,6 +175,19 @@ You can also register the catalog using its absolute path:
 | `C:\\Users\\path\\to\\catalog.xml` | `/Users/path/to/catalog.xml` | `/home/path/to/catalog.xml` |
 
 Please note that you can declare your catalog path with `file:///` if you need it.
+
+Another useful option are the rewrite rules. Given the same xml as before but now with `xmlns="http://foo.web/foo/types.xsd"` can be adjusted to use a local `types.xsd` as follows:
+
+```xml
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+
+  <rewriteURI
+      uriStartString="http://foo.web/foo/"
+      rewritePrefix="./" />
+
+</catalog>
+```
+
 
 ### XML file association with XSD
 
