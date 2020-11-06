@@ -65,7 +65,7 @@
   ]
   ```
 
-  Please see [XSD file associations](Validation.md#xml-file-association-with-xsd) and [DTD file associations](Validation.md#xml-file-association-with-dtd) for more information.
+Please see [XSD file associations](Validation.md#xml-file-association-with-xsd) and [DTD file associations](Validation.md#xml-file-association-with-dtd) for more information.
 
 ## Catalogs
 
@@ -81,6 +81,9 @@
     "catalog2.xml"
   ]
   ```
+  
+Please see [XML catalog with XSD](Validation.md#XML-catalog-with-XSD) and [XML catalog with DTD](Validation.md#XML-catalog-with-DTD) for more information.
+  
 ## Grammar
 
   Can be accessed through: `xml.problems.noGrammar`
