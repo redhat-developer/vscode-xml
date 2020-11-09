@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.14.0](https://github.com/redhat-developer/vscode-xml/milestone/17?closed=1) (6 November, 2020)
+## [0.14.0](https://github.com/redhat-developer/vscode-xml/milestone/17?closed=1) (9 November, 2020)
 
 ### Enhancements
 
