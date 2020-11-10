@@ -99,19 +99,19 @@ const VARIABLE_SUBSTITUTIONS: VariableSubstitution[] = [
 export function getVariableSubstitutedAssociations(associations: XMLFileAssociation[]): XMLFileAssociation[] {
 
   // Collect properties needed to resolve variables
-  const currentFile: TextDocument = window.activeTextEditor.document;
-  const currentFileUri: string = currentFile && currentFile.uri.fsPath;
-  const currentWorkspace: WorkspaceFolder = workspace.getWorkspaceFolder(currentFile && currentFile.uri);
+  const currentFile: TextDocument = (window.activeTextEditor && window.activeTextEditor.document && window.activeTextEditor.document.languageId === 'xml') ?  window.activeTextEditor.document : undefined;
+  const currentFileUri: string = (currentFile && currentFile.uri) ? currentFile.uri.fsPath : undefined;
+  const currentWorkspace: WorkspaceFolder = (currentFile && currentFile.uri) ?  workspace.getWorkspaceFolder(currentFile.uri) : undefined;
   const currentWorkspaceUri: string = (currentWorkspace && currentWorkspace.uri.fsPath)
     || (workspace.workspaceFolders && workspace.workspaceFolders[0].uri.fsPath);
 
   // Remove variables that can't be resolved
   let variablesToSubstitute = VARIABLE_SUBSTITUTIONS;
   if (!currentWorkspaceUri) {
-    variablesToSubstitute = variablesToSubstitute.filter(variable => { variable.kind !== VariableSubstitutionKind.Workspace });
+    variablesToSubstitute = variablesToSubstitute.filter(variable => { return variable.kind !== VariableSubstitutionKind.Workspace });
   }
   if (!currentFileUri) {
-    variablesToSubstitute = variablesToSubstitute.filter(variable => { variable.kind !== VariableSubstitutionKind.File });
+    variablesToSubstitute = variablesToSubstitute.filter(variable => { return variable.kind !== VariableSubstitutionKind.File });
   }
 
   /**
