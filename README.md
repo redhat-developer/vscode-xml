@@ -105,7 +105,7 @@ The following settings are supported:
 ## Custom XML Extensions
 
 The [LemMinX - XML Language Server](https://github.com/eclipse/lemminx) can be extended to support custom completion, hover, validation, rename, etc.
-Please see the [extensions documentation](./docs/Extensions#custom-xml-extensions) for more information.
+Please see the [extensions documentation](./docs/Extensions.md#custom-xml-extensions) for more information.
 
 ## Contributing
 
