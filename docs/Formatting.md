@@ -148,7 +148,8 @@ If this value is set to 0, then all blank lines will be removed during formattin
 ### xml.format.splitAttributes
 
   Set to `true` to split node attributes onto multiple lines during formatting. Defaults to `false`.
-  Overrides the behaviour of [xml.format.preserveAttributeLineBreaks](#xmlformatpreserveattributelinebreaks)
+  Overrides the behaviour of [xml.format.preserveAttributeLineBreaks](#xmlformatpreserveattributelinebreaks).
+  Please see [xml.format.splitAttributesIndentSize](#xmlformatsplitAttributesIndentSize) for information on configuring the indentation level of the attributes.
 
   ```xml
   <project a="1" b="2" c="3"></project>
@@ -332,4 +333,66 @@ If it is set to `true`, the above document becomes:
     ```
 
 ***
+### xml.format.splitAttributesIndentSize
 
+  Use to configure how many levels to indent the attributes by when [xml.format.splitAttributes](#xmlformatsplitAttributes) is set to `true`.
+
+  Here are some examples. For these examples, an indentation is two spaces.
+
+  `xml.format.splitAttributesIndentSize = 2` (default)
+
+  ```xml
+  <robot attribute1="value1" attribute2="value2" attribute3="value3">
+    <child />
+    <child />
+  </robot>
+  ```
+  becomes
+  ```xml
+  <robot
+      attribute1="value1"
+      attribute2="value2"
+      attribute3="value3">
+    <child />
+    <child />
+  </robot>
+  ```
+
+  `xml.format.splitAttributesIndentSize = 1`
+
+  ```xml
+  <robot attribute1="value1" attribute2="value2" attribute3="value3">
+    <child />
+    <child />
+  </robot>
+  ```
+  becomes
+  ```xml
+  <robot
+    attribute1="value1"
+    attribute2="value2"
+    attribute3="value3">
+    <child />
+    <child />
+  </robot>
+  ```
+
+  `xml.format.splitAttributesIndentSize = 3`
+
+  ```xml
+  <robot attribute1="value1" attribute2="value2" attribute3="value3">
+    <child />
+    <child />
+  </robot>
+  ```
+  becomes
+  ```xml
+  <robot
+        attribute1="value1"
+        attribute2="value2"
+        attribute3="value3">
+    <child />
+    <child />
+  </robot>
+  ```
+***
