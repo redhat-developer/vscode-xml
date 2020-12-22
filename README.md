@@ -32,9 +32,9 @@ This VS Code extension provides support for creating and editing XML documents, 
   * Code actions
   * Schema Caching
 
-See the [changelog](CHANGELOG.md) for the latest release. 
+See the [changelog](CHANGELOG.md) for the latest release.
 
-You might also find useful information in the [Online XML Documentation](https://github.com/redhat-developer/vscode-xml/blob/master/docs/README.md) 
+You might also find useful information in the [Online XML Documentation](https://github.com/redhat-developer/vscode-xml/blob/master/docs/README.md)
 or you can read this documentation inside vscode with the command `Open XML Document` available with `Ctrl+Shift+P`:
 
 ![XML Open Documentation](https://raw.githubusercontent.com/redhat-developer/vscode-xml/master/docs/images/Commands/XMLCommands.png)
@@ -46,7 +46,7 @@ or you can read this documentation inside vscode with the command `Open XML Docu
     * `xml.java.home` in VSCode preferences
     * `java.home` in VSCode preferences
     * Environment variable `JAVA_HOME` or `JDK_HOME`
-    * **Note**: The path should end at the parent folder that contains the `bin` folder.  
+    * **Note**: The path should end at the parent folder that contains the `bin` folder.
       **Example Path**: `/usr/lib/jvm/java-1.8.0` if `bin` exists at `/usr/lib/jvm/java-1.8.0/bin`.
     * **Note**: If the path is not set, the extension will attempt to find the path to the JDK or JRE.
 
@@ -57,7 +57,7 @@ See [how to set java home](https://github.com/redhat-developer/vscode-xml/blob/m
 The following settings are supported:
 
 * [`xml.java.home`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#java-home): Set the Java path required to run the XML Language Server. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
-* [`xml.server.vmargs`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-vm-arguments): Specifies extra VM arguments used to launch the XML Language Server.  
+* [`xml.server.vmargs`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-vm-arguments): Specifies extra VM arguments used to launch the XML Language Server.
    Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector.
 * [`xml.server.workDir`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-cache-path): Set a custom folder path for cached XML Schemas. An absolute path is expected, although the `~` prefix (for the user home directory) is supported. Default is `~/.lemminx`.
 * `xml.trace.server`: Trace the communication between VS Code and the XML language server in the Output view. Default is `off`.
@@ -70,15 +70,16 @@ The following settings are supported:
 * [`xml.format.joinCDATALines`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatjoincdatalines): Set to `true` to join lines in CDATA content during formatting. Default is `false`.
 * [`xml.format.joinCommentLines`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatjoincommentlines): Set to `true` to join lines in comments during formatting. Default is `false`.
 * [`xml.format.joinContentLines`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatjoincontentlines): Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed. Default is `false`.
-* [`xml.format.preserveAttributeLineBreaks`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatpreserveattributelinebreaks): Preserve line breaks that appear before and after attributes. Default is `false`.  
+* [`xml.format.preserveAttributeLineBreaks`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatpreserveattributelinebreaks): Preserve line breaks that appear before and after attributes. Default is `false`.
   **IMPORTANT**: This setting is overridden if `xml.format.splitAttributes` is set to `true`.
 * [`xml.format.preserveEmptyContent`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatpreserveemptycontent): Preserve empty content/whitespace in a tag. Default is `false`.
 * [`xml.format.preservedNewLines`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatpreservednewlines): Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines. Default is `2`.
-* [`xml.format.spaceBeforeEmptyCloseTag`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatspacebeforeemptyclosetag): Insert space before end of self closing tag.  
+* [`xml.format.spaceBeforeEmptyCloseTag`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatspacebeforeemptyclosetag): Insert space before end of self closing tag.
   Example: ```<tag/> -> <tag />```. Default is `true`.
 * [`xml.format.splitAttributes`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatsplitattributes): Split multiple attributes each onto a new line. Default is `false`.
+* [`xml.format.splitAttributesIndentSize`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatsplitattributesindentsize): How many levels to indent the attributes by when `xml.format.splitAttributes` is `true`. Default value is `2`.
 * `xml.preferences.quoteStyle`: Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.
-* `xml.autoCloseTags.enabled` : Enable/disable autoclosing of XML tags. Default is `true`.  
+* `xml.autoCloseTags.enabled` : Enable/disable autoclosing of XML tags. Default is `true`.
   **IMPORTANT**: The following settings must be turned of for this to work: `editor.autoClosingTags`, `editor.autoClosingBrackets`.
 * [`xml.codeLens.enabled`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/CodeLens.md): Enable/disable XML CodeLens. Default is `false`.
 * [`xml.preferences.showSchemaDocumentationType`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#documentation-type): Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.

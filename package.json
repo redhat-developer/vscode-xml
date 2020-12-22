@@ -257,6 +257,11 @@
           "markdownDescription": "Split multiple attributes each onto a new line. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatsplitattributes%22%7D%5D) for more information.",
           "scope": "window"
         },
+        "xml.format.splitAttributesIndentSize": {
+          "type": "number",
+          "default": 2,
+          "markdownDescription": "How many levels to indent the attributes by when `#xml.format.splitAttributes#` is `true`. Default value is `2`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatsplitattributesindentsize%22%7D%5D) for more information"
+        },
         "xml.preferences.quoteStyle": {
           "type": "string",
           "enum": [
