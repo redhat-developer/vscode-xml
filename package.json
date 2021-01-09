@@ -248,7 +248,7 @@
             "Ignore `xsi:schemaLocation` content formatting."
           ],
           "default": "none",
-          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `none`. Please see [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatxsischemalocationsplit%22%7D%5D) for more information",
+          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `none`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatxsischemalocationsplit%22%7D%5D) for more information",
           "scope": "window"
         },
         "xml.format.splitAttributes": {
@@ -298,7 +298,7 @@
             "Documentation comes from the `xs:documentation` and `xs:appinfo` elements.",
             "Displays no documentation."
           ],
-          "markdownDescription": "Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`. Please see [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22documentation-type%22%7D%5D) for more information.",
+          "markdownDescription": "Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22documentation-type%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.validation.enabled": {
@@ -307,10 +307,20 @@
           "markdownDescription": "Enable/disable all validation. Default is `true`.",
           "scope": "window"
         },
-        "xml.validation.schema": {
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Enable/disable schema based validation. Default is `true`. Ignored if `#xml.validation.enabled#` is set to `false`",
+        "xml.validation.schema.enabled": {
+          "type": "string",
+          "default": "always",
+          "enum": [
+            "always",
+            "never",
+            "onValidSchema"
+          ],
+          "markdownEnumDescriptions": [
+            "Enable schema based validation.",
+            "Disable schema based validation.",
+            "Enable schema based validation only when the declared xsi:schemaLocation hint or xsi:noNamespaceSchemaLocation is valid for the root element."
+          ],
+          "markdownDescription": "Enable/disable schema based validation. Default is `always`. Ignored if `#xml.validation.enabled#` is set to `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xmlvalidationschemaenabled%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.validation.disallowDocTypeDecl": {
@@ -356,12 +366,12 @@
         "xml.symbols.maxItemsComputed": {
           "type": "integer",
           "default": 5000,
-          "markdownDescription": "The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`. Please see [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22xmlsymbolsmaxitemscomputed%22%7D%5D) for more information."
+          "markdownDescription": "The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22xmlsymbolsmaxitemscomputed%22%7D%5D) for more information."
         },
         "xml.symbols.showReferencedGrammars": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Show referenced grammars in the Outline. Default is `true`. Please see [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22xmlsymbolsshowreferencedgrammars%22%7D%5D) for more information.",
+          "markdownDescription": "Show referenced grammars in the Outline. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22xmlsymbolsshowreferencedgrammars%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.symbols.filters": {
@@ -405,7 +415,7 @@
         "xml.extension.jars": {
           "type": "array",
           "default": [],
-          "markdownDescription": "An array of paths to JARs that should be contributed to the LemMinX classpath. The paths can include glob patterns. This is intended to be used as a tool for developing extensions to vscode-xml. Please see [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22extension-jars%22%7D%5D) for more information",
+          "markdownDescription": "An array of paths to JARs that should be contributed to the LemMinX classpath. The paths can include glob patterns. This is intended to be used as a tool for developing extensions to vscode-xml. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22extension-jars%22%7D%5D) for more information",
           "scope": "window"
         }
       }
