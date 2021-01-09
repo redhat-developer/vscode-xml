@@ -417,3 +417,66 @@ If `xml.validation.resolveExternalEntities` is set to `true` (default is `false`
 Demonstration of the different behaviour:
 
 ![When using the default settings, an external entity that has an XML element as its content will not produce a validation error when nested in an element that expects character content. If `xml.validation.resolveExternalEntities` is enabled, then an error will be produced](./images/Validation/ExternalEntityResolvingDemonstration.gif)
+
+## xml.validation.schema.enabled
+
+The `xml.validation.schema.enabled` gives the capability to enable / disable the validation based on XSD. It can be configured with 3 values:
+
+ * `always`: enable schema based validation.
+ * `never`: disable schema based validation.
+ * `onValidSchema`: enable schema based validation only when the declared xsi:schemaLocation hint or xsi:noNamespaceSchemaLocation is valid for the root element.
+
+To understand the `onValidSchema` settings value, lets go through an example:
+
+Create the XML `foo.xml` file:
+
+```xml
+<foo xmlns="http://foo"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://foo foo.xsd">
+	<bar />
+	<BAD_ELEMENT />
+</foo>
+```
+
+Create the XSD `foo.xsd` file (in the same folder as foo.xml) :
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="foo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="bar" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+```
+
+In the XML file, the `BAD_ELEMENT` is higlighted as an error. Update the xsi:schemaLocation with bad namespace hint 
+
+```xml
+<foo>
+...
+	xsi:schemaLocation="
+		http://bad-foo foo.xsd">
+...
+</foo>
+```
+
+In `always` you will have error, in `onValidSchema` you will have none error.
+
+Now, update the xsi:schemaLocation with bad location hint 
+
+```xml
+<foo>
+...
+	xsi:schemaLocation="
+		http://foo bad-foo.xsd">
+...
+</foo>
+```
+
+In `always` you will have error, in `onValidSchema` you will have none error.
