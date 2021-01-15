@@ -307,6 +307,22 @@
           "markdownDescription": "Enable/disable all validation. Default is `true`.",
           "scope": "window"
         },
+        "xml.validation.namespaces.enabled": {
+          "type": "string",
+          "default": "always",
+          "enum": [
+            "always",
+            "never",
+            "onNamespaceEncountered"
+          ],
+          "markdownEnumDescriptions": [
+            "Enable namespaces validation.",
+            "Disable namespaces validation.",
+            "Enable namespaces validation only when the root element declares an xmlns namespace."
+          ],
+          "markdownDescription": "Enable/disable namespaces validation. Default is `always`. Ignored if `#xml.validation.enabled#` is set to `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xmlnamespaceschemaenabled%22%7D%5D) for more information.",
+          "scope": "window"
+        },
         "xml.validation.schema.enabled": {
           "type": "string",
           "default": "always",

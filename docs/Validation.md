@@ -418,6 +418,36 @@ Demonstration of the different behaviour:
 
 ![When using the default settings, an external entity that has an XML element as its content will not produce a validation error when nested in an element that expects character content. If `xml.validation.resolveExternalEntities` is enabled, then an error will be produced](./images/Validation/ExternalEntityResolvingDemonstration.gif)
 
+## xml.validation.namespaces.enabled
+
+The `xml.validation.namespaces.enabled` gives the capability to enable / disable the namespaces (prefix) validation. It can be configured with 3 values:
+
+ * `always`: enable schema based validation.
+ * `never`: disable schema based validation.
+ * `onNamespaceEncountered`: enable namespaces validation only when the root element declares an xmlns namespace.
+
+To understand the `onNamespaceEncountered` settings value, lets go through an example:
+
+Create the XML `foo.xml` file:
+
+```xml
+<foo>
+	<p:bar />
+</foo>
+```
+
+In `always` you will have error, in `onNamespaceEncountered` you will have none error.
+
+Declares a namespaces in the foo root element:
+
+```xml
+<foo xmlns="http:foo" >
+	<p:bar />
+</foo>
+```
+
+In `onNamespaceEncountered` you will see a prefix error.
+
 ## xml.validation.schema.enabled
 
 The `xml.validation.schema.enabled` gives the capability to enable / disable the validation based on XSD. It can be configured with 3 values:
