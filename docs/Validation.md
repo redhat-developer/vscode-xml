@@ -78,7 +78,17 @@ To bind the XML file `foo.xml` with the XSD file `foo.xsd`, you can use the `xsi
 
 ### xsi:schemaLocation
 
-The `xsi:schemaLocation` strategy is used when the XSD file defines a `targetNamespace="http://foo"` in the root element of the XSD:
+The `xsi:schemaLocation` strategy is used when the XML document defines a namespace and the elements in the document are associated with that namespace:
+
+```xml
+<foo xmlns="http://foo"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://foo foo.xsd">
+  <bar />
+</foo>
+```
+
+In this case, the corresponding XSD file defines `targetNamespace="http://foo"` in the root element of the XSD:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -96,15 +106,6 @@ The `xsi:schemaLocation` strategy is used when the XSD file defines a `targetNam
 </xs:schema>
 ```
 
-You can bind the XSD like this:
-
-```xml
-<foo
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://foo foo.xsd">
-  <bar />
-</foo>
-```
 
 ### xml-model with XSD
 
