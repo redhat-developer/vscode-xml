@@ -4,7 +4,7 @@
 
 ## Description
 
-This VS Code extension provides support for creating and editing XML documents, based on the [LemMinX XML Language Server](https://github.com/eclipse/lemminx), running with Java.
+This VS Code extension provides support for creating and editing XML documents, based on the [LemMinX XML Language Server](https://github.com/eclipse/lemminx).
 
 ![Basic features](https://user-images.githubusercontent.com/148698/45977901-df208a80-c018-11e8-85ec-71c70ba8a5ca.gif)
 
@@ -44,6 +44,8 @@ or you can read this documentation inside vscode with the command `Open XML Docu
 For running the binary version:
   * Windows, macOS, or Linux, on a x86_64 CPU
     * We don't make a binary specific for Apple ARM (Apple Silicon), but the x86_64 binary seems to work through the Rosetta 2 translation layer.
+  * Java is not required for this version
+  * The binary is automatically downloaded by vscode-xml if it is needed, with no additional action required on the part of the user.
 
 For running the Java version (required if you want to run [extensions](./docs/Extensions#custom-xml-extensions) to the base XML features):
   * Java JDK (or JRE) 8 or more recent
@@ -61,7 +63,7 @@ See [how to set java home](https://github.com/redhat-developer/vscode-xml/blob/m
 
 The following settings are supported:
 
-* [`xml.java.home`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#java-home): Set the Java path required to run the XML Language Server. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
+* [`xml.java.home`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#java-home): Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server if the Java server is being run. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
 * [`xml.server.vmargs`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-vm-arguments): Specifies extra VM arguments used to launch the XML Language Server.
    Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector.
 * [`xml.server.workDir`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-cache-path): Set a custom folder path for cached XML Schemas. An absolute path is expected, although the `~` prefix (for the user home directory) is supported. Default is `~/.lemminx`.

@@ -97,7 +97,7 @@
             "null"
           ],
           "default": null,
-          "markdownDescription": "Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server.\nOn Windows, backslashes must be escaped, i.e.\n`\"xml.java.home\": \"C:\\\\Program Files\\\\Java\\\\jdk1.8.0_161\"`. For more information, please refer to [this document](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22java-home%22%7D%5D).",
+          "markdownDescription": "Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server if the Java server is being run.\nOn Windows, backslashes must be escaped, i.e.\n`\"xml.java.home\": \"C:\\\\Program Files\\\\Java\\\\jdk1.8.0_161\"`. For more information, please refer to [this document](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22java-home%22%7D%5D).",
           "scope": "window"
         },
         "xml.server.vmargs": {

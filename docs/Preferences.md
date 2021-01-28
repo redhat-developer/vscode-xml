@@ -2,9 +2,9 @@
 
 ## Java Home
 
-  vscode-xml requires Java JDK (or JRE) 8 or more recent in order to run.
+  If you are using vscode-xml in binary mode, without Java, you do not need to set your Java home.
 
-  Java is required, because the underlying [language server](https://microsoft.github.io/language-server-protocol/), [LemMinX](https://github.com/eclipse/lemminx), uses [Apache Xerces](https://xerces.apache.org/) in order to validate XML against a schema.
+  If you want to use Java to run vscode-xml, then you must configure which JRE or JDK to use.
 
   Ensure that the Java path is set in either:
   * `"xml.java.home"` in VSCode preferences
