@@ -14,11 +14,11 @@
  * Commonly used commands
  */
 export namespace Commands {
- 
+
     /**
      * Auto close tags
      */
-    export const AUTO_CLOSE_TAGS= 'xml.completion.autoCloseTags';
+    export const AUTO_CLOSE_TAGS = 'xml.completion.autoCloseTags';
 
     /**
      * Show XML references
@@ -37,9 +37,26 @@ export namespace Commands {
 
     /**
      * Open settings command
-     * 
+     *
      * A `settingId: string` parameter can be optionally provided
      */
     export const OPEN_SETTINGS = 'xml.open.settings';
 
+    /**
+     * Render markdown string to html string
+     */
+    export const MARKDOWN_API_RENDER = 'markdown.api.render';
+
+    export const OPEN_DOCS = "xml.open.docs";
+
+    export const OPEN_DOCS_HOME = "xml.open.docs.home";
+
+    /**
+     * VSCode client command to executes an LSP command on the XML Language Server
+     */
+    export const EXECUTE_WORKSPACE_COMMAND = "xml.workspace.executeCommand";
+
+    export const VALIDATE_CURRENT_FILE = "xml.validation.current.file";
+
+    export const VALIDATE_ALL_FILES = "xml.validation.all.files";
 }

@@ -3,10 +3,11 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { Commands } from './commands';
+const glob = require('glob');
 
 let existingExtensions: Array<string>;
 
-export function collectXmlJavaExtensions(extensions: readonly vscode.Extension<any>[]): string[] {
+export function collectXmlJavaExtensions(extensions: readonly vscode.Extension<any>[], jars: string[]): string[] {
 	const result = [];
 	if (extensions && extensions.length) {
 		for (const extension of extensions) {
@@ -15,23 +16,26 @@ export function collectXmlJavaExtensions(extensions: readonly vscode.Extension<a
 				const xmlJavaExtensions = contributesSection['xml.javaExtensions'];
 				if (Array.isArray(xmlJavaExtensions) && xmlJavaExtensions.length) {
 					for (const xmLJavaExtensionPath of xmlJavaExtensions) {
-						result.push(path.resolve(extension.extensionPath, xmLJavaExtensionPath));
+						result.push(...glob.sync(path.resolve(extension.extensionPath, xmLJavaExtensionPath)));
 					}
 				}
 			}
 		}
+	}
+	for (const extension of jars) {
+		result.push(...glob.sync(extension));
 	}
 	// Make a copy of extensions:
 	existingExtensions = result.slice();
 	return result;
 }
 
-export function onExtensionChange(extensions: readonly vscode.Extension<any>[]) {
+export function onExtensionChange(extensions: readonly vscode.Extension<any>[], jars: string[]) {
 	if (!existingExtensions) {
 		return;
 	}
 	const oldExtensions = new Set(existingExtensions.slice());
-	const newExtensions = collectXmlJavaExtensions(extensions);
+	const newExtensions = collectXmlJavaExtensions(extensions, jars);
 	let hasChanged = ( oldExtensions.size !== newExtensions.length);
 	if (!hasChanged) {
 		for (const newExtension of newExtensions) {

@@ -1,24 +1,25 @@
-import { workspace, ExtensionContext } from 'vscode'
-import { Executable, ExecutableOptions } from 'vscode-languageclient';
-import { RequirementsData } from './requirements';
 import * as os from 'os';
 import * as path from 'path';
-import { xmlServerVmargs, getJavaagentFlag, getKey, IS_WORKSPACE_VMARGS_XML_ALLOWED, getXMLConfiguration } from './settings';
+import { ExtensionContext, workspace } from 'vscode';
+import { Executable } from 'vscode-languageclient';
+import { RequirementsData } from './requirements';
+import { getJavaagentFlag, getKey, getXMLConfiguration, IS_WORKSPACE_VMARGS_XML_ALLOWED, xmlServerVmargs } from './settings';
 const glob = require('glob');
 
 declare var v8debug;
 
 const DEBUG = (typeof v8debug === 'object') || startedInDebugMode();
 
-export function prepareExecutable(requirements: RequirementsData, xmlJavaExtensions: string[], context: ExtensionContext): Executable {
-  let executable: Executable = Object.create(null);
-  let options: ExecutableOptions = Object.create(null);
-  options.env = process.env;
-  options.stdio = 'pipe';
-  executable.options = options;
-  executable.command = path.resolve(requirements.java_home + '/bin/java');
-  executable.args = prepareParams(requirements, xmlJavaExtensions, context);
-  return executable;
+export async function prepareJavaExecutable(
+  context: ExtensionContext,
+  requirements: RequirementsData,
+  xmlJavaExtensions: string[]
+): Promise<Executable> {
+
+  return {
+    command: path.resolve(requirements.java_home + '/bin/java'),
+    args: prepareParams(requirements, xmlJavaExtensions, context)
+  } as Executable;
 }
 
 function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string[], context: ExtensionContext): string[] {
@@ -69,7 +70,7 @@ function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string
     if (xmlJavaExtensions.length > 0) {
       const pathSeparator = os.platform() == 'win32' ? ';' : ':';
       xmlJavaExtensionsClasspath = pathSeparator + xmlJavaExtensions.join(pathSeparator);
-    }    
+    }
     params.push('-cp'); params.push(path.resolve(server_home, launchersFound[0]) + xmlJavaExtensionsClasspath);
     params.push('org.eclipse.lemminx.XMLServerLauncher');
   } else {
@@ -86,7 +87,7 @@ function startedInDebugMode(): boolean {
 function hasDebugFlag(args: string[]): boolean {
   if (args) {
     // See https://nodejs.org/en/docs/guides/debugging-getting-started/
-    return args.some( arg => /^--inspect/.test(arg) || /^--debug/.test(arg));
+    return args.some(arg => /^--inspect/.test(arg) || /^--debug/.test(arg));
   }
   return false;
 }
