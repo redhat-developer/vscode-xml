@@ -106,7 +106,7 @@
             "null"
           ],
           "default": "-Xmx64M",
-          "description": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector. Please refer to [this document](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22server-vm-arguments%22%7D%5D) for more information on the Java server arguments.",
+          "markdownDescription": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector. Please refer to [this document](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22server-vm-arguments%22%7D%5D) for more information on the Java server arguments.",
           "scope": "window"
         },
         "xml.server.workDir": {
