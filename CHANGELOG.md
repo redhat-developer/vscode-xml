@@ -1,5 +1,32 @@
 # Change Log
 
+## [0.15.0](https://github.com/redhat-developer/vscode-xml/milestone/18?closed=1) (2 February, 2021)
+
+### Enhancements
+
+ * Run a binary executable version of the language server to avoid Java requirement. See [#316](https://github.com/redhat-developer/vscode-xml/pull/316).
+ * Add new formatting setting `xml.format.splitAttributesIndentSize`. See [#386](https://github.com/redhat-developer/vscode-xml/pull/386).
+ * Disable XSD validation when `xsi:schemaLocation` doesn't declare the namespace for the document element root. See [#390](https://github.com/redhat-developer/vscode-xml/pull/390).
+ * Manage namespaces / prefix validation with a setting. See [#391](https://github.com/redhat-developer/vscode-xml/pull/391).
+ * Add documentation for debugging external LemMinX extensions. See [#380](https://github.com/redhat-developer/vscode-xml/issues/380).
+ * XML catalog schema is now built-in. See [#375](https://github.com/redhat-developer/vscode-xml/issues/375).
+
+### Bug Fixes
+
+ * Don't add trailing space to processing instructions. See [#372](https://github.com/redhat-developer/vscode-xml/issues/372).
+ * LemMinX no longer crashes if a LemMinX extension class cannot be created. See [eclipse/lemminx#967](https://github.com/eclipse/lemminx/issues/967).
+ * Single `<` no longer has code action to close with `/>`. See [#373](https://github.com/redhat-developer/vscode-xml/issues/373).
+ * Catch errors from any participants. See [eclipse/lemminx#946](https://github.com/eclipse/lemminx/issues/946).
+ * Avoid sending duplicate `client/registerCapability` for `workspace/executeCommand`. See [eclipse/lemminx#937](https://github.com/eclipse/lemminx/issues/937).
+ * Use `kill -0` instead of `ps -p` in `ParentProcessWatcher`. See [eclipse/lemminx#936](https://github.com/eclipse/lemminx/issues/936).
+ * Prevent `ClassCastException` when generating document links for XML catalogs. See [eclipse/lemminx#932](https://github.com/eclipse/lemminx/issues/932).
+ * Register `org.eclipse.lsp4j.FileEvent` for reflection. See [eclipse/lemminx#979](https://github.com/eclipse/lemminx/issues/979).
+ * Prevent URLs in `uri` attributes in catalogs from raising exceptions. See [eclipse/lemminx#977](https://github.com/eclipse/lemminx/issues/977).
+ * Update find-java-home to improve automatic locating of Java. See [#374](https://github.com/redhat-developer/vscode-xml/issues/374).
+ * Fix broken example XML document in the documentation. See [#394](https://github.com/redhat-developer/vscode-xml/issues/394).
+ * Fix link to Extensions.md page from README.md. See [#379](https://github.com/redhat-developer/vscode-xml/pull/379).
+ * Fix link to Extensions.md page from Preferences.md. See [#401](https://github.com/redhat-developer/vscode-xml/issues/401).
+
 ## [0.14.0](https://github.com/redhat-developer/vscode-xml/milestone/17?closed=1) (10 November, 2020)
 
 ### Enhancements
