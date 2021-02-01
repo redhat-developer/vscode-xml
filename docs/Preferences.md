@@ -44,7 +44,7 @@
   vscode-xml will always launch the Java version of the server if extensions are detected and the user has Java installed.
   A warning will be displayed if you launch vscode-xml in binary server mode with extensions installed.
   This warning can be disabled with the `xml.server.silenceExtensionWarning` setting.
-  Please see the [extensions page](./Extensions.md) for more information.
+  Please see the [extensions page](Extensions.md#extensions) for more information.
 
   You can set a path for a custom binary with the `xml.server.binary.path` setting.
 
