@@ -16,7 +16,16 @@ pipeline {
           }
           steps {
             sh "rm -f lemminx-linux"
-            sh "cd lemminx && git pull && cd .. || git clone https://github.com/eclipse/lemminx.git"
+            script {
+              if (publishToMarketPlace.equals('true')) {
+                sh "curl -Lo package.json https://raw.githubusercontent.com/${params.FORK}/vscode-xml/${params.BRANCH}/package.json"
+                def packageJson = readJSON file: 'package.json'
+                def lemminxVersion = packageJson?.javaServer?.version
+                sh "cd lemminx && git pull && git checkout ${lemminxVersion} && cd .. || git clone -b ${lemminxVersion} https://github.com/eclipse/lemminx.git"
+              } else {
+                sh "cd lemminx && git pull && cd .. || git clone https://github.com/eclipse/lemminx.git"
+              }
+            }
             sh "cd lemminx && JAVA_HOME=\$GRAALVM_PATH ./mvnw clean package -B -Dnative -DskipTests && cd .."
             sh "cp lemminx/org.eclipse.lemminx/target/lemminx-linux* lemminx-linux"
             stash name: 'lemminx-linux', includes: 'lemminx-linux'
@@ -28,16 +37,38 @@ pipeline {
           }
           steps {
             powershell "if (Test-Path lemminx-win32.exe) { Remove-Item lemminx-win32.exe }"
-            powershell """
-              [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-              if (Test-Path lemminx) {
-                cd lemminx
-                git pull
-                cd ..
+            script {
+              if (publishToMarketPlace.equals('true')) {
+                powershell """
+                  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+                  Invoke-WebRequest https://raw.githubusercontent.com/${params.FORK}/vscode-xml/${params.BRANCH}/package.json -OutFile package.json
+                """
+                def packageJson = readJSON file: 'package.json'
+                def lemminxVersion = packageJson?.javaServer?.version
+                powershell """
+                  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+                  if (Test-Path lemminx) {
+                    cd lemminx
+                    git pull
+                    git checkout ${lemminxVersion}
+                    cd ..
+                  } else {
+                    git clone -b ${lemminxVersion} https://github.com/eclipse/lemminx.git
+                  }
+                """
               } else {
-                git clone https://github.com/eclipse/lemminx.git
+                powershell """
+                  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+                  if (Test-Path lemminx) {
+                    cd lemminx
+                    git pull
+                    cd ..
+                  } else {
+                    git clone https://github.com/eclipse/lemminx.git
+                  }
+                """
               }
-            """
+            }
             powershell """
               [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
               if (-not (Test-Path graalvm-windows-${params.GRAALVM_VERSION}.zip)) {
@@ -67,7 +98,16 @@ pipeline {
           }
           steps {
             sh "rm -f lemminx-osx-x86_64.zip lemminx-osx-x86_64.sha256"
-            sh "cd lemminx && git pull && cd .. || git clone https://github.com/eclipse/lemminx.git"
+            script {
+              if (publishToMarketPlace.equals('true')) {
+                sh "curl -Lo package.json https://raw.githubusercontent.com/${params.FORK}/vscode-xml/${params.BRANCH}/package.json"
+                def packageJson = readJSON file: 'package.json'
+                def lemminxVersion = packageJson?.javaServer?.version
+                sh "cd lemminx && git pull && git checkout ${lemminxVersion} && cd .. || git clone -b ${lemminxVersion} https://github.com/eclipse/lemminx.git"
+              } else {
+                sh "cd lemminx && git pull && cd .. || git clone https://github.com/eclipse/lemminx.git"
+              }
+            }
             sh """
               if [ ! -f graalvm-darwin-${params.GRAALVM_VERSION}.tar.gz ]; then
                 curl https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${params.GRAALVM_VERSION}/graalvm-ce-java8-darwin-amd64-${params.GRAALVM_VERSION}.tar.gz -L --output graalvm-darwin-${params.GRAALVM_VERSION}.tar.gz
