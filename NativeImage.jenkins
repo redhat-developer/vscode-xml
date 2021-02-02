@@ -108,7 +108,7 @@ pipeline {
           def packageJson = readJSON file: 'package.json'
           def vscodeXmlVersion = packageJson?.version
           def uploadFolderName = 'snapshots'
-          if (params.publishToMarketPlace.equals('true')) {
+          if (publishToMarketPlace.equals('true')) {
             uploadFolderName = 'stable'
           }
           sh "mkdir ${vscodeXmlVersion}-${env.BUILD_NUMBER}"
@@ -120,7 +120,7 @@ pipeline {
             cp lemminx-osx-x86_64 ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-osx-x86_64
             cp lemminx-osx-x86_64.sha256 ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-osx-x86_64.sha256
           """
-          if (!params.publishToMarketPlace.equals('true')){
+          if (!publishToMarketPlace.equals('true')){
             sh """
               ln  --symbolic ${vscodeXmlVersion}-${env.BUILD_NUMBER} LATEST
               rsync -Pzrlt --rsh=ssh --protocol=28 LATEST ${params.UPLOAD_LOCATION}/vscode/snapshots/lemminx-binary
