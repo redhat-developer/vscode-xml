@@ -20,7 +20,7 @@ pipeline {
               if (publishToMarketPlace.equals('true')) {
                 sh "curl -Lo package.json https://raw.githubusercontent.com/${params.FORK}/vscode-xml/${params.BRANCH}/package.json"
                 def packageJson = readJSON file: 'package.json'
-                def lemminxVersion = packageJson?.javaServer?.version
+                def lemminxVersion = packageJson?.xmlServer?.version
                 sh "cd lemminx && git pull && git checkout ${lemminxVersion} && cd .. || git clone -b ${lemminxVersion} https://github.com/eclipse/lemminx.git"
               } else {
                 sh "cd lemminx && git pull && cd .. || git clone https://github.com/eclipse/lemminx.git"
@@ -44,7 +44,7 @@ pipeline {
                   Invoke-WebRequest https://raw.githubusercontent.com/${params.FORK}/vscode-xml/${params.BRANCH}/package.json -OutFile package.json
                 """
                 def packageJson = readJSON file: 'package.json'
-                def lemminxVersion = packageJson?.javaServer?.version
+                def lemminxVersion = packageJson?.xmlServer?.version
                 powershell """
                   [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
                   if (Test-Path lemminx) {
@@ -102,7 +102,7 @@ pipeline {
               if (publishToMarketPlace.equals('true')) {
                 sh "curl -Lo package.json https://raw.githubusercontent.com/${params.FORK}/vscode-xml/${params.BRANCH}/package.json"
                 def packageJson = readJSON file: 'package.json'
-                def lemminxVersion = packageJson?.javaServer?.version
+                def lemminxVersion = packageJson?.xmlServer?.version
                 sh "cd lemminx && git pull && git checkout ${lemminxVersion} && cd .. || git clone -b ${lemminxVersion} https://github.com/eclipse/lemminx.git"
               } else {
                 sh "cd lemminx && git pull && cd .. || git clone https://github.com/eclipse/lemminx.git"
