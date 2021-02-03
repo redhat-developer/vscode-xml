@@ -16,7 +16,7 @@ pipeline {
           }
           steps {
             sh "rm -f lemminx-linux"
-            rm "rm -rf lemminx"
+            sh "rm -rf lemminx"
             script {
               if (publishToMarketPlace.equals('true')) {
                 sh "curl -Lo package.json https://raw.githubusercontent.com/${params.FORK}/vscode-xml/${params.BRANCH}/package.json"
@@ -87,7 +87,7 @@ pipeline {
           }
           steps {
             sh "rm -f lemminx-osx-x86_64.zip lemminx-osx-x86_64.sha256"
-            rm "rm -rf lemminx"
+            sh "rm -rf lemminx"
             script {
               if (publishToMarketPlace.equals('true')) {
                 sh "curl -Lo package.json https://raw.githubusercontent.com/${params.FORK}/vscode-xml/${params.BRANCH}/package.json"
