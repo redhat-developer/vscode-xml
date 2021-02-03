@@ -123,7 +123,7 @@ pipeline {
         }
       }
     }
-    stage ("UPX and upload") {
+    stage ("Zip and upload") {
       agent {
         label "rhel8"
       }
@@ -132,12 +132,11 @@ pipeline {
         unstash name: 'lemminx-win32.exe'
         unstash name: 'lemminx-osx-x86_64'
 
-        // Run UPX to reduce binary size
-        sh "upx lemminx-linux"
-        sh "upx lemminx-win32.exe"
-        sh "upx lemminx-osx-x86_64"
+        sh "zip lemminx-linux.zip lemminx-linux"
+        sh "zip lemminx-win32.zip lemminx-win32.exe"
+        sh "zip lemminx-osx-x86_64.zip lemminx-osx-x86_64"
 
-        // get the sha256 hash of the files
+        // get the sha256 hash of the binaries
         sh "sha256sum lemminx-linux > lemminx-linux.sha256"
         sh "sha256sum lemminx-win32.exe > lemminx-win32.sha256"
         sh "sha256sum lemminx-osx-x86_64 > lemminx-osx-x86_64.sha256"
@@ -153,11 +152,11 @@ pipeline {
           }
           sh "mkdir ${vscodeXmlVersion}-${env.BUILD_NUMBER}"
           sh """
-            cp lemminx-linux ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-linux
+            cp lemminx-linux.zip ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-linux.zip
             cp lemminx-linux.sha256 ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-linux.sha256
-            cp lemminx-win32.exe ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-win32.exe
+            cp lemminx-win32.zip ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-win32.zip
             cp lemminx-win32.sha256 ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-win32.sha256
-            cp lemminx-osx-x86_64 ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-osx-x86_64
+            cp lemminx-osx-x86_64.zip ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-osx-x86_64.zip
             cp lemminx-osx-x86_64.sha256 ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-osx-x86_64.sha256
           """
           if (!publishToMarketPlace.equals('true')){
