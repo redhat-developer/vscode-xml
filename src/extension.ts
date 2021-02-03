@@ -426,6 +426,7 @@ export function activate(context: ExtensionContext) {
     xml['xml']['format']['trimFinalNewlines'] = workspace.getConfiguration('files').get('trimFinalNewlines', true);
     xml['xml']['format']['trimTrailingWhitespace'] = workspace.getConfiguration('files').get('trimTrailingWhitespace', false);
     xml['xml']['format']['insertFinalNewline'] = workspace.getConfiguration('files').get('insertFinalNewline', false);
+    xml['xml']['maven'] = {"index": {"skip": getXMLConfiguration().get("maven.index.skip", true)}};
 
     //applying externalXmlSettings to the xmlSettings
     externalXmlSettings.xmlCatalogs.forEach(catalog => {
