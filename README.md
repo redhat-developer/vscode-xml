@@ -47,7 +47,7 @@ For running the binary version:
   * Java is not required for this version
   * The binary is automatically downloaded by vscode-xml if it is needed, with no additional action required on the part of the user.
 
-For running the Java version (required if you want to run [extensions](./docs/Extensions#custom-xml-extensions) to the base XML features):
+For running the Java version (required if you want to run [extensions](./docs/Extensions.md#custom-xml-extensions) to the base XML features):
   * Java JDK (or JRE) 8 or more recent
   * Ensure Java path is set in either:
     * `xml.java.home` in VSCode preferences
