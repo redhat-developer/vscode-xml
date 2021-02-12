@@ -2,7 +2,7 @@
 
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { Commands } from './commands';
+import { CommandConstants } from './commands/commandConstants';
 const glob = require('glob');
 
 let existingExtensions: Array<string>;
@@ -49,7 +49,7 @@ export function onExtensionChange(extensions: readonly vscode.Extension<any>[], 
 	if (hasChanged) {
 		const msg = `Extensions to the XML Language Server changed, reloading ${vscode.env.appName} is required for the changes to take effect.`;
 		const action = 'Reload';
-		const restartId = Commands.RELOAD_WINDOW;
+		const restartId = CommandConstants.RELOAD_WINDOW;
 		vscode.window.showWarningMessage(msg, action).then((selection) => {
 			if (action === selection) {
 				vscode.commands.executeCommand(restartId);

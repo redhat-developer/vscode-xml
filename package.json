@@ -55,10 +55,6 @@
     "Formatters",
     "Snippets"
   ],
-  "resolutions": {
-    "minimist": "^1.2.5",
-    "yargs-parser": "^19.0.4"
-  },
   "devDependencies": {
     "@types/fs-extra": "^8.0.0",
     "@types/node": "^10.14.16",

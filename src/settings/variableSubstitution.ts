@@ -1,6 +1,6 @@
 import * as path from "path";
 import { TextDocument, window, workspace, WorkspaceFolder } from "vscode";
-import { XMLFileAssociation } from "./extension";
+import { XMLFileAssociation } from "../api/xmlExtensionApi";
 
 /**
  * Represents a variable that refers to a value that can be resolved

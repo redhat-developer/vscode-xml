@@ -1,9 +1,9 @@
 import { commands, ConfigurationTarget, ExtensionContext, window } from "vscode";
 import { Executable } from "vscode-languageclient";
-import { prepareBinaryExecutable } from "./binaryServerStarter";
-import { prepareJavaExecutable } from "./javaServerStarter";
+import { prepareBinaryExecutable } from "./binary/binaryServerStarter";
+import { prepareJavaExecutable } from "./java/javaServerStarter";
 import { getOpenJDKDownloadLink, RequirementsData } from "./requirements";
-import { getXMLConfiguration } from "./settings";
+import { getXMLConfiguration } from "../settings/settings";
 
 /**
  * Returns the executable to use to launch LemMinX (the XML Language Server)

@@ -13,7 +13,7 @@
 /**
  * Commonly used commands
  */
-export namespace Commands {
+export namespace CommandConstants {
 
     /**
      * Auto close tags
