@@ -1,6 +1,6 @@
 import { ConfigurationTarget, workspace } from "vscode";
 
-const TRUSTED_HASHES_SETTING_ID = 'xml.server.binary.trustedHashes'
+const TRUSTED_HASHES_SETTING_ID = 'xml.server.binary.trustedHashes';
 
 /**
  * Returns the list of user trusted binary hashes

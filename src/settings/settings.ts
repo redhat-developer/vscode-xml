@@ -1,6 +1,11 @@
-import { WorkspaceConfiguration, workspace, window, commands, extensions, Extension } from "vscode";
-import { ScopeInfo } from "./extension";
 import * as path from 'path';
+import { commands, Extension, extensions, window, workspace, WorkspaceConfiguration } from "vscode";
+import { getVariableSubstitutedAssociations } from "./variableSubstitution";
+
+export interface ScopeInfo {
+  scope: "default" | "global" | "workspace" | "folder";
+  configurationTarget: boolean;
+}
 
 let vmArgsCache;
 let ignoreAutoCloseTags = false;
@@ -51,7 +56,7 @@ export function subscribeJDKChangeConfiguration() {
       oldXMLConfig = newXMLConfig;
       return;
     }
-    
+
     //handle "java.home" change
     if(oldXMLConfig.get("java.home") == null) { // if "xml.java.home" exists, dont even look at "java.home"
       if(params.affectsConfiguration("java")) {
@@ -170,4 +175,58 @@ export function getJavaagentFlag(vmargs) {
     }
   }
   return agentFlag;
+}
+
+/**
+ * Returns a json object with key 'xml' and a json object value that
+ * holds all xml. settings.
+ *
+ * Returns: {
+ *            'xml': {...}
+ *          }
+ */
+export function getXMLSettings(javaHome: string | undefined, logfile: string, externalXmlSettings: any): JSON {
+  let configXML = workspace.getConfiguration().get('xml');
+  let xml;
+  if (!configXML) { //Set default preferences if not provided
+    const defaultValue =
+    {
+      xml: {
+        trace: {
+          server: 'verbose'
+        },
+        logs: {
+          client: true
+        },
+        format: {
+          enabled: true,
+          splitAttributes: false
+        },
+        completion: {
+          autoCloseTags: false
+        }
+      }
+    }
+    xml = defaultValue;
+  } else {
+    let x = JSON.stringify(configXML); //configXML is not a JSON type
+    xml = { "xml": JSON.parse(x) };
+  }
+  xml['xml']['logs']['file'] = logfile;
+  xml['xml']['useCache'] = true;
+  xml['xml']['java']['home'] = javaHome;
+  xml['xml']['format']['trimFinalNewlines'] = workspace.getConfiguration('files').get('trimFinalNewlines', true);
+  xml['xml']['format']['trimTrailingWhitespace'] = workspace.getConfiguration('files').get('trimTrailingWhitespace', false);
+  xml['xml']['format']['insertFinalNewline'] = workspace.getConfiguration('files').get('insertFinalNewline', false);
+
+  //applying externalXmlSettings to the xmlSettings
+  externalXmlSettings.xmlCatalogs.forEach(catalog => {
+    if (!xml['xml']['catalogs'].includes(catalog)) {
+      xml['xml']['catalogs'].push(catalog);
+    }
+  })
+  // Apply variable substitutions for file associations
+  xml['xml']['fileAssociations'] = [...getVariableSubstitutedAssociations(xml['xml']['fileAssociations'])];
+
+  return xml;
 }

@@ -17,7 +17,6 @@ gulp.task('build_server', function(done) {
 	done();
 });
 
-
 function isWin() {
 	return /^win/.test(process.platform);
 }

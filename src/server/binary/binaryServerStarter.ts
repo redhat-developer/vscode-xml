@@ -5,11 +5,11 @@ import * as https from 'https';
 import * as os from 'os';
 import * as path from 'path';
 import { Readable } from 'stream';
-import { commands, ExtensionContext, extensions, window, WorkspaceConfiguration } from "vscode";
+import { ExtensionContext, extensions, window, WorkspaceConfiguration } from "vscode";
 import { Executable } from "vscode-languageclient";
 import * as yauzl from 'yauzl';
 import { addTrustedHash, getTrustedHashes } from './binaryHashManager';
-import { getXMLConfiguration } from "./settings";
+import { getXMLConfiguration } from "../../settings/settings";
 const glob = require('glob');
 
 const HTTPS_PATTERN: RegExp = /^https:\/\//;

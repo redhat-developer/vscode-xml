@@ -1,7 +1,7 @@
 import { Disposable, WebviewPanel, window, ViewColumn, commands, Uri, Webview, ExtensionContext, env } from "vscode";
 import * as fse from 'fs-extra';
 import * as path from 'path';
-import { Commands } from "./commands";
+import { CommandConstants } from "./commands/commandConstants";
 
 class MarkdownPreviewProvider implements Disposable {
     private panel: WebviewPanel | undefined;
@@ -57,7 +57,7 @@ class MarkdownPreviewProvider implements Disposable {
                     (_match: string, linkText: string, page: string, section: string) => {
                 return `<a href="command:xml.open.docs?%5B%7B%22page%22%3A%22${page}%22%2C%22section%22%3A%22${section}%22%7D%5D">${linkText}</a>`
             });
-            body = await commands.executeCommand(Commands.MARKDOWN_API_RENDER, markdownString);
+            body = await commands.executeCommand(CommandConstants.MARKDOWN_API_RENDER, markdownString);
             this.documentCache.set(markdownFilePath, body);
         }
         return `
