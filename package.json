@@ -83,7 +83,7 @@
     "fs-extra": "^8.1.0",
     "glob": "^7.1.4",
     "path-exists": "^4.0.0",
-    "vscode-languageclient": "^5.2.1",
+    "vscode-languageclient": "^7.0.0",
     "yauzl": "^2.10.0"
   },
   "contributes": {

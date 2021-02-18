@@ -6,7 +6,7 @@ import * as os from 'os';
 import * as path from 'path';
 import { Readable } from 'stream';
 import { commands, ExtensionContext, extensions, window, WorkspaceConfiguration } from "vscode";
-import { Executable } from "vscode-languageclient";
+import { Executable } from "vscode-languageclient/node";
 import * as yauzl from 'yauzl';
 import { addTrustedHash, getTrustedHashes } from './binaryHashManager';
 import { getXMLConfiguration } from "./settings";

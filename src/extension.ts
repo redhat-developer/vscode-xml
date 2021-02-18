@@ -13,7 +13,7 @@
 import * as os from 'os';
 import * as path from 'path';
 import { Command, commands, ExtensionContext, extensions, IndentAction, LanguageConfiguration, languages, Position, TextDocument, TextEditor, Uri, window, workspace } from "vscode";
-import { CancellationToken, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, Executable, ExecuteCommandParams, ExecuteCommandRequest, LanguageClient, LanguageClientOptions, MessageType, NotificationType, ReferencesRequest, RequestType, RevealOutputChannelOn, TextDocumentIdentifier, TextDocumentPositionParams } from 'vscode-languageclient';
+import { CancellationToken, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, Executable, ExecuteCommandParams, ExecuteCommandRequest, LanguageClient, LanguageClientOptions, MessageType, NotificationType, ReferencesRequest, RequestType, RevealOutputChannelOn, TextDocumentIdentifier, TextDocumentPositionParams } from 'vscode-languageclient/node';
 import { Commands } from './commands';
 import { markdownPreviewProvider } from "./markdownPreviewProvider";
 import { collectXmlJavaExtensions, onExtensionChange } from './plugin';
@@ -116,15 +116,15 @@ export interface XMLExtensionApi {
 }
 
 namespace ExecuteClientCommandRequest {
-  export const type: RequestType<ExecuteCommandParams, any, void, void> = new RequestType('xml/executeClientCommand')
+  export const type: RequestType<ExecuteCommandParams, any, void> = new RequestType('xml/executeClientCommand')
 }
 
 namespace TagCloseRequest {
-  export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any, any> = new RequestType('xml/closeTag');
+  export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any> = new RequestType('xml/closeTag');
 }
 
 namespace SymbolsLimitExceededNotification {
-  export const type: NotificationType<{ commandId: string, message: string }, any> = new NotificationType('xml/symbolsLimitExceeded');
+  export const type: NotificationType<{ commandId: string, message: string }> = new NotificationType('xml/symbolsLimitExceeded');
 }
 
 interface ActionableMessage {
@@ -135,7 +135,7 @@ interface ActionableMessage {
 }
 
 namespace ActionableNotification {
-  export const type = new NotificationType<ActionableMessage, void>('xml/actionableNotification');
+  export const type = new NotificationType<ActionableMessage>('xml/actionableNotification');
 }
 
 let languageClient: LanguageClient;
