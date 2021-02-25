@@ -22,10 +22,16 @@ import * as requirements from './server/requirements';
 import { prepareExecutable } from './server/serverStarter';
 import { ExternalXmlSettings } from "./settings/externalXmlSettings";
 import { getXMLConfiguration } from './settings/settings';
+import { Telemetry } from './telemetry';
 
 let languageClient: LanguageClient;
 
 export async function activate(context: ExtensionContext) {
+
+  await Telemetry.startTelemetry();
+  Telemetry.sendTelemetry(Telemetry.SETTINGS_EVT, {
+    preferBinary: (getXMLConfiguration()['server']['preferBinary'] as boolean)
+  });
 
   languages.setLanguageConfiguration('xml', getIndentationRules());
   languages.setLanguageConfiguration('xsl', getIndentationRules());

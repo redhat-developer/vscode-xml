@@ -10,6 +10,7 @@ import { Executable } from "vscode-languageclient";
 import * as yauzl from 'yauzl';
 import { addTrustedHash, getTrustedHashes } from './binaryHashManager';
 import { getXMLConfiguration } from "../../settings/settings";
+import { Telemetry } from '../../telemetry';
 const glob = require('glob');
 
 const HTTPS_PATTERN: RegExp = /^https:\/\//;
@@ -101,7 +102,13 @@ async function downloadBinary(): Promise<string> {
         reject(`Server binary download failed: ${e.message}`);
       });
   });
-  window.setStatusBarMessage('Downloading XML language server binary...', downloadPromise);
+  window.setStatusBarMessage('$(sync~spin) Downloading XML language server binary...', downloadPromise);
+  downloadPromise.then((_binaryPath) => {
+    Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_SUCCEEDED_EVT);
+  });
+  downloadPromise.catch(_e => {
+    Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_FAILED_EVT);
+  });
   return downloadPromise;
 }
 
