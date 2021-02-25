@@ -218,6 +218,9 @@ export function getXMLSettings(javaHome: string | undefined, logfile: string, ex
   xml['xml']['format']['trimFinalNewlines'] = workspace.getConfiguration('files').get('trimFinalNewlines', true);
   xml['xml']['format']['trimTrailingWhitespace'] = workspace.getConfiguration('files').get('trimTrailingWhitespace', false);
   xml['xml']['format']['insertFinalNewline'] = workspace.getConfiguration('files').get('insertFinalNewline', false);
+  xml['xml']['telemetry'] = {
+    enabled: workspace.getConfiguration('redhat.telemetry').get('enabled', false)
+  };
 
   //applying externalXmlSettings to the xmlSettings
   externalXmlSettings.xmlCatalogs.forEach(catalog => {

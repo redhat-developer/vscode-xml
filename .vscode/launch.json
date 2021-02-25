@@ -1,42 +1,45 @@
 // A launch configuration that compiles the extension and then opens it inside a new window
 {
   "version": "0.2.0",
-  "configurations": [
-      {
-          "name": "Launch Extension",
-          "type": "extensionHost",
-          "request": "launch",
-          "runtimeExecutable": "${execPath}",
-          "args": ["--extensionDevelopmentPath=${workspaceRoot}" ],
-          "stopOnEntry": false,
-          "sourceMaps": true,
-          "outFiles": [ "${workspaceRoot}/dist/**/*.js" ],
-          "preLaunchTask": "npm: watch"
-      },
-      {
-        "name": "Launch Extension & Wait for remote debugger",
-        "type": "extensionHost",
-        "request": "launch",
-        "runtimeExecutable": "${execPath}",
-        "args": ["--extensionDevelopmentPath=${workspaceRoot}" ],
-        "stopOnEntry": false,
-        "sourceMaps": true,
-        "outFiles": [ "${workspaceRoot}/dist/**/*.js" ],
-        "preLaunchTask": "npm: watch",
-        "env": {
-            "SUSPEND_SERVER":"true"
-        }
-    },
-      {
-          "name": "Launch Tests",
-          "type": "extensionHost",
-          "request": "launch",
-          "runtimeExecutable": "${execPath}",
-          "args": ["--extensionDevelopmentPath=${workspaceRoot}", "--extensionTestsPath=${workspaceRoot}/out/test" ],
-          "stopOnEntry": false,
-          "sourceMaps": true,
-          "outFiles": [ "${workspaceRoot}/dist/**/*.js"  ],
-          "preLaunchTask": "npm: watch"
+  "configurations": [{
+      "name": "Launch Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
+      "stopOnEntry": false,
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/dist/**/*.js"],
+      "preLaunchTask": "npm: watch",
+      "env": {
+        "VSCODE_REDHAT_TELEMETRY_DEBUG": "true"
       }
+    },
+    {
+      "name": "Launch Extension & Wait for remote debugger",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
+      "stopOnEntry": false,
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/dist/**/*.js"],
+      "preLaunchTask": "npm: watch",
+      "env": {
+        "SUSPEND_SERVER": "true",
+        "VSCODE_REDHAT_TELEMETRY_DEBUG": "true"
+      }
+    },
+    {
+      "name": "Launch Tests",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": ["--extensionDevelopmentPath=${workspaceRoot}", "--extensionTestsPath=${workspaceRoot}/out/test"],
+      "stopOnEntry": false,
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/dist/**/*.js"],
+      "preLaunchTask": "npm: watch"
+    }
   ]
 }

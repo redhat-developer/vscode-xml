@@ -4,6 +4,7 @@ import { prepareBinaryExecutable } from "./binary/binaryServerStarter";
 import { prepareJavaExecutable } from "./java/javaServerStarter";
 import { getOpenJDKDownloadLink, RequirementsData } from "./requirements";
 import { getXMLConfiguration } from "../settings/settings";
+import { Telemetry } from "../telemetry";
 
 /**
  * Returns the executable to use to launch LemMinX (the XML Language Server)
@@ -35,7 +36,9 @@ export async function prepareExecutable(
       DOWNLOAD_JAVA, CONFIGURE_JAVA, DISABLE_WARNING)
       .then((selection: string) => {
         if (selection === DOWNLOAD_JAVA) {
-          commands.executeCommand('vscode.open', getOpenJDKDownloadLink());
+          Telemetry.sendTelemetry(Telemetry.OPEN_JAVA_DOWNLOAD_LINK_EVT).then(() => {
+            commands.executeCommand('vscode.open', getOpenJDKDownloadLink());
+          });
         } else if (selection === CONFIGURE_JAVA) {
           commands.executeCommand('xml.open.docs', { page: 'Preferences.md', section: 'java-home' });
         } else if (selection === DISABLE_WARNING) {
