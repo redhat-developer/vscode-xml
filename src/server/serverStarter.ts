@@ -1,5 +1,5 @@
 import { commands, ConfigurationTarget, ExtensionContext, window } from "vscode";
-import { Executable } from "vscode-languageclient";
+import { Executable } from "vscode-languageclient/node";
 import { prepareBinaryExecutable, ABORTED_ERROR } from "./binary/binaryServerStarter";
 import { prepareJavaExecutable } from "./java/javaServerStarter";
 import { getOpenJDKDownloadLink, RequirementsData } from "./requirements";

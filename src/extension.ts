@@ -13,7 +13,7 @@
 import * as os from 'os';
 import * as path from 'path';
 import { ExtensionContext, extensions, languages } from "vscode";
-import { Executable, LanguageClient } from 'vscode-languageclient';
+import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { getXmlExtensionApiImplementation } from './api/xmlExtensionApiImplementation';
 import { getIndentationRules } from './client/indentation';
 import { startLanguageClient } from './client/xmlClient';
