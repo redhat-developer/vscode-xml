@@ -1,6 +1,6 @@
 import { commands, ConfigurationTarget, ExtensionContext, window } from "vscode";
 import { Executable } from "vscode-languageclient";
-import { prepareBinaryExecutable } from "./binary/binaryServerStarter";
+import { prepareBinaryExecutable, ABORTED_ERROR } from "./binary/binaryServerStarter";
 import { prepareJavaExecutable } from "./java/javaServerStarter";
 import { getOpenJDKDownloadLink, RequirementsData } from "./requirements";
 import { getXMLConfiguration } from "../settings/settings";
@@ -50,7 +50,12 @@ export async function prepareExecutable(
   if (useBinary) {
     return prepareBinaryExecutable(context)
       .catch((e) => {
-        window.showErrorMessage(e + '. ' + (hasJava ? 'Falling back to Java server.' : 'Cannot start XML language server, since Java is missing.'));
+        const javaServerMessage = hasJava ? 'Falling back to the Java server.' : 'Cannot start XML language server, since Java is missing.';
+        if (e === ABORTED_ERROR) {
+          window.showWarningMessage(`${e.message}. ${javaServerMessage}`);
+        } else {
+          window.showErrorMessage(`${e}. ${javaServerMessage}`);``
+        }
         if (!hasJava) {
           throw new Error("Failed to launch binary XML language server and no Java is installed");
         }

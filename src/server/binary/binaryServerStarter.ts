@@ -5,7 +5,7 @@ import * as https from 'https';
 import * as os from 'os';
 import * as path from 'path';
 import { Readable } from 'stream';
-import { ExtensionContext, extensions, window, WorkspaceConfiguration } from "vscode";
+import { ExtensionContext, extensions, window, WorkspaceConfiguration, ProgressOptions, ProgressLocation, Progress, CancellationToken } from "vscode";
 import { Executable } from "vscode-languageclient";
 import * as yauzl from 'yauzl';
 import { addTrustedHash, getTrustedHashes } from './binaryHashManager';
@@ -13,8 +13,10 @@ import { getXMLConfiguration } from "../../settings/settings";
 import { Telemetry } from '../../telemetry';
 const glob = require('glob');
 
-const HTTPS_PATTERN: RegExp = /^https:\/\//;
-const JAR_ZIP_AND_HASH_REJECTOR: RegExp = /(?:\.jar)|(?:\.zip)|(?:\.sha256)$/;
+const HTTPS_PATTERN = /^https:\/\//;
+const JAR_ZIP_AND_HASH_REJECTOR = /(?:\.jar)|(?:\.zip)|(?:\.sha256)$/;
+
+export const ABORTED_ERROR: Error = new Error('XML Language Server download cancelled by user');
 
 /**
  * Returns the executable to launch LemMinX (the XML Language Server) as a binary
@@ -54,14 +56,14 @@ export async function prepareBinaryExecutable(context: ExtensionContext): Promis
  */
 async function getServerBinaryPath(): Promise<string> {
   const config: WorkspaceConfiguration = getXMLConfiguration();
-  let binaryPath: string = config.get("server.binary.path");
+  const binaryPath: string = config.get("server.binary.path");
   if (binaryPath) {
     if (fs.existsSync(binaryPath)) {
       return Promise.resolve(binaryPath);
     }
     window.showErrorMessage('The specified XML language server binary could not be found. Using the default binary...');
   }
-  let server_home: string = path.resolve(__dirname, '../server');
+  const server_home: string = path.resolve(__dirname, '../server');
   let binaries: Array<string> = glob.sync(`**/${getServerBinaryNameWithoutExtension()}*`, { cwd: server_home });
   binaries = binaries.filter((path) => { return !JAR_ZIP_AND_HASH_REJECTOR.test(path) });
   if (binaries.length) {
@@ -79,14 +81,16 @@ async function getServerBinaryPath(): Promise<string> {
  */
 async function downloadBinary(): Promise<string> {
   const downloadPromise: Promise<string> = new Promise((resolve, reject) => {
+    let webClient: http.ClientRequest = null;
     const handleResponse = (response: http.IncomingMessage) => {
       const statusCode = response.statusCode;
       if (statusCode === 303) {
-        httpHttpsGet(response.headers.location, handleResponse)
+        webClient = httpHttpsGet(response.headers.location, handleResponse)
           .on('error', (e) => {
             reject(`Server binary download failed: ${e.message}`);
           });
       } else if (statusCode === 200) {
+        showProgressForDownload(response, webClient);
         if (/^application\/zip$/.test(response.headers['content-type'])) {
           acceptZipDownloadResponse(response).then(resolve, reject);
         } else {
@@ -97,17 +101,18 @@ async function downloadBinary(): Promise<string> {
         reject(`Server binary download failed: status code ${statusCode}`);
       }
     }
-    httpHttpsGet(`${getServerBinaryDownloadUrl()}`, handleResponse)
+    webClient = httpHttpsGet(`${getServerBinaryDownloadUrl()}`, handleResponse)
       .on('error', (e) => {
         reject(`Server binary download failed: ${e.message}`);
       });
   });
-  window.setStatusBarMessage('$(sync~spin) Downloading XML language server binary...', downloadPromise);
   downloadPromise.then((_binaryPath) => {
     Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_SUCCEEDED_EVT);
   });
-  downloadPromise.catch(_e => {
-    Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_FAILED_EVT);
+  downloadPromise.catch(e => {
+    if (e !== ABORTED_ERROR) {
+      Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_FAILED_EVT);
+    }
   });
   return downloadPromise;
 }
@@ -124,7 +129,7 @@ async function checkBinaryHash(binaryPath: string): Promise<boolean> {
     fs.readFile(path.resolve(binaryPath), (err, fileContents) => {
       if (err) {
         reject(err)
-      };
+      }
       resolve(fileContents);
     });
   })
@@ -196,8 +201,8 @@ function getServerBinaryDownloadUrl(): string {
  * @returns true if the user decides to trust the binary, and false if they ignore the message or don't trust the binary
  */
 async function askIfTrustsUnrecognizedBinary(hash: string, path: string): Promise<boolean> {
-  const YES: string = 'Yes';
-  const NO: string = 'No';
+  const YES = 'Yes';
+  const NO = 'No';
   return window.showErrorMessage(`The server binary ${path} is not trusted. `
       + 'Running the file poses a threat to your system\'s security. '
       + 'Do you want to add this binary to the list of trusted binaries and run it?', YES, NO)
@@ -225,6 +230,46 @@ function httpHttpsGet(url: string, callback: (response: http.IncomingMessage) =>
 }
 
 /**
+ * Show a progress notification for the given get response
+ *
+ * Inspired by
+ * https://stackoverflow.com/questions/18323152/get-download-progress-in-node-js-with-request
+ *
+ * @param response the http GET response
+ */
+function showProgressForDownload(response: http.IncomingMessage, httpClient: http.ClientRequest) {
+  const progressOptions: ProgressOptions = {
+    location: ProgressLocation.Notification,
+    cancellable: true,
+    title: "Downloading the XML Language Server..."
+  };
+  window.withProgress(
+    progressOptions,
+    (progress, cancelToken) => {
+      const size: number = parseInt(response.headers['content-length']);
+      let downloaded = 0;
+      let previousReportedDownloadedPercent = 0;
+      response.on("data", (chunk) => {
+        downloaded += chunk.length;
+        const incrementAmt = ((100.0 * downloaded / size) - previousReportedDownloadedPercent);
+        previousReportedDownloadedPercent += incrementAmt;
+        progress.report({
+          increment: incrementAmt
+        });
+      });
+      const downloadFinish: Promise<void> = new Promise((resolve, _reject) => {
+        response.on("close", () => {
+          resolve();
+        });
+      });
+      cancelToken.onCancellationRequested((_e: any) => {
+        httpClient.abort();
+      })
+      return downloadFinish;
+    });
+}
+
+/**
  * Unzips the contents of the response and writes the contained file to a local file, marks the file as executable, and returns the path to the file
  *
  * @param response The response to write to file
@@ -232,42 +277,83 @@ function httpHttpsGet(url: string, callback: (response: http.IncomingMessage) =>
  * @throws error if there are multiple files in the zip archive or if the file can't be extracted
  */
 async function acceptZipDownloadResponse(response: http.IncomingMessage): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const serverBinaryPath: string = path.resolve(__dirname, '../server', getServerBinaryNameWithoutExtension() + getServerBinaryExtension());
-    const serverBinaryZipPath: string = serverBinaryPath + '.zip';
+
+  const serverBinaryPath: string = path.resolve(__dirname, '../server', getServerBinaryNameWithoutExtension() + getServerBinaryExtension());
+  const serverBinaryZipPath: string = serverBinaryPath + '.zip';
+
+  // Download zip
+  await new Promise((resolve, reject) => {
     const serverBinaryZipWriteStream: fs.WriteStream = fs.createWriteStream(serverBinaryZipPath);
+    let capturedError: any = null;
     serverBinaryZipWriteStream.on('finish', () => {
       serverBinaryZipWriteStream.close();
     });
     serverBinaryZipWriteStream.on('close', () => {
-      const serverBinaryWriteStream: fs.WriteStream = fs.createWriteStream(serverBinaryPath);
-      yauzl.open(serverBinaryZipPath, { lazyEntries: true }, (err: Error, zipFile: yauzl.ZipFile) => {
-        if (!!err) {
-          reject(err);
+      if (capturedError) {
+        fs.unlinkSync(serverBinaryZipPath);
+        reject(capturedError);
+        return;
+      }
+      resolve();
+    });
+    response.on('aborted', () => {
+      capturedError = ABORTED_ERROR;
+      serverBinaryZipWriteStream.end();
+    })
+    response.pipe(serverBinaryZipWriteStream);
+  });
+
+  // Extract zip
+  return new Promise((resolve, reject)=> {
+    const serverBinaryWriteStream: fs.WriteStream = fs.createWriteStream(serverBinaryPath);
+    let capturedError: any = null;
+    serverBinaryWriteStream.on('finish', () => {
+      serverBinaryWriteStream.close();
+    });
+    serverBinaryWriteStream.on('close', () => {
+      if (capturedError) {
+        fs.unlinkSync(serverBinaryPath);
+        reject(capturedError);
+      }
+      fs.chmodSync(serverBinaryPath, "766");
+      resolve(serverBinaryPath);
+    });
+    // lazyEntries --> manually trigger 'entry' events
+    yauzl.open(serverBinaryZipPath, { lazyEntries: true, autoClose: true }, (err: Error, zipFile: yauzl.ZipFile) => {
+      if (err) {
+        capturedError = err;
+        serverBinaryWriteStream.close();
+        return;
+      }
+      zipFile.on('error', (err) => {
+        capturedError = err;
+        serverBinaryWriteStream.close();
+        zipFile.close();
+      });
+      zipFile.on('close', () => {
+        fs.unlinkSync(serverBinaryZipPath);
+      });
+      zipFile.on('entry', (entry: yauzl.Entry) => {
+        if (capturedError) {
+          return;
         }
-        zipFile.readEntry();
-        if (zipFile.entryCount !== 1) {
-          reject(new Error('More than 1 file in the downloaded zip of the binary server'));
-        };
-        zipFile.on('entry', (entry: yauzl.Entry) => {
-          zipFile.openReadStream(entry, (err: Error, stream: Readable) => {
-            if (!!err) {
-              reject(err);
-            }
-            stream.pipe(serverBinaryWriteStream);
-          });
+        zipFile.openReadStream(entry, (err: Error, stream: Readable) => {
+          if (err) {
+            capturedError = err;
+            serverBinaryWriteStream.close();
+            return;
+          }
+          stream.pipe(serverBinaryWriteStream);
         });
       });
-      serverBinaryWriteStream.on('finish', () => {
+      if (zipFile.entryCount !== 1) {
+        capturedError = new Error('More than 1 file in the downloaded zip of the binary server');
         serverBinaryWriteStream.close();
-      });
-      serverBinaryWriteStream.on('close', () => {
-        fs.chmodSync(serverBinaryPath, "766");
-        fs.unlinkSync(serverBinaryZipPath);
-        resolve(serverBinaryPath);
-      });
+        zipFile.close();
+        return;
+      }
+      zipFile.readEntry();
     });
-    response.pipe(serverBinaryZipWriteStream);
   });
 }
 
@@ -281,13 +367,23 @@ async function acceptBinaryDownloadResponse(response: http.IncomingMessage): Pro
   return new Promise((resolve, reject) => {
     const serverBinaryPath: string = path.resolve(__dirname, '../server', getServerBinaryNameWithoutExtension() + getServerBinaryExtension());
     const serverBinaryFileStream = fs.createWriteStream(serverBinaryPath);
+    let capturedError = null;
     serverBinaryFileStream.on('finish', () => {
       serverBinaryFileStream.close();
     });
     serverBinaryFileStream.on('close', () => {
+      if (capturedError) {
+        fs.unlinkSync(serverBinaryPath);
+        reject(capturedError);
+        return;
+      }
       fs.chmodSync(serverBinaryPath, "766");
       resolve(serverBinaryPath);
     });
+    response.on('aborted', () => {
+      capturedError = ABORTED_ERROR;
+      serverBinaryFileStream.close();
+    });
     response.pipe(serverBinaryFileStream);
-  })
+  });
 }
