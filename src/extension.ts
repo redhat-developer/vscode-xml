@@ -23,10 +23,11 @@ import { prepareExecutable } from './server/serverStarter';
 import { ExternalXmlSettings } from "./settings/externalXmlSettings";
 import { getXMLConfiguration } from './settings/settings';
 import { Telemetry } from './telemetry';
+import { XMLExtensionApi } from './api/xmlExtensionApi';
 
 let languageClient: LanguageClient;
 
-export async function activate(context: ExtensionContext) {
+export async function activate(context: ExtensionContext): Promise<XMLExtensionApi> {
 
   await Telemetry.startTelemetry();
   Telemetry.sendTelemetry(Telemetry.SETTINGS_EVT, {
@@ -47,7 +48,7 @@ export async function activate(context: ExtensionContext) {
   if (!storagePath) {
     storagePath = os.homedir() + "/.lemminx";
   }
-  let logfile = path.resolve(storagePath + '/lemminx.log');
+  const logfile = path.resolve(storagePath + '/lemminx.log');
 
   const externalXmlSettings: ExternalXmlSettings = new ExternalXmlSettings();
 
@@ -59,8 +60,8 @@ export async function activate(context: ExtensionContext) {
   return getXmlExtensionApiImplementation(languageClient, logfile, externalXmlSettings, requirementsData);
 }
 
-export function deactivate(): void {
-  if (!!languageClient) {
-    languageClient.stop();
+export async function deactivate(): Promise<void> {
+  if (languageClient) {
+    await languageClient.stop();
   }
 }
