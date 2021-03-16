@@ -10,6 +10,7 @@ import { ExternalXmlSettings } from "../settings/externalXmlSettings";
 import { getXMLConfiguration, getXMLSettings, onConfigurationChange, subscribeJDKChangeConfiguration } from "../settings/settings";
 import { containsVariableReferenceToCurrentFile } from '../settings/variableSubstitution';
 import { Telemetry } from '../telemetry';
+import { ClientErrorHandler } from './clientErrorHandler';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
 
 namespace ExecuteClientCommandRequest {
@@ -129,6 +130,7 @@ function getLanguageClientOptions(logfile: string, externalXmlSettings: External
         openSettingsCommandSupport: true
       }
     },
+    errorHandler: new ClientErrorHandler('XML'),
     synchronize: {
       //preferences starting with these will trigger didChangeConfiguration
       configurationSection: ['xml', '[xml]', 'files.trimFinalNewlines', 'files.trimTrailingWhitespace', 'files.insertFinalNewline']
