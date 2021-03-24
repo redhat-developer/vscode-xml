@@ -133,6 +133,75 @@ See the [Formatting page](Formatting.md#formatting).
 
 Use `xml.codeLens.enabled` in order to enable or disable code lens. Please see [the Code Lens page](CodeLens.md#code-lens) for more information.
 
+## Tag Auto Closing
+
+The closing tags for elements should automatically be added when typing `>` to complete an opening tag.
+
+For instance, if you type `>` when your cursor is placed at the `|` pipe in the following code:
+
+```xml
+<root>
+  <child|
+</root>
+```
+
+Then the closing tag for the `<child>` element will automatically be inserted:
+
+```xml
+<root>
+  <child></child>
+</root>
+```
+
+Similarly, the closing tag will be automatically completed when typing `</` to start a closing tag.
+
+The `xml.completion.autoCloseRemovesContent` setting controls if all content inside an element gets deleted when the start tag gets changed to a self-closing tag.
+
+For instance if `xml.completion.autoCloseRemovesContent` is set to `true`, in the following code:
+
+```xml
+<root |
+  <child />
+  content
+</root>
+Orphaned text
+<orphaned-element />
+```
+
+If `/` is typed at the pipe (`|`), then `/>` will be inserted at the cursor,
+and `<child />` and `content` will be removed.
+Note that `Orphaned text` and `<orphaned-element />` will be preserved.
+
+If `xml.completion.autoCloseRemovesContent` is set to `false` in this case,
+`/>` is inserted at the cursor, but no content will be removed.
+
+Unfortunately, this only works if the first content inside the element is an element.
+For instance, if you typed `/` at the `|` for this document:
+
+```xml
+<root>
+  <container |
+    text content
+    <child />
+  </container>
+</root>
+```
+
+it gets turned into the following (no auto completion):
+
+```xml
+<root>
+  <container /
+    text content
+    <child />
+  </container>
+</root>
+```
+
+The same result would occur for the previous example if `xml.completion.autoCloseRemovesContent` is set to `false`.
+
+By default, `xml.completion.autoCloseRemovesContent` is set to `true`.
+
 ## Documentation Type
 
 Use `xml.preferences.showSchemaDocumentationType` in order to control which documentation is presented during completion and hover for XML documents associated with XSD schemas.

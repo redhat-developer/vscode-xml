@@ -316,6 +316,12 @@
           "markdownDescription": "Enable/disable autoclosing of XML tags. Default is `true`. \n\nIMPORTANT: Turn off `#editor.autoClosingTags#` for this to work.",
           "scope": "window"
         },
+        "xml.completion.autoCloseRemovesContent": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable/disable the content of an element being removed when the element start tag is turned into a self-closing tag. The default setting is to remove the content.",
+          "scope": "window"
+        },
         "xml.codeLens.enabled": {
           "type": "boolean",
           "default": false,
