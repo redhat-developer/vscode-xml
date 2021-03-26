@@ -1,5 +1,26 @@
 # Change Log
 
+## [0.16.0](https://github.com/redhat-developer/vscode-xml/milestone/19?closed=1) (April 13, 2021)
+
+### Enhancements
+
+ * Add a progress bar to the binary server download. See [#433](https://github.com/redhat-developer/vscode-xml/issues/433).
+ * Collect Telemetry data. See [#415](https://github.com/redhat-developer/vscode-xml/issues/415).
+ * License change from EPL-1.0 to EPL-2.0. See [#392](https://github.com/redhat-developer/vscode-xml/issues/392).
+ * Configure language server proxy based on a`http.proxyHost` and `http.proxyAuthorization`. See [#416](https://github.com/redhat-developer/vscode-xml/issues/416).
+
+### Bug Fixes
+
+ * Wait for the language server to stop before exiting. See [#437](https://github.com/redhat-developer/vscode-xml/pull/437).
+ * Use `User-Agent: LemMinX` when downloading schemas to prevent HTTP 403 when using Java 8. See [#429](https://github.com/redhat-developer/vscode-xml/issues/429).
+ * Fix rename not completing when using the binary. See [#424](https://github.com/redhat-developer/vscode-xml/issues/424).
+ * Fix a regression where the vscode-xml API was not returned when calling extension.ts -> activate(). See [#418](https://github.com/redhat-developer/vscode-xml/issues/418).
+ * Fix URL for extensions. See [#413](https://github.com/redhat-developer/vscode-xml/pull/413).
+ * Notify the user when the language server fails to start. See [#409](https://github.com/redhat-developer/vscode-xml/issues/409).
+ * Fix NPE when hovering on a malformed document. See [eclipse/lemminx#984](https://github.com/eclipse/lemminx/issues/984).
+ * `trimTrailingWhitespace` option is not respected by `textDocument/formatting`. See [eclipse/lemminx#827](https://github.com/eclipse/lemminx/issues/827).
+ * Fix auto close tags in XSLT files. See [#446](https://github.com/redhat-developer/vscode-xml/issues/446)
+
 ## [0.15.0](https://github.com/redhat-developer/vscode-xml/milestone/18?closed=1) (2 February, 2021)
 
 ### Enhancements
