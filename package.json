@@ -479,6 +479,11 @@
         "editor.autoClosingBrackets": "never",
         "files.trimFinalNewlines": true,
         "files.trimTrailingWhitespace": false
+      },
+      "[xsl]": {
+        "editor.autoClosingBrackets": "never",
+        "files.trimFinalNewlines": true,
+        "files.trimTrailingWhitespace": false
       }
     },
     "commands": [
