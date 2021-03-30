@@ -4,6 +4,7 @@ import { ExtensionContext, workspace } from 'vscode';
 import { Executable } from 'vscode-languageclient';
 import { RequirementsData } from '../requirements';
 import { getJavaagentFlag, getKey, getXMLConfiguration, IS_WORKSPACE_VMARGS_XML_ALLOWED, xmlServerVmargs } from '../../settings/settings';
+import { getProxySettings, getProxySettingsAsJVMArgs, ProxySettings, jvmArgsContainsProxySettings } from '../../settings/proxySettings';
 const glob = require('glob');
 
 declare var v8debug;
@@ -44,12 +45,18 @@ function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string
   } else {
     vmargsCheck = getXMLConfiguration().get('server.vmargs');
   }
-  let vmargs;
+  let vmargs: string;
   if (vmargsCheck !== undefined) {
     vmargs = vmargsCheck + '';
   } else {
     vmargs = '';
   }
+
+  const proxySettings: ProxySettings = getProxySettings();
+  if (proxySettings && !jvmArgsContainsProxySettings(vmargs)) {
+    vmargs += getProxySettingsAsJVMArgs(proxySettings);
+  }
+
   if (os.platform() == 'win32') {
     const watchParentProcess = '-DwatchParentProcess=';
     if (vmargs.indexOf(watchParentProcess) < 0) {

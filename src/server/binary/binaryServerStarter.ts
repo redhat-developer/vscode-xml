@@ -5,12 +5,13 @@ import * as https from 'https';
 import * as os from 'os';
 import * as path from 'path';
 import { Readable } from 'stream';
-import { ExtensionContext, extensions, window, WorkspaceConfiguration, ProgressOptions, ProgressLocation, Progress, CancellationToken } from "vscode";
+import { ExtensionContext, extensions, ProgressLocation, ProgressOptions, window, WorkspaceConfiguration } from "vscode";
 import { Executable } from "vscode-languageclient";
 import * as yauzl from 'yauzl';
-import { addTrustedHash, getTrustedHashes } from './binaryHashManager';
+import { getProxySettings, getProxySettingsAsEnvironmentVariables, ProxySettings } from '../../settings/proxySettings';
 import { getXMLConfiguration } from "../../settings/settings";
 import { Telemetry } from '../../telemetry';
+import { addTrustedHash, getTrustedHashes } from './binaryHashManager';
 const glob = require('glob');
 
 const HTTPS_PATTERN = /^https:\/\//;
@@ -26,13 +27,17 @@ export const ABORTED_ERROR: Error = new Error('XML Language Server download canc
  * @returns Returns the executable to launch LemMinX (the XML Language Server) as a binary
  */
 export async function prepareBinaryExecutable(context: ExtensionContext): Promise<Executable> {
-  const binaryOptions: string = getXMLConfiguration().get("server.binary.args");
+  const binaryArgs: string = getXMLConfiguration().get("server.binary.args");
   let binaryExecutable: Executable;
+  const proxySettings: ProxySettings = getProxySettings();
   return getServerBinaryPath()
     .then((binaryPath: string) => {
       binaryExecutable = {
-        args: [binaryOptions],
-        command: binaryPath
+        args: [binaryArgs],
+        command: binaryPath,
+        options: {
+          env: (proxySettings ? getProxySettingsAsEnvironmentVariables(proxySettings) : {})
+        }
       } as Executable;
       return binaryPath;
     })
