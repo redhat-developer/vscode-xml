@@ -1,14 +1,19 @@
-import { getTelemetryService, TelemetryEvent, TelemetryService } from "@redhat-developer/vscode-redhat-telemetry/lib";
+import { getTelemetryService, TelemetryService } from "@redhat-developer/vscode-redhat-telemetry/lib";
 
 /**
  * Wrap vscode-redhat-telemetry to suit vscode-xml
  */
 export namespace Telemetry {
 
-  export const OPEN_JAVA_DOWNLOAD_LINK_EVT: string = "open_java_download_link";
-  export const SETTINGS_EVT: string = "settings";
-  export const BINARY_DOWNLOAD_SUCCEEDED_EVT: string = "binary_download_succeeded";
-  export const BINARY_DOWNLOAD_FAILED_EVT: string = "binary_download_failed";
+  export const OPEN_JAVA_DOWNLOAD_LINK_EVT = "xml.open.java.download.link";
+  export const SETTINGS_EVT = "xml.settings";
+  export const BINARY_DOWNLOAD_EVT = "xml.binary.download";
+
+  export const BINARY_DOWNLOAD_STATUS_PROP = "status";
+
+  export const BINARY_DOWNLOAD_SUCCEEDED = "succeeded";
+  export const BINARY_DOWNLOAD_FAILED = "failed";
+  export const BINARY_DOWNLOAD_ABORTED = "aborted";
 
   let _telemetryManager: TelemetryService = null;
 

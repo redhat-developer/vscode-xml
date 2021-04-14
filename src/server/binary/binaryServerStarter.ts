@@ -112,11 +112,20 @@ async function downloadBinary(): Promise<string> {
       });
   });
   downloadPromise.then((_binaryPath) => {
-    Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_SUCCEEDED_EVT);
+    const data: any = {};
+    data[Telemetry.BINARY_DOWNLOAD_STATUS_PROP] = Telemetry.BINARY_DOWNLOAD_SUCCEEDED;
+    Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_EVT, data);
   });
   downloadPromise.catch(e => {
     if (e !== ABORTED_ERROR) {
-      Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_FAILED_EVT);
+      const data: any = {};
+      data[Telemetry.BINARY_DOWNLOAD_STATUS_PROP] = Telemetry.BINARY_DOWNLOAD_FAILED;
+      data['error'] = e.toString();
+      Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_EVT, data);
+    } else {
+      const data: any = {};
+      data[Telemetry.BINARY_DOWNLOAD_STATUS_PROP] = Telemetry.BINARY_DOWNLOAD_ABORTED;
+      Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_EVT, data);
     }
   });
   return downloadPromise;
