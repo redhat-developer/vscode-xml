@@ -27,3 +27,11 @@ The same applies to jumping from an opening tag to the respective closing tag.
 To rename a single tag and it's corresponding opening/closing, highlight the tag and press `F2` or use the dropdown to select `Rename Symbol`.
 
 ![Rename Tag](images/Features/RenameTag.gif)
+
+## Linked Editing
+
+vscode-xml supports linked editing in order to change the value of an opening tag and its corresponding closing tag at the same time.
+
+For example, let's say you have created an element `content`, but have misspelt it:
+
+![LinkedEditing](images/Features/LinkedEditing.gif)
