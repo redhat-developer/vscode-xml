@@ -29,14 +29,13 @@ export const ABORTED_ERROR: Error = new Error('XML Language Server download canc
 export async function prepareBinaryExecutable(context: ExtensionContext): Promise<Executable> {
   const binaryArgs: string = getXMLConfiguration().get("server.binary.args");
   let binaryExecutable: Executable;
-  const proxySettings: ProxySettings = getProxySettings();
   return getServerBinaryPath()
     .then((binaryPath: string) => {
       binaryExecutable = {
         args: [binaryArgs],
         command: binaryPath,
         options: {
-          env: (proxySettings ? getProxySettingsAsEnvironmentVariables(proxySettings) : {})
+          env: getBinaryEnvironment()
         }
       } as Executable;
       return binaryPath;
@@ -169,6 +168,19 @@ async function checkBinaryHash(binaryPath: string): Promise<boolean> {
     .catch((err: any) => {
       return false;
     });
+}
+
+/**
+ * Returns the environment variables to use to run the server as an object
+ *
+ * @returns the environment variables to use to run the server as an object
+ */
+function getBinaryEnvironment(): any {
+  const proxySettings: ProxySettings = getProxySettings();
+  if (proxySettings) {
+    return { ...process.env, ...getProxySettingsAsEnvironmentVariables(proxySettings) };
+  }
+  return process.env;
 }
 
 /**

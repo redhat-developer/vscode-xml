@@ -12,7 +12,8 @@
       "outFiles": ["${workspaceRoot}/dist/**/*.js"],
       "preLaunchTask": "npm: watch",
       "env": {
-        "VSCODE_REDHAT_TELEMETRY_DEBUG": "true"
+        "VSCODE_REDHAT_TELEMETRY_DEBUG": "true",
+        "LEMMINX_DEBUG": "1"
       }
     },
     {
@@ -27,7 +28,8 @@
       "preLaunchTask": "npm: watch",
       "env": {
         "SUSPEND_SERVER": "true",
-        "VSCODE_REDHAT_TELEMETRY_DEBUG": "true"
+        "VSCODE_REDHAT_TELEMETRY_DEBUG": "true",
+        "LEMMINX_DEBUG": "1"
       }
     },
     {
