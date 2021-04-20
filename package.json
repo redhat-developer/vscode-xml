@@ -477,13 +477,11 @@
     "configurationDefaults": {
       "[xml]": {
         "editor.autoClosingBrackets": "never",
-        "files.trimFinalNewlines": true,
-        "files.trimTrailingWhitespace": false
+        "files.trimFinalNewlines": true
       },
       "[xsl]": {
         "editor.autoClosingBrackets": "never",
-        "files.trimFinalNewlines": true,
-        "files.trimTrailingWhitespace": false
+        "files.trimFinalNewlines": true
       }
     },
     "commands": [
