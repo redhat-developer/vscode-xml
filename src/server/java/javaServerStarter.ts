@@ -1,7 +1,7 @@
 import * as os from 'os';
 import * as path from 'path';
 import { ExtensionContext, workspace } from 'vscode';
-import { Executable } from 'vscode-languageclient/node';
+import { Executable } from 'vscode-languageclient';
 import { RequirementsData } from '../requirements';
 import { getJavaagentFlag, getKey, getXMLConfiguration, IS_WORKSPACE_VMARGS_XML_ALLOWED, xmlServerVmargs } from '../../settings/settings';
 import { getProxySettings, getProxySettingsAsJVMArgs, ProxySettings, jvmArgsContainsProxySettings } from '../../settings/proxySettings';
