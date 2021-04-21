@@ -6,7 +6,7 @@ import * as os from 'os';
 import * as path from 'path';
 import { Readable } from 'stream';
 import { ExtensionContext, extensions, ProgressLocation, ProgressOptions, window, WorkspaceConfiguration } from "vscode";
-import { Executable } from "vscode-languageclient/node";
+import { Executable } from "vscode-languageclient";
 import * as yauzl from 'yauzl';
 import { getProxySettings, getProxySettingsAsEnvironmentVariables, ProxySettings } from '../../settings/proxySettings';
 import { getXMLConfiguration } from "../../settings/settings";
