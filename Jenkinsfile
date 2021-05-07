@@ -18,6 +18,11 @@ def buildLemMinXBinary() {
 }
 
 node('rhel7'){
+	// Fake checkout vscode-xml to avoid build cycle if build fails before real checkout
+	def gitUrl = "${GIT_REPO}"
+	git url: gitUrl?:'https://github.com/redhat-developer/vscode-xml.git', branch: params.BRANCH?: 'master'
+	deleteDir()
+
 	sh "curl -Lo package.json https://raw.githubusercontent.com/${params.FORK}/vscode-xml/${params.BRANCH}/package.json"
 	def packageJson = readJSON file: 'package.json'
 	def serverVersion = packageJson?.xmlServer?.version
