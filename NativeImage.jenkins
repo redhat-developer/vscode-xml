@@ -69,8 +69,8 @@ pipeline {
             bat """
               pushd .
               setlocal
-              set JAVA_HOME="%cd%\\graalvm-windows-${params.GRAALVM_VERSION}\\graalvm-ce-java11-${params.GRAALVM_VERSION}"
-              call "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat" x86_amd64
+              set JAVA_HOME=%cd%\\graalvm-windows-${params.GRAALVM_VERSION}\\graalvm-ce-java11-${params.GRAALVM_VERSION}
+              call \"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat\"
               popd
               cd lemminx
               .\\mvnw.cmd clean package -B -Dnative -DskipTests
