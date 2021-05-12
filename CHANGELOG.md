@@ -1,5 +1,23 @@
 # Change Log
 
+## [0.16.1](https://github.com/redhat-developer/vscode-xml/milestone/19?closed=1) (May 18, 2021)
+
+### Enhancements
+
+ * Improve the error range for unterminated elements, and use `relatedInformation` to show the expected close tag placement. See [eclipse/lemminx#963](https://github.com/eclipse/lemminx/issues/963).
+ * Add setting `xml.completion.autoCloseRemovesContent` to prevent auto self-closing feature from deleting content. See [#440](https://github.com/redhat-developer/vscode-xml/issues/440).
+ * Rename telemetry events. See [#453](https://github.com/redhat-developer/vscode-xml/pull/453).
+ * Output the language server error stream during development. See [eclipse/lemminx#1019](https://github.com/eclipse/lemminx/issues/1019).
+ * Build and distribute a static binary for Linux. See [#457](https://github.com/redhat-developer/vscode-xml/issues/457).
+
+### Bug Fixes
+
+ * Fix `xml.validation.noGrammar` setting. See [#467](https://github.com/redhat-developer/vscode-xml/issues/467).
+ * Fix XML 1.1 support in the binary server. See [eclipse/lemminx#1027](https://github.com/eclipse/lemminx/issues/1027).
+ * Fix revalidation commands in the binary server. See [eclipse/lemminx#1031](https://github.com/eclipse/lemminx/issues/1031).
+ * Do not override user's `files.trimTrailingWhitespace` in XML files. See [#299](https://github.com/redhat-developer/vscode-xml/issues/299).
+ * Use the default npm registry in `package-lock.json`. See [#465](https://github.com/redhat-developer/vscode-xml/pull/465).
+
 ## [0.16.0](https://github.com/redhat-developer/vscode-xml/milestone/19?closed=1) (April 13, 2021)
 
 ### Enhancements
