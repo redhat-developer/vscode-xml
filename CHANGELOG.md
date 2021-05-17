@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.16.1](https://github.com/redhat-developer/vscode-xml/milestone/19?closed=1) (May 18, 2021)
+## [0.16.1](https://github.com/redhat-developer/vscode-xml/milestone/20?closed=1) (May 18, 2021)
 
 ### Enhancements
 
@@ -17,6 +17,8 @@
  * Fix revalidation commands in the binary server. See [eclipse/lemminx#1031](https://github.com/eclipse/lemminx/issues/1031).
  * Do not override user's `files.trimTrailingWhitespace` in XML files. See [#299](https://github.com/redhat-developer/vscode-xml/issues/299).
  * Use the default npm registry in `package-lock.json`. See [#465](https://github.com/redhat-developer/vscode-xml/pull/465).
+ * Fix range formatting in the binary server. See [eclipse/lemminx#1035](https://github.com/eclipse/lemminx/issues/1035).
+ * Mitigate Billion Laughs vulnerability. See [#476](https://github.com/redhat-developer/vscode-xml/issues/476).
 
 ## [0.16.0](https://github.com/redhat-developer/vscode-xml/milestone/19?closed=1) (April 13, 2021)
 
