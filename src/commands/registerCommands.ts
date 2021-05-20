@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { commands, ExtensionContext, Position, Uri, window, workspace } from "vscode";
-import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, LanguageClient, ReferencesRequest, TextDocumentIdentifier } from "vscode-languageclient";
+import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, ReferencesRequest, TextDocumentIdentifier } from "vscode-languageclient";
+import { LanguageClient } from 'vscode-languageclient/node';
 import { markdownPreviewProvider } from "../markdownPreviewProvider";
 import { CommandConstants } from "./commandConstants";
 
