@@ -1,7 +1,8 @@
-import { DidChangeConfigurationNotification, LanguageClient } from "vscode-languageclient";
+import { DidChangeConfigurationNotification } from "vscode-languageclient";
+import { LanguageClient } from "vscode-languageclient/node";
+import { RequirementsData } from "../server/requirements";
 import { ExternalXmlSettings } from "../settings/externalXmlSettings";
 import { getXMLSettings, onConfigurationChange } from "../settings/settings";
-import { RequirementsData } from "../server/requirements";
 import { XMLExtensionApi, XMLFileAssociation } from "./xmlExtensionApi";
 
 /**

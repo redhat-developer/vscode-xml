@@ -1,6 +1,7 @@
 import { TelemetryEvent } from '@redhat-developer/vscode-redhat-telemetry/lib';
 import { commands, ExtensionContext, extensions, Position, TextDocument, TextEditor, Uri, window, workspace } from 'vscode';
-import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, Executable, ExecuteCommandParams, LanguageClient, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, TextDocumentPositionParams } from "vscode-languageclient";
+import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, TextDocumentPositionParams } from "vscode-languageclient";
+import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { XMLFileAssociation } from '../api/xmlExtensionApi';
 import { CommandConstants } from '../commands/commandConstants';
 import { registerCommands } from '../commands/registerCommands';
@@ -14,11 +15,11 @@ import { ClientErrorHandler } from './clientErrorHandler';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
 
 namespace ExecuteClientCommandRequest {
-  export const type: RequestType<ExecuteCommandParams, any, void, void> = new RequestType('xml/executeClientCommand');
+  export const type: RequestType<ExecuteCommandParams, any, void> = new RequestType('xml/executeClientCommand');
 }
 
 namespace TagCloseRequest {
-  export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any, any> = new RequestType('xml/closeTag');
+  export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any> = new RequestType('xml/closeTag');
 }
 
 interface ActionableMessage {
@@ -29,7 +30,7 @@ interface ActionableMessage {
 }
 
 namespace ActionableNotification {
-  export const type = new NotificationType<ActionableMessage, void>('xml/actionableNotification');
+  export const type = new NotificationType<ActionableMessage>('xml/actionableNotification');
 }
 
 let languageClient: LanguageClient;

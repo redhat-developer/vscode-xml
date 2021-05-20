@@ -1,10 +1,10 @@
 import { commands, ConfigurationTarget, ExtensionContext, window } from "vscode";
-import { Executable } from "vscode-languageclient";
-import { prepareBinaryExecutable, ABORTED_ERROR } from "./binary/binaryServerStarter";
-import { prepareJavaExecutable } from "./java/javaServerStarter";
-import { getOpenJDKDownloadLink, RequirementsData } from "./requirements";
+import { Executable } from "vscode-languageclient/node";
 import { getXMLConfiguration } from "../settings/settings";
 import { Telemetry } from "../telemetry";
+import { ABORTED_ERROR, prepareBinaryExecutable } from "./binary/binaryServerStarter";
+import { prepareJavaExecutable } from "./java/javaServerStarter";
+import { getOpenJDKDownloadLink, RequirementsData } from "./requirements";
 
 /**
  * Returns the executable to use to launch LemMinX (the XML Language Server)
@@ -54,7 +54,7 @@ export async function prepareExecutable(
         if (e === ABORTED_ERROR) {
           window.showWarningMessage(`${e.message}. ${javaServerMessage}`);
         } else {
-          window.showErrorMessage(`${e}. ${javaServerMessage}`);``
+          window.showErrorMessage(`${e}. ${javaServerMessage}`);
         }
         if (!hasJava) {
           throw new Error("Failed to launch binary XML language server and no Java is installed");
