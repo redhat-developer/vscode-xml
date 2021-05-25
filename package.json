@@ -314,6 +314,11 @@
           "default": 2,
           "markdownDescription": "How many levels to indent the attributes by when `#xml.format.splitAttributes#` is `true`. Default value is `2`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatsplitattributesindentsize%22%7D%5D) for more information"
         },
+        "xml.format.closingBracketNewLine": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "The option to put a closing bracket on a newline when `#xml.format.splitAttributes#` is `true`. Default value is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatclosingbracketnewline%22%7D%5D) for more information."
+        },
         "xml.preferences.quoteStyle": {
           "type": "string",
           "enum": [

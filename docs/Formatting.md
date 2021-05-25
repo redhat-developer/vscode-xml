@@ -396,3 +396,21 @@ If it is set to `true`, the above document becomes:
   </robot>
   ```
 ***
+### xml.format.closingBracketNewLine
+
+If set to `true`, the closing bracket (`>` or `/>`) of a tag with at least 2 attributes will be put on a new line.
+
+Requires [splitAttributes](#xmlformatsplitattributes) to be set to `true`.
+
+Defaults to `false`.
+
+```xml
+<a b="" c="" />
+```
+becomes
+```xml
+<a
+  b=""
+  c=""
+/>
+```
