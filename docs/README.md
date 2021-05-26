@@ -10,6 +10,7 @@ Welcome to the [vscode-xml](https://github.com/redhat-developer/vscode-xml) docu
   * [XML Commands](Commands.md#commands): More info on the available XML vscode commands.
   * [Symbols](Symbols.md#symbols): More info on the available settings for the document symbols (outline).
   * [Troubleshooting](Troubleshooting.md#troubleshooting): Info on troubleshooting and fixes to issues.
+  * [Features](Features.md#features): Notable info and demos on features available to use.
 
 ## Developer Guide
 
