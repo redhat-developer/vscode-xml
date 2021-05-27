@@ -14,13 +14,13 @@ This VS Code extension provides support for creating and editing XML documents, 
 
   * Syntax error reporting
   * General code completion
-  * Auto-close tags
+  * [Auto-close tags](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Features.md#xml-tag-auto-close)
   * Automatic node indentation
   * Symbol highlighting
   * Document folding
   * Document links
   * [Document symbols and outline](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Symbols.md)
-  * Renaming support
+  * [Renaming support](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Features.md#rename-tag)
   * [Document Formatting](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md)
   * [DTD validation](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Validation.md#validation-with-dtd-grammar)
   * DTD completion
