@@ -116,6 +116,12 @@ With your approval, the vscode-xml extension collects anonymous [usage data](USA
 Read our [privacy statement](https://developers.redhat.com/article/tool-data-collection) to learn more.
 This extension respects the `redhat.telemetry.enabled` setting, which you can learn more about at https://github.com/redhat-developer/vscode-commons#how-to-disable-telemetry-reporting
 
+## LemMinX Binary
+
+As a part of the release process, vscode-xml builds a binary version of the [LemMinX XML Language Server](https://github.com/eclipse/lemminx).
+The stable releases of the binary, which are used in the vscode-xml releases, are available at https://download.jboss.org/jbosstools/vscode/stable/lemminx-binary/.
+The latest snapshot build of the binary, which tracks the HEAD of this repository, is available at https://download.jboss.org/jbosstools/vscode/snapshots/lemminx-binary/LATEST/.
+
 ## Articles
 
  * [No more Java in vscode-xml 0.15.0!](https://developers.redhat.com/blog/2021/03/12/no-more-java-in-vscode-xml-0-15-0/)
