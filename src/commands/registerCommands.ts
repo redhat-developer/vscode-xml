@@ -1,23 +1,24 @@
 import * as path from 'path';
-import { commands, ExtensionContext, Position, Uri, window, workspace } from "vscode";
-import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, ReferencesRequest, TextDocumentIdentifier } from "vscode-languageclient";
+import { commands, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, Uri, window, workspace, WorkspaceEdit } from "vscode";
+import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, ReferencesRequest, TextDocumentIdentifier, TextDocumentEdit } from "vscode-languageclient";
 import { LanguageClient } from 'vscode-languageclient/node';
 import { markdownPreviewProvider } from "../markdownPreviewProvider";
-import { CommandConstants } from "./commandConstants";
+import { ClientCommandConstants, ServerCommandConstants } from "./commandConstants";
 
 /**
  * Register the commands for vscode-xml
  *
  * @param context the extension context
  */
-export async function registerCommands(context: ExtensionContext, languageClient: LanguageClient) {
+export function registerCommands(context: ExtensionContext, languageClient: LanguageClient) {
 
   registerDocsCommands(context);
-  registerCodeLensCommands(context, languageClient);
+  registerCodeLensReferencesCommands(context, languageClient);
   registerValidationCommands(context);
+  registerCodeLensAssociationCommands(context, languageClient);
 
   // Register client command to execute custom XML Language Server command
-  context.subscriptions.push(commands.registerCommand(CommandConstants.EXECUTE_WORKSPACE_COMMAND, (command, ...rest) => {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND, (command, ...rest) => {
     let token: CancellationToken;
     let commandArgs: any[] = rest;
     if (rest && rest.length && CancellationToken.is(rest[rest.length - 1])) {
@@ -36,7 +37,7 @@ export async function registerCommands(context: ExtensionContext, languageClient
   }));
 
   // Register command that open settings to a given setting
-  context.subscriptions.push(commands.registerCommand(CommandConstants.OPEN_SETTINGS, async (settingId?: string) => {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.OPEN_SETTINGS, async (settingId?: string) => {
     commands.executeCommand('workbench.action.openSettings', settingId);
   }));
 }
@@ -46,15 +47,15 @@ export async function registerCommands(context: ExtensionContext, languageClient
  *
  * @param context the extension context
  */
-async function registerDocsCommands(context: ExtensionContext): Promise<void> {
+function registerDocsCommands(context: ExtensionContext) {
   context.subscriptions.push(markdownPreviewProvider);
-  context.subscriptions.push(commands.registerCommand(CommandConstants.OPEN_DOCS_HOME, async () => {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.OPEN_DOCS_HOME, async () => {
     const uri = 'README.md';
     const title = 'XML Documentation';
     const sectionId = '';
     markdownPreviewProvider.show(context.asAbsolutePath(path.join('docs', uri)), title, sectionId, context);
   }));
-  context.subscriptions.push(commands.registerCommand(CommandConstants.OPEN_DOCS, async (params: { page: string, section: string }) => {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.OPEN_DOCS, async (params: { page: string, section: string }) => {
     const page = params.page.endsWith('.md') ? params.page.substr(0, params.page.length - 3) : params.page;
     const uri = page + '.md';
     const sectionId = params.section || '';
@@ -64,19 +65,19 @@ async function registerDocsCommands(context: ExtensionContext): Promise<void> {
 }
 
 /**
- * Register commands used for code lens
+ * Register commands used for code lens "references"
  *
  * @param context the extension context
  * @param languageClient the language server client
  */
-async function registerCodeLensCommands(context: ExtensionContext, languageClient: LanguageClient): Promise<void> {
-  context.subscriptions.push(commands.registerCommand(CommandConstants.SHOW_REFERENCES, (uriString: string, position: Position) => {
+function registerCodeLensReferencesCommands(context: ExtensionContext, languageClient: LanguageClient) {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.SHOW_REFERENCES, (uriString: string, position: Position) => {
     const uri = Uri.parse(uriString);
     workspace.openTextDocument(uri).then(document => {
       // Consume references service from the XML Language Server
       let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
       languageClient.sendRequest(ReferencesRequest.type, param).then(locations => {
-        commands.executeCommand(CommandConstants.EDITOR_SHOW_REFERENCES, uri, languageClient.protocol2CodeConverter.asPosition(position), locations.map(languageClient.protocol2CodeConverter.asLocation));
+        commands.executeCommand(ClientCommandConstants.EDITOR_SHOW_REFERENCES, uri, languageClient.protocol2CodeConverter.asPosition(position), locations.map(languageClient.protocol2CodeConverter.asLocation));
       })
     })
   }));
@@ -87,12 +88,12 @@ async function registerCodeLensCommands(context: ExtensionContext, languageClien
  *
  * @param context the extension context
  */
-async function registerValidationCommands(context: ExtensionContext): Promise<void> {
+function registerValidationCommands(context: ExtensionContext) {
   // Revalidate current file
-  context.subscriptions.push(commands.registerCommand(CommandConstants.VALIDATE_CURRENT_FILE, async (params) => {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.VALIDATE_CURRENT_FILE, async (params) => {
     const uri = window.activeTextEditor.document.uri;
     const identifier = TextDocumentIdentifier.create(uri.toString());
-    commands.executeCommand(CommandConstants.EXECUTE_WORKSPACE_COMMAND, CommandConstants.VALIDATE_CURRENT_FILE, identifier).
+    commands.executeCommand(ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND, ServerCommandConstants.VALIDATE_CURRENT_FILE, identifier).
       then(() => {
         window.showInformationMessage('The current XML file was successfully validated.');
       }, error => {
@@ -100,12 +101,70 @@ async function registerValidationCommands(context: ExtensionContext): Promise<vo
       });
   }));
   // Revalidate all open files
-  context.subscriptions.push(commands.registerCommand(CommandConstants.VALIDATE_ALL_FILES, async () => {
-    commands.executeCommand(CommandConstants.EXECUTE_WORKSPACE_COMMAND, CommandConstants.VALIDATE_ALL_FILES).
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.VALIDATE_ALL_FILES, async () => {
+    commands.executeCommand(ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND, ServerCommandConstants.VALIDATE_ALL_FILES).
       then(() => {
         window.showInformationMessage('All open XML files were successfully validated.');
       }, error => {
         window.showErrorMessage('Error during XML validation: ' + error.message);
       });
   }));
+}
+
+export const bindingTypes = new Map<string, string>([
+  ["Standard (xsi, DOCTYPE)", "standard"],
+  ["XML Model association", "xml-model"]
+]);
+
+const bindingTypeOptions: QuickPickItem[] = [];
+for (const label of bindingTypes.keys()) {
+  bindingTypeOptions.push({ "label": label });
+}
+
+/**
+ * Register commands used for associating grammar file (XSD,DTD) to a given XML file
+ *
+ * @param context the extension context
+ */
+function registerCodeLensAssociationCommands(context: ExtensionContext, languageClient: LanguageClient) {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.OPEN_BINDING_WIZARD, async (uriString: string) => {
+    // A click on Bind to grammar/schema... has been processed in the XML document which is not bound to a grammar
+    const documentURI = Uri.parse(uriString);
+
+    // Step 1 : open a combo to select the binding type ("standard", "xml-model")
+    const pickedBindingTypeOption = await window.showQuickPick(bindingTypeOptions, { placeHolder: "Binding type" });
+    if(!pickedBindingTypeOption) {
+      return;
+    }
+    const bindingType = bindingTypes.get(pickedBindingTypeOption.label);
+
+    // Open a dialog to select the XSD, DTD to bind.
+    const options: OpenDialogOptions = {
+      canSelectMany: false,
+      openLabel: 'Select XSD or DTD file',
+      filters: {
+        'Grammar files': ['xsd', 'dtd']
+      }
+    };
+
+    const fileUri = await window.showOpenDialog(options);
+    if (fileUri && fileUri[0]) {
+      // The XSD, DTD has been selected, get the proper syntax for binding this grammar file in the XML document.
+      const identifier = TextDocumentIdentifier.create(documentURI.toString());
+      const grammarURI = fileUri[0];
+      try {
+        const result = await commands.executeCommand(ServerCommandConstants.ASSOCIATE_GRAMMAR_INSERT, identifier, grammarURI.toString(), bindingType);
+        // Insert the proper syntax for binding
+        const lspTextDocumentEdit = <TextDocumentEdit>result;
+        const workEdits = new WorkspaceEdit();
+        for (const edit of lspTextDocumentEdit.edits) {
+          workEdits.replace(documentURI, languageClient.protocol2CodeConverter.asRange(edit.range), edit.newText);
+        }
+        workspace.applyEdit(workEdits); // apply the edits
+      } catch (error) {
+        window.showErrorMessage('Error during grammar binding: ' + error.message);
+      };
+    }
+  }));
+
 }
