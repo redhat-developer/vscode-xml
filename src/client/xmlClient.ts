@@ -3,7 +3,7 @@ import { commands, ExtensionContext, extensions, Position, TextDocument, TextEdi
 import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, TextDocumentPositionParams } from "vscode-languageclient";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { XMLFileAssociation } from '../api/xmlExtensionApi';
-import { CommandConstants } from '../commands/commandConstants';
+import { ClientCommandConstants, ServerCommandConstants } from '../commands/commandConstants';
 import { registerCommands } from '../commands/registerCommands';
 import { onExtensionChange } from '../plugin';
 import { RequirementsData } from "../server/requirements";
@@ -67,7 +67,7 @@ export async function startLanguageClient(context: ExtensionContext, executable:
     let text = languageClient.sendRequest(TagCloseRequest.type, param);
     return text;
   };
-  context.subscriptions.push(activateTagClosing(tagProvider, { xml: true, xsl: true }, CommandConstants.AUTO_CLOSE_TAGS));
+  context.subscriptions.push(activateTagClosing(tagProvider, { xml: true, xsl: true }, ServerCommandConstants.AUTO_CLOSE_TAGS));
 
   if (extensions.onDidChange) {// Theia doesn't support this API yet
     context.subscriptions.push(extensions.onDidChange(() => {
@@ -123,7 +123,8 @@ function getLanguageClientOptions(logfile: string, externalXmlSettings: External
         codeLens: {
           codeLensKind: {
             valueSet: [
-              'references'
+              'references',
+              'association'
             ]
           }
         },

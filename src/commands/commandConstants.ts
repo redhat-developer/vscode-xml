@@ -11,52 +11,78 @@
 'use strict';
 
 /**
- * Commonly used commands
+ * VScode client commands.
  */
-export namespace CommandConstants {
+export namespace ClientCommandConstants {
 
-    /**
-     * Auto close tags
-     */
-    export const AUTO_CLOSE_TAGS = 'xml.completion.autoCloseTags';
+  /**
+   * Show XML references
+   */
+  export const SHOW_REFERENCES = 'xml.show.references';
 
-    /**
-     * Show XML references
-     */
-    export const SHOW_REFERENCES = 'xml.show.references';
+  /**
+   * Show editor references
+   */
+  export const EDITOR_SHOW_REFERENCES = 'editor.action.showReferences';
 
-    /**
-     * Show editor references
-     */
-    export const EDITOR_SHOW_REFERENCES = 'editor.action.showReferences';
+  /**
+   * Reload VS Code window
+   */
+  export const RELOAD_WINDOW = 'workbench.action.reloadWindow';
 
-    /**
-     * Reload VS Code window
-     */
-    export const RELOAD_WINDOW = 'workbench.action.reloadWindow';
+  /**
+   * Open settings command
+   *
+   * A `settingId: string` parameter can be optionally provided
+   */
+  export const OPEN_SETTINGS = 'xml.open.settings';
 
-    /**
-     * Open settings command
-     *
-     * A `settingId: string` parameter can be optionally provided
-     */
-    export const OPEN_SETTINGS = 'xml.open.settings';
+  /**
+   * Render markdown string to html string
+   */
+  export const MARKDOWN_API_RENDER = 'markdown.api.render';
 
-    /**
-     * Render markdown string to html string
-     */
-    export const MARKDOWN_API_RENDER = 'markdown.api.render';
+  export const OPEN_DOCS = 'xml.open.docs';
 
-    export const OPEN_DOCS = "xml.open.docs";
+  /**
+   * Commands to revalidate files with an LSP command on the XML Language Server
+   */
+  export const VALIDATE_CURRENT_FILE = 'xml.validation.current.file';
 
-    export const OPEN_DOCS_HOME = "xml.open.docs.home";
+  export const VALIDATE_ALL_FILES = 'xml.validation.all.files';
 
-    /**
-     * VSCode client command to executes an LSP command on the XML Language Server
-     */
-    export const EXECUTE_WORKSPACE_COMMAND = "xml.workspace.executeCommand";
+  export const OPEN_DOCS_HOME = 'xml.open.docs.home';
 
-    export const VALIDATE_CURRENT_FILE = "xml.validation.current.file";
+  /**
+   * VSCode client commands to open the binding wizard to bind a XML to a grammar/schema.
+   */
+  export const OPEN_BINDING_WIZARD = 'xml.open.binding.wizard';
 
-    export const VALIDATE_ALL_FILES = "xml.validation.all.files";
+  /**
+   * Client command to execute an XML command on XML Language Server side.
+   */
+  export const EXECUTE_WORKSPACE_COMMAND = 'xml.workspace.executeCommand';
+}
+
+/**
+ * XML Language Server commands.
+ */
+export namespace ServerCommandConstants {
+
+  /**
+   * Auto close tags
+   */
+  export const AUTO_CLOSE_TAGS = 'xml.completion.autoCloseTags';
+
+  /**
+   * Commands to revalidate files with an LSP command on the XML Language Server
+   */
+  export const VALIDATE_CURRENT_FILE = ClientCommandConstants.VALIDATE_CURRENT_FILE;
+
+  export const VALIDATE_ALL_FILES = ClientCommandConstants.VALIDATE_ALL_FILES;
+
+  /**
+   * Command to associate a grammar in a XML document
+   */
+  export const ASSOCIATE_GRAMMAR_INSERT = "xml.associate.grammar.insert";
 }
