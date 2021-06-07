@@ -6,13 +6,23 @@ import { markdownPreviewProvider } from "../markdownPreviewProvider";
 import { ClientCommandConstants, ServerCommandConstants } from "./commandConstants";
 
 /**
- * Register the commands for vscode-xml
+ * Register the commands for vscode-xml that don't require communication with the language server
  *
  * @param context the extension context
  */
-export function registerCommands(context: ExtensionContext, languageClient: LanguageClient) {
-
+export function registerClientOnlyCommands(context: ExtensionContext) {
   registerDocsCommands(context);
+  registerOpenSettingsCommand(context);
+}
+
+/**
+ * Register the commands for vscode-xml that require communication with the language server
+ *
+ * @param context the extension context
+ * @param languageClient the language client
+ */
+export async function registerClientServerCommands(context: ExtensionContext, languageClient: LanguageClient) {
+
   registerCodeLensReferencesCommands(context, languageClient);
   registerValidationCommands(context);
   registerCodeLensAssociationCommands(context, languageClient);
@@ -36,10 +46,6 @@ export function registerCommands(context: ExtensionContext, languageClient: Lang
     }
   }));
 
-  // Register command that open settings to a given setting
-  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.OPEN_SETTINGS, async (settingId?: string) => {
-    commands.executeCommand('workbench.action.openSettings', settingId);
-  }));
 }
 
 /**
@@ -61,6 +67,17 @@ function registerDocsCommands(context: ExtensionContext) {
     const sectionId = params.section || '';
     const title = 'XML ' + page;
     markdownPreviewProvider.show(context.asAbsolutePath(path.join('docs', uri)), title, sectionId, context);
+  }));
+}
+
+/**
+ * Registers a command that opens the settings page to a given setting
+ *
+ * @param context the extension context
+ */
+function registerOpenSettingsCommand(context: ExtensionContext) {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.OPEN_SETTINGS, async (settingId?: string) => {
+    commands.executeCommand('workbench.action.openSettings', settingId);
   }));
 }
 

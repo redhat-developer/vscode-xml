@@ -16,6 +16,7 @@ vscode-xml has opt-in telemetry collection, provided by [vscode-redhat-telemetry
  * The value of the `xml.server.preferBinary` setting
  * A telemetry event is sent every time the binary server download succeeds, fails, or is stopped by the user
     * If the download fails, the associated error is attached to the telemetry event
+ * A telemetry event is sent every time you click the "Open Proxy Configuration Documentation" link that is provided when the language server binary download fails due to a proxy related issue.
  * A telemetry event is sent every time you click the "Download Java" link that appears when you have [LemMinX extensions](./docs/Extensions.md) installed but don't have Java installed.
 
 ## What's included in the general telemetry data

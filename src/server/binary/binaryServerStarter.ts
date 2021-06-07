@@ -5,9 +5,10 @@ import * as https from 'https';
 import * as os from 'os';
 import * as path from 'path';
 import { Readable } from 'stream';
-import { ExtensionContext, extensions, ProgressLocation, ProgressOptions, window, WorkspaceConfiguration } from "vscode";
+import { commands, ExtensionContext, extensions, ProgressLocation, ProgressOptions, window, WorkspaceConfiguration } from "vscode";
 import { Executable } from "vscode-languageclient/node";
 import * as yauzl from 'yauzl';
+import { ClientCommandConstants } from '../../commands/commandConstants';
 import { getProxySettings, getProxySettingsAsEnvironmentVariables, ProxySettings } from '../../settings/proxySettings';
 import { getXMLConfiguration } from "../../settings/settings";
 import { Telemetry } from '../../telemetry';
@@ -101,6 +102,19 @@ async function downloadBinary(): Promise<string> {
           // Not a ZIP, assume its a binary
           acceptBinaryDownloadResponse(response).then(resolve, reject);
         }
+      } else if (statusCode === 407) {
+        const DOCUMENTATION = "Open Proxy Configuration Documentation";
+        window.showErrorMessage(
+          'The language server couldn\'t be downloaded, because you have not configured VS Code to use your proxy for VS Code extensions. '
+          + 'For documentation on configuring the proxy, click the button below.',
+          DOCUMENTATION) //
+          .then((value: string) => {
+            if (value === DOCUMENTATION) {
+              Telemetry.sendTelemetry(Telemetry.OPEN_PROXY_CONFIG_DOCS_EVT);
+              openProxyDocumentation();
+            }
+          });
+        reject(`Server binary download failed: status code ${statusCode}`);
       } else {
         reject(`Server binary download failed: status code ${statusCode}`);
       }
@@ -412,4 +426,8 @@ async function acceptBinaryDownloadResponse(response: http.IncomingMessage): Pro
     });
     response.pipe(serverBinaryFileStream);
   });
+}
+
+async function openProxyDocumentation(): Promise<void> {
+  await commands.executeCommand(ClientCommandConstants.OPEN_DOCS, { page: "Proxy" });
 }
