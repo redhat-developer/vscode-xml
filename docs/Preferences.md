@@ -155,6 +155,8 @@ Then the closing tag for the `<child>` element will automatically be inserted:
 
 Similarly, the closing tag will be automatically completed when typing `</` to start a closing tag.
 
+### Auto Close Removes Content
+
 The `xml.completion.autoCloseRemovesContent` setting controls if all content inside an element gets deleted when the start tag gets changed to a self-closing tag.
 
 For instance if `xml.completion.autoCloseRemovesContent` is set to `true`, in the following code:
