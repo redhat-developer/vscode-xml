@@ -317,7 +317,7 @@
           "scope": "window"
         },
         "xml.completion.autoCloseRemovesContent": {
-          "type": "boolean",  
+          "type": "boolean",
           "default": true,
           "markdownDescription": "Enable/disable the content of an element being removed when the element start tag is turned into a self-closing tag. The default setting is to remove the content. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22auto-close-removes-content%22%7D%5D) for more information.",
           "scope": "window"
