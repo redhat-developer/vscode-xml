@@ -3,3 +3,9 @@ node_modules
 src/
 tsconfig.json
 webpack.config.js
+gulpfile.js
+.editorconfig
+CONTRIBUTING.md
+Jenkinsfile
+*.jenkins
+images/
