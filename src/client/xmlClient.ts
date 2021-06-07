@@ -4,7 +4,7 @@ import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurat
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { XMLFileAssociation } from '../api/xmlExtensionApi';
 import { ClientCommandConstants, ServerCommandConstants } from '../commands/commandConstants';
-import { registerCommands } from '../commands/registerCommands';
+import { registerClientServerCommands } from '../commands/registerCommands';
 import { onExtensionChange } from '../plugin';
 import { RequirementsData } from "../server/requirements";
 import { ExternalXmlSettings } from "../settings/externalXmlSettings";
@@ -59,7 +59,7 @@ export async function startLanguageClient(context: ExtensionContext, executable:
     return await commands.executeCommand(params.command, ...params.arguments);
   });
 
-  registerCommands(context, languageClient);
+  registerClientServerCommands(context, languageClient);
 
   // Setup autoCloseTags
   const tagProvider = (document: TextDocument, position: Position) => {
