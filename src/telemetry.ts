@@ -1,4 +1,5 @@
-import { getTelemetryService, TelemetryService } from "@redhat-developer/vscode-redhat-telemetry/lib";
+import { TelemetryService, getRedHatService } from "@redhat-developer/vscode-redhat-telemetry";
+import { ExtensionContext } from "vscode";
 
 /**
  * Wrap vscode-redhat-telemetry to suit vscode-xml
@@ -23,11 +24,12 @@ export namespace Telemetry {
    * @returns when the telemetry service has been started
    * @throws Error if the telemetry service has already been started
    */
-  export async function startTelemetry(): Promise<void> {
+  export async function startTelemetry(context: ExtensionContext): Promise<void> {
     if (!!_telemetryManager) {
       throw new Error("The telemetry service for vscode-xml has already been started")
     }
-    _telemetryManager = await getTelemetryService("redhat.vscode-xml");
+    const redhatService =await getRedHatService(context);
+    _telemetryManager = await redhatService.getTelemetryService();
     return _telemetryManager.sendStartupEvent();
   }
 
