@@ -55,7 +55,10 @@ class MarkdownPreviewProvider implements Disposable {
             // where $1, $2, $3 are non empty strings that are then passed to the replace function
             markdownString = markdownString.replace(/\[([^\]]+)\]\(([^#\)]+)#([^)]*)\)/g,
                     (_match: string, linkText: string, page: string, section: string) => {
-                return `<a href="command:xml.open.docs?%5B%7B%22page%22%3A%22${page}%22%2C%22section%22%3A%22${section}%22%7D%5D">${linkText}</a>`
+                const linkedPageAbsPath = path.join(path.dirname(markdownFilePath), page);
+                // __dirname resolves to the `dist` folder
+                const linkedPageRelativePath = path.relative(path.join(__dirname, '..', 'docs'), linkedPageAbsPath);
+                return `<a href="command:xml.open.docs?%5B%7B%22page%22%3A%22${linkedPageRelativePath}%22%2C%22section%22%3A%22${section}%22%7D%5D">${linkText}</a>`
             });
             body = await commands.executeCommand(CommandConstants.MARKDOWN_API_RENDER, markdownString);
             this.documentCache.set(markdownFilePath, body);
