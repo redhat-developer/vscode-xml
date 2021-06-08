@@ -1,6 +1,6 @@
 # Data collection
 
-vscode-xml has opt-in telemetry collection, provided by [vscode-commons](https://github.com/redhat-developer/vscode-commons).
+vscode-xml has opt-in telemetry collection, provided by [vscode-redhat-telemetry](https://github.com/redhat-developer/vscode-redhat-telemetry).
 
 ## What's included in the vscode-xml telemetry data
 
@@ -21,7 +21,7 @@ vscode-xml has opt-in telemetry collection, provided by [vscode-commons](https:/
 ## What's included in the general telemetry data
 
 Please see the
-[vscode-commons data collection information](https://github.com/redhat-developer/vscode-commons/blob/master/USAGE_DATA.md#other-extensions)
+[vscode-redhat-telemetry data collection information](https://github.com/redhat-developer/vscode-redhat-telemetry/blob/HEAD/USAGE_DATA.md#usage-data-being-collected-by-red-hat-extensions)
 for information on what data it collects.
 
 ## How to opt in or out
