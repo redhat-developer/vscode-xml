@@ -10,7 +10,7 @@ Using `/` in an opening tag will auto close the tag.
 
 ![Auto Close Tag Slash](../images/Features/AutoCloseTagSlashXML.gif)
 
-## Linked Editing
+## Auto Rename Tag
 
 Linked editing is supported, allowing for simultaneous changes an opening and closing tag pair.
 
@@ -46,11 +46,27 @@ The `OUTLINE` dropdown under `EXPLORER` details the XML tags in the document and
 
 ![Symbol Outline XML](../images/Features/SymbolOutlineXML.gif)
 
+## Snippet Generation
+
+When starting a new XML document, `Ctrl` + `Space` lists different snippet options to set up the document.
+
+![Generate XML Snippet](../images/Features/GenerateXMLSnippet.gif)
+
+There are also a number of keywords that will be recognized as snippets and autocompleted. For example, typing `schema` will list schema related snippet options.
+
+![Generate XML Schema Snippet](../images/Features/GenerateXMLSchemaSnippet.gif)
+
 ## Completion Support
 
 ### Basic completion
 
 If an XML file is not associated to a bound grammar file, you can utilize XML completion which uses existing XML tag elements.
+
+### Attribute value completion
+
+For a XML tag attribute, there is autocompletion support for the attribute value. For example, for path completion, type `.` or `/`.
+
+![Attribute Completion XML](../images/Features/AttributeCompletionXML.gif)
 
 ### Completion based on grammar
 

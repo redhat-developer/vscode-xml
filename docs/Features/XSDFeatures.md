@@ -36,6 +36,12 @@ After defining a `Type` or `element`, selecting the `name` attribute will highli
 
 ![Highlight Occurrences XSD](../images/Features/HighlightOccurrenceXSD.gif)
 
+### Change all type occurrences
+
+To rename a `Type` definition and its associated `element` `type` attribute values, highlight the `name` attribute of the `Type` and press `F2` or use the dropdown to select `Rename Symbol`.
+
+![Rename Type Reference XSD](../images/Features/RenameTypeReferenceXSD.gif)
+
 ## Syntax Validation
 
 XSD syntax validation is enabled for any `.xsd` file.
