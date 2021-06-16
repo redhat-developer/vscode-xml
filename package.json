@@ -23,6 +23,17 @@
     "osx-x86_64": "https://download.jboss.org/jbosstools/vscode/snapshots/lemminx-binary/LATEST/lemminx-osx-x86_64.zip",
     "win32": "https://download.jboss.org/jbosstools/vscode/snapshots/lemminx-binary/LATEST/lemminx-win32.zip"
   },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "restrictedConfigurations": [
+        "xml.extension.jars",
+        "xml.java.home",
+        "xml.server.vmargs",
+        "xml.validation.resolveExternalEntities"
+      ]
+    }
+  },
   "engines": {
     "vscode": "^1.37.0"
   },
