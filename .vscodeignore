@@ -9,3 +9,4 @@ CONTRIBUTING.md
 Jenkinsfile
 *.jenkins
 images/
+!docs/images
