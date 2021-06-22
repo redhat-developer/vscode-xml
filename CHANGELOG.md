@@ -1,5 +1,29 @@
 # Change Log
 
+## [0.17.0](https://github.com/redhat-developer/vscode-xml/milestone/21?closed=1) (June 23, 2021)
+
+### Enhancements
+ * Added `closingBracketNewLine` formatting option. See [#508](https://github.com/redhat-developer/vscode-xml/pull/508).
+ * Support workspace trust. See [#506](https://github.com/redhat-developer/vscode-xml/issues/506).
+ * Optimize images size. See [#497](https://github.com/redhat-developer/vscode-xml/pull/497).
+ * Better handling of failed binary downloads. See [#492](https://github.com/redhat-developer/vscode-xml/issues/492).
+ * Update to vscode language client 7. See [#478](https://github.com/redhat-developer/vscode-xml/issues/478).
+ * Bind XSD, DTD with CodeLens. See [#395](https://github.com/redhat-developer/vscode-xml/issues/395).
+ * Added Auto Rename Tag. See [#130](https://github.com/redhat-developer/vscode-xml/issues/130).
+ * Promote features of `vscode-xml` in documentation. See [#475](https://github.com/redhat-developer/vscode-xml/issues/475).
+ * Upgrade `@redhat-developer/vscode-redhat-telemetry` to 0.1.1. See [#504](https://github.com/redhat-developer/vscode-xml/issues/504).
+ * Support for `textDocument/selectionRange`. See [eclipse/lemminx#1021](https://github.com/eclipse/lemminx/issues/1021).
+
+ ### Bug Fixes
+ * Error in show reference request when using binary. See [#513](https://github.com/redhat-developer/vscode-xml/issues/513).
+ * Adapt `.vscodeignore` to the new path matching strategy. See [#510](https://github.com/redhat-developer/vscode-xml/issues/510).
+ * Fixed internal documentation parent directory link support. See [#499](https://github.com/redhat-developer/vscode-xml/issues/499).
+ * Automatically closing tags in multi-cursor mode only closes one tag. See [#225](https://github.com/redhat-developer/vscode-xml/issues/225).
+ * Bump browserslist from 4.16.3 to 4.16.6 to fix security vulnerability. See [#482](https://github.com/redhat-developer/vscode-xml/pull/482).
+ * Fixed 'Go To References' in binary. See [eclipse/lemminx#1059](https://github.com/eclipse/lemminx/pull/1059).
+ * CodeLens does not work in binary. See [eclipse/lemminx#1046](https://github.com/eclipse/lemminx/issues/1046).
+ * Error while saving file to cache on Windows OS (PosixFileAttributeView not supported). See [eclipse/lemminx#734](https://github.com/eclipse/lemminx/issues/734).
+
 ## [0.16.1](https://github.com/redhat-developer/vscode-xml/milestone/20?closed=1) (May 18, 2021)
 
 ### Enhancements
