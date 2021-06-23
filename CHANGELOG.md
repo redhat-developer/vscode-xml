@@ -14,7 +14,7 @@
  * Upgrade `@redhat-developer/vscode-redhat-telemetry` to 0.1.1. See [#504](https://github.com/redhat-developer/vscode-xml/issues/504).
  * Support for `textDocument/selectionRange`. See [eclipse/lemminx#1021](https://github.com/eclipse/lemminx/issues/1021).
 
- ### Bug Fixes
+### Bug Fixes
  * Error in show reference request when using binary. See [#513](https://github.com/redhat-developer/vscode-xml/issues/513).
  * Adapt `.vscodeignore` to the new path matching strategy. See [#510](https://github.com/redhat-developer/vscode-xml/issues/510).
  * Fixed internal documentation parent directory link support. See [#499](https://github.com/redhat-developer/vscode-xml/issues/499).
@@ -24,7 +24,7 @@
  * CodeLens does not work in binary. See [eclipse/lemminx#1046](https://github.com/eclipse/lemminx/issues/1046).
  * Error while saving file to cache on Windows OS (PosixFileAttributeView not supported). See [eclipse/lemminx#734](https://github.com/eclipse/lemminx/issues/734).
  * Extension doesn't start when running in vscode < 1.55. See [#520](https://github.com/redhat-developer/vscode-xml/pull/520).
- 
+
 ## [0.16.1](https://github.com/redhat-developer/vscode-xml/milestone/20?closed=1) (May 18, 2021)
 
 ### Enhancements
