@@ -14,7 +14,18 @@ Using `/` in an opening tag will auto close the tag.
 
 Linked editing is supported, allowing for simultaneous changes an opening and closing tag pair.
 
-To enable this feature, the setting `editor.linkedEditing` must be set to `true` in the `settings.json.
+This feature is enabled by default for XML and XSL files.
+
+If you would like to disable it, add the following to your `settings.json`:
+
+```json
+"[xml]" : {
+  "editor.linkedEditing": false
+},
+"[xsl]" : {
+  "editor.linkedEditing": false
+}
+```
 
 ![Linked Editing](../images/Features/LinkedEditingXML.gif)
 
