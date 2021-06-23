@@ -85,7 +85,7 @@
     "webpack-cli": "^4.6.0"
   },
   "dependencies": {
-    "@redhat-developer/vscode-redhat-telemetry": "0.1.1",
+    "@redhat-developer/vscode-redhat-telemetry": "0.2.0",
     "expand-home-dir": "^0.0.3",
     "find-java-home": "1.1.0",
     "fs-extra": "^8.1.0",
