@@ -23,7 +23,8 @@
  * Fixed 'Go To References' in binary. See [eclipse/lemminx#1059](https://github.com/eclipse/lemminx/pull/1059).
  * CodeLens does not work in binary. See [eclipse/lemminx#1046](https://github.com/eclipse/lemminx/issues/1046).
  * Error while saving file to cache on Windows OS (PosixFileAttributeView not supported). See [eclipse/lemminx#734](https://github.com/eclipse/lemminx/issues/734).
-
+ * Extension doesn't start when running in vscode < 1.55. See [#520](https://github.com/redhat-developer/vscode-xml/pull/520).
+ 
 ## [0.16.1](https://github.com/redhat-developer/vscode-xml/milestone/20?closed=1) (May 18, 2021)
 
 ### Enhancements
