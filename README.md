@@ -12,6 +12,10 @@ This VS Code extension provides support for creating and editing XML documents, 
 
 ## Features
 
+| Regular font       | *Italics* font                              |
+| ------------------ | ------------------------------------------- |
+| enabled by default | requires additional configuration to enable |
+
   * Syntax error reporting
   * General code completion
   * [Auto-close tags](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Features/XMLFeatures.md#xml-tag-auto-close)
@@ -21,7 +25,7 @@ This VS Code extension provides support for creating and editing XML documents, 
   * Document links
   * [Document symbols and outline](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Symbols.md)
   * [Renaming support](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Features/XMLFeatures.md#rename-tag)
-  * [Automatic Tag Renaming](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Features/XMLFeatures.md#auto-rename-tag)
+  * *[Automatic Tag Renaming](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Features/XMLFeatures.md#auto-rename-tag) when `editor.linkedEditing` is enabled*
   * [Document Formatting](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md)
   * [DTD validation](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Validation.md#validation-with-dtd-grammar)
   * DTD completion
