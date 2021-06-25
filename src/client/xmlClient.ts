@@ -44,7 +44,7 @@ export async function startLanguageClient(context: ExtensionContext, executable:
     return Telemetry.sendTelemetry(e.name, e.properties);
   });
 
-  context.subscriptions.push(languageClient.start());
+  languageClient.start()
   await languageClient.onReady();
 
   // ---

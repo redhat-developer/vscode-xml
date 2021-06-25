@@ -26,8 +26,6 @@ import { getXMLConfiguration } from './settings/settings';
 import { Telemetry } from './telemetry';
 import { registerClientOnlyCommands } from './commands/registerCommands';
 
-let languageClient: LanguageClient;
-
 export async function activate(context: ExtensionContext): Promise<XMLExtensionApi> {
 
   await Telemetry.startTelemetry(context);
@@ -58,13 +56,12 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
   const serverOptions: Executable = await prepareExecutable(
     requirementsData, collectXmlJavaExtensions(extensions.all, getXMLConfiguration().get("extension.jars", [])), context);
 
-  languageClient = await startLanguageClient(context, serverOptions, logfile, externalXmlSettings, requirementsData);
+  const languageClient = await startLanguageClient(context, serverOptions, logfile, externalXmlSettings, requirementsData);
+  context.subscriptions.push({
+    dispose: async (): Promise<void> => {
+      await languageClient.stop();
+    }
+  });
 
   return getXmlExtensionApiImplementation(languageClient, logfile, externalXmlSettings, requirementsData);
-}
-
-export async function deactivate(): Promise<void> {
-  if (languageClient) {
-    await languageClient.stop();
-  }
 }
