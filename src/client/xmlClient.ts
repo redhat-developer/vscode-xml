@@ -129,7 +129,8 @@ function getLanguageClientOptions(logfile: string, externalXmlSettings: External
           }
         },
         actionableNotificationSupport: true,
-        openSettingsCommandSupport: true
+        openSettingsCommandSupport: true,
+        shouldLanguageServerExitOnShutdown: true
       }
     },
     errorHandler: new ClientErrorHandler('XML'),
