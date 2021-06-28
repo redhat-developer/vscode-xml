@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.17.0](https://github.com/redhat-developer/vscode-xml/milestone/21?closed=1) (June 23, 2021)
+## [0.17.0](https://github.com/redhat-developer/vscode-xml/milestone/21?closed=1) (June 28, 2021)
 
 ### Enhancements
  * Added `closingBracketNewLine` formatting option. See [#508](https://github.com/redhat-developer/vscode-xml/pull/508).
