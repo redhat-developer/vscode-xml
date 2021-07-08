@@ -222,6 +222,14 @@ export function getXMLSettings(javaHome: string | undefined, logfile: string, ex
     enabled: workspace.getConfiguration('redhat.telemetry').get('enabled', false)
   };
 
+  // Check workspace trust
+  const isWorkspaceTrusted = (workspace as any).isTrusted;
+  if (isWorkspaceTrusted !== undefined && !isWorkspaceTrusted) {
+    xml['xml']['validation']['resolveExternalEntities'] = false;
+  } else {
+    xml['xml']['validation']['resolveExternalEntities'] = workspace.getConfiguration('xml').get('validation.resolveExternalEntities', false);
+  }
+
   //applying externalXmlSettings to the xmlSettings
   externalXmlSettings.xmlCatalogs.forEach(catalog => {
     if (!xml['xml']['catalogs'].includes(catalog)) {
