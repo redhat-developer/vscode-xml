@@ -415,6 +415,8 @@ Here are some examples of files with `xml.validation.disallowDocTypeDeclaration`
 
 If `xml.validation.resolveExternalEntities` is set to `true` (default is `false`), then the value of [external entities](https://www.w3schools.com/xml/xml_dtd_entities.asp) are resolved for validation. This means that the file referenced in the external entity declaration will be downloaded. The default is `false` due to [the xml external entity attack](https://en.wikipedia.org/wiki/XML_external_entity_attack).
 
+In an untrusted workspace, this feature is disabled.
+
 Demonstration of the different behaviour:
 
 ![When using the default settings, an external entity that has an XML element as its content will not produce a validation error when nested in an element that expects character content. If `xml.validation.resolveExternalEntities` is enabled, then an error will be produced](./images/Validation/ExternalEntityResolvingDemonstration.gif)
@@ -486,7 +488,7 @@ Create the XSD `foo.xsd` file (in the same folder as foo.xml) :
 </xs:schema>
 ```
 
-In the XML file, the `BAD_ELEMENT` is higlighted as an error. Update the xsi:schemaLocation with bad namespace hint 
+In the XML file, the `BAD_ELEMENT` is higlighted as an error. Update the xsi:schemaLocation with bad namespace hint
 
 ```xml
 <foo>
@@ -499,7 +501,7 @@ In the XML file, the `BAD_ELEMENT` is higlighted as an error. Update the xsi:sch
 
 In `always` you will have error, in `onValidSchema` you will have none error.
 
-Now, update the xsi:schemaLocation with bad location hint 
+Now, update the xsi:schemaLocation with bad location hint
 
 ```xml
 <foo>
