@@ -8,8 +8,10 @@ export namespace Telemetry {
 
   export const OPEN_JAVA_DOWNLOAD_LINK_EVT = "xml.open.java.download.link";
   export const OPEN_PROXY_CONFIG_DOCS_EVT = "xml.open.proxy.config.docs.link";
+  export const OPEN_OOM_DOCS_EVT = "xml.open.oom.docs.link";
   export const SETTINGS_EVT = "xml.settings";
   export const BINARY_DOWNLOAD_EVT = "xml.binary.download";
+  export const JAVA_OOM_EVT = "xml.java.oom";
 
   export const BINARY_DOWNLOAD_STATUS_PROP = "status";
 
