@@ -18,6 +18,8 @@ vscode-xml has opt-in telemetry collection, provided by [vscode-redhat-telemetry
     * If the download fails, the associated error is attached to the telemetry event
  * A telemetry event is sent every time you click the "Open Proxy Configuration Documentation" link that is provided when the language server binary download fails due to a proxy related issue.
  * A telemetry event is sent every time you click the "Download Java" link that appears when you have [LemMinX extensions](./docs/Extensions.md) installed but don't have Java installed.
+ * A telemetry event is sent every time the Java XML language server crashes due to an Out Of Memory Error, which also contains the maximum heap space for the JVM (-Xmx) that you've set.
+ * A telemetry event is sent every time you click on the link to the documentation that appears after the Java XML language server crashes due to an Out Of Memory Error.
 
 ## What's included in the general telemetry data
 
