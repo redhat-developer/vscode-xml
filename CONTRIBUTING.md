@@ -55,6 +55,30 @@ Contributions are essential for keeping this extension great. We try to keep it 
 
     ![ Launch Extension ](./images/LaunchExtension.png)
 
+### Debugging Language Server
+
+After completing the prerequisite steps above, and after launching the **Extension Development Host** for `vscode-xml`, you can also debug the language `server/lemminx` and can be used as follows:
+
+#### On VSCode
+
+1. Ensure that the most recent changes of `lemminx` have been built before launching the **Extension Development Host** (as per Step 7 in [Steps](#Steps)), and that the **Extension Development Host** is running.
+
+2. Open `lemminx` in VSCode. This should display the "Debug (Attach) - Remote" option in the "Debugging" tab.
+
+3. To run the debugger, open the "Debugging" tab in VSCode.
+
+4. Select and run "Debug (Attach) - Remote" at the top left:
+
+  ![Debug Attach Remote](./images/DebugAttachRemote.png)
+
+  This will make the `lemminx` debugger attach to the **Extension Development Host** instance.
+
+  To confirm that the debugger has properly attached, the "Call Stack" dropdown in the "Debugging" tab should be populated as follows:
+
+  ![Debug Menu Call Stack](./images/DebugMenuCallStack.png)
+
+Now that the `lemminx` debugger is properly attached, any language server interactions can be debugged and breakpoints in `lemminx` will be tracked.
+
 ## Binary server development
 
 ### Testing a binary version of LemMinX
