@@ -400,6 +400,8 @@ If it is set to `true`, the above document becomes:
 
 If set to `true`, the closing bracket (`>` or `/>`) of a tag with at least 2 attributes will be put on a new line.
 
+The closing bracket will have the same indentation as the attributes (if any), following the indent level defined by [splitAttributesIndentSize](#xmlformatsplitattributesindentsize).
+
 Requires [splitAttributes](#xmlformatsplitattributes) to be set to `true`.
 
 Defaults to `false`.
@@ -412,5 +414,5 @@ becomes
 <a
   b=""
   c=""
-/>
+  />
 ```
