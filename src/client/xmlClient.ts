@@ -130,6 +130,7 @@ function getLanguageClientOptions(logfile: string, externalXmlSettings: External
         },
         actionableNotificationSupport: true,
         openSettingsCommandSupport: true,
+        bindingWizardSupport: true,
         shouldLanguageServerExitOnShutdown: true
       }
     },
