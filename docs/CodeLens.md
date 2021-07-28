@@ -1,6 +1,12 @@
 
 ## Code Lens
 
+### XML Features
+
+CodeLens provides grammar binding for unbound XML documents, appearing above the root element, which will trigger the [XML Binding Wizard](BindingWithGrammar.md#the-xml-binding-wizard).
+
+![CodeLens Bind](./images/Features/CodeLensBind.png)
+
 ### DTD features
 
 Code lens is provided in `.dtd` files to show where elements defined in the DTD are referenced.
