@@ -4,9 +4,15 @@
 
 ![XML Commands](images/Commands/XMLCommands.png)
 
+## Bind to grammar/schema file
+
+This command triggers the [XML Binding Wizard](BindingWithGrammar.md#the-xml-binding-wizard) for the current file.
+
+Details on the command are described [here](BindingWithGrammar.md#command).
+
 ## Open XML Documentation
 
-This command opens the `XML Documentation`
+This command opens the `XML Documentation`.
 
 ## Revalidate current XML file
 
