@@ -2,6 +2,14 @@
 
 [vscode-xml](https://github.com/redhat-developer/vscode-xml) provides a number of notable features, with demos below.
 
+## Formatting
+
+To format an XML document, you can use the formatting shortcut `Ctrl + Shift + K`.
+
+![Format XML](../images/Features/FormatXML.gif)
+
+For more information on formatting capabilities, see [Formatting](../Formatting.md#formatting).
+
 ## XML Tag Auto Close
 
 XML tag `auto-close` is supported:
