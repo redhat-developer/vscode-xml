@@ -12,6 +12,7 @@ Welcome to the [vscode-xml](https://github.com/redhat-developer/vscode-xml) docu
   * [Troubleshooting](Troubleshooting.md#troubleshooting): Info on troubleshooting and fixes to issues.
   * [Features](Features.md#features): Notable info and demos on features available to use.
   * [Proxy](Proxy.md#proxy): Instructions for setting up vscode-xml to work behind a proxy.
+  * [Binding With Grammar](BindingWithGrammar.md#binding-with-grammar): Extension feature to bind an XML document to a grammar/schema file.
 
 ## Developer Guide
 
