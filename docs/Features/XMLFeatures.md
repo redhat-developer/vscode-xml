@@ -44,7 +44,7 @@ To rename a single tag and its corresponding opening/closing, highlight the tag 
 
 ## Tag Name Highlighting
 
-When placing the cursor on a XML tag, the corresponding opening/closing tag will be highlighted.
+When placing the cursor on an XML tag, the corresponding opening/closing tag will be highlighted.
 
 ![Highlight Corresponding XML](../images/Features/HighlightCorrespondingXML.gif)
 
@@ -72,7 +72,7 @@ If an XML file is not associated to a bound grammar file, you can utilize XML co
 
 ### Attribute value completion
 
-For a XML tag attribute, there is autocompletion support for the attribute value. For example, for path completion, type `.` or `/`.
+For an XML tag attribute, there is autocompletion support for the attribute value. For example, for path completion, type `.` or `/`.
 
 ![Attribute Completion XML](../images/Features/AttributeCompletionXML.gif)
 
@@ -80,7 +80,7 @@ For a XML tag attribute, there is autocompletion support for the attribute value
 
 #### Completion based on XSD
 
-When a XML file is associated with a XSD file, there is support for completion based on the tags, attribute names and values defined in the XML Schema/XSD file.
+When an XML file is associated with an XSD file, there is support for completion based on the tags, attribute names and values defined in the XML Schema/XSD file.
 
 ![Completion Based On XSD](../images/Features/CompletionBasedOnXSD.gif)
 
@@ -102,7 +102,7 @@ If an XML file is associated with an XSD file, there is support for jumping from
 
 #### Hover based on XSD
 
-When XML file is associated with a XSD file, hover documentation based on tags, attributes name and value defined in the XML Schema/XSD file are supported.
+When XML file is associated with an XSD file, hover documentation based on tags, attributes name and value defined in the XML Schema/XSD file are supported.
 
 ![Hover Based On XSD](../images/Features/HoverBasedOnXSD.gif)
 
@@ -120,33 +120,19 @@ LemMinX will show syntax errors in your XML documentation, and will provide quic
 
 ![Validate XML](../images/Features/ValidationXML.gif)
 
-There is also validation based on grammar when a XSD or DTD file is associated with the XML document.
+There is also validation based on grammar when an XSD or DTD file is associated with the XML document.
 
 ### Read more
 
 See [XML Validation](../Validation.md#xml-validation) for more details.
 
-## Generate Grammar from XML
+## Binding Grammar to an XML Document
 
-### Generate XSD from XML
+For any XML document, should you need to bind a grammar or schema with the file, you can do so by either using an existing grammar file, or by generating one using the built-in schema generator.
 
-Using an XML file, an XML Schema/XSD file can be generated from the opening tag in the XML file. With the cursor on the first opening tag, use `Ctrl + .` or `Quick Fix...` and select `Generate foo.xsd and bind with *` to create the file in the the same directory.
+See [Binding with Existing Grammar](../BindingWithGrammar.md#binding-with-existing-grammar) for info on binding to an existing schema.
 
-![GenerateXSDFromXML](../images/Features/GenerateXSDFromXML.gif)
-
-#### Read more
-
-See [Validation with XSD Grammar](../Validation.md#validation-with-xsd-grammar) for more.
-
-### Generate DTD from XML
-
-Using an XML file, a Document Type Definition/DTD file can be generated from the opening tag in the XML file. With the cursor on the first opening tag, use `Ctrl + .` or `Quick Fix...` and select `Generate foo.dtd and bind with *` to create the file in the the same directory.
-
-![GenerateDTDFromXML](../images/Features/GenerateDTDFromXML.gif)
-
-#### Read more
-
-See [Validation with DTD Grammar](../Validation.md#validation-with-dtd-grammar) for more.
+See [Binding with New Grammar](../BindingWithGrammar.md#binding-with-new-grammar) for info on grammar generation.
 
 ## Selection Range
 
