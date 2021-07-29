@@ -37,6 +37,13 @@ export namespace ClientCommandConstants {
    */
   export const OPEN_SETTINGS = 'xml.open.settings';
 
+    /**
+   * Open settings command
+   *
+   * A `settingId: string` parameter can be optionally provided
+   */
+  export const OPEN_URI = 'xml.open.uri';
+
   /**
    * Render markdown string to html string
    */

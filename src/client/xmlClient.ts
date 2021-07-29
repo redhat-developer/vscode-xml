@@ -124,7 +124,8 @@ function getLanguageClientOptions(logfile: string, externalXmlSettings: External
           codeLensKind: {
             valueSet: [
               'references',
-              'association'
+              'association',
+              'open.uri'
             ]
           }
         },

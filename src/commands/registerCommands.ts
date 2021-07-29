@@ -13,6 +13,7 @@ import { ClientCommandConstants, ServerCommandConstants } from "./commandConstan
 export function registerClientOnlyCommands(context: ExtensionContext) {
   registerDocsCommands(context);
   registerOpenSettingsCommand(context);
+  registerOpenUriCommand(context);
 }
 
 /**
@@ -41,7 +42,8 @@ export async function registerClientServerCommands(context: ExtensionContext, la
     };
     if (token) {
       return languageClient.sendRequest(ExecuteCommandRequest.type, params, token);
-    } else {
+    }
+    else {
       return languageClient.sendRequest(ExecuteCommandRequest.type, params);
     }
   }));
@@ -78,6 +80,17 @@ function registerDocsCommands(context: ExtensionContext) {
 function registerOpenSettingsCommand(context: ExtensionContext) {
   context.subscriptions.push(commands.registerCommand(ClientCommandConstants.OPEN_SETTINGS, async (settingId?: string) => {
     commands.executeCommand('workbench.action.openSettings', settingId);
+  }));
+}
+
+/**
+ * Registers a command that opens the settings page to a given setting
+ *
+ * @param context the extension context
+ */
+function registerOpenUriCommand(context: ExtensionContext) {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.OPEN_URI, async (uri?: string) => {
+    commands.executeCommand('vscode.open', Uri.parse(uri));
   }));
 }
 
@@ -144,12 +157,12 @@ for (const label of bindingTypes.keys()) {
  * @param uri the uri of the XML file path
  * @param languageClient the language server client
  */
-async function grammarAssociationCommand (documentURI: Uri, languageClient: LanguageClient) {
+async function grammarAssociationCommand(documentURI: Uri, languageClient: LanguageClient) {
   // A click on Bind to grammar/schema... has been processed in the XML document which is not bound to a grammar
 
   // Step 1 : open a combo to select the binding type ("standard", "xml-model")
   const pickedBindingTypeOption = await window.showQuickPick(bindingTypeOptions, { placeHolder: "Binding type" });
-  if(!pickedBindingTypeOption) {
+  if (!pickedBindingTypeOption) {
     return;
   }
   const bindingType = bindingTypes.get(pickedBindingTypeOption.label);
@@ -190,7 +203,7 @@ async function grammarAssociationCommand (documentURI: Uri, languageClient: Lang
  * @param context the extension context
  * @param languageClient the language server client
  */
- function registerAssociationCommands(context: ExtensionContext, languageClient: LanguageClient) {
+function registerAssociationCommands(context: ExtensionContext, languageClient: LanguageClient) {
   // For CodeLens
   context.subscriptions.push(commands.registerCommand(ClientCommandConstants.OPEN_BINDING_WIZARD, async (uriString: string) => {
     const uri = Uri.parse(uriString);
@@ -208,25 +221,25 @@ async function grammarAssociationCommand (documentURI: Uri, languageClient: Lang
     }
   }));
 
- }
+}
 
-  /**
-   * Change value of 'canBindGrammar' to determine if grammar/schema can be bound
-   *
-   * @param document the text document
-   * @returns the `hasGrammar` check result from server
-   */
-  async function checkCanBindGrammar(documentURI: Uri) {
-        // Retrieve the document uri and identifier
-        const identifier = TextDocumentIdentifier.create(documentURI.toString());
+/**
+ * Change value of 'canBindGrammar' to determine if grammar/schema can be bound
+ *
+ * @param document the text document
+ * @returns the `hasGrammar` check result from server
+ */
+async function checkCanBindGrammar(documentURI: Uri) {
+  // Retrieve the document uri and identifier
+  const identifier = TextDocumentIdentifier.create(documentURI.toString());
 
-        // Set the custom condition to watch if file already has bound grammar
-        var result = false;
-        try {
-          result = await commands.executeCommand(ServerCommandConstants.CHECK_BOUND_GRAMMAR, identifier);
-        } catch(error) {
-          console.log(`Error while checking bound grammar : ${error}`);
-        }
-
-        return result
+  // Set the custom condition to watch if file already has bound grammar
+  var result = false;
+  try {
+    result = await commands.executeCommand(ServerCommandConstants.CHECK_BOUND_GRAMMAR, identifier);
+  } catch (error) {
+    console.log(`Error while checking bound grammar : ${error}`);
   }
+
+  return result
+}
