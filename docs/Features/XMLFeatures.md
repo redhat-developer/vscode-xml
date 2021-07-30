@@ -144,6 +144,18 @@ This also works for other portions of an XML document, such as attributes and th
 
 ![Selection Range](../images/Features/SelectionRange.gif)
 
+## CodeLens
+
+CodeLens is supported for `.xml` files for a number of different features.
+
+### CodeLens 'Bind to grammar/schema...'
+
+If the current XML document is not bound to an existing grammar/schema, a CodeLens will appear above the root element, which will trigger the [XML Binding Wizard](../BindingWithGrammar.md#the-xml-binding-wizard).
+
+![CodeLens Bind](../images/Features/CodeLensBind.png)
+
+For more information on CodeLens capabilities, see [CodeLens](../CodeLens.md#code-lens).
+
 ## Custom Feature Implementation
 
 You can implement your own feature with a [Java extension](../Extensions.md).
