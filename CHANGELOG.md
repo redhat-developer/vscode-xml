@@ -1,5 +1,33 @@
 # Change Log
 
+## [0.18.0](https://github.com/redhat-developer/vscode-xml/milestone/22?closed=1) (9 August, 2021)
+
+### Enhancements
+
+ * Added CodeLens that displays referenced grammars at the top of an XML file. See [#569](https://github.com/redhat-developer/vscode-xml/pull/569).
+ * Added CodeAction to bind an XML document to an existing schema. See [#515](https://github.com/redhat-developer/vscode-xml/issues/515).
+ * Document lemminx debug process with vscode-xml. See [#543](https://github.com/redhat-developer/vscode-xml/issues/543).
+ * If the workspace is not trusted, "Resolve external entities" is set to false. See [#537](https://github.com/redhat-developer/vscode-xml/issues/537).
+ * Command to bind an XML document to an existing schema. See [#514](https://github.com/redhat-developer/vscode-xml/issues/514).
+ * Added documentation for binding to grammar/schema. See [#567](https://github.com/redhat-developer/vscode-xml/issues/567).
+ * Added documentation for `Bind to grammar/schema file` command. See [#561](https://github.com/redhat-developer/vscode-xml/issues/561).
+ * Added documentation for CodeLens support in features docs. See [#562](https://github.com/redhat-developer/vscode-xml/issues/562).
+ * Added documentation for formatting in features docs. See [#560](https://github.com/redhat-developer/vscode-xml/issues/560).
+ * Updated documentation for `closingBracketNewLine` when `splitAttributesIndentSize` is enabled. See [#550](https://github.com/redhat-developer/vscode-xml/pull/550).
+ * Added debug instructions for debugging lemminx with vscode-xml. See [#549](https://github.com/redhat-developer/vscode-xml/pull/549).
+ * Added documentation for workspace trust interaction with `resolveExternalEntities`. See [#546](https://github.com/redhat-developer/vscode-xml/pull/546).
+ * Collect telemetry data about text documents that are opened: file extension, grammar binding strategy, grammar resolving strategy. See [eclipse/lemminx#1066](https://github.com/eclipse/lemminx/issues/1066).
+
+### Bug Fixes
+
+ * Fixed stackoverflow and resource leak when calculating folding ranges. See [#538](https://github.com/redhat-developer/vscode-xml/issues/538).
+ * Aligned tag closing bracket with attribute when `splitAttributes` and `closingBracketNewLine` are enabled. See [#516](https://github.com/redhat-developer/vscode-xml/issues/516).
+ * Fixed `src-import.3.1` error range. See [eclipse/lemminx#1075](https://github.com/eclipse/lemminx/issues/1075).
+ * Fixed `src-import.3.2` error range. See [eclipse/lemminx#1069](https://github.com/eclipse/lemminx/issues/1069).
+ * Adding closing bracket (`>`) in attribute quotation marks causes repeated auto-complete of the closing tag. See [#547](https://github.com/redhat-developer/vscode-xml/issues/547).
+ * Wrong minimal engine 1.37.0 mentioned instead of 1.52.0. See [#554](https://github.com/redhat-developer/vscode-xml/issues/554).
+ * Prevent XML language server from restarting when it crashes due to running out of memory. See [#527](https://github.com/redhat-developer/vscode-xml/issues/527).
+
 ## [0.17.0](https://github.com/redhat-developer/vscode-xml/milestone/21?closed=1) (June 28, 2021)
 
 ### Enhancements
