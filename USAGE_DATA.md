@@ -20,6 +20,11 @@ vscode-xml has opt-in telemetry collection, provided by [vscode-redhat-telemetry
  * A telemetry event is sent every time you click the "Download Java" link that appears when you have [LemMinX extensions](./docs/Extensions.md) installed but don't have Java installed.
  * A telemetry event is sent every time the Java XML language server crashes due to an Out Of Memory Error, which also contains the maximum heap space for the JVM (-Xmx) that you've set.
  * A telemetry event is sent every time you click on the link to the documentation that appears after the Java XML language server crashes due to an Out Of Memory Error.
+ * Text Document Information
+   * When a document is opened :
+      * The file extension (eg. `xml`, `xsd`, `dtd`)
+      * The associated grammar types (eg. `none`, `doctype`, `xml-model`, `xsi:schemaLocation`, `xsi:noNamespaceSchemaLocation`)
+      * The resolver used to resolve the grammar identifier (eg. `catalog`, `file association`, `embedded catalog.xsd`, `embedded xml.xsd`, `embedded xslt.xsd`)
 
 ## What's included in the general telemetry data
 
