@@ -6,17 +6,10 @@
 
  * Added CodeLens that displays referenced grammars at the top of an XML file. See [#569](https://github.com/redhat-developer/vscode-xml/pull/569).
  * Added CodeAction to bind an XML document to an existing schema. See [#515](https://github.com/redhat-developer/vscode-xml/issues/515).
- * Document lemminx debug process with vscode-xml. See [#543](https://github.com/redhat-developer/vscode-xml/issues/543).
  * If the workspace is not trusted, "Resolve external entities" is set to false. See [#537](https://github.com/redhat-developer/vscode-xml/issues/537).
  * Command to bind an XML document to an existing schema. See [#514](https://github.com/redhat-developer/vscode-xml/issues/514).
- * Added documentation for binding to grammar/schema. See [#567](https://github.com/redhat-developer/vscode-xml/issues/567).
- * Added documentation for `Bind to grammar/schema file` command. See [#561](https://github.com/redhat-developer/vscode-xml/issues/561).
- * Added documentation for CodeLens support in features docs. See [#562](https://github.com/redhat-developer/vscode-xml/issues/562).
- * Added documentation for formatting in features docs. See [#560](https://github.com/redhat-developer/vscode-xml/issues/560).
- * Updated documentation for `closingBracketNewLine` when `splitAttributesIndentSize` is enabled. See [#550](https://github.com/redhat-developer/vscode-xml/pull/550).
- * Added debug instructions for debugging lemminx with vscode-xml. See [#549](https://github.com/redhat-developer/vscode-xml/pull/549).
- * Added documentation for workspace trust interaction with `resolveExternalEntities`. See [#546](https://github.com/redhat-developer/vscode-xml/pull/546).
  * Collect telemetry data about text documents that are opened: file extension, grammar binding strategy, grammar resolving strategy. See [eclipse/lemminx#1066](https://github.com/eclipse/lemminx/issues/1066).
+ * Improved documentation. See [#543](https://github.com/redhat-developer/vscode-xml/issues/543), [#546](https://github.com/redhat-developer/vscode-xml/pull/546), [#550](https://github.com/redhat-developer/vscode-xml/pull/550), [#560](https://github.com/redhat-developer/vscode-xml/issues/560), [#561](https://github.com/redhat-developer/vscode-xml/issues/561), [#562](https://github.com/redhat-developer/vscode-xml/issues/562), [#567](https://github.com/redhat-developer/vscode-xml/issues/567).
 
 ### Bug Fixes
 
