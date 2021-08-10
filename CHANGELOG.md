@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.18.0](https://github.com/redhat-developer/vscode-xml/milestone/22?closed=1) (9 August, 2021)
+## [0.18.0](https://github.com/redhat-developer/vscode-xml/milestone/22?closed=1) (10 August, 2021)
 
 ### Enhancements
 
