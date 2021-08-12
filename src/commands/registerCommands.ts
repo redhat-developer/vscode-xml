@@ -1,9 +1,10 @@
 import * as path from 'path';
-import { commands, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, Uri, window, workspace, WorkspaceEdit, Disposable } from "vscode";
+import { commands, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, Uri, window, workspace, WorkspaceEdit, Disposable, ConfigurationTarget, TextDocument, WorkspaceFolder } from "vscode";
 import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, ReferencesRequest, TextDocumentIdentifier, TextDocumentEdit } from "vscode-languageclient";
 import { LanguageClient } from 'vscode-languageclient/node';
 import { markdownPreviewProvider } from "../markdownPreviewProvider";
 import { ClientCommandConstants, ServerCommandConstants } from "./commandConstants";
+import { getRelativePath, getFileName, getDirectoryPath, getWorkspaceUri } from '../utils/fileUtils';
 
 /**
  * Register the commands for vscode-xml that don't require communication with the language server
@@ -143,7 +144,8 @@ function registerValidationCommands(context: ExtensionContext) {
 
 export const bindingTypes = new Map<string, string>([
   ["Standard (xsi, DOCTYPE)", "standard"],
-  ["XML Model association", "xml-model"]
+  ["XML Model association", "xml-model"],
+  ["File association", "fileAssociation"]
 ]);
 
 const bindingTypeOptions: QuickPickItem[] = [];
@@ -154,13 +156,13 @@ for (const label of bindingTypes.keys()) {
 /**
  * The function passed to context subscriptions for grammar association
  *
- * @param uri the uri of the XML file path
+ * @param documentURI the uri of the XML file path
  * @param languageClient the language server client
  */
 async function grammarAssociationCommand(documentURI: Uri, languageClient: LanguageClient) {
   // A click on Bind to grammar/schema... has been processed in the XML document which is not bound to a grammar
 
-  // Step 1 : open a combo to select the binding type ("standard", "xml-model")
+  // Step 1 : open a combo to select the binding type ("standard", "xml-model", "fileAssociation")
   const pickedBindingTypeOption = await window.showQuickPick(bindingTypeOptions, { placeHolder: "Binding type" });
   if (!pickedBindingTypeOption) {
     return;
@@ -179,22 +181,88 @@ async function grammarAssociationCommand(documentURI: Uri, languageClient: Langu
   const fileUri = await window.showOpenDialog(options);
   if (fileUri && fileUri[0]) {
     // The XSD, DTD has been selected, get the proper syntax for binding this grammar file in the XML document.
-    const identifier = TextDocumentIdentifier.create(documentURI.toString());
     const grammarURI = fileUri[0];
     try {
-      const result = await commands.executeCommand(ServerCommandConstants.ASSOCIATE_GRAMMAR_INSERT, identifier, grammarURI.toString(), bindingType);
-      // Insert the proper syntax for binding
-      const lspTextDocumentEdit = <TextDocumentEdit>result;
-      const workEdits = new WorkspaceEdit();
-      for (const edit of lspTextDocumentEdit.edits) {
-        workEdits.replace(documentURI, languageClient.protocol2CodeConverter.asRange(edit.range), edit.newText);
+      const currentFile = (window.activeTextEditor && window.activeTextEditor.document && window.activeTextEditor.document.languageId === 'xml') ? window.activeTextEditor.document : undefined;
+      if (bindingType == 'fileAssociation') {
+        // Bind grammar using file association
+        await bindWithFileAssociation(documentURI, grammarURI, currentFile);
+      } else {
+        // Bind grammar using standard binding
+        await bindWithStandard(documentURI, grammarURI, bindingType, languageClient);
       }
-      workspace.applyEdit(workEdits); // apply the edits
-
     } catch (error) {
       window.showErrorMessage('Error during grammar binding: ' + error.message);
     };
   }
+}
+
+/**
+ * Perform grammar binding using file association through settings.json
+ *
+ * @param documentURI the URI of the current XML document
+ * @param grammarURI the URI of the user selected grammar file
+ * @param document the opened TextDocument
+ */
+async function bindWithFileAssociation(documentURI: Uri, grammarURI: Uri, document: TextDocument) {
+  const absoluteGrammarFilePath = grammarURI.toString();
+  const currentFilename = getFileName(documentURI.toString());
+  const currentWorkspaceUri = getWorkspaceUri(document);
+  // If the grammar file is in the same workspace, use the relative path, otherwise use the absolute path
+  const grammarFilePath = getDirectoryPath(absoluteGrammarFilePath).includes(currentWorkspaceUri.toString()) ? getRelativePath(currentWorkspaceUri.toString(), absoluteGrammarFilePath) : absoluteGrammarFilePath;
+
+  const defaultPattern = `**/${currentFilename}`;
+  const inputBoxOptions = {
+    title: "File Association Pattern",
+    value: defaultPattern,
+    placeHolder: defaultPattern,
+    prompt: "Enter the pattern of the XML document(s) to be bound."
+  }
+  const inputPattern = (await window.showInputBox(inputBoxOptions));
+  if (!inputPattern) {
+    // User closed the input box with Esc
+    return;
+  }
+  const fileAssociation = {
+    "pattern": inputPattern,
+    "systemId": grammarFilePath
+  }
+  addToValueToSettingArray("xml.fileAssociations", fileAssociation);
+}
+
+/**
+ * Bind grammar file using standard XML document grammar
+ *
+ * @param documentURI the URI of the XML file path
+ * @param grammarURI the URI of the user selected grammar file
+ * @param bindingType the selected grammar binding type
+ * @param languageClient the language server client
+ */
+async function bindWithStandard(documentURI: Uri, grammarURI: Uri, bindingType: string, languageClient: LanguageClient) {
+  const identifier = TextDocumentIdentifier.create(documentURI.toString());
+  const result = await commands.executeCommand(ServerCommandConstants.ASSOCIATE_GRAMMAR_INSERT, identifier, grammarURI.toString(), bindingType);
+  // Insert the proper syntax for binding
+  const lspTextDocumentEdit = <TextDocumentEdit>result;
+  const workEdits = new WorkspaceEdit();
+  for (const edit of lspTextDocumentEdit.edits) {
+    workEdits.replace(documentURI, languageClient.protocol2CodeConverter.asRange(edit.range), edit.newText);
+  }
+  workspace.applyEdit(workEdits); // apply the edits
+}
+
+/**
+ * Add an entry, value, to the setting.json field, key
+ *
+ * @param key the filename/path of the xml document
+ * @param value the object to add to the config
+ */
+function addToValueToSettingArray<T>(key: string, value: T): void {
+  const settingArray: T[] = workspace.getConfiguration().get<T[]>(key, []);
+  if (settingArray.includes(value)) {
+    return;
+  }
+  settingArray.push(value);
+  workspace.getConfiguration().update(key, settingArray, ConfigurationTarget.Workspace);
 }
 
 /**
