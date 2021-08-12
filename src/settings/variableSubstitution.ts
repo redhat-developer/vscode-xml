@@ -1,5 +1,6 @@
 import * as path from "path";
-import { TextDocument, window, workspace, WorkspaceFolder } from "vscode";
+import { window } from "vscode";
+import { getFilePath, getWorkspaceUri } from "../utils/fileUtils";
 import { XMLFileAssociation } from "../api/xmlExtensionApi";
 
 /**
@@ -99,11 +100,9 @@ const VARIABLE_SUBSTITUTIONS: VariableSubstitution[] = [
 export function getVariableSubstitutedAssociations(associations: XMLFileAssociation[]): XMLFileAssociation[] {
 
   // Collect properties needed to resolve variables
-  const currentFile: TextDocument = (window.activeTextEditor && window.activeTextEditor.document && window.activeTextEditor.document.languageId === 'xml') ?  window.activeTextEditor.document : undefined;
-  const currentFileUri: string = (currentFile && currentFile.uri) ? currentFile.uri.fsPath : undefined;
-  const currentWorkspace: WorkspaceFolder = (currentFile && currentFile.uri) ?  workspace.getWorkspaceFolder(currentFile.uri) : undefined;
-  const currentWorkspaceUri: string = (currentWorkspace && currentWorkspace.uri.fsPath)
-    || (workspace.workspaceFolders && workspace.workspaceFolders[0].uri.fsPath);
+  const currentFile = (window.activeTextEditor && window.activeTextEditor.document && window.activeTextEditor.document.languageId === 'xml') ? window.activeTextEditor.document : undefined;
+  const currentFileUri = getFilePath(currentFile);
+  const currentWorkspaceUri = getWorkspaceUri(currentFile);
 
   // Remove variables that can't be resolved
   let variablesToSubstitute = VARIABLE_SUBSTITUTIONS;
@@ -123,7 +122,7 @@ export function getVariableSubstitutedAssociations(associations: XMLFileAssociat
   const subVars = (val: string): string => {
     let newVal = val;
     for (const settingVariable of variablesToSubstitute) {
-      newVal = settingVariable.substituteString(newVal, currentFileUri, currentWorkspaceUri);
+      newVal = settingVariable.substituteString(newVal, currentFileUri, currentWorkspaceUri.toString());
     }
     return newVal;
   }
