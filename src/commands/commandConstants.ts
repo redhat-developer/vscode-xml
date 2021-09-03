@@ -102,4 +102,9 @@ export namespace ServerCommandConstants {
    * Command to check if the current XML document is bound to a grammar
    */
   export const CHECK_BOUND_GRAMMAR = "xml.check.bound.grammar"
+
+  /**
+   * Command to check if a given file pattern matches any file on the workspace
+   */
+  export const CHECK_FILE_PATTERN = "xml.check.file.pattern"
 }
