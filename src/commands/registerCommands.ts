@@ -216,7 +216,16 @@ async function bindWithFileAssociation(documentURI: Uri, grammarURI: Uri, docume
     title: "File Association Pattern",
     value: defaultPattern,
     placeHolder: defaultPattern,
-    prompt: "Enter the pattern of the XML document(s) to be bound."
+    prompt: "Enter the pattern of the XML document(s) to be bound.",
+    validateInput: async (pattern: string) => {
+      let hasMatch = false;
+      try {
+        hasMatch = await commands.executeCommand(ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND, ServerCommandConstants.CHECK_FILE_PATTERN, pattern, documentURI.toString());
+      } catch (error) {
+        console.log(`Error while validating file pattern : ${error}`);
+      }
+      return !hasMatch ? "The pattern will not match any file." : null
+    }
   }
   const inputPattern = (await window.showInputBox(inputBoxOptions));
   if (!inputPattern) {
