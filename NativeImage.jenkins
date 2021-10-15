@@ -27,7 +27,7 @@ pipeline {
                 sh "git clone https://github.com/eclipse/lemminx.git"
               }
             }
-            sh "cd lemminx && JAVA_HOME=\$GRAALVM_PATH ./mvnw clean package -B -Dnative -DskipTests -Dgraalvm.static=--static && cd .."
+            sh "cd lemminx && JAVA_HOME=\$GRAALVM_PATH ./mvnw clean package -B -Dnative -DskipTests -Dgraalvm.static='--static -H:+StaticExecutableWithDynamicLibC' && cd .."
             sh "cp lemminx/org.eclipse.lemminx/target/lemminx-linux* lemminx-linux"
             stash name: 'lemminx-linux', includes: 'lemminx-linux'
           }
