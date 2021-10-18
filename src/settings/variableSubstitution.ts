@@ -122,7 +122,7 @@ export function getVariableSubstitutedAssociations(associations: XMLFileAssociat
   const subVars = (val: string): string => {
     let newVal = val;
     for (const settingVariable of variablesToSubstitute) {
-      newVal = settingVariable.substituteString(newVal, currentFileUri, currentWorkspaceUri.toString());
+      newVal = settingVariable.substituteString(newVal, currentFileUri, currentWorkspaceUri?.toString());
     }
     return newVal;
   }
