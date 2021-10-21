@@ -3,8 +3,8 @@
 	// for the documentation about the extensions.json format
 	"recommendations": [
 		// Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
-		"eg2.tslint",
+		"dbaeumer.vscode-eslint",
 		"EditorConfig.EditorConfig",
-		"eamodio.tsl-problem-matcher"
+		"amodio.tsl-problem-matcher"
 	]
 }
