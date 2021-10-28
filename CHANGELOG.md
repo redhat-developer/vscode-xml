@@ -1,5 +1,26 @@
 # Change Log
 
+## [0.18.1](https://github.com/redhat-developer/vscode-xml/milestone/23?closed=1) (2 November, 2021)
+
+### Enhancements
+
+ * File association pattern validation. See [#586](https://github.com/redhat-developer/vscode-xml/issues/586).
+ * Binding grammar/schema with file associations. See [#573](https://github.com/redhat-developer/vscode-xml/issues/573).
+ * Report schema identifier of XML document through telemetry event. See [eclipse/lemminx#1105](https://github.com/eclipse/lemminx/issues/1105).
+
+### Bug Fixes
+
+ * Handle potentially undefined workspace uri. See [#606](https://github.com/redhat-developer/vscode-xml/pull/606).
+ * Fix issue preventing relative symbolic links from being correctly resolved. See [#601](https://github.com/redhat-developer/vscode-xml/issues/601).
+ * Aggregate errors in xsd:import|include@schemaLocation for referenced grammar which have errors. See [#596](https://github.com/redhat-developer/vscode-xml/issues/596).
+ * Disable external entities when using SAX parser. See [eclipse/lemminx#1104](https://github.com/eclipse/lemminx/pull/1104).
+ * Fix recommended tsl-problem-matcher id. See [#608](https://github.com/redhat-developer/vscode-xml/pull/608).
+
+### Others
+
+ * Update vscode-redhat-telemetry to 0.4.2. See [#595](https://github.com/redhat-developer/vscode-xml/pull/595).
+ * Compress documentation image/gif space. See [#568](https://github.com/redhat-developer/vscode-xml/issues/568).
+
 ## [0.18.0](https://github.com/redhat-developer/vscode-xml/milestone/22?closed=1) (10 August, 2021)
 
 ### Enhancements
