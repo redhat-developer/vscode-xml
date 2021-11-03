@@ -17,7 +17,7 @@ def buildLemMinXBinary() {
 	load "NativeImage.jenkins"
 }
 
-node('rhel7'){
+node('rhel8'){
 	sh "curl -Lo package.json https://raw.githubusercontent.com/${params.FORK}/vscode-xml/${params.BRANCH}/package.json"
 	def packageJson = readJSON file: 'package.json'
 	def serverVersion = packageJson?.xmlServer?.version
@@ -41,7 +41,7 @@ node('rhel7'){
 	stash name: 'server_distro', includes :files[0].path
 }
 
-node('rhel7'){
+node('rhel8'){
 	stage 'Checkout vscode-xml code'
 	deleteDir()
 	def gitUrl = "${GIT_REPO}"
@@ -86,7 +86,7 @@ node('rhel7'){
 	stash name:'vsix', includes:vsix[0].path
 }
 
-node('rhel7'){
+node('rhel8'){
 	if(publishToMarketPlace.equals('true')){
 		timeout(time:2, unit:'DAYS') {
 			input message:'Approve deployment?', submitter: 'fbricon,rgrunber,azerr,davthomp'
