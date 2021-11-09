@@ -50,7 +50,8 @@ or you can read this documentation inside vscode with the command `Open XML Docu
 
 For running the binary version:
   * Windows, macOS, or Linux, on a x86_64 CPU
-    * We don't make a binary specific for Apple ARM (Apple Silicon), but the x86_64 binary seems to work through the Rosetta 2 translation layer.
+    * We do not make a binary specific for Apple ARM (Apple Silicon), but the x86_64 binary seems to work through the Rosetta 2 translation layer.
+    * We do not currently support running on Linux installations without `libc` present
   * Java is not required for this version
   * The binary is automatically downloaded by vscode-xml if it is needed, with no additional action required on the part of the user.
 
