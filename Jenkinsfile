@@ -46,7 +46,7 @@ node('rhel8'){
 	deleteDir()
 	def gitUrl = "${GIT_REPO}"
 
-	git url: gitUrl?:'https://github.com/redhat-developer/vscode-xml.git', branch: params.BRANCH?: 'master'
+	git url: gitUrl?:'https://github.com/redhat-developer/vscode-xml.git', branch: params.BRANCH?: 'main'
 
 	stage 'set the link to download the binary server'
 	def packageJson = readJSON file: 'package.json'

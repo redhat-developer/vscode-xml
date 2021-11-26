@@ -272,7 +272,7 @@ Here is a demonstration of the effects of the setting on hovering. The above sch
 The LemMinX XML Language Server can be extended with custom plugins to provide additional validation and assistance.
 Typically this is done for specific files or contexts.
 External extensions are are contributed via an external JAR.
-Please see [the extension development documentation](https://github.com/eclipse/lemminx/blob/master/docs/LemMinX-Extensions.md) for more information on how this works.
+Please see [the extension development documentation](https://github.com/eclipse/lemminx/blob/main/docs/LemMinX-Extensions.md) for more information on how this works.
 
 JARs can be contributed to the LemMinX classpath using the `xml.extension.jars` preference.
 These paths can include globs.
