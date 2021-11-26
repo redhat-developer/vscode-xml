@@ -86,7 +86,7 @@ You can also install it in a terminal.
 ![](images/Extensions/TerminalInstallVSCodeExtensionForLemMinXExtension.png)
 
 You also need to have a development environment for vscode-xml and LemMinX setup.
-Please follow the instructions in [Contributing.md](https://github.com/redhat-developer/vscode-xml/blob/master/CONTRIBUTING.md#development) in order to set this up.
+Please follow the instructions in [Contributing.md](https://github.com/redhat-developer/vscode-xml/blob/main/CONTRIBUTING.md#development) in order to set this up.
 
 You can debug your Java LemMinX extension in any Java IDE that supports remote debugging. Here are the debugging instructions for both VS Code (with vscode-java) and Eclipse.
 
@@ -209,4 +209,4 @@ See [PR 292](https://github.com/redhat-developer/vscode-xml/pull/292)
 
 `xml.workspace.executeCommand` - command registered on VSCode client (via **vscode-xml** extension) to let other extensions execute commands on XML Language server
 
-`xml/executeClientCommand` - XML Language server LSP extension to let XML LS extenders execute commands on the client. The command is made available via `IXMLCommandService` on the server side. See [XML LS extensions docs](https://github.com/eclipse/lemminx/blob/master/docs/LemMinX-Extensions.md#xml-language-server-services-available-for-extensions)
+`xml/executeClientCommand` - XML Language server LSP extension to let XML LS extenders execute commands on the client. The command is made available via `IXMLCommandService` on the server side. See [XML LS extensions docs](https://github.com/eclipse/lemminx/blob/main/docs/LemMinX-Extensions.md#xml-language-server-services-available-for-extensions)

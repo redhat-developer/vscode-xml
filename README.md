@@ -18,33 +18,33 @@ This VS Code extension provides support for creating and editing XML documents, 
 
   * Syntax error reporting
   * General code completion
-  * [Auto-close tags](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Features/XMLFeatures.md#xml-tag-auto-close)
+  * [Auto-close tags](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Features/XMLFeatures.md#xml-tag-auto-close)
   * Automatic node indentation
   * Symbol highlighting
   * Document folding
   * Document links
-  * [Document symbols and outline](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Symbols.md)
-  * [Renaming support](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Features/XMLFeatures.md#rename-tag)
-  * *[Automatic Tag Renaming](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Features/XMLFeatures.md#auto-rename-tag) when `editor.linkedEditing` is enabled*
-  * [Document Formatting](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md)
-  * [DTD validation](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Validation.md#validation-with-dtd-grammar)
+  * [Document symbols and outline](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Symbols.md)
+  * [Renaming support](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Features/XMLFeatures.md#rename-tag)
+  * *[Automatic Tag Renaming](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Features/XMLFeatures.md#auto-rename-tag) when `editor.linkedEditing` is enabled*
+  * [Document Formatting](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Formatting.md)
+  * [DTD validation](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md#validation-with-dtd-grammar)
   * DTD completion
   * DTD formatting
-  * [XSD validation](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Validation.md#validation-with-xsd-grammar)
+  * [XSD validation](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md#validation-with-xsd-grammar)
   * XSD based hover
   * XSD based code completion
   * XSL support
-  * [XML catalogs](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Validation.md#xml-catalog-with-xsd)
+  * [XML catalogs](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md#xml-catalog-with-xsd)
   * File associations
   * Code actions
   * Schema Caching
 
 See the [changelog](CHANGELOG.md) for the latest release.
 
-You might also find useful information in the [Online XML Documentation](https://github.com/redhat-developer/vscode-xml/blob/master/docs/README.md)
+You might also find useful information in the [Online XML Documentation](https://github.com/redhat-developer/vscode-xml/blob/main/docs/README.md)
 or you can read this documentation inside vscode with the command `Open XML Document` available with `Ctrl+Shift+P`:
 
-![XML Open Documentation](https://raw.githubusercontent.com/redhat-developer/vscode-xml/master/docs/images/Commands/XMLCommands.png)
+![XML Open Documentation](https://raw.githubusercontent.com/redhat-developer/vscode-xml/main/docs/images/Commands/XMLCommands.png)
 
 ## Requirements
 
@@ -65,45 +65,45 @@ For running the Java version (required if you want to run [extensions](./docs/Ex
       **Example Path**: `/usr/lib/jvm/java-1.8.0` if `bin` exists at `/usr/lib/jvm/java-1.8.0/bin`.
     * **Note**: If the path is not set, the extension will attempt to find the path to the JDK or JRE.
 
-See [how to set java home](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#java-home) for more information how this extension searches for Java.
+See [how to set java home](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#java-home) for more information how this extension searches for Java.
 
 ## Supported VS Code settings
 
 The following settings are supported:
 
-* [`xml.java.home`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#java-home): Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server if the Java server is being run. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
-* [`xml.server.vmargs`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-vm-arguments): Specifies extra VM arguments used to launch the XML Language Server.
+* [`xml.java.home`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#java-home): Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server if the Java server is being run. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
+* [`xml.server.vmargs`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#server-vm-arguments): Specifies extra VM arguments used to launch the XML Language Server.
    Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector.
-* [`xml.server.workDir`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-cache-path): Set a custom folder path for cached XML Schemas. An absolute path is expected, although the `~` prefix (for the user home directory) is supported. Default is `~/.lemminx`.
-* [`xml.server.preferBinary`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-binary-mode): If this setting is enabled, a binary version of the server will be launched even if Java is installed.
-* [`xml.server.binary.path`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-binary-mode): Specify the path of a custom binary version of the XML server to use. A binary will be downloaded if this is not set.
-* [`xml.server.binary.args`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-binary-mode): Command line arguments to supply to the binary server when the binary server is being used. Takes into effect after relaunching VSCode. Please refer to [this website for the available options](https://www.graalvm.org/reference-manual/native-image/HostedvsRuntimeOptions/). For example, you can increase the maximum memory that the server can use to 1 GB by adding `-Xmx1g`
-* [`xml.server.silenceExtensionWarning`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-binary-mode): If this setting is enabled, do not warn about launching the binary server when there are extensions to the XML language server installed.
-* [`xml.server.binary.trustedHashes`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#server-binary-mode): List of the SHA256 hashes of trusted copies of the lemminx (XML language server) binary.
+* [`xml.server.workDir`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#server-cache-path): Set a custom folder path for cached XML Schemas. An absolute path is expected, although the `~` prefix (for the user home directory) is supported. Default is `~/.lemminx`.
+* [`xml.server.preferBinary`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#server-binary-mode): If this setting is enabled, a binary version of the server will be launched even if Java is installed.
+* [`xml.server.binary.path`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#server-binary-mode): Specify the path of a custom binary version of the XML server to use. A binary will be downloaded if this is not set.
+* [`xml.server.binary.args`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#server-binary-mode): Command line arguments to supply to the binary server when the binary server is being used. Takes into effect after relaunching VSCode. Please refer to [this website for the available options](https://www.graalvm.org/reference-manual/native-image/HostedvsRuntimeOptions/). For example, you can increase the maximum memory that the server can use to 1 GB by adding `-Xmx1g`
+* [`xml.server.silenceExtensionWarning`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#server-binary-mode): If this setting is enabled, do not warn about launching the binary server when there are extensions to the XML language server installed.
+* [`xml.server.binary.trustedHashes`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#server-binary-mode): List of the SHA256 hashes of trusted copies of the lemminx (XML language server) binary.
 * `xml.trace.server`: Trace the communication between VS Code and the XML language server in the Output view. Default is `off`.
 * `xml.logs.client`: Enable/disable logging to the Output view. Default is `true`.
-* [`xml.catalogs`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#catalogs): Register XML catalog files.
+* [`xml.catalogs`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#catalogs): Register XML catalog files.
 * `xml.downloadExternalResources.enabled`: Download external resources like referenced DTD, XSD. Default is `true`.
-* [`xml.fileAssociations`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#file-associations): Allows XML schemas/ DTD to be associated to file name patterns.
-* [`xml.foldings.includeClosingTagInFold`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Folding.md#xmlfoldingincludeClosingTagInFold): Minimize the closing tag after folding. Default is `false`.
+* [`xml.fileAssociations`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#file-associations): Allows XML schemas/ DTD to be associated to file name patterns.
+* [`xml.foldings.includeClosingTagInFold`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Folding.md#xmlfoldingincludeClosingTagInFold): Minimize the closing tag after folding. Default is `false`.
 * `xml.preferences.quoteStyle`: Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.
 * `xml.autoCloseTags.enabled` : Enable/disable autoclosing of XML tags. Default is `true`.
   **IMPORTANT**: The following settings must be turned of for this to work: `editor.autoClosingTags`, `editor.autoClosingBrackets`.
-* [`xml.codeLens.enabled`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/CodeLens.md): Enable/disable XML CodeLens. Default is `false`.
-* [`xml.preferences.showSchemaDocumentationType`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#documentation-type): Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.
-* [`xml.validation.enabled`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Validation.md): Enable/disable all validation. Default is `true`.
- * [`xml.validation.namespaces.enabled`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Validation.md#xmlvalidationsnamespacesenabled): Enable/disable namespaces validation. Default is `always`. Ignored if [`xml.validation.enabled`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Validation.md) is set to `false`.
- * [`xml.validation.schema.enabled`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Validation.md#xmlvalidationschemaenabled): Enable/disable schema based validation. Default is `always`. Ignored if [`xml.validation.enabled`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Validation.md) is set to `false`.
- * [`xml.validation.disallowDocTypeDecl`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Validation.md#disallow-doc-type-declarations): Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`.
-* [`xml.validation.resolveExternalEntities`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Validation.md#resolve-external-entities): Enable/disable resolve of external entities. Default is `false`. Disabled in untrusted workspace.
-* [`xml.validation.noGrammar`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#grammar): The message severity when a document has no associated grammar. Defaults to `hint`.
-* [`xml.symbols.enabled`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Symbols.md#xmlsymbolsenabled): Enable/disable document symbols (Outline). Default is `true`.
+* [`xml.codeLens.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/CodeLens.md): Enable/disable XML CodeLens. Default is `false`.
+* [`xml.preferences.showSchemaDocumentationType`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#documentation-type): Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.
+* [`xml.validation.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md): Enable/disable all validation. Default is `true`.
+ * [`xml.validation.namespaces.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md#xmlvalidationsnamespacesenabled): Enable/disable namespaces validation. Default is `always`. Ignored if [`xml.validation.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md) is set to `false`.
+ * [`xml.validation.schema.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md#xmlvalidationschemaenabled): Enable/disable schema based validation. Default is `always`. Ignored if [`xml.validation.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md) is set to `false`.
+ * [`xml.validation.disallowDocTypeDecl`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md#disallow-doc-type-declarations): Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`.
+* [`xml.validation.resolveExternalEntities`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md#resolve-external-entities): Enable/disable resolve of external entities. Default is `false`. Disabled in untrusted workspace.
+* [`xml.validation.noGrammar`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#grammar): The message severity when a document has no associated grammar. Defaults to `hint`.
+* [`xml.symbols.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Symbols.md#xmlsymbolsenabled): Enable/disable document symbols (Outline). Default is `true`.
 * `xml.symbols.excluded`: Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.
-* [`xml.symbols.maxItemsComputed`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Symbols.md#xmlsymbolsmaxitemscomputed): The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.
-* [`xml.symbols.showReferencedGrammars`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Symbols.md#xmlsymbolsshowreferencedgrammars): Show referenced grammars in the Outline. Default is `true`.
-* [`xml.symbols.filters`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Symbols.md#xmlsymbolsfilters): Allows XML symbols filter to be associated to file name patterns.
+* [`xml.symbols.maxItemsComputed`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Symbols.md#xmlsymbolsmaxitemscomputed): The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.
+* [`xml.symbols.showReferencedGrammars`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Symbols.md#xmlsymbolsshowreferencedgrammars): Show referenced grammars in the Outline. Default is `true`.
+* [`xml.symbols.filters`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Symbols.md#xmlsymbolsfilters): Allows XML symbols filter to be associated to file name patterns.
 * `files.trimTrailingWhitespace`: Now affects XML formatting. Enable/disable trailing whitespace trimming when formatting an XML document. Default is `false`.
-* See [`Formatting settings`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md) for a detailed list of the formatting settings.
+* See [`Formatting settings`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Formatting.md) for a detailed list of the formatting settings.
 
 ## Telemetry
 
@@ -155,4 +155,4 @@ Feedback
 
 ## License
 
-  EPL 2.0, See [LICENSE](https://github.com/redhat-developer/vscode-xml/blob/master/LICENSE) file.
+  EPL 2.0, See [LICENSE](https://github.com/redhat-developer/vscode-xml/blob/main/LICENSE) file.
