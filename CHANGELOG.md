@@ -1,5 +1,18 @@
 # Change Log
 
+
+## [0.18.2](https://github.com/redhat-developer/vscode-xml/milestone/24?closed=1) (14 December, 2021)
+
+### Enhancements
+
+ * Improve xsd-based quick-fix suggestions. See [#618](https://github.com/redhat-developer/vscode-xml/issues/618).
+
+### Bug Fixes
+
+ * Reduce Telemetry volume for `server.document.open`. See [#620](https://github.com/redhat-developer/vscode-xml/issues/620).
+ * Renaming Tags with namespaces duplicates namespace. See [#621](https://github.com/redhat-developer/vscode-xml/issues/621).
+ * Add note in binary requirements for Linux distros lacking libc. See [#619](https://github.com/redhat-developer/vscode-xml/pull/619).
+
 ## [0.18.1](https://github.com/redhat-developer/vscode-xml/milestone/23?closed=1) (3 November, 2021)
 
 ### Enhancements
