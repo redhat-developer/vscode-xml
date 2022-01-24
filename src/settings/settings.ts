@@ -226,8 +226,10 @@ export function getXMLSettings(javaHome: string | undefined, logfile: string, ex
   const isWorkspaceTrusted = (workspace as any).isTrusted;
   if (isWorkspaceTrusted !== undefined && !isWorkspaceTrusted) {
     xml['xml']['validation']['resolveExternalEntities'] = false;
+    xml['xml']['downloadExternalResources']['enabled'] = false;
   } else {
     xml['xml']['validation']['resolveExternalEntities'] = workspace.getConfiguration('xml').get('validation.resolveExternalEntities', false);
+    xml['xml']['downloadExternalResources']['enabled'] = workspace.getConfiguration('xml').get('downloadExternalResources.enabled', false);
   }
 
   //applying externalXmlSettings to the xmlSettings

@@ -177,6 +177,12 @@
           "default": true,
           "markdownDescription": "Enable/disable logging to the Output view. Default is `true`."
         },
+        "xml.downloadExternalResources.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Download external resources like referenced DTD, XSD. Default is `true`.",
+          "scope": "window"
+        },
         "xml.catalogs": {
           "type": "array",
           "default": [],
@@ -320,16 +326,6 @@
           "default": false,
           "markdownDescription": "The option to put a closing bracket on a newline when `#xml.format.splitAttributes#` is `true`. Default value is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatclosingbracketnewline%22%7D%5D) for more information."
         },
-        "xml.preferences.quoteStyle": {
-          "type": "string",
-          "enum": [
-            "single",
-            "double"
-          ],
-          "default": "double",
-          "markdownDescription": "Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.",
-          "scope": "window"
-        },
         "xml.completion.autoCloseTags": {
           "type": "boolean",
           "default": true,
@@ -346,6 +342,16 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "Enable/disable XML CodeLens. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22CodeLens%22%2C%22section%22%3A%22Code%20Lens%22%7D%5D) for information about CodeLens features"
+        },
+        "xml.preferences.quoteStyle": {
+          "type": "string",
+          "enum": [
+            "single",
+            "double"
+          ],
+          "default": "double",
+          "markdownDescription": "Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.",
+          "scope": "window"
         },
         "xml.preferences.showSchemaDocumentationType": {
           "type": "string",
