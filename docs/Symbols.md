@@ -31,9 +31,9 @@ The displayed symbols are affected by [xml.symbols.maxItemsComputed](#xmlsymbols
 
 ## xml.symbols.filters
 
-By default Outline (symbols) display `DOM elements`, `processing instruction` and `DTD element, entity, attribute list declarations`.
+By default Outline (symbols) display `DOM elements`, `processing instruction`, `DTD element`, `entity` and, `attribute list declarations`.
 
-The DOM attributes and text nodes are not displayed in the outline. Indeed to ensure good performance, symbols must be limited; displaying attributes and text nodes in the outline could generate a lot of symbols.
+The `DOM attributes` and `text nodes` are not displayed in the outline. Indeed to ensure good performance, symbols must be limited; displaying attributes and text nodes in the outline could generate a lot of symbols.
 
 Here a sample Outline with maven `pom.xml`:
 
@@ -43,21 +43,23 @@ In maven context, the text nodes information are important and we should prefer 
 
 ![Outline of pom.xml with text filter](images/Symbols/SymbolsPOMWithTextFilter.png)
 
-In Spring context, the `@Id` attribute information are important and we should prefer showing those attributes in the Outline:
+In Spring context, the `@id` attribute information are important and we should prefer showing those attributes in the Outline:
 
 ![Outline of Spring beans with @id filter](images/Symbols/SymbolsBeansWithIdAttrFilter.png)
 
 In other words, displaying attributes or text nodes depends on the XML file.
 
-`xml.symbols.filters` gives the capability to define filter (to include or exclude) some attributes, some text nodes for a given XML file kind.
+`xml.symbols.filters` gives the capability to define filters (to include or exclude) some attributes, some text nodes for a given XML file kind.
 
 Symbols filter are composed with:
 
 * `pattern` (required) : a regular expression matching the file names to which this filter should apply.
-* `expressions` (required) : defines a list of expression. An expression is composed by:
-  *  `xpath` (required) : defines a basic xpath to declare the attribute, the text node which is concerned by the expression.
-  * `excluded` (optional): true if the node which matches the xpath must be excluded or not. By default the excluded is set to false.
-    
+* `expressions` (required) : defines a list of expressions. An expression is composed of:
+  *  `xpath` (required) : defines a basic xpath to declare the attribute or the text node which is concerned by the expression (see [XPath expression](#xpath-expression) below).
+  *  `excluded` (optional): true if the node which matches the xpath must be excluded or not. By default, `excluded` is set to false.
+  *  `inlineAttribute` (optional): defines that an attribute expression should be displayed inline with its owning element instead of being nested. By default this is set to false. (see [For Ant/Phing build.xml](#antPhingXmlExample) example below).
+  *  `showAttributeName` (optional): defines that an attribute expression name should be displayed along with its value. Note that this only applies to `inlineAttributes`. Nested attributes always show their name and value to help distinguish them from other child nodes. By default this is set to false. (see [For Ant/Phing build.xml](#antPhingXmlExample) example below).
+
 The order of the expression item are important, because each expression are applied by using the order of the expressions array.
 
 NOTE: when you change `xml.symbols.filters` in `settings.json`, the Outline is not refreshed automatically (see vscode [vscode issue 108722](https://github.com/microsoft/vscode/issues/108722)). You must refresh at hand the Outline by updating the XML file or closing/opening the XML file.
@@ -86,7 +88,7 @@ you must declare this filter in the settings.json:
 ]
 ```
 
-#### Attributes sample
+#### Attributes samples
 
 For Spring `beans.xml`, to obtain this Outline:
 
@@ -102,6 +104,55 @@ you must declare this filter in the settings.json:
       "expressions" :[
          {
             "xpath": "//@id"
+         }
+      ]
+   }
+]
+```
+
+<span id='antPhingXmlExample'>For Ant/Phing</span> `build.xml` with inline attributes, to obtain this Outline:
+
+![Outline of Ant/Phing build.xml various filters](images/Symbols/SymbolsBuildWithInlineAttrFilter.png)
+
+you must declare this filter in the settings.json:
+
+```json
+"xml.symbols.filters": [
+   // Declaration of symbols filter for Ant/Phing build.xml to show all @name attributes
+   // for target elements and @name and @file attributes of properties elements in the Outline.
+   {
+      "pattern": "build*.xml",
+      "expressions" :[
+         {
+            // keep the value of the attribute "name" on the same line
+            // as the "target" element, and don't show the attribute name
+            "xpath": "//target/@name",
+            "inlineAttribute" : true,
+            "showAttributeName": false
+         },
+         // show "unless" and "depends" as nested attributes for
+         // "target" elements
+         {
+            "xpath": "//target/@unless"
+         },
+         {
+            "xpath": "//target/@depends"
+         },
+         {
+            // keep the value of the attribute "name" on the same line
+            // as the "property" element, and don't show the attribute name
+            "xpath": "//property/@name",
+            "inlineAttribute" : true,
+            "showAttributeName": false
+         },
+         {
+            // keep the value of the attribute "file" on the same line
+            // as the "property" element, and show the attribute name
+            // along with the value to distinguish it from the more common
+            // "name" attribute
+            "xpath": "//property/@file",
+            "inlineAttribute" : true,
+            "showAttributeName": true
          }
       ]
    }

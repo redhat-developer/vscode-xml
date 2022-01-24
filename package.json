@@ -477,7 +477,15 @@
                     },
                     "excluded": {
                       "type": "boolean",
-                      "description": "Exclude/Include the node which matches the XPath expression ."
+                      "description": "Exclude/Include the node which matches the XPath expression."
+                    },
+                    "inlineAttribute": {
+                      "type": "boolean",
+                      "description": "Whether or not to show an attribute expression inline with the owning element instead of nested."
+                    },
+                    "showAttributeName": {
+                      "type": "boolean",
+                      "description": "Whether or not the attribute expression name should be shown along with its value (for inline attributes only)."
                     }
                   }
                 },
