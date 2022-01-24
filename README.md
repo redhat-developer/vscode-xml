@@ -83,6 +83,7 @@ The following settings are supported:
 * `xml.trace.server`: Trace the communication between VS Code and the XML language server in the Output view. Default is `off`.
 * `xml.logs.client`: Enable/disable logging to the Output view. Default is `true`.
 * [`xml.catalogs`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#catalogs): Register XML catalog files.
+* `xml.downloadExternalResources.enabled`: Download external resources like referenced DTD, XSD. Default is `true`.
 * [`xml.fileAssociations`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#file-associations): Allows XML schemas/ DTD to be associated to file name patterns.
 * [`xml.format.enabled`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatenabled): Enable/disable ability to format document. Default is `true`.
 * [`xml.format.emptyElements`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatemptyelements): Expand/collapse empty elements. Default is `ignore`.
