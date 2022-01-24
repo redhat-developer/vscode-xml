@@ -54,9 +54,9 @@ In other words, displaying attributes or text nodes depends on the XML file.
 Symbols filter are composed with:
 
 * `pattern` (required) : a regular expression matching the file names to which this filter should apply.
-* `expressions` (required) : defines a list of expression. An expression is composed of:
+* `expressions` (required) : defines a list of expressions. An expression is composed of:
   *  `xpath` (required) : defines a basic xpath to declare the attribute or the text node which is concerned by the expression (see [XPath expression](#xpath-expression) below).
-  *  `excluded` (optional): true if the node which matches the xpath must be excluded or not. By default the excluded is set to false.
+  *  `excluded` (optional): true if the node which matches the xpath must be excluded or not. By default, `excluded` is set to false.
   *  `inlineAttribute` (optional): defines that an attribute expression should be displayed inline with its owning element instead of being nested. By default this is set to false. (see [For Ant/Phing build.xml](#antPhingXmlExample) example below).
   *  `showAttributeName` (optional): defines that an attribute expression name should be displayed along with its value. Note that this only applies to `inlineAttributes`. Nested attributes always show their name and value to help distinguish them from other child nodes. By default this is set to false. (see [For Ant/Phing build.xml](#antPhingXmlExample) example below).
 
