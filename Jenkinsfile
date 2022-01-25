@@ -59,9 +59,9 @@ node('rhel8'){
 
 	stage 'package binary hashes'
 	sh "mkdir ./server"
-	sh "wget ${downloadLocation}/vscode/${binaryUploadFolder}/lemminx-binary/${packageJson.version}-${env.BUILD_NUMBER}/lemminx-linux.sha256 -O ./server/lemminx-linux.sha256"
-	sh "wget ${downloadLocation}/vscode/${binaryUploadFolder}/lemminx-binary/${packageJson.version}-${env.BUILD_NUMBER}/lemminx-win32.sha256 -O ./server/lemminx-win32.sha256"
-	sh "wget ${downloadLocation}/vscode/${binaryUploadFolder}/lemminx-binary/${packageJson.version}-${env.BUILD_NUMBER}/lemminx-osx-x86_64.sha256 -O ./server/lemminx-osx-x86_64.sha256"
+	sh "curl ${downloadLocation}/vscode/${binaryUploadFolder}/lemminx-binary/${packageJson.version}-${env.BUILD_NUMBER}/lemminx-linux.sha256 -o ./server/lemminx-linux.sha256"
+	sh "curl ${downloadLocation}/vscode/${binaryUploadFolder}/lemminx-binary/${packageJson.version}-${env.BUILD_NUMBER}/lemminx-win32.sha256 -o ./server/lemminx-win32.sha256"
+	sh "curl ${downloadLocation}/vscode/${binaryUploadFolder}/lemminx-binary/${packageJson.version}-${env.BUILD_NUMBER}/lemminx-osx-x86_64.sha256 -o ./server/lemminx-osx-x86_64.sha256"
 
 	stage 'install vscode-xml build requirements'
 	installBuildRequirements()
