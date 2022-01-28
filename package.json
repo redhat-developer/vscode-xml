@@ -30,7 +30,8 @@
         "xml.extension.jars",
         "xml.java.home",
         "xml.server.vmargs",
-        "xml.validation.resolveExternalEntities"
+        "xml.validation.resolveExternalEntities",
+        "xml.downloadExternalResources.enabled"
       ]
     }
   },
