@@ -1,5 +1,22 @@
 # Change Log
 
+## [0.18.3](https://github.com/redhat-developer/vscode-xml/milestone/24?closed=1) (31 January, 2022)
+
+### Enhancements
+ * Support more customization for attribute elements in document symbols protocol. See [#633](https://github.com/redhat-developer/vscode-xml/issues/633).
+ * Add 'telemetry' tag to redhat.telemetry.enabled preference. See [#643](https://github.com/redhat-developer/vscode-xml/pull/643).
+
+### Bug Fixes
+ * End Tag completion should be given priority above some other proposals. See [eclipse/lemminx#1150](https://github.com/eclipse/lemminx/issues/1150).
+ * 'No definition found' when using 'Go to Definition' for types defined in imported XSD. See [#632](https://github.com/redhat-developer/vscode-xml/issues/632).
+ * Add option to control downloading of external schema resources. See [#640](https://github.com/redhat-developer/vscode-xml/pull/640).
+ * Invalid "schemaLocation" is not reported. See [eclipse/lemminx#1143](https://github.com/eclipse/lemminx/issues/1143).
+ * NPE on renaming a namespaced tag with no corresponding ending tag. See [eclipse/lemminx#1139](https://github.com/eclipse/lemminx/issues/1139).
+ * Updated Xerces to 2.12.2. See [eclipse/lemminx#1156](https://github.com/eclipse/lemminx/pull/1156).
+ * Update Gson to 2.8.9. See [eclipse/lemminx#1161](https://github.com/eclipse/lemminx/pull/1161).
+
+### Others
+ * Use curl instead of wget to be consistent with usage. See [#639](https://github.com/redhat-developer/vscode-xml/pull/639).
 
 ## [0.18.2](https://github.com/redhat-developer/vscode-xml/milestone/24?closed=1) (14 December, 2021)
 
