@@ -103,6 +103,14 @@ export async function startLanguageClient(context: ExtensionContext, executable:
     }
   }));
 
+  const onDidGrantWorkspaceTrust = (workspace as any).onDidGrantWorkspaceTrust;
+  if (onDidGrantWorkspaceTrust !== undefined) {
+    context.subscriptions.push(onDidGrantWorkspaceTrust(() => {
+      languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirementsData.java_home, logfile, externalXmlSettings) });
+      workspace.getConfiguration('xml').update('downloadExternalResources.enabled', true); //set back to default setting
+    }));
+  }
+
   return languageClient;
 }
 
