@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.18.3](https://github.com/redhat-developer/vscode-xml/milestone/24?closed=1) (31 January, 2022)
+## [0.18.3](https://github.com/redhat-developer/vscode-xml/milestone/24?closed=1) (February 1, 2022)
 
 ### Enhancements
  * Support more customization for attribute elements in document symbols protocol. See [#633](https://github.com/redhat-developer/vscode-xml/issues/633).
@@ -18,7 +18,7 @@
 ### Others
  * Use curl instead of wget to be consistent with usage. See [#639](https://github.com/redhat-developer/vscode-xml/pull/639).
 
-## [0.18.2](https://github.com/redhat-developer/vscode-xml/milestone/24?closed=1) (14 December, 2021)
+## [0.18.2](https://github.com/redhat-developer/vscode-xml/milestone/24?closed=1) (December 14, 2021)
 
 ### Enhancements
 
@@ -51,7 +51,7 @@
  * Update vscode-redhat-telemetry to 0.4.2. See [#595](https://github.com/redhat-developer/vscode-xml/pull/595).
  * Compress documentation image/gif space. See [#568](https://github.com/redhat-developer/vscode-xml/issues/568).
 
-## [0.18.0](https://github.com/redhat-developer/vscode-xml/milestone/22?closed=1) (10 August, 2021)
+## [0.18.0](https://github.com/redhat-developer/vscode-xml/milestone/22?closed=1) (August 10, 2021)
 
 ### Enhancements
 
