@@ -16,7 +16,7 @@
     "dtd"
   ],
   "xmlServer": {
-    "version": "0.18.3"
+    "version": "0.18.4"
   },
   "binaryServerDownloadUrl": {
     "linux": "https://download.jboss.org/jbosstools/vscode/snapshots/lemminx-binary/LATEST/lemminx-linux.zip",
