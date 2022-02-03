@@ -59,9 +59,8 @@ node('rhel8'){
 
 	stage 'package binary hashes'
 	sh "mkdir ./server"
-	sh "curl ${downloadLocation}/vscode/${binaryUploadFolder}/lemminx-binary/${packageJson.version}-${env.BUILD_NUMBER}/lemminx-linux.sha256 -o ./server/lemminx-linux.sha256"
-	sh "curl ${downloadLocation}/vscode/${binaryUploadFolder}/lemminx-binary/${packageJson.version}-${env.BUILD_NUMBER}/lemminx-win32.sha256 -o ./server/lemminx-win32.sha256"
-	sh "curl ${downloadLocation}/vscode/${binaryUploadFolder}/lemminx-binary/${packageJson.version}-${env.BUILD_NUMBER}/lemminx-osx-x86_64.sha256 -o ./server/lemminx-osx-x86_64.sha256"
+	unstash name: 'checksums'
+	sh "mv lemminx-*.sha256 ./server"
 
 	stage 'install vscode-xml build requirements'
 	installBuildRequirements()
@@ -101,7 +100,7 @@ node('rhel8'){
 		}
 
 		// Open-vsx Marketplace
-		sh "npm install -g ovsx"
+		sh 'npm install -g "ovsx<0.3.0"'
 		withCredentials([[$class: 'StringBinding', credentialsId: 'open-vsx-access-token', variable: 'OVSX_TOKEN']]) {
 			sh 'ovsx publish -p ${OVSX_TOKEN}' + " ${vsix[0].path}"
 		}
