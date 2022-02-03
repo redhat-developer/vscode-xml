@@ -130,6 +130,7 @@ pipeline {
         sh "sha256sum lemminx-linux > lemminx-linux.sha256"
         sh "sha256sum lemminx-win32.exe > lemminx-win32.sha256"
         sh "sha256sum lemminx-osx-x86_64 > lemminx-osx-x86_64.sha256"
+        stash name: 'checksums', includes: 'lemminx-*.sha256'
 
         // Move artifacts into a folder name unique to this build
         sh "curl -Lo package.json https://raw.githubusercontent.com/${params.FORK}/vscode-xml/${params.BRANCH}/package.json"
