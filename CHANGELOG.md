@@ -1,5 +1,23 @@
 # Change Log
 
+## [0.19.0](https://github.com/eclipse/lemminx/milestone/26?closed=1) (February 14, 2022)
+
+### Enhancements
+
+ * Basic support for parameter entities. See [lemminx#1167](https://github.com/eclipse/lemminx/issues/1167).
+ * Support for document link DTD entity SYSTEM. See [lemminx#1165](https://github.com/eclipse/lemminx/issues/1165).
+
+### Bug Fixes
+
+ * Bad SYSTEM for DTD DocType and Entity breaks the XML validation. See [#647](https://github.com/redhat-developer/vscode-xml/issues/647).
+ * Prevent suspicious directory traversal. See [lemminx#1171](https://github.com/eclipse/lemminx/pull/1171).
+ * Limit resource downloads to http, https and ftp and prevent insecure redirects. See [lemminx#1174](https://github.com/eclipse/lemminx/pull/1174).
+ * Bump follow-redirects from 1.14.7 to 1.14.8. See [#647](https://github.com/redhat-developer/vscode-xml/issues/659).
+
+### Build
+
+ * Eliminate need for downloading just-released binary checksums. See [#650](https://github.com/redhat-developer/vscode-xml/pull/650).
+
 ## [0.18.3](https://github.com/redhat-developer/vscode-xml/milestone/24?closed=1) (February 2, 2022)
 
 ### Enhancements
