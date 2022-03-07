@@ -121,7 +121,10 @@ function registerCodeLensReferencesCommands(context: ExtensionContext, languageC
  */
 function registerValidationCommands(context: ExtensionContext) {
   // Revalidate current file
-  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.VALIDATE_CURRENT_FILE, async (params) => {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.VALIDATE_CURRENT_FILE, async (identifierParam, validationArgs) => {
+    if (identifierParam) {
+      return await commands.executeCommand(ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND, ServerCommandConstants.VALIDATE_CURRENT_FILE, identifierParam, validationArgs);
+    }
     const uri = window.activeTextEditor.document.uri;
     const identifier = TextDocumentIdentifier.create(uri.toString());
     commands.executeCommand(ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND, ServerCommandConstants.VALIDATE_CURRENT_FILE, identifier).
