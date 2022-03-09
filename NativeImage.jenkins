@@ -28,6 +28,7 @@ pipeline {
               }
             }
             sh "cd lemminx && JAVA_HOME=\$GRAALVM_PATH ./mvnw clean package -B -Dnative -DskipTests -Dgraalvm.static='--static -H:+StaticExecutableWithDynamicLibC' && cd .."
+            sh "rm lemminx/org.eclipse.lemminx/target/*.build_artifacts.txt"
             sh "cp lemminx/org.eclipse.lemminx/target/lemminx-linux* lemminx-linux"
             stash name: 'lemminx-linux', includes: 'lemminx-linux'
           }
@@ -61,15 +62,15 @@ pipeline {
             powershell """
               [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
               if (-not (Test-Path graalvm-windows-${params.GRAALVM_VERSION}.zip)) {
-                Invoke-WebRequest https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${params.GRAALVM_VERSION}/graalvm-ce-java11-windows-amd64-${params.GRAALVM_VERSION}.zip -OutFile graalvm-windows-${params.GRAALVM_VERSION}.zip
+                Invoke-WebRequest https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${params.GRAALVM_VERSION}/graalvm-ce-java17-windows-amd64-${params.GRAALVM_VERSION}.zip -OutFile graalvm-windows-${params.GRAALVM_VERSION}.zip
                 Expand-Archive graalvm-windows-${params.GRAALVM_VERSION}.zip
-                .\\graalvm-windows-${params.GRAALVM_VERSION}\\graalvm-ce-java11-${params.GRAALVM_VERSION}\\bin\\gu install native-image
+                .\\graalvm-windows-${params.GRAALVM_VERSION}\\graalvm-ce-java17-${params.GRAALVM_VERSION}\\bin\\gu install native-image
               }
             """
             bat """
               pushd .
               setlocal
-              set JAVA_HOME=%cd%\\graalvm-windows-${params.GRAALVM_VERSION}\\graalvm-ce-java11-${params.GRAALVM_VERSION}
+              set JAVA_HOME=%cd%\\graalvm-windows-${params.GRAALVM_VERSION}\\graalvm-ce-java17-${params.GRAALVM_VERSION}
               call \"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat\"
               popd
               cd lemminx
@@ -100,12 +101,13 @@ pipeline {
             }
             sh """
               if [ ! -f graalvm-darwin-${params.GRAALVM_VERSION}.tar.gz ]; then
-                curl https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${params.GRAALVM_VERSION}/graalvm-ce-java8-darwin-amd64-${params.GRAALVM_VERSION}.tar.gz -L --output graalvm-darwin-${params.GRAALVM_VERSION}.tar.gz
+                curl https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${params.GRAALVM_VERSION}/graalvm-ce-java17-darwin-amd64-${params.GRAALVM_VERSION}.tar.gz -L --output graalvm-darwin-${params.GRAALVM_VERSION}.tar.gz
                 tar -xzf graalvm-darwin-${params.GRAALVM_VERSION}.tar.gz
-                ./graalvm-ce-java8-${params.GRAALVM_VERSION}/Contents/Home/bin/gu install native-image
+                ./graalvm-ce-java17-${params.GRAALVM_VERSION}/Contents/Home/bin/gu install native-image
               fi
             """
-            sh "cd lemminx && JAVA_HOME=../graalvm-ce-java8-${params.GRAALVM_VERSION}/Contents/Home ./mvnw clean package -B -Dnative -DskipTests && cd .."
+            sh "cd lemminx && JAVA_HOME=`pwd`/../graalvm-ce-java17-${params.GRAALVM_VERSION}/Contents/Home ./mvnw clean package -B -Dnative -DskipTests && cd .."
+            sh "rm lemminx/org.eclipse.lemminx/target/*.build_artifacts.txt"
             sh "cp lemminx/org.eclipse.lemminx/target/lemminx-osx-x86_64* lemminx-osx-x86_64"
 
             stash name: 'lemminx-osx-x86_64', includes: 'lemminx-osx-x86_64'
