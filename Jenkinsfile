@@ -50,17 +50,16 @@ node('rhel8'){
 
 	stage 'set the link to download the binary server'
 	def packageJson = readJSON file: 'package.json'
-	def binaryUploadFolder = 'snapshots'
+	def binaryUploadFolder = 'latest'
+	def downloadLocation = 'https://github.com/redhat-developer/vscode-xml'
 	if (publishToMarketPlace.equals('true')) {
-		binaryUploadFolder = 'stable'
+		sh "sed -i -e 's|${downloadLocation}/releases/download/latest|${downloadLocation}/releases/download/${packageJson.version}|g' package.json"
 	}
-	def downloadLocation = 'https://download.jboss.org/jbosstools'
-	sh "sed -i -e 's|${downloadLocation}/vscode/snapshots/lemminx-binary/LATEST|${downloadLocation}/vscode/${binaryUploadFolder}/lemminx-binary/${packageJson.version}-${env.BUILD_NUMBER}|g' package.json"
 
 	stage 'package binary hashes'
 	sh "mkdir ./server"
 	unstash name: 'checksums'
-	sh "mv lemminx-*.sha256 ./server"
+	sh "cp lemminx-*.sha256 ./server"
 
 	stage 'install vscode-xml build requirements'
 	installBuildRequirements()
@@ -81,7 +80,8 @@ node('rhel8'){
 
 	stage 'Upload to /vscode-xml/staging'
 	def vsix = findFiles(glob: '**.vsix')
-	sh "rsync -Pzrlt --rsh=ssh --protocol=28 ${vsix[0].path} ${UPLOAD_LOCATION}/vscode-xml/staging"
+	unstash 'binaries'
+	archiveArtifacts artifacts: 'lemminx-*.zip,*.sha256,*.vsix'
 	stash name:'vsix', includes:vsix[0].path
 }
 
@@ -108,6 +108,5 @@ node('rhel8'){
 
 		stage "Upload to /vscode-xml/stable"
 		// copy this stable build to Akamai-mirrored /static/ URL, so staging can be cleaned out more easily
-		sh "rsync -Pzrlt --rsh=ssh --protocol=28 ${vsix[0].path} ${UPLOAD_LOCATION}/static/vscode-xml/stable/"
 	}// if publishToMarketPlace
 }
