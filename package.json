@@ -19,9 +19,9 @@
     "version": "0.19.1"
   },
   "binaryServerDownloadUrl": {
-    "linux": "https://download.jboss.org/jbosstools/vscode/snapshots/lemminx-binary/LATEST/lemminx-linux.zip",
-    "osx-x86_64": "https://download.jboss.org/jbosstools/vscode/snapshots/lemminx-binary/LATEST/lemminx-osx-x86_64.zip",
-    "win32": "https://download.jboss.org/jbosstools/vscode/snapshots/lemminx-binary/LATEST/lemminx-win32.zip"
+    "linux": "https://github.com/redhat-developer/vscode-xml/releases/download/latest/lemminx-linux.zip",
+    "osx-x86_64": "https://github.com/redhat-developer/vscode-xml/releases/download/latest/lemminx-osx-x86_64.zip",
+    "win32": "https://github.com/redhat-developer/vscode-xml/releases/download/latest/lemminx-win32.zip"
   },
   "capabilities": {
     "untrustedWorkspaces": {

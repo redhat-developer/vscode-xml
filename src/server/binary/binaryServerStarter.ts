@@ -89,14 +89,16 @@ async function downloadBinary(): Promise<string> {
     let webClient: http.ClientRequest = null;
     const handleResponse = (response: http.IncomingMessage) => {
       const statusCode = response.statusCode;
-      if (statusCode === 303) {
+      if (statusCode === 302 || statusCode === 303) {
         webClient = httpHttpsGet(response.headers.location, handleResponse)
           .on('error', (e) => {
             reject(`Server binary download failed: ${e.message}`);
           });
       } else if (statusCode === 200) {
         showProgressForDownload(response, webClient);
-        if (/^application\/zip$/.test(response.headers['content-type'])) {
+        const serverBinaryUrl = getServerBinaryDownloadUrl();
+        if (/^application\/zip$/.test(response.headers['content-type'])
+          || serverBinaryUrl.endsWith('.zip')) { // some servers do not set content-type correctly
           acceptZipDownloadResponse(response).then(resolve, reject);
         } else {
           // Not a ZIP, assume its a binary

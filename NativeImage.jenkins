@@ -27,7 +27,7 @@ pipeline {
                 sh "git clone https://github.com/eclipse/lemminx.git"
               }
             }
-            sh "cd lemminx && JAVA_HOME=\$GRAALVM_PATH ./mvnw clean package -B -Dnative -DskipTests -Dgraalvm.static='--static -H:+StaticExecutableWithDynamicLibC' && cd .."
+            sh "cd lemminx && JAVA_HOME=\$GRAALVM_PATH ./mvnw clean package -B -Dnative -DskipTests -Dgraalvm.static='-H:+StaticExecutableWithDynamicLibC' && cd .."
             sh "rm lemminx/org.eclipse.lemminx/target/*.build_artifacts.txt"
             sh "cp lemminx/org.eclipse.lemminx/target/lemminx-linux* lemminx-linux"
             stash name: 'lemminx-linux', includes: 'lemminx-linux'
@@ -143,27 +143,13 @@ pipeline {
           if (publishToMarketPlace.equals('true')) {
             uploadFolderName = 'stable'
           }
-          sh "mkdir ${vscodeXmlVersion}-${env.BUILD_NUMBER}"
-          sh """
-            cp lemminx-linux.zip ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-linux.zip
-            cp lemminx-linux.sha256 ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-linux.sha256
-            cp lemminx-win32.zip ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-win32.zip
-            cp lemminx-win32.sha256 ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-win32.sha256
-            cp lemminx-osx-x86_64.zip ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-osx-x86_64.zip
-            cp lemminx-osx-x86_64.sha256 ${vscodeXmlVersion}-${env.BUILD_NUMBER}/lemminx-osx-x86_64.sha256
-          """
           if (!publishToMarketPlace.equals('true')){
             sh """
               ln  --symbolic ${vscodeXmlVersion}-${env.BUILD_NUMBER} LATEST
               rsync -Pzrlt --rsh=ssh --protocol=28 LATEST ${params.UPLOAD_LOCATION}/vscode/snapshots/lemminx-binary
             """
           }
-          // Upload the uniquely named folder to JBossTools
-          sh """
-            rsync -Pzrlt --rsh=ssh --protocol=28 ${vscodeXmlVersion}-${env.BUILD_NUMBER} ${params.UPLOAD_LOCATION}/vscode/${uploadFolderName}/lemminx-binary
-            rm -rf ${vscodeXmlVersion}-${env.BUILD_NUMBER}
-            rm -f LATEST
-          """
+		  stash name: 'binaries', includes: 'lemminx-*.zip'
         }
       }
     }
