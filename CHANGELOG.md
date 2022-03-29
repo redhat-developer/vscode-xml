@@ -1,5 +1,23 @@
 # Change Log
 
+## [0.20.0](https://github.com/redhat-developer/vscode-xml/milestone/28?closed=1) (March 29, 2022)
+
+### Enhancements
+
+ * Improve DTD/XSD security with regard to remote resources. See [#671](https://github.com/redhat-developer/vscode-xml/issues/671).
+ * Closing tags should be included in the code folding range. See [lemminx#1178](https://github.com/eclipse/lemminx/issues/1178).
+
+### Bug Fixes
+
+ * NPE on xsd datatype autocompletion in binary mode. See [lemminx#1189](https://github.com/eclipse/lemminx/issues/1189).
+ * Completion for prefix of attribute name. See [lemminx#1133](https://github.com/eclipse/lemminx/issues/1133).
+
+### Other
+
+ * Add support to download binaries from GitHub Releases. See [#685](https://github.com/redhat-developer/vscode-xml/pull/685).
+ * Fix GraalVM Native Image Builds on Jenkins. See [#681](https://github.com/redhat-developer/vscode-xml/pull/681).
+ * Update GraalVM version used in binary verification builds to x.y.z. See [lemminx#1158](https://github.com/eclipse/lemminx/issues/1158).
+ 
 ## [0.19.1](https://github.com/redhat-developer/vscode-xml/milestone/27?closed=1) (February 15, 2022)
 
 ### Bug Fixes
