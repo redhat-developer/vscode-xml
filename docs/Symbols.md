@@ -64,6 +64,8 @@ The order of the expression item are important, because each expression are appl
 
 NOTE: when you change `xml.symbols.filters` in `settings.json`, the Outline is not refreshed automatically (see vscode [vscode issue 108722](https://github.com/microsoft/vscode/issues/108722)). You must refresh at hand the Outline by updating the XML file or closing/opening the XML file.
 
+NOTE: when you define your own patterns in `settings.json`, it might be necessary to define the glob pattern that crosses directory boundries `**` for the matching to occur. ([vscode-xml issue 684](https://github.com/redhat-developer/vscode-xml/issues/684)). 
+
 ### Filter samples
 
 #### Text nodes sample
