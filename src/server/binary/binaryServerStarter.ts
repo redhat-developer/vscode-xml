@@ -64,9 +64,16 @@ async function getServerBinaryPath(): Promise<string> {
   const binaryPath: string = config.get("server.binary.path");
   if (binaryPath) {
     if (fs.existsSync(binaryPath)) {
-      return Promise.resolve(binaryPath);
+      try {
+        // checks read/execute permissions
+        fs.accessSync(binaryPath, fs.constants.R_OK | fs.constants.X_OK)
+        return Promise.resolve(binaryPath);
+      } catch(e) {
+        window.showErrorMessage('Permission(s) denied for the specified XML language server binary. Using the default binary...');
+      }
+    } else {
+      window.showErrorMessage('The specified XML language server binary could not be found. Using the default binary...');
     }
-    window.showErrorMessage('The specified XML language server binary could not be found. Using the default binary...');
   }
   const server_home: string = path.resolve(__dirname, '../server');
   let binaries: Array<string> = glob.sync(`**/${getServerBinaryNameWithoutExtension()}*`, { cwd: server_home });
