@@ -104,7 +104,6 @@ node('rhel8'){
 		withCredentials([[$class: 'StringBinding', credentialsId: 'open-vsx-access-token', variable: 'OVSX_TOKEN']]) {
 			sh 'ovsx publish -p ${OVSX_TOKEN}' + " ${vsix[0].path}"
 		}
-		archive includes:"**.vsix"
 
 		stage "Upload to /vscode-xml/stable"
 		// copy this stable build to Akamai-mirrored /static/ URL, so staging can be cleaned out more easily

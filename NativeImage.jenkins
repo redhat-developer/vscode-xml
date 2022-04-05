@@ -133,24 +133,7 @@ pipeline {
         sh "sha256sum lemminx-win32.exe > lemminx-win32.sha256"
         sh "sha256sum lemminx-osx-x86_64 > lemminx-osx-x86_64.sha256"
         stash name: 'checksums', includes: 'lemminx-*.sha256'
-
-        // Move artifacts into a folder name unique to this build
-        sh "curl -Lo package.json https://raw.githubusercontent.com/${params.FORK}/vscode-xml/${params.BRANCH}/package.json"
-        script {
-          def packageJson = readJSON file: 'package.json'
-          def vscodeXmlVersion = packageJson?.version
-          def uploadFolderName = 'snapshots'
-          if (publishToMarketPlace.equals('true')) {
-            uploadFolderName = 'stable'
-          }
-          if (!publishToMarketPlace.equals('true')){
-            sh """
-              ln  --symbolic ${vscodeXmlVersion}-${env.BUILD_NUMBER} LATEST
-              rsync -Pzrlt --rsh=ssh --protocol=28 LATEST ${params.UPLOAD_LOCATION}/vscode/snapshots/lemminx-binary
-            """
-          }
-		  stash name: 'binaries', includes: 'lemminx-*.zip'
-        }
+        stash name: 'binaries', includes: 'lemminx-*.zip'
       }
     }
   }
