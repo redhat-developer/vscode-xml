@@ -250,7 +250,7 @@
         "xml.format.enabled": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Enable/disable ability to format document. Default is `true`.",
+          "markdownDescription": "Enable/disable ability to format document. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatenabled%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.emptyElements": {
@@ -261,7 +261,7 @@
             "expand"
           ],
           "default": "ignore",
-          "markdownDescription": "Expand/collapse empty elements. Default is `ignore`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatemptyelements%22%7D%5D) for more information.",
+          "markdownDescription": "Expand/collapse empty elements. Default is `ignore`. Not supported by the experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatemptyelements%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.enforceQuoteStyle": {
@@ -275,25 +275,43 @@
             "Ignore quote style formatting."
           ],
           "default": "ignore",
-          "markdownDescription": "Enforce `preferred` quote style (set by `#xml.preferences.quoteStyle#`) or `ignore` quote style when formatting. Default is `ignore`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatenforcequotestyle%22%7D%5D) for more information.",
+          "markdownDescription": "Enforce `preferred` quote style (set by `#xml.preferences.quoteStyle#`) or `ignore` quote style when formatting. Default is `ignore`. Not supported by the experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatenforcequotestyle%22%7D%5D) for more information.",
+          "scope": "window"
+        },
+        "xml.format.experimental": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Enable/disable experimental formatter. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatexperimental%22%7D%5D) for more information.",
+          "scope": "window"
+        },
+        "xml.format.grammarAwareFormatting": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Use Schema/DTD grammar information while formatting. Default is `true`. Supported only with experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatgrammarawareformatting%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.joinCDATALines": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Set to `true` to join lines in CDATA content during formatting. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincdatalines%22%7D%5D) for more information.",
+          "markdownDescription": "Set to `true` to join lines in CDATA content during formatting. Default is `false`. Not supported by the experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincdatalines%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.joinCommentLines": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Join comment content on format. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincommentlines%22%7D%5D) for more information.",
+          "markdownDescription": "Join comment content on format. Default is `false`. Not supported by the experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincommentlines%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.joinContentLines": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincontentlines%22%7D%5D) for more information.",
+          "markdownDescription": "Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed. Default is `false`. Not supported by the experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincontentlines%22%7D%5D) for more information.",
+          "scope": "window"
+        },
+        "xml.format.maxLineWidth": {
+          "type": "integer",
+          "default": 80,
+          "markdownDescription": "Max line width. Default is `80`. Supported only with experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatmaxlinewidth%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.preserveAttributeLineBreaks": {
@@ -305,7 +323,7 @@
         "xml.format.preserveEmptyContent": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Preserve empty content/whitespace in a tag. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreserveemptycontent%22%7D%5D) for more information.",
+          "markdownDescription": "Preserve empty content/whitespace in a tag. Default is `false`. Not supported by the experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreserveemptycontent%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.preservedNewlines": {
@@ -317,13 +335,32 @@
             3
           ],
           "default": 2,
-          "markdownDescription": "Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines. Default is `2`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreservednewlines%22%7D%5D) for more information.",
+          "markdownDescription": "Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines. Default is `2`. Not supported by the experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreservednewlines%22%7D%5D) for more information.",
+          "scope": "window"
+        },
+        "xml.format.preserveSpace": {
+          "type": "array",
+          "default": [
+            "xsl:text",
+            "xsl:comment",
+            "xsl:processing-instruction",
+            "literallayout",
+            "programlisting",
+            "screen",
+            "synopsis",
+            "pre",
+            "xd:pre"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "Element names for which spaces will be preserved. Supported only with experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreservespace%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.spaceBeforeEmptyCloseTag": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Insert space before end of self closing tag. \nExample:\n  ```<tag/> -> <tag />```. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatspacebeforeemptyclosetag%22%7D%5D) for more information.",
+          "markdownDescription": "Insert space before end of self closing tag. \nExample:\n  ```<tag/> -> <tag />```. Not supported by the experimental formatter. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatspacebeforeemptyclosetag%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.xsiSchemaLocationSplit": {
@@ -339,7 +376,7 @@
             "Ignore `xsi:schemaLocation` content formatting."
           ],
           "default": "none",
-          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `none`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatxsischemalocationsplit%22%7D%5D) for more information",
+          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `none`. Not supported by the experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatxsischemalocationsplit%22%7D%5D) for more information",
           "scope": "window"
         },
         "xml.format.splitAttributes": {
@@ -356,7 +393,7 @@
         "xml.format.closingBracketNewLine": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "The option to put a closing bracket on a newline when `#xml.format.splitAttributes#` is `true`. Default value is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatclosingbracketnewline%22%7D%5D) for more information."
+          "markdownDescription": "The option to put a closing bracket on a newline when `#xml.format.splitAttributes#` is `true`. Default value is `false`. Not supported by the experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatclosingbracketnewline%22%7D%5D) for more information."
         },
         "xml.completion.autoCloseTags": {
           "type": "boolean",

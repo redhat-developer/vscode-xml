@@ -6,29 +6,91 @@
 
 ***
 
-### xml.format.enforceQuoteStyle
+### xml.format.experimental
 
-Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting.
+  Set to `true` to enable experimental formatter. Defaults to `false`.
 
-For instance, when set to `preferred` with `xml.preferences.quoteStyle` set to `single`, the following document:
+  As we have more and more issues with our current XML formatter, we  have decided to redo our formatter to try to fix them. This new formatter is in experimental state because it doesn't support all current formatter settings and it could have some bugs. To enable this experimental formatter you can set the setting `xml.format.experimental` to true. 
+  
+  Once we have enough good feedback and we support all current formatting settings, we will replace the current formatter with the experimental formatter. Don't hesitate to [create issues](https://github.com/redhat-developer/vscode-xml/issues) to give us feedback with this experimental formatter.
+  
+  The current formatter uses the DOM document and rewrite the XML document or a fragment of XML (when range formatting is processed). This strategy provides a lot of bugs if XML is not valid (ex : <% will format with <null).
+  
+  The new strategy is to format the current XML by adding or removing some spaces without updating the XML content. The experimental formatter categorizes each element as :
+  
+  * `ignore space`
+  *  `normalize space`
+  *  `mixed content` 
+  * and `preserve space`. Also, you can use `xml:space="preserve"` to preserve spaces in some elements or use `xml.format.preserveSpace` to add a given tag element which must preserve spaces.
+  
+Once the element is categorized, the element content is formatted according the category:
 
-  ```xml
-  <?xml version="1.0" encoding="UTF-8"?>
-  <root>
-    <child attribute='value' otherAttribute="otherValue"></child>
-  </root>
-  ```
+ * `ignore space` : 
 
-will be formatted to:
+```xml
+<foo>
+                <bar></bar>         </foo>
+```
 
-  ```xml
-  <?xml version='1.0' encoding='UTF-8'?>
-  <root>
-    <child attribute='value' otherAttribute='otherValue'></child>
-  </root>
-  ```
+Here `foo` is categorized as `ignore space`, because all children are tag elements and only spaces. it means that it removes all spaces . After formatting you should see this result:
 
-No changes to quotes will occur during formatting if `xml.format.enforceQuoteStyle` is set to `ignore`.
+```xml
+<foo>
+    <bar></bar>
+</foo>
+```
+
+ * `normalize space` : 
+ 
+```xml
+<foo>
+  abc 
+  def
+</foo>
+```
+
+Here `foo` is categorized as `normalize space`, it means that it removes all spaces with one space. After formatting you should see this result:
+
+```xml
+<foo> abc def </foo>
+```
+
+ * `preserve space`
+ 
+If you want to preserve space, you can use `xml:space="preserve"` to preserve spaces in some elements or use `xml.format.preserveSpace`
+
+```xml
+<foo xml:space="preserve" >
+  abc 
+  def
+</foo>
+```
+
+Here `foo` is categorized as `preserve space`, after formatting you should see this result:
+
+```xml
+<foo xml:space="preserve" >
+  abc 
+  def
+</foo>
+```
+
+ * `mixed content`
+
+```xml
+<foo>
+    <bar></bar>
+    abc 
+    def
+</foo>
+```
+
+Here `foo` is categorized as `mixed content` (it contains text and tag element), it means that it removes all spaces with one space. After formatting you should see this result:
+
+```xml
+<foo>
+    <bar></bar> abc def </foo>
+```
 
 ***
 
@@ -56,6 +118,36 @@ Set to `expand` to expand empty elements during formatting.
   ```xml
    <example attr="value" ></example>
   ```
+***
+
+**Not supported by the experimental formatter.**
+
+### xml.format.enforceQuoteStyle
+
+Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting.
+
+For instance, when set to `preferred` with `xml.preferences.quoteStyle` set to `single`, the following document:
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <root>
+    <child attribute='value' otherAttribute="otherValue"></child>
+  </root>
+  ```
+
+will be formatted to:
+
+  ```xml
+  <?xml version='1.0' encoding='UTF-8'?>
+  <root>
+    <child attribute='value' otherAttribute='otherValue'></child>
+  </root>
+  ```
+
+No changes to quotes will occur during formatting if `xml.format.enforceQuoteStyle` is set to `ignore`.
+
+**Not supported by the experimental formatter.**
+
 ***
 
 ### xml.format.preserveAttributeLineBreaks
@@ -143,6 +235,8 @@ If this value is set to 0, then all blank lines will be removed during formattin
   </root>
   ```
 
+**Not supported by the experimental formatter.**
+
 ***
 
 ### xml.format.splitAttributes
@@ -178,6 +272,9 @@ If this value is set to 0, then all blank lines will be removed during formattin
   ```xml
   <![CDATA[This is a test ]]>
   ```
+
+**Not supported by the experimental formatter.**
+  
 ***
 
 ### xml.format.preserveEmptyContent
@@ -194,6 +291,9 @@ If this value is set to 0, then all blank lines will be removed during formattin
   <a> </a>
   ```
 ***
+
+**Not supported by the experimental formatter.**
+
 ### xml.format.joinCommentLines
 
   Set to `true` to join lines in comments during formatting. Defaults to `false`.
@@ -208,6 +308,8 @@ If this value is set to 0, then all blank lines will be removed during formattin
   ```xml
   <!-- This is my comment -->
   ```
+
+**Not supported by the experimental formatter.**
 
 ***
 
@@ -236,6 +338,8 @@ If it is set to `true`, the above document becomes:
   <root>Interesting text content values and 1234 numbers</root>
   ```
 
+**Not supported by the experimental formatter.**
+
 ***
 
 ### xml.format.spaceBeforeEmptyCloseTag
@@ -248,6 +352,8 @@ If it is set to `true`, the above document becomes:
   ```xml
   <tag />
   ```
+
+**Not supported by the experimental formatter.**
 
 ***
 
@@ -332,7 +438,10 @@ If it is set to `true`, the above document becomes:
     </ROOT:root>
     ```
 
+**Not supported by the experimental formatter.**
+
 ***
+
 ### xml.format.splitAttributesIndentSize
 
   Use to configure how many levels to indent the attributes by when [xml.format.splitAttributes](#xmlformatsplitAttributes) is set to `true`.
@@ -396,6 +505,7 @@ If it is set to `true`, the above document becomes:
   </robot>
   ```
 ***
+
 ### xml.format.closingBracketNewLine
 
 If set to `true`, the closing bracket (`>` or `/>`) of a tag with at least 2 attributes will be put on a new line.
@@ -409,6 +519,7 @@ Defaults to `false`.
 ```xml
 <a b="" c="" />
 ```
+
 becomes
 ```xml
 <a
@@ -416,3 +527,37 @@ becomes
   c=""
   />
 ```
+
+**Not supported by the experimental formatter.**
+
+### xml.format.preserveSpace
+
+Element names for which spaces will be preserved. Defaults is the following array:
+
+```json
+[
+  "xsl:text",
+  "xsl:comment",
+  "xsl:processing-instruction",
+  "literallayout",
+  "programlisting",
+  "screen",
+  "synopsis",
+  "pre",
+  "xd:pre"
+]
+```
+
+This settings is only available with experimental formatter.
+
+### xml.format.maxLineWidth
+
+Max line width. Default is `80`.
+
+This settings is only available with experimental formatter.
+
+### xml.format.grammarAwareFormatting
+
+Use Schema/DTD grammar information while formatting. Default is `true`. 
+
+This settings is only available with experimental formatter.
