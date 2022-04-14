@@ -86,20 +86,6 @@ The following settings are supported:
 * `xml.downloadExternalResources.enabled`: Download external resources like referenced DTD, XSD. Default is `true`.
 * [`xml.fileAssociations`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#file-associations): Allows XML schemas/ DTD to be associated to file name patterns.
 * [`xml.foldings.includeClosingTagInFold`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Folding.md#xmlfoldingincludeClosingTagInFold): Minimize the closing tag after folding. Default is `false`.
-* [`xml.format.enabled`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatenabled): Enable/disable ability to format document. Default is `true`.
-* [`xml.format.emptyElements`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatemptyelements): Expand/collapse empty elements. Default is `ignore`.
-* [`xml.format.enforceQuoteStyle`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatenforcequotestyle): Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting. Default is `ignore`.
-* [`xml.format.joinCDATALines`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatjoincdatalines): Set to `true` to join lines in CDATA content during formatting. Default is `false`.
-* [`xml.format.joinCommentLines`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatjoincommentlines): Set to `true` to join lines in comments during formatting. Default is `false`.
-* [`xml.format.joinContentLines`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatjoincontentlines): Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed. Default is `false`.
-* [`xml.format.preserveAttributeLineBreaks`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatpreserveattributelinebreaks): Preserve line breaks that appear before and after attributes. Default is `false`.
-  **IMPORTANT**: This setting is overridden if `xml.format.splitAttributes` is set to `true`.
-* [`xml.format.preserveEmptyContent`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatpreserveemptycontent): Preserve empty content/whitespace in a tag. Default is `false`.
-* [`xml.format.preservedNewLines`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatpreservednewlines): Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines. Default is `2`.
-* [`xml.format.spaceBeforeEmptyCloseTag`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatspacebeforeemptyclosetag): Insert space before end of self closing tag.
-  Example: ```<tag/> -> <tag />```. Default is `true`.
-* [`xml.format.splitAttributes`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatsplitattributes): Split multiple attributes each onto a new line. Default is `false`.
-* [`xml.format.splitAttributesIndentSize`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatsplitattributesindentsize): How many levels to indent the attributes by when `xml.format.splitAttributes` is `true`. Default value is `2`.
 * `xml.preferences.quoteStyle`: Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.
 * `xml.autoCloseTags.enabled` : Enable/disable autoclosing of XML tags. Default is `true`.
   **IMPORTANT**: The following settings must be turned of for this to work: `editor.autoClosingTags`, `editor.autoClosingBrackets`.
@@ -117,6 +103,7 @@ The following settings are supported:
 * [`xml.symbols.showReferencedGrammars`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Symbols.md#xmlsymbolsshowreferencedgrammars): Show referenced grammars in the Outline. Default is `true`.
 * [`xml.symbols.filters`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Symbols.md#xmlsymbolsfilters): Allows XML symbols filter to be associated to file name patterns.
 * `files.trimTrailingWhitespace`: Now affects XML formatting. Enable/disable trailing whitespace trimming when formatting an XML document. Default is `false`.
+* See [`Formatting settings`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md) for a detailed list of the formatting settings.
 
 ## Telemetry
 
