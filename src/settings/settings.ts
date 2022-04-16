@@ -238,6 +238,12 @@ export function getXMLSettings(javaHome: string | undefined, logfile: string, ex
       xml['xml']['catalogs'].push(catalog);
     }
   })
+  externalXmlSettings.xmlFileAssociations.forEach(element => {
+    if (!xml['xml']['fileAssociations'].some(fileAssociation => fileAssociation.systemId === element.systemId)) {
+      xml['xml']['fileAssociations'].push(element);
+    }
+  });
+  
   // Apply variable substitutions for file associations
   xml['xml']['fileAssociations'] = [...getVariableSubstitutedAssociations(xml['xml']['fileAssociations'])];
 
