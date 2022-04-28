@@ -56,11 +56,6 @@ node('rhel8'){
 		sh "sed -i -e 's|${downloadLocation}/releases/download/latest|${downloadLocation}/releases/download/${packageJson.version}|g' package.json"
 	}
 
-	stage 'package binary hashes'
-	sh "mkdir ./server"
-	unstash name: 'checksums'
-	sh "cp lemminx-*.sha256 ./server"
-
 	stage 'install vscode-xml build requirements'
 	installBuildRequirements()
 
@@ -68,9 +63,23 @@ node('rhel8'){
 	buildVscodeExtension()
 	unstash 'server_distro'
 	def files = findFiles(glob: '**/org.eclipse.lemminx*-uber.jar')
+	sh "mkdir ./server"
 	sh "mv ${files[0].path} ./server"
 
 	stage "Package vscode-xml"
+	sh "mkdir ../staging"
+	unstash 'binaries'
+	unstash 'checksums'
+	sh "mv lemminx-* ../staging"
+	def platformToTarget = [ "linux" : "linux-x64", "win32" : "win32-x64", "osx-x86_64" : "darwin-x64" ]
+	for(entry in platformToTarget){
+		def platform = entry.key
+		def target = entry.value
+		sh "unzip -d ./server ../staging/lemminx-${platform}.zip"
+		sh "cp ../staging/lemminx-${platform}.sha256 ./server"
+		sh "vsce package --target ${target} -o vscode-xml-${target}-${packageJson.version}-${env.BUILD_NUMBER}.vsix"
+		sh "rm ./server/lemminx-*"
+	}
 	sh "vsce package -o vscode-xml-${packageJson.version}-${env.BUILD_NUMBER}.vsix"
 
 	//stage 'Test vscode-xml for staging'
@@ -78,11 +87,9 @@ node('rhel8'){
 	//	sh "npm test --silent"
 	//}
 
-	stage 'Upload to /vscode-xml/staging'
-	def vsix = findFiles(glob: '**.vsix')
-	unstash 'binaries'
-	archiveArtifacts artifacts: 'lemminx-*.zip,*.sha256,*.vsix'
-	stash name:'vsix', includes:vsix[0].path
+	stage 'Archive artifacts'
+	archiveArtifacts artifacts: '*.vsix'
+	stash name:'vsix', includes:'*.vsix'
 }
 
 node('rhel8'){
@@ -96,7 +103,11 @@ node('rhel8'){
 		def vsix = findFiles(glob: '**.vsix')
 		// VS Code Marketplace
 		withCredentials([[$class: 'StringBinding', credentialsId: 'vscode_java_marketplace', variable: 'TOKEN']]) {
-			sh 'vsce publish -p ${TOKEN} --packagePath' + " ${vsix[0].path}"
+			def platformVsixes = findFiles(glob: '**.vsix', excludes: vsix[0].path)
+			for(platformVsix in platformVsixes){
+				sh 'vsce publish -p ${TOKEN}' + " --packagePath ${platformVsix.path}"
+			}
+			sh 'vsce publish -p ${TOKEN} --target win32-ia32 win32-arm64 linux-arm64 linux-armhf alpine-x64 alpine-arm64 darwin-arm64 --packagePath' + " ${vsix[0].path}"
 		}
 
 		// Open-vsx Marketplace
@@ -105,7 +116,5 @@ node('rhel8'){
 			sh 'ovsx publish -p ${OVSX_TOKEN}' + " ${vsix[0].path}"
 		}
 
-		stage "Upload to /vscode-xml/stable"
-		// copy this stable build to Akamai-mirrored /static/ URL, so staging can be cleaned out more easily
 	}// if publishToMarketPlace
 }
