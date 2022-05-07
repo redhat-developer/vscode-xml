@@ -191,7 +191,7 @@ function openJDKDownload(reject, cause: string) {
 export function getOpenJDKDownloadLink(): Uri {
   let jdkUrl = 'https://developers.redhat.com/products/openjdk/download/?sc_cid=701f2000000RWTnAAO';
   if (process.platform === 'darwin') {
-    jdkUrl = 'https://adoptopenjdk.net/releases.html';
+    jdkUrl = 'https://adoptium.net/temurin/releases';
   }
   return Uri.parse(jdkUrl);
 }
