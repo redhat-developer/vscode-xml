@@ -1,6 +1,6 @@
 import * as fs from "fs-extra";
 import { commands, ConfigurationTarget, ExtensionContext, window, workspace } from "vscode";
-import { CloseAction, ErrorAction, ErrorHandler, Message } from "vscode-languageclient";
+import { CloseAction, CloseHandlerResult, ErrorAction, ErrorHandler, ErrorHandlerResult, Message } from "vscode-languageclient";
 import * as ClientCommandConstants from "../commands/clientCommandConstants";
 import { HEAP_DUMP_LOCATION } from "../server/java/jvmArguments";
 import * as Telemetry from "../telemetry";
@@ -28,11 +28,19 @@ export class ClientErrorHandler implements ErrorHandler {
     this.heapDumpFolder = getHeapDumpFolderFromSettings() || context.globalStorageUri.fsPath;
   }
 
-  error(_error: Error, _message: Message, _count: number): ErrorAction {
-    return ErrorAction.Continue;
+  error(_error: Error, _message: Message, _count: number): ErrorHandlerResult {
+    return {
+      action: ErrorAction.Continue
+    };
   }
 
-  closed(): CloseAction {
+  closed(): CloseHandlerResult {
+    return {
+      action: this.doClosed()
+    }
+  }
+
+  doClosed(): CloseAction {
     this.restarts.push(Date.now());
     const heapProfileGlob = new glob.GlobSync(`${this.heapDumpFolder}/java_*.hprof`);
     if (heapProfileGlob.found.length) {
