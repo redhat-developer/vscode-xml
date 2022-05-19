@@ -52,8 +52,7 @@ export async function startLanguageClient(context: ExtensionContext, executable:
     }
   });
 
-  context.subscriptions.push(languageClient.start());
-  await languageClient.onReady();
+  await languageClient.start();
 
   // ---
 
@@ -146,8 +145,7 @@ function getLanguageClientOptions(
         },
         actionableNotificationSupport: true,
         openSettingsCommandSupport: true,
-        bindingWizardSupport: true,
-        shouldLanguageServerExitOnShutdown: true
+        bindingWizardSupport: true
       }
     },
     errorHandler: new ClientErrorHandler('XML', context),
@@ -158,8 +156,9 @@ function getLanguageClientOptions(
     middleware: {
       workspace: {
         didChangeConfiguration: () => {
-          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirementsData.java_home, logfile, externalXmlSettings) });
+          const result = languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirementsData.java_home, logfile, externalXmlSettings) });
           onConfigurationChange();
+          return result;
         }
       }
     }
