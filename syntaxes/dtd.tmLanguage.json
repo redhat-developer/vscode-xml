@@ -1,0 +1,47 @@
+{
+  "name": "DTD",
+  "scopeName": "text.xml.dtd",
+  "fileTypes": [
+    "dtd"
+  ],
+  "patterns": [
+    {
+      "begin": "(<!)(ELEMENT|ATTLIST|ENTITY|NOTATION)",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.tag.dtd"
+        },
+        "2": {
+          "name": "entity.name.tag.dtd"
+        }
+      },
+      "end": "\\s*(>)",
+      "name": "meta.tag.type.dtd",
+      "patterns": [
+        {
+          "match": "\\s+(CDATA|IDREFS|IDREF|ID|NMTOKENS|NMTOKEN|ENTITY|ENTITIES|NOTATION|SYSTEM|NDATA)",
+          "name": "keyword.other.data-type.dtd"
+        },
+        {
+          "match": "(#[A-Z]+)|(ANY)|(EMPTY)",
+          "name": "constant.language.dtd"
+        },
+        {
+          "begin": "'|\"",
+          "end": "'|\"",
+          "name": "string.quoted.double.dtd"
+        },
+        {
+          "begin": "(%[a-zA-Z][a-zA-Z0-9_-])",
+          "end": ";",
+          "name": "variable.language.dtd"
+        }
+      ]
+    },
+    {
+      "begin": "(<!--)",
+      "end": "(-->)",
+      "name": "comment.block.dtd"
+    }
+  ]
+}

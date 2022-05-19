@@ -124,8 +124,10 @@ function getLanguageClientOptions(
     documentSelector: [
       { scheme: 'file', language: 'xml' },
       { scheme: 'file', language: 'xsl' },
+      { scheme: 'file', language: 'dtd' },
       { scheme: 'untitled', language: 'xml' },
-      { scheme: 'untitled', language: 'xsl' }
+      { scheme: 'untitled', language: 'xsl' },
+      { scheme: 'untitled', language: 'dtd' },
     ],
     revealOutputChannelOn: RevealOutputChannelOn.Never,
     //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
