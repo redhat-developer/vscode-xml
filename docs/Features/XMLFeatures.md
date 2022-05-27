@@ -10,6 +10,16 @@ To format an XML document, you can use the formatting shortcut `Ctrl + Shift + K
 
 For more information on formatting capabilities, see [Formatting](../Formatting.md#formatting).
 
+## Folding
+
+XML tag folding is supported:
+
+To collapse and expand a tag, press the arrow.
+
+![Folding XML](../images/Features/FoldingXML.gif)
+
+For more information on folding capabilities, see [Folding](../Folding.md#folding).
+
 ## XML Tag Auto Close
 
 XML tag `auto-close` is supported:

@@ -85,6 +85,7 @@ The following settings are supported:
 * [`xml.catalogs`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#catalogs): Register XML catalog files.
 * `xml.downloadExternalResources.enabled`: Download external resources like referenced DTD, XSD. Default is `true`.
 * [`xml.fileAssociations`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Preferences.md#file-associations): Allows XML schemas/ DTD to be associated to file name patterns.
+* [`xml.foldings.includeClosingTagInFold`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Folding.md#xmlfoldingincludeClosingTagInFold): Minimize the closing tag after folding. Default is `false`.
 * [`xml.format.enabled`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatenabled): Enable/disable ability to format document. Default is `true`.
 * [`xml.format.emptyElements`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatemptyelements): Expand/collapse empty elements. Default is `ignore`.
 * [`xml.format.enforceQuoteStyle`](https://github.com/redhat-developer/vscode-xml/blob/master/docs/Formatting.md#xmlformatenforcequotestyle): Enforce `preferred` quote style (set by `xml.preferences.quoteStyle`) or `ignore` quote style when formatting. Default is `ignore`.
