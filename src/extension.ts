@@ -70,6 +70,5 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
 export async function deactivate(): Promise<void> {
   if (languageClient) {
     await languageClient.stop();
-    languageClient = undefined;
   }
 }
