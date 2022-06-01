@@ -6,42 +6,120 @@
   ],
   "patterns": [
     {
-      "begin": "(<!)(ELEMENT|ATTLIST|ENTITY|NOTATION)",
-      "captures": {
-        "1": {
-          "name": "punctuation.definition.tag.dtd"
-        },
-        "2": {
-          "name": "entity.name.tag.dtd"
-        }
-      },
-      "end": "\\s*(>)",
-      "name": "meta.tag.type.dtd",
+      "begin": "(<!--)",
+      "end": "(-->)",
+      "name": "comment.block.dtd"
+    },
+    {
+      "include": "#EntityDecl"
+    },
+    {
+      "include": "#ElementDecl"
+    },
+    {
+      "include": "#AttlistDecl"
+    }
+  ],	
+  "repository": {
+		"EntityDecl": {
+      "begin": "(<!)(ENTITY)\\s+(%\\s+)?([:a-zA-Z_][:a-zA-Z0-9_.-]*)(\\s+(?:SYSTEM|PUBLIC)\\s+)?",
+			"captures": {
+				"1": {
+					"name": "punctuation.definition.tag.dtd"
+				},
+				"2": {
+					"name": "keyword.other.entity.dtd"
+				},
+				"3": {
+					"name": "punctuation.definition.entity.dtd"
+				},
+				"4": {
+					"name": "variable.language.entity.dtd"
+				},
+				"5": {
+					"name": "keyword.other.entitytype.dtd"
+				}
+			},
+			"end": "(>)",
       "patterns": [
         {
-          "match": "\\s+(CDATA|IDREFS|IDREF|ID|NMTOKENS|NMTOKEN|ENTITY|ENTITIES|NOTATION|SYSTEM|NDATA)",
-          "name": "keyword.other.data-type.dtd"
-        },
-        {
-          "match": "(#[A-Z]+)|(ANY)|(EMPTY)",
-          "name": "constant.language.dtd"
-        },
+          "begin": "'|\"",
+          "end": "'|\"",
+          "name": "string.quoted.double.dtd"
+        }
+			]
+		},
+    "ElementDecl": {
+      "begin": "(<!)(ELEMENT)\\s+([A-Z]+)",
+			"captures": {
+				"1": {
+					"name": "punctuation.definition.tag.dtd"
+				},
+				"2": {
+					"name": "keyword.other.entity.dtd"
+				},
+				"3": {
+					"name": "entity.name.type.dtd"
+				}
+			},
+			"end": "(>)",
+      "patterns": [
         {
           "begin": "'|\"",
           "end": "'|\"",
           "name": "string.quoted.double.dtd"
         },
         {
-          "begin": "(%[a-zA-Z][a-zA-Z0-9_-])",
-          "end": ";",
-          "name": "variable.language.dtd"
+          "match": "((?<=\\()|(?<=,)|(?<=|))([A-Za-z]+)((?=\\)|(?=\\,)|(?=\\+)|(?=\\?)|(?=\\*)|(?<=|)))",
+          "name": "variable.parameter.dtd"
+        },
+        {
+          "match": "(#[A-Z]+)|\\s+(ANY)|\\s+(EMPTY)",
+          "name": "constant.language.dtd"
+        },
+        {
+          "match": "[+]|[?]|[*]",
+          "name": "keyword.operator.dtd"
         }
-      ]
-    },
-    {
-      "begin": "(<!--)",
-      "end": "(-->)",
-      "name": "comment.block.dtd"
-    }
-  ]
+			]
+		},
+    "AttlistDecl": { 
+      "patterns": [
+        {
+          "begin": "'|\"",
+          "end": "'|\"",
+          "name": "string.quoted.double.dtd"
+        },
+        {
+          "match": "(<!|>)",
+          "name": "punctuation.definition.tag.dtd"
+        },
+        {
+          "match": "ATTLIST",
+          "name": "keyword.other.entity.dtd"
+        },
+        {
+          "begin": "(?<=ATTLIST)",
+          "end": "([A-Z]+)",
+          "name": "entity.name.type.dtd"
+        },
+        {
+          "match": "(^|\\s+)([A-Z]+)\\s*",
+          "name": "variable.parameter.dtd"
+        },
+        {
+          "match": "\\s*(CDATA|ID|IDREF|IDREFS|NMTOKEN|NMTOKENS|ENTITY|ENTITIES|NOTATION)\\s*",
+          "name": "constant.language.dtd"
+        },
+        {
+          "match": "((?<=\\()|(?<=|))([A-Za-z-]+)((?=\\)|(?=\\|)|(?=\\*)))",
+          "name": "variable.other.dtd"
+        },
+        {
+          "match": "\\s*(#REQUIRED|#IMPLIED|#FIXED)\\s*",
+          "name": "storage.modifier.dtd"
+        }
+			]
+		}
+  }
 }
