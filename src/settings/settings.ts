@@ -52,6 +52,9 @@ export function subscribeJDKChangeConfiguration() {
       if(hasPreferenceChanged(oldXMLConfig, newXMLConfig, "java.home")) { // checks "xml.java.home", not "java.home"
         createReloadWindowMessage("`xml.java.home` path has changed. Please restart VS Code.");
       }
+      if (params.affectsConfiguration("xml.server.vmargs")) {
+        createReloadWindowMessage("Arguments to the JVM have changed. Please reload VS Code to apply this change.");
+      }
       // update to newest version of config
       oldXMLConfig = newXMLConfig;
       return;
