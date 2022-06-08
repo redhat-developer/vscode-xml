@@ -1,10 +1,11 @@
 import * as fs from "fs-extra";
-import { commands, ExtensionContext, window, workspace } from "vscode";
+import { commands, ConfigurationTarget, ExtensionContext, window, workspace } from "vscode";
 import { CloseAction, ErrorAction, ErrorHandler, Message } from "vscode-languageclient";
 import { ClientCommandConstants } from "../commands/commandConstants";
 import { HEAP_DUMP_LOCATION } from "../server/java/jvmArguments";
 import { Telemetry } from "../telemetry";
 import glob = require("glob");
+import { totalmem } from "os";
 
 /**
  * An error handler that restarts the language server,
@@ -77,8 +78,9 @@ export async function cleanUpHeapDumps(context: ExtensionContext): Promise<void>
  */
 async function showOOMMessage(): Promise<void> {
   const DOCS = 'More info...';
+  const DOUBLE = 'Double allocated memory';
   const result = await window.showErrorMessage('The XML Language Server crashed due to an Out Of Memory Error, and will not be restarted. ', //
-    DOCS);
+    DOUBLE, DOCS);
   if (result === DOCS) {
     Telemetry.sendTelemetry(Telemetry.OPEN_OOM_DOCS_EVT);
     await commands.executeCommand(ClientCommandConstants.OPEN_DOCS,
@@ -87,10 +89,13 @@ async function showOOMMessage(): Promise<void> {
         section: 'the-language-server-crashes-due-to-an-out-of-memory-error'
       }
     );
+  } else if (result === DOUBLE) {
+    doubleAllocatedMemory();
   }
 }
 
 const HEAP_DUMP_FOLDER_EXTRACTOR = new RegExp(`${HEAP_DUMP_LOCATION}(?:'([^']+)'|"([^"]+)"|([^\\s]+))`);
+const MAX_HEAP_SIZE_EXTRACTOR = new RegExp(`-Xmx([0-9]+)[kKmMgG]`);
 
 /**
  * Returns the heap dump folder defined in the user's preferences, or undefined if the user does not set the heap dump folder
@@ -122,4 +127,24 @@ function getXmxFromSettings(): string {
     }
   }
   return 'DEFAULT';
+}
+
+/**
+ * Double the memory allocated to lemminx in the vmargs parameter
+ */
+async function doubleAllocatedMemory() {
+  let vmargs: string = workspace.getConfiguration('xml.server').get('vmargs', null);
+  const results = MAX_HEAP_SIZE_EXTRACTOR.exec(vmargs);
+  if (results && results[0]) {
+    const maxMemArg: string = results[0];
+    const maxMemValue: number = Number(results[1]);
+    const newMaxMemArg: string = maxMemArg.replace(maxMemValue.toString(), (maxMemValue * 2).toString());
+    vmargs = vmargs.replace(maxMemArg, newMaxMemArg);
+    await workspace.getConfiguration().update("xml.server.vmargs", vmargs, ConfigurationTarget.Global);
+  } else {
+    // by default, many JVM take 1/4 of the physical memory as -Xmx
+    // in the case it crashes, set -Xmx to half of total physical memory, in megabytes
+    vmargs = `-Xmx ${Math.trunc(totalmem()/2/1000000)}m ${vmargs}`;
+    await workspace.getConfiguration().update("xml.server.vmargs", vmargs, ConfigurationTarget.Global);
+  }
 }
