@@ -38,8 +38,10 @@ pipeline {
             label "win10"
           }
           steps {
-            powershell "if (Test-Path lemminx-win32.exe) { Remove-Item lemminx-win32.exe }"
-            powershell "Remove-Item -Recurse -Force lemminx"
+            powershell """
+              if (Test-Path lemminx-win32.exe) { Remove-Item lemminx-win32.exe }
+              Remove-Item -Recurse -Force lemminx
+            """
             script {
               if (publishToMarketPlace.equals('true')) {
                 powershell """
@@ -49,13 +51,11 @@ pipeline {
                 def packageJson = readJSON file: 'package.json'
                 def lemminxVersion = packageJson?.xmlServer?.version
                 powershell """
-                  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                  git clone -b ${lemminxVersion} https://github.com/eclipse/lemminx.git
+                  git clone -b ${lemminxVersion} git@github.com:eclipse/lemminx.git
                 """
               } else {
                 powershell """
-                  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                  git clone https://github.com/eclipse/lemminx.git
+                  git clone git@github.com:eclipse/lemminx.git
                 """
               }
             }
