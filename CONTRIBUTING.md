@@ -124,3 +124,10 @@ If you need to generate a LemMinX binary locally for whatever reason, follow the
 3. Run `./mvnw clean package -DskipTests -Dnative` from the root of the LemMinX repository
     * This will use a lot of memory (> 4 GB) and take a while
 4. The binary is generated in `./org.eclipse.lemminx/target`
+
+### Certificate of Origin
+
+By contributing to this project you agree to the Developer Certificate of
+Origin (DCO). This document was created by the Linux Kernel community and is a
+simple statement that you, as a contributor, have the legal right to make the
+contribution. See the [DCO](DCO) file for details.
