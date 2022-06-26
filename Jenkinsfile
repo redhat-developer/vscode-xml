@@ -1,10 +1,10 @@
 #!/usr/bin/env groovy
 
 def installBuildRequirements(){
-	def nodeHome = tool 'nodejs-12.13.1'
+	def nodeHome = tool 'nodejs-14.19.1'
 	env.PATH="${env.PATH}:${nodeHome}/bin"
 	sh "npm install -g typescript"
-	sh 'npm install -g "vsce@<2"'
+	sh 'npm install -g "vsce"'
 }
 
 def buildVscodeExtension(){
@@ -66,20 +66,30 @@ node('rhel8'){
 	sh "mkdir ./server"
 	sh "mv ${files[0].path} ./server"
 
+	env.publishPreReleaseFlag = ""
+	if(publishPreRelease.equals('true')){
+		stage "Prepare for pre-release"
+		sh "npx gulp prepare_pre_release"
+		packageJson = readJSON file: 'package.json'
+		env.publishPreReleaseFlag = "--pre-release"
+	}
+
 	stage "Package vscode-xml"
 	sh "mkdir ../staging"
 	unstash 'binaries'
 	unstash 'checksums'
 	sh "mv lemminx-* ../staging"
-	def platformToTarget = [ "linux" : "linux-x64", "win32" : "win32-x64", "osx-x86_64" : "darwin-x64" ]
+	def platformToTarget = [ "linux-x64" : "linux", "win32-x64" : "win32", "darwin-x64" : "osx-x86_64", "darwin-arm64" : "osx-x86_64"]
 	for(entry in platformToTarget){
-		def platform = entry.key
-		def target = entry.value
+		def target = entry.key
+		def platform = entry.value
 		sh "unzip -d ./server ../staging/lemminx-${platform}.zip"
 		sh "cp ../staging/lemminx-${platform}.sha256 ./server"
-		sh "vsce package --target ${target} -o vscode-xml-${target}-${packageJson.version}-${env.BUILD_NUMBER}.vsix"
+		sh "vsce package ${env.publishPreReleaseFlag} --target ${target} -o vscode-xml-${target}-${packageJson.version}-${env.BUILD_NUMBER}.vsix"
 		sh "rm ./server/lemminx-*"
 	}
+	// This vsix only gets published to OpenVSX (if option is set)
+	// server folder still needed to publish generic vsix below
 	sh "cp ../staging/lemminx-*.sha256 ./server"
 	sh "vsce package -o vscode-xml-${packageJson.version}-${env.BUILD_NUMBER}.vsix"
 
@@ -94,9 +104,12 @@ node('rhel8'){
 }
 
 node('rhel8'){
-	if(publishToMarketPlace.equals('true')){
-		timeout(time:2, unit:'DAYS') {
-			input message:'Approve deployment?', submitter: 'fbricon,rgrunber,azerr,davthomp'
+	if(publishToMarketPlace.equals('true') || publishPreRelease.equals('true')){
+
+		if (publishToMarketPlace.equals('true')) {
+			timeout(time:2, unit:'DAYS') {
+				input message:'Approve deployment?', submitter: 'fbricon,rgrunber,azerr,davthomp'
+			}
 		}
 
 		stage "Publish to Marketplaces"
@@ -109,13 +122,15 @@ node('rhel8'){
 				sh 'vsce publish -p ${TOKEN}' + " --packagePath ${platformVsix.path}"
 			}
 			// Cannot combine packagePath & target, so re-generate (generic) package and publish
-			sh 'vsce publish -p ${TOKEN} --target win32-ia32 win32-arm64 linux-arm64 linux-armhf alpine-x64 alpine-arm64 darwin-arm64'
+			sh 'vsce publish -p ${TOKEN} --target win32-ia32 win32-arm64 linux-arm64 linux-armhf alpine-x64 alpine-arm64 darwin-arm64' + " ${env.publishPreReleaseFlag}"
 		}
 
-		// Open-vsx Marketplace
-		sh 'npm install -g "ovsx@<0.3.0"'
-		withCredentials([[$class: 'StringBinding', credentialsId: 'open-vsx-access-token', variable: 'OVSX_TOKEN']]) {
-			sh 'ovsx publish -p ${OVSX_TOKEN}' + " ${vsix[0].path}"
+		if (publishToMarketPlace.equals('true')) {
+			// Open-VSX Marketplace does not support pre-release
+			sh 'npm install -g "ovsx"'
+			withCredentials([[$class: 'StringBinding', credentialsId: 'open-vsx-access-token', variable: 'OVSX_TOKEN']]) {
+				sh 'ovsx publish -p ${OVSX_TOKEN}' + " ${vsix[0].path}"
+			}
 		}
 
 	}// if publishToMarketPlace
