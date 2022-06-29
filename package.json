@@ -16,7 +16,7 @@
     "dtd"
   ],
   "xmlServer": {
-    "version": "0.20.0"
+    "version": "0.21.0"
   },
   "binaryServerDownloadUrl": {
     "linux": "https://github.com/redhat-developer/vscode-xml/releases/download/latest/lemminx-linux.zip",
