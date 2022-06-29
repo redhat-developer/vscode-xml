@@ -1,5 +1,47 @@
 # Change Log
 
+## [0.21.0](https://github.com/redhat-developer/vscode-xml/milestone/29?closed=1) (June 29, 2022)
+
+### Enhancements
+
+ * Add button to double heap size on OOM. See [#718](https://github.com/redhat-developer/vscode-xml/pull/718).
+ * CodeAction for cvc-elt.1.a. See [#599](https://github.com/redhat-developer/vscode-xml/issues/599).
+ * TextMate grammar for *.dtd files. See [#313](https://github.com/redhat-developer/vscode-xml/issues/313).
+ * CodeAction for cvc-complex-type.2.4.b. See [lemminx#1218](https://github.com/eclipse/lemminx/issues/1218).
+ * Support folding for <!DOCTYPE. See [lemminx#1213](https://github.com/eclipse/lemminx/issues/1213).
+ * Added folding setting to keep displaying the closing tag after folding. See [lemminx#1209](https://github.com/eclipse/lemminx/pull/1209).
+ * Provide basic experimental formatter which supports invalid XML. See [lemminx#1195](https://github.com/eclipse/lemminx/issues/1195), [lemminx#1041](https://github.com/eclipse/lemminx/issues/1041), [lemminx#1034](https://github.com/eclipse/lemminx/issues/1034), [lemminx#679](https://github.com/eclipse/lemminx/issues/679), [lemminx#675](https://github.com/eclipse/lemminx/issues/675), [lemminx#305](https://github.com/eclipse/lemminx/issues/305).
+ * Format with xml:space. See [lemminx#826](https://github.com/eclipse/lemminx/issues/826).
+ * Code action for `SemicolonRequiredInReference`. See [lemminx#665](https://github.com/eclipse/lemminx/issues/665).
+ * Improve XML formatter (option to have Tags in the same line). See [lemminx#594](https://github.com/eclipse/lemminx/issues/594).
+
+### Performance
+
+ * Cancel process of code action. See [lemminx#1220](https://github.com/eclipse/lemminx/issues/1220).
+ * Parse of DOM document should be not done in a Thread. See [lemminx#1216](https://github.com/eclipse/lemminx/pull/1216).
+ * Improve memory for DOM parser & XML scanner. See [lemminx#1211](https://github.com/eclipse/lemminx/pull/1211), [lemminx#1206](https://github.com/eclipse/lemminx/pull/1206).
+ * Wait a bit after change before sending diagnostics. See [lemminx#1162](https://github.com/eclipse/lemminx/issues/1162).
+ * Implement `codeAction/resolve` & `completionItem/resolve`. See [lemminx#941](https://github.com/eclipse/lemminx/issues/941), [lemminx#616](https://github.com/eclipse/lemminx/issues/616).
+
+### Bug Fixes
+
+ * `externalXmlSettings.xmlFileAssociations` not used in `getXMLSettings`. See [#698](https://github.com/redhat-developer/vscode-xml/issues/698).
+ * DOCTYPE entities interfering with hover annotation display of tags / attributes. See [lemminx#1212](https://github.com/eclipse/lemminx/pull/1212).
+ * Incorrect error range for `cvc-identity-constraint.4.1`. See [lemminx#1210](https://github.com/eclipse/lemminx/issues/1210).
+ * Resolve uri as system with XML catalog. See [lemminx#1199](https://github.com/eclipse/lemminx/issues/1199).
+
+### Build
+
+ * Fix native image build on Windows builders. See [#721](https://github.com/redhat-developer/vscode-xml/pull/721).
+ * Add LemMinX binary artifacts to release tab only on new changes. See [#706](https://github.com/redhat-developer/vscode-xml/pull/706).
+ * Automatically publish latest snapshot build on Release page. See [#656](https://github.com/redhat-developer/vscode-xml/issues/656).
+
+### Other
+
+ * Add DCO information to `CONTRIBUTING.md`. See [#723](https://github.com/redhat-developer/vscode-xml/issues/723).
+ * Added permission check and window error message for LemMinx binary. See [#695](https://github.com/redhat-developer/vscode-xml/pull/695).
+ * After a tag is collapsed, the content of the entire tag cannot be deleted. See [#690](https://github.com/redhat-developer/vscode-xml/issues/690).
+ 
 ## [0.20.0](https://github.com/redhat-developer/vscode-xml/milestone/28?closed=1) (March 29, 2022)
 
 ### Enhancements
