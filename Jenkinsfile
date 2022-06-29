@@ -107,7 +107,8 @@ node('rhel8'){
 			for(platformVsix in platformVsixes){
 				sh 'vsce publish -p ${TOKEN}' + " --packagePath ${platformVsix.path}"
 			}
-			sh 'vsce publish -p ${TOKEN} --target win32-ia32 win32-arm64 linux-arm64 linux-armhf alpine-x64 alpine-arm64 darwin-arm64 --packagePath' + " ${vsix[0].path}"
+			// Cannot combine packagePath & target, so re-generate (generic) package and publish
+			sh 'vsce publish -p ${TOKEN} --target win32-ia32 win32-arm64 linux-arm64 linux-armhf alpine-x64 alpine-arm64 darwin-arm64'
 		}
 
 		// Open-vsx Marketplace
