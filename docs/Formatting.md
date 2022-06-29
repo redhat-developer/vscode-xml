@@ -10,29 +10,31 @@
 
   Set to `true` to enable experimental formatter. Defaults to `false`.
 
-  As we have more and more issues with our current XML formatter, we  have decided to redo our formatter to try to fix them. This new formatter is in experimental state because it doesn't support all current formatter settings and it could have some bugs. To enable this experimental formatter you can set the setting `xml.format.experimental` to true. 
-  
-  Once we have enough good feedback and we support all current formatting settings, we will replace the current formatter with the experimental formatter. Don't hesitate to [create issues](https://github.com/redhat-developer/vscode-xml/issues) to give us feedback with this experimental formatter.
-  
-  The current formatter uses the DOM document and rewrite the XML document or a fragment of XML (when range formatting is processed). This strategy provides a lot of bugs if XML is not valid (ex : <% will format with <null).
-  
-  The new strategy is to format the current XML by adding or removing some spaces without updating the XML content. The experimental formatter categorizes each element as :
-  
+  As the frequency of issues regarding the previous XML formatter increased, we have decided to redo our formatter from scratch. *Note*: this new formatter is flagged as experimental since it doesn't support all current formatter settings and uncaught bugs may occur. To enable this experimental formatter, the setting `xml.format.experimental` should be set to true.
+
+  We plan to have the experimental formatter replace the current formatter entirely once we have enough positive feedback and all current formatting settings are supported. To help with this, please don't hesitate to [create issues](https://github.com/redhat-developer/vscode-xml/issues) and give us feedback on this experimental formatter.
+
+  The current formatter uses the DOM document to rewrite the XML document, or simply a fragment of XML (when range formatting is processed). *Note*: This strategy provides a lot of bugs if XML is not valid (ex : `<%` will format with `<null`).
+
+  Any setting unsupported by the experimental formatter will be marked with **Not supported by the experimental formatter**, while settings exclusive to the experimental formatter will be marked with **This setting is only available with experimental formatter**.
+
+  The new strategy used by the experimental formatter formats the current XML by adding or removing some spaces without updating the XML content. The experimental formatter categorizes each element as:
+
   * `ignore space`
-  *  `normalize space`
-  *  `mixed content` 
-  * and `preserve space`. Also, you can use `xml:space="preserve"` to preserve spaces in some elements or use `xml.format.preserveSpace` to add a given tag element which must preserve spaces.
-  
+  * `normalize space`
+  * `mixed content`
+  * `preserve space`. (You can use `xml:space="preserve"` to preserve spaces in some elements or use `xml.format.preserveSpace` to add a given tag element which must preserve spaces.)
+
 Once the element is categorized, the element content is formatted according the category:
 
- * `ignore space` : 
+  * `ignore space` :
 
 ```xml
 <foo>
                 <bar></bar>         </foo>
 ```
 
-Here `foo` is categorized as `ignore space`, because all children are tag elements and only spaces. it means that it removes all spaces . After formatting you should see this result:
+Here `foo` is categorized as `ignore space`, because all children of `foo` are tag elements and single spaces. All single spaces are removed. After formatting, you should see this result:
 
 ```xml
 <foo>
@@ -40,37 +42,37 @@ Here `foo` is categorized as `ignore space`, because all children are tag elemen
 </foo>
 ```
 
- * `normalize space` : 
- 
+ * `normalize space` :
+
 ```xml
 <foo>
-  abc 
+  abc
   def
 </foo>
 ```
 
-Here `foo` is categorized as `normalize space`, it means that it removes all spaces with one space. After formatting you should see this result:
+Here `foo` is categorized as `normalize space`, it means that it replaces all spaces with a single space. After formatting, you should see this result:
 
 ```xml
 <foo> abc def </foo>
 ```
 
  * `preserve space`
- 
-If you want to preserve space, you can use `xml:space="preserve"` to preserve spaces in some elements or use `xml.format.preserveSpace`
+
+If you want to preserve space, you can use `xml:space="preserve"` to preserve spaces in some elements or use the [`xml.format.preserveSpace`](#xml.format.preserveSpace) setting.
 
 ```xml
 <foo xml:space="preserve" >
-  abc 
+  abc
   def
 </foo>
 ```
 
-Here `foo` is categorized as `preserve space`, after formatting you should see this result:
+Here `foo` is categorized as `preserve space`. After formatting, you should see this result:
 
 ```xml
 <foo xml:space="preserve" >
-  abc 
+  abc
   def
 </foo>
 ```
@@ -80,12 +82,12 @@ Here `foo` is categorized as `preserve space`, after formatting you should see t
 ```xml
 <foo>
     <bar></bar>
-    abc 
+    abc
     def
 </foo>
 ```
 
-Here `foo` is categorized as `mixed content` (it contains text and tag element), it means that it removes all spaces with one space. After formatting you should see this result:
+Here `foo` is categorized as `mixed content`, since it contains text and tag element. All single spaces are removed. After formatting, you should see this result:
 
 ```xml
 <foo>
@@ -119,8 +121,6 @@ Set to `expand` to expand empty elements during formatting.
    <example attr="value" ></example>
   ```
 ***
-
-**Not supported by the experimental formatter.**
 
 ### xml.format.enforceQuoteStyle
 
@@ -274,7 +274,7 @@ If this value is set to 0, then all blank lines will be removed during formattin
   ```
 
 **Not supported by the experimental formatter.**
-  
+
 ***
 
 ### xml.format.preserveEmptyContent
@@ -548,16 +548,16 @@ Element names for which spaces will be preserved. Defaults is the following arra
 ]
 ```
 
-This settings is only available with experimental formatter.
+**This setting is only available with experimental formatter.**
 
 ### xml.format.maxLineWidth
 
 Max line width. Default is `80`.
 
-This settings is only available with experimental formatter.
+**This setting is only available with experimental formatter.**
 
 ### xml.format.grammarAwareFormatting
 
-Use Schema/DTD grammar information while formatting. Default is `true`. 
+Use Schema/DTD grammar information while formatting. Default is `true`.
 
-This settings is only available with experimental formatter.
+**This setting is only available with experimental formatter.**
