@@ -80,6 +80,7 @@ node('rhel8'){
 		sh "vsce package --target ${target} -o vscode-xml-${target}-${packageJson.version}-${env.BUILD_NUMBER}.vsix"
 		sh "rm ./server/lemminx-*"
 	}
+	sh "cp ../staging/lemminx-*.sha256 ./server"
 	sh "vsce package -o vscode-xml-${packageJson.version}-${env.BUILD_NUMBER}.vsix"
 
 	//stage 'Test vscode-xml for staging'

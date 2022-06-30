@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.21.0](https://github.com/redhat-developer/vscode-xml/milestone/29?closed=1) (June 29, 2022)
+## [0.21.0](https://github.com/redhat-developer/vscode-xml/milestone/29?closed=1) (June 30, 2022)
 
 ### Enhancements
 
@@ -29,9 +29,12 @@
  * DOCTYPE entities interfering with hover annotation display of tags / attributes. See [lemminx#1212](https://github.com/eclipse/lemminx/pull/1212).
  * Incorrect error range for `cvc-identity-constraint.4.1`. See [lemminx#1210](https://github.com/eclipse/lemminx/issues/1210).
  * Resolve uri as system with XML catalog. See [lemminx#1199](https://github.com/eclipse/lemminx/issues/1199).
+ * Added permission check and window error message for LemMinx binary. See [#695](https://github.com/redhat-developer/vscode-xml/pull/695).
+ * After a tag is collapsed, the content of the entire tag cannot be deleted. See [#690](https://github.com/redhat-developer/vscode-xml/issues/690).
 
 ### Build
 
+ * Use platform specific `.vsix` files, and package the lemminx binary into the `.vsix`. See [#593](https://github.com/redhat-developer/vscode-xml/issues/593).
  * Fix native image build on Windows builders. See [#721](https://github.com/redhat-developer/vscode-xml/pull/721).
  * Add LemMinX binary artifacts to release tab only on new changes. See [#706](https://github.com/redhat-developer/vscode-xml/pull/706).
  * Automatically publish latest snapshot build on Release page. See [#656](https://github.com/redhat-developer/vscode-xml/issues/656).
@@ -39,9 +42,7 @@
 ### Other
 
  * Add DCO information to `CONTRIBUTING.md`. See [#723](https://github.com/redhat-developer/vscode-xml/issues/723).
- * Added permission check and window error message for LemMinx binary. See [#695](https://github.com/redhat-developer/vscode-xml/pull/695).
- * After a tag is collapsed, the content of the entire tag cannot be deleted. See [#690](https://github.com/redhat-developer/vscode-xml/issues/690).
- 
+
 ## [0.20.0](https://github.com/redhat-developer/vscode-xml/milestone/28?closed=1) (March 29, 2022)
 
 ### Enhancements
@@ -59,13 +60,13 @@
  * Add support to download binaries from GitHub Releases. See [#685](https://github.com/redhat-developer/vscode-xml/pull/685).
  * Fix GraalVM Native Image Builds on Jenkins. See [#681](https://github.com/redhat-developer/vscode-xml/pull/681).
  * Update GraalVM version used in binary verification builds to x.y.z. See [lemminx#1158](https://github.com/eclipse/lemminx/issues/1158).
- 
+
 ## [0.19.1](https://github.com/redhat-developer/vscode-xml/milestone/27?closed=1) (February 15, 2022)
 
 ### Bug Fixes
 
  * Fix endless diagnostic publishing when validation is disabled. See [lemminx#1175](https://github.com/eclipse/lemminx/issues/1175).
- 
+
 ## [0.19.0](https://github.com/redhat-developer/vscode-xml/milestone/26?closed=1) (February 14, 2022)
 
 ### Enhancements
