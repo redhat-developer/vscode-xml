@@ -14,7 +14,7 @@
           os: [macos-latest, ubuntu-latest]
           include:
             - os: macos-latest
-              label: 'darwin'
+              label: 'osx-x86_64'
             - os: ubuntu-latest
               label: 'linux'
       steps:
