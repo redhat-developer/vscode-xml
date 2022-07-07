@@ -122,7 +122,7 @@ node('rhel8'){
 				sh 'vsce publish -p ${TOKEN}' + " --packagePath ${platformVsix.path}"
 			}
 			// Cannot combine packagePath & target, so re-generate (generic) package and publish
-			sh 'vsce publish -p ${TOKEN} --target win32-ia32 win32-arm64 linux-arm64 linux-armhf alpine-x64 alpine-arm64 darwin-arm64' + " ${env.publishPreReleaseFlag}"
+			sh 'vsce publish -p ${TOKEN} --target win32-ia32 win32-arm64 linux-arm64 linux-armhf alpine-x64 alpine-arm64' + " ${env.publishPreReleaseFlag}"
 		}
 
 		if (publishToMarketPlace.equals('true')) {
