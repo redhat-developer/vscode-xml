@@ -4,10 +4,11 @@ This page explains how to get vscode-xml to work through a proxy.
 
 ## Prerequisites
 
-If you want to use the binary language server,
-then you will need to make sure that your proxy allows connections to jboss.org
-since the binary language server is downloaded from that website.
-You will also need to make sure that you can access any online XML schemas that you want to work with through the proxy.
+You need to make sure that you can access any online XML schemas that you want to work with through the proxy.
+Also, if are using open-vsx.org instead of Visual Studio Marketplace for extensions
+and you want to use the binary language server,
+then you will need to make sure that your proxy allows connections to GitHub,
+since the binary language server is downloaded from GitHub when using open-vsx.org [for the time being](https://github.com/redhat-developer/vscode-xml/issues/739).
 
 ## Setting up the proxy in VS Code
 
@@ -19,6 +20,7 @@ The tested way to get vscode-xml to use your proxy is to set the following setti
  * `http.proxy`:
    The address at which the proxy can be accessed.
    As an example, use `"http://localhost:3128"` for a proxy running on your machine on port 3128.
+   vscode-xml (as well as VS Code) assumes that the same proxy address is used for the HTTP and HTTPS requests.
  * `http.proxyAuthorization`:
    The authorization header to use for the proxy requests.
    This is only needed when the proxy requires authorization.

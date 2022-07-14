@@ -109,9 +109,11 @@ export function getProxySettings(): ProxySettings {
 export function getProxySettingsAsJVMArgs(proxySettings: ProxySettings): string {
   // Java doesn't recognize localhost in the proxy settings
   const adaptedHostName = 'localhost'.startsWith(proxySettings.host) ? '127.0.0.1' : proxySettings.host;
-  let proxyJVMArgs: string = ` -Dhttp.proxyHost=${adaptedHostName} -Dhttp.proxyPort=${proxySettings.port} `;
+  let proxyJVMArgs: string = ` -Dhttp.proxyHost=${adaptedHostName} -Dhttp.proxyPort=${proxySettings.port}`
+    + ` -Dhttps.proxyHost=${adaptedHostName} -Dhttps.proxyPort=${proxySettings.port} `;
   if (proxySettings.auth) {
-    proxyJVMArgs += ` -Dhttp.proxyUser=${proxySettings.auth.username} -Dhttp.proxyPassword=${proxySettings.auth.password} `;
+    proxyJVMArgs += ` -Dhttp.proxyUser=${proxySettings.auth.username} -Dhttp.proxyPassword=${proxySettings.auth.password}`
+      + ` -Dhttps.proxyUser=${proxySettings.auth.username} -Dhttps.proxyPassword=${proxySettings.auth.password} `;
   }
   return proxyJVMArgs;
 }
