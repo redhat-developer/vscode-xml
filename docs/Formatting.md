@@ -146,8 +146,6 @@ will be formatted to:
 
 No changes to quotes will occur during formatting if `xml.format.enforceQuoteStyle` is set to `ignore`.
 
-**Not supported by the experimental formatter.**
-
 ***
 
 ### xml.format.preserveAttributeLineBreaks
