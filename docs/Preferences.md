@@ -19,7 +19,7 @@
 
   Can be accessed through `xml.server.vmargs`.
 
-  Setting up proxy:
+### Setting up Proxy
 
   A proxy can be defined in the following way if there is a system proxy:
 
@@ -33,6 +33,9 @@
   -Dhttp.proxyHost=<proxy_host> -Dhttp.proxyPort=<proxy_port> -Dhttp.proxyUser=<user>
   -Dhttp.proxyPassword= <password> -Dhttps.proxyHost=<proxy_host> -Dhttps.proxyPort=<proxy_port>
   ```
+
+  **Please note:** If you've configured the proxy as described in [Proxy.md](Proxy.md), there is no need to do this,
+  as this will be handled for you by vscode-xml.
 
 ## Server Binary Mode
 
