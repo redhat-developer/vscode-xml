@@ -125,7 +125,7 @@ export function getProxySettingsAsJVMArgs(proxySettings: ProxySettings): string 
  * @returns the proxy settings as environment variables for LemMinX
  */
 export function getProxySettingsAsEnvironmentVariables(proxySettings: ProxySettings): any {
-  let proxyEnv: any = {};
+  const proxyEnv: any = {};
 
   proxyEnv['HTTP_PROXY_HOST'] = proxySettings.host;
   proxyEnv['HTTP_PROXY_PORT'] = proxySettings.port;

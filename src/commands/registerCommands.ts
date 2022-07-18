@@ -1,11 +1,12 @@
 import * as path from 'path';
-import { commands, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, Uri, window, workspace, WorkspaceEdit, ConfigurationTarget, TextDocument } from "vscode";
-import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, ReferencesRequest, TextDocumentIdentifier, TextDocumentEdit } from "vscode-languageclient";
+import { commands, ConfigurationTarget, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, TextDocument, Uri, window, workspace, WorkspaceEdit } from "vscode";
+import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, ReferencesRequest, TextDocumentEdit, TextDocumentIdentifier } from "vscode-languageclient";
 import { LanguageClient } from 'vscode-languageclient/node';
 import { markdownPreviewProvider } from "../markdownPreviewProvider";
-import { ClientCommandConstants, ServerCommandConstants } from "./commandConstants";
-import { getRelativePath, getFileName, getDirectoryPath, getWorkspaceUri } from '../utils/fileUtils';
-import { DEBUG } from '../server/java/javaServerStarter'
+import { DEBUG } from '../server/java/javaServerStarter';
+import { getDirectoryPath, getFileName, getRelativePath, getWorkspaceUri } from '../utils/fileUtils';
+import * as ClientCommandConstants from "./clientCommandConstants";
+import * as ServerCommandConstants from "./serverCommandConstants";
 
 /**
  * Register the commands for vscode-xml that don't require communication with the language server
@@ -108,7 +109,7 @@ function registerCodeLensReferencesCommands(context: ExtensionContext, languageC
     const uri = Uri.parse(uriString);
     workspace.openTextDocument(uri).then(document => {
       // Consume references service from the XML Language Server
-      let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
+      const param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
       languageClient.sendRequest(ReferencesRequest.type, param).then(locations => {
         commands.executeCommand(ClientCommandConstants.EDITOR_SHOW_REFERENCES, uri, languageClient.protocol2CodeConverter.asPosition(position), locations.map(languageClient.protocol2CodeConverter.asLocation));
       })
@@ -198,7 +199,7 @@ async function grammarAssociationCommand(documentURI: Uri, languageClient: Langu
       }
     } catch (error) {
       window.showErrorMessage('Error during grammar binding: ' + error.message);
-    };
+    }
   }
 }
 
@@ -308,7 +309,7 @@ function registerAssociationCommands(context: ExtensionContext, languageClient: 
 /**
  * Change value of 'canBindGrammar' to determine if grammar/schema can be bound
  *
- * @param document the text document
+ * @param documentURI the text document
  * @returns the `hasGrammar` check result from server
  */
 async function checkCanBindGrammar(documentURI: Uri) {
@@ -316,7 +317,7 @@ async function checkCanBindGrammar(documentURI: Uri) {
   const identifier = TextDocumentIdentifier.create(documentURI.toString());
 
   // Set the custom condition to watch if file already has bound grammar
-  var result = false;
+  let result = false;
   try {
     result = await commands.executeCommand(ServerCommandConstants.CHECK_BOUND_GRAMMAR, identifier);
   } catch (error) {

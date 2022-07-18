@@ -1,7 +1,7 @@
 import { Disposable, WebviewPanel, window, ViewColumn, commands, Uri, Webview, ExtensionContext, env } from "vscode";
 import * as fse from 'fs-extra';
 import * as path from 'path';
-import { ClientCommandConstants } from "./commands/commandConstants";
+import * as ClientCommandConstants from "./commands/clientCommandConstants";
 
 class MarkdownPreviewProvider implements Disposable {
     private panel: WebviewPanel | undefined;
@@ -53,7 +53,7 @@ class MarkdownPreviewProvider implements Disposable {
             // i.e. [here](OtherPage#section) gets replaced, but [here](OtherPage) doesn't
             // Captures markdown links like this: [$1]($2#$3)
             // where $1, $2, $3 are non empty strings that are then passed to the replace function
-            markdownString = markdownString.replace(/\[([^\]]+)\]\(([^#\)]+)#([^)]*)\)/g,
+            markdownString = markdownString.replace(/\[([^\]]+)\]\(([^#)]+)#([^)]*)\)/g,
                     (_match: string, linkText: string, page: string, section: string) => {
                 const linkedPageAbsPath = path.join(path.dirname(markdownFilePath), page);
                 // __dirname resolves to the `dist` folder

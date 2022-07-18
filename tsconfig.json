@@ -1,18 +1,23 @@
 {
   "compilerOptions": {
-      "module": "commonjs",
-      "target": "es6",
-      "outDir": "out",
-      "alwaysStrict": true,
-      "lib": [
-          "es6",
-          "dom"
-      ],
-      "sourceMap": true,
-      "rootDir": "."
+    "module": "commonjs",
+    "target": "es6",
+    "outDir": "out",
+    "alwaysStrict": true,
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "sourceMap": true,
+    "rootDir": ".",
+    "plugins": [
+      {
+        "name": "eslint"
+      }
+    ]
   },
   "exclude": [
-      "node_modules",
-      ".vscode-test"
+    "node_modules",
+    ".vscode-test"
   ]
 }

@@ -16,12 +16,6 @@ export interface RequirementsData {
   java_version: number;
 }
 
-interface ErrorData {
-  message: string;
-  label: string;
-  openUrl: Uri;
-  replaceClose: boolean;
-}
 /**
  * Resolves the requirements needed to run the extension.
  * Returns a promise that will resolve to a RequirementsData if
@@ -152,7 +146,7 @@ async function readJavaHomeConfig(context: ExtensionContext) {
 function checkJavaVersion(java_home: string): Promise<number> {
   return new Promise((resolve, reject) => {
     cp.execFile(java_home + '/bin/java', ['-version'], {}, (error, stdout, stderr) => {
-      let javaVersion = parseMajorVersion(stderr);
+      const javaVersion = parseMajorVersion(stderr);
       if (javaVersion < 8) {
         openJDKDownload(reject, 'Java 8 or more recent is required to run. Please download and install a recent Java runtime.');
       }

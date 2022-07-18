@@ -2,6 +2,8 @@
 node_modules
 src/
 tsconfig.json
+.eslintrc.json
+.eslintignore
 webpack.config.js
 gulpfile.js
 .editorconfig
