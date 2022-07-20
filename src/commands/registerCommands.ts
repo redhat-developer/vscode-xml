@@ -1,10 +1,11 @@
 import * as path from 'path';
-import { commands, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, Uri, window, workspace, WorkspaceEdit, Disposable, ConfigurationTarget, TextDocument, WorkspaceFolder } from "vscode";
+import { commands, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, Uri, window, workspace, WorkspaceEdit, ConfigurationTarget, TextDocument } from "vscode";
 import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, ReferencesRequest, TextDocumentIdentifier, TextDocumentEdit } from "vscode-languageclient";
 import { LanguageClient } from 'vscode-languageclient/node';
 import { markdownPreviewProvider } from "../markdownPreviewProvider";
 import { ClientCommandConstants, ServerCommandConstants } from "./commandConstants";
 import { getRelativePath, getFileName, getDirectoryPath, getWorkspaceUri } from '../utils/fileUtils';
+import { DEBUG } from '../server/java/javaServerStarter'
 
 /**
  * Register the commands for vscode-xml that don't require communication with the language server
@@ -28,6 +29,7 @@ export async function registerClientServerCommands(context: ExtensionContext, la
   registerCodeLensReferencesCommands(context, languageClient);
   registerValidationCommands(context);
   registerAssociationCommands(context, languageClient);
+  registerRestartLanguageServerCommand(context, languageClient);
 
   // Register client command to execute custom XML Language Server command
   context.subscriptions.push(commands.registerCommand(ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND, (command, ...rest) => {
@@ -322,4 +324,22 @@ async function checkCanBindGrammar(documentURI: Uri) {
   }
 
   return result
+}
+
+/**
+ * Register command to restart the connection to the language server
+ *
+ * @param context the extension context
+ * @param languageClient the language client
+ */
+function registerRestartLanguageServerCommand(context: ExtensionContext, languageClient: LanguageClient) {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.RESTART_LANGUAGE_SERVER, async () => {
+    // Can be replaced with `await languageClient.restart()` with vscode-languageclient ^8.0.1,
+    await languageClient.stop();
+    if (DEBUG) {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+    languageClient.start();
+
+  }));
 }
