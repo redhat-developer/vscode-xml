@@ -10,7 +10,7 @@ import glob = require('glob');
 
 declare var v8debug;
 
-const DEBUG = (typeof v8debug === 'object') || startedInDebugMode();
+export const DEBUG = (typeof v8debug === 'object') || startedInDebugMode();
 
 export async function prepareJavaExecutable(
   context: ExtensionContext,
