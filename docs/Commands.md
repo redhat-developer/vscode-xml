@@ -25,3 +25,7 @@ When the [Server Cache Path](Preferences.md#server-cache-path) is activated, the
 This command re-triggers the [XML Validation](Validation.md#xml-validation) for the all opened XML files.
 
 When the [Server Cache Path](Preferences.md#server-cache-path) is activated, the command clears the remote grammar cache and revalidates all opened files.
+
+## Restart XML Language Server
+
+This command restarts the XML language server.
