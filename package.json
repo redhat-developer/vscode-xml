@@ -616,7 +616,7 @@
       },
       {
         "command": "xml.restart.language.server",
-        "title": "Restart Language Server",
+        "title": "Restart XML Language Server",
         "category": "XML"
       }
     ],
