@@ -90,9 +90,9 @@
   "dependencies": {
     "@redhat-developer/vscode-redhat-telemetry": "0.4.2",
     "expand-home-dir": "^0.0.3",
-    "find-java-home": "1.2.2",
     "fs-extra": "^8.1.0",
     "glob": "^7.1.4",
+    "jdk-utils": "^0.4.3",
     "path-exists": "^4.0.0",
     "vscode-languageclient": "^7.0.0",
     "yauzl": "^2.10.0"

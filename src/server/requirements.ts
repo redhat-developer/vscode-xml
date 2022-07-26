@@ -4,10 +4,10 @@ import * as cp from 'child_process';
 import * as path from 'path';
 import { ConfigurationTarget, env, ExtensionContext, Uri, window, workspace } from 'vscode';
 import { getJavaagentFlag, getJavaConfiguration, getKey, getXMLConfiguration, IS_WORKSPACE_JDK_ALLOWED, IS_WORKSPACE_JDK_XML_ALLOWED, IS_WORKSPACE_VMARGS_XML_ALLOWED, xmlServerVmargs } from '../settings/settings';
+import { findRuntimes, IJavaRuntime, getSources } from 'jdk-utils';
 
 const pathExists = require('path-exists');
 const expandHomeDir = require('expand-home-dir');
-const findJavaHome = require('find-java-home');
 const isWindows = process.platform.indexOf('win') === 0;
 const JAVA_FILENAME = 'java' + (isWindows ? '.exe' : '');
 
@@ -45,14 +45,6 @@ function checkJavaRuntime(context: ExtensionContext): Promise<string> {
       javaHome = await readJavaHomeConfig(context);
       if (javaHome) {
         source = 'The java.home variable defined in VS Code settings';
-      } else {
-        javaHome = process.env['JDK_HOME'];
-        if (javaHome) {
-          source = 'The JDK_HOME environment variable';
-        } else {
-          javaHome = process.env['JAVA_HOME'];
-          source = 'The JAVA_HOME environment variable';
-        }
       }
     }
 
@@ -66,14 +58,14 @@ function checkJavaRuntime(context: ExtensionContext): Promise<string> {
       return resolve(javaHome);
     }
     //No settings, let's try to detect as last resort.
-    findJavaHome({ allowJre: true }, function (err, home) {
-      if (err) {
-        openJDKDownload(reject, 'Java runtime could not be located.');
-      }
-      else {
-        resolve(home);
-      }
-    });
+    const javaRuntimes = await findRuntimes({ withVersion: true, withTags: true });
+    if (javaRuntimes.length) {
+      sortJdksBySource(javaRuntimes);
+      javaHome = javaRuntimes[0].homedir;
+    } else {
+      openJDKDownload(reject, "Java runtime could not be located. Please download and install Java or use the binary server.");
+    }
+    return resolve(javaHome);
   });
 }
 
@@ -125,6 +117,20 @@ export async function readXMLJavaHomeConfig(context: ExtensionContext) {
   } else {
     return workspace.getConfiguration().inspect<string>('xml.java.home').globalValue;
   }
+}
+
+function sortJdksBySource(jdks: IJavaRuntime[]) {
+  const rankedJdks = jdks as Array<IJavaRuntime & { rank: number }>;
+  const sources = ["JDK_HOME", "JAVA_HOME", "PATH"];
+  for (const [index, source] of sources.entries()) {
+    for (const jdk of rankedJdks) {
+      if (jdk.rank === undefined && getSources(jdk).includes(source)) {
+        jdk.rank = index;
+      }
+    }
+  }
+  rankedJdks.filter(jdk => jdk.rank === undefined).forEach(jdk => jdk.rank = sources.length);
+  rankedJdks.sort((a, b) => a.rank - b.rank);
 }
 
 async function readJavaHomeConfig(context: ExtensionContext) {
