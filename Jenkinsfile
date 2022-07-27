@@ -33,7 +33,7 @@ node('rhel8'){
 
 	if (!files[0]) {
 		stage 'Build XML LS'
-		git url: 'https://github.com/eclipse/lemminx.git'
+		git url: 'https://github.com/eclipse/lemminx.git', branch: 'main'
 		sh "./mvnw clean verify -B -U -e -P!jboss-maven-repos,!redhat-ga-repository,!redhat-ea-repository"
 		sh "mv org.eclipse.lemminx/target/org.eclipse.lemminx*-uber.jar ."
 		files = findFiles(glob: 'org.eclipse.lemminx*-uber.jar')
