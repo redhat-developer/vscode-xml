@@ -316,8 +316,8 @@
         },
         "xml.format.preserveAttributeLineBreaks": {
           "type": "boolean",
-          "default": false,
-          "markdownDescription": "Preserve line breaks that appear before and after attributes. This setting is overridden if `#xml.format.splitAttributes#` is set to `true`. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreserveattributelinebreaks%22%7D%5D) for more information.",
+          "default": true,
+          "markdownDescription": "Preserve line breaks that appear before and after attributes. This setting is overridden if `#xml.format.splitAttributes#` is set to `true`. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreserveattributelinebreaks%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.preserveEmptyContent": {

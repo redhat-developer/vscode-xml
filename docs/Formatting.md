@@ -150,7 +150,7 @@ No changes to quotes will occur during formatting if `xml.format.enforceQuoteSty
 
 ### xml.format.preserveAttributeLineBreaks
 
-Preserve line breaks that appear before and after attributes. This setting is overridden if [xml.format.splitAttributes](#xmlformatsplitattributes) is set to `true`. Default is `false`.
+Preserve line breaks that appear before and after attributes. This setting is overridden if [xml.format.splitAttributes](#xmlformatsplitattributes) is set to `true`. Default is `true`.
 
 If set to `true`, formatting does not change the following document:
 
