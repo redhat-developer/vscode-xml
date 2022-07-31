@@ -38,5 +38,5 @@ Please [file a issue](https://github.com/redhat-developer/vscode-xml/issues) wit
 
 1. Go to settings
 2. Navigate to the setting `xml.server.vmargs`
-3. Add `-Xmx512m` to the setting string. This allows the the language server to use at most 512 megabytes of memory.
+3. Add `-Xmx512m` to the setting string. This allows the language server to use at most 512 megabytes of memory.
 4. If the problem persists, you can increase the `512m` to `1G` or higher
