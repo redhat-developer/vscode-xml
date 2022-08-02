@@ -434,8 +434,6 @@ If it is set to `true`, the above document becomes:
     </ROOT:root>
     ```
 
-**Not supported by the experimental formatter.**
-
 ***
 
 ### xml.format.splitAttributesIndentSize
