@@ -375,8 +375,8 @@
             "Put a new line after each URI, arranging the content into pairs of namespace and URI.",
             "Ignore `xsi:schemaLocation` content formatting."
           ],
-          "default": "none",
-          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `none`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatxsischemalocationsplit%22%7D%5D) for more information",
+          "default": "onPair",
+          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `onPair`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatxsischemalocationsplit%22%7D%5D) for more information",
           "scope": "window"
         },
         "xml.format.splitAttributes": {

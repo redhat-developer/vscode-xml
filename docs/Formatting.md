@@ -386,7 +386,7 @@ If it is set to `true`, the above document becomes:
 ***
 ### xml.format.xsiSchemaLocationSplit
 
-  Used to configure how to format the content of `xsi:schemaLocation`.
+  Used to configure how to format the content of `xsi:schemaLocation`.  Defaults to `onPair`
 
   To explain the different settings, we will use this xml document as an example:
   ```xml
