@@ -376,7 +376,7 @@
             "Ignore `xsi:schemaLocation` content formatting."
           ],
           "default": "onPair",
-          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `onPair`. Not supported by the experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatxsischemalocationsplit%22%7D%5D) for more information",
+          "markdownDescription": "Split `xsi:schemaLocation` content. Default is `onPair`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatxsischemalocationsplit%22%7D%5D) for more information",
           "scope": "window"
         },
         "xml.format.splitAttributes": {

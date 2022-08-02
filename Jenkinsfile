@@ -33,7 +33,7 @@ node('rhel8'){
 
 	if (!files[0]) {
 		stage 'Build XML LS'
-		git url: 'https://github.com/eclipse/lemminx.git'
+		git url: 'https://github.com/eclipse/lemminx.git', branch: 'main'
 		sh "./mvnw clean verify -B -U -e -P!jboss-maven-repos,!redhat-ga-repository,!redhat-ea-repository"
 		sh "mv org.eclipse.lemminx/target/org.eclipse.lemminx*-uber.jar ."
 		files = findFiles(glob: 'org.eclipse.lemminx*-uber.jar')
@@ -46,7 +46,7 @@ node('rhel8'){
 	deleteDir()
 	def gitUrl = "${GIT_REPO}"
 
-	git url: gitUrl?:'https://github.com/redhat-developer/vscode-xml.git', branch: params.BRANCH?: 'master'
+	git url: gitUrl?:'https://github.com/redhat-developer/vscode-xml.git', branch: params.BRANCH?: 'main'
 
 	stage 'set the link to download the binary server'
 	def packageJson = readJSON file: 'package.json'
