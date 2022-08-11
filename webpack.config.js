@@ -45,7 +45,12 @@ const config = {
     ]
   },
   plugins: [
-    new ESLintPlugin(),
+    new ESLintPlugin({
+      extensions: [
+        ".ts",
+        ".js"
+      ]
+    }),
   ]
 };
 module.exports = config;

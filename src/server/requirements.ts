@@ -1,19 +1,26 @@
 'use strict';
 
 import * as cp from 'child_process';
+import { findRuntimes, getSources, IJavaRuntime } from 'jdk-utils';
 import * as path from 'path';
 import { ConfigurationTarget, env, ExtensionContext, Uri, window, workspace } from 'vscode';
 import { getJavaagentFlag, getJavaConfiguration, getKey, getXMLConfiguration, IS_WORKSPACE_JDK_ALLOWED, IS_WORKSPACE_JDK_XML_ALLOWED, IS_WORKSPACE_VMARGS_XML_ALLOWED, xmlServerVmargs } from '../settings/settings';
-import { findRuntimes, IJavaRuntime, getSources } from 'jdk-utils';
+import pathExists = require('path-exists');
+import expandHomeDir = require('expand-home-dir');
 
-const pathExists = require('path-exists');
-const expandHomeDir = require('expand-home-dir');
 const isWindows = process.platform.indexOf('win') === 0;
 const JAVA_FILENAME = 'java' + (isWindows ? '.exe' : '');
 
 export interface RequirementsData {
   java_home: string;
   java_version: number;
+}
+
+interface ErrorData {
+  message: string;
+  label: string;
+  openUrl: Uri;
+  replaceClose: boolean;
 }
 
 /**
@@ -29,38 +36,35 @@ export async function resolveRequirements(context: ExtensionContext): Promise<Re
   return Promise.resolve({ 'java_home': javaHome, 'java_version': javaVersion });
 }
 
-function checkJavaRuntime(context: ExtensionContext): Promise<string> {
-  return new Promise(async (resolve, reject) => {
-    let source: string;
-    let javaHome = await readXMLJavaHomeConfig(context);
+async function checkJavaRuntime(context: ExtensionContext): Promise<string> {
+  let source: string;
+  let javaHome = await readXMLJavaHomeConfig(context);
+  if (javaHome) {
+    source = 'The xml.java.home variable defined in VS Code settings';
+  } else {
+    javaHome = await readJavaHomeConfig(context);
     if (javaHome) {
-      source = 'The xml.java.home variable defined in VS Code settings';
-    } else {
-      javaHome = await readJavaHomeConfig(context);
-      if (javaHome) {
-        source = 'The java.home variable defined in VS Code settings';
-      }
+      source = 'The java.home variable defined in VS Code settings';
     }
-
-    if (javaHome) {
-      javaHome = expandHomeDir(javaHome);
-      if (!pathExists.sync(javaHome)) {
-        openJDKDownload(reject, source + ' points to a missing folder');
-      } else if (!pathExists.sync(path.resolve(javaHome, 'bin', JAVA_FILENAME))) {
-        openJDKDownload(reject, source + ' does not point to a Java runtime.');
-      }
-      return resolve(javaHome);
+  }
+  if (javaHome) {
+    javaHome = expandHomeDir(javaHome);
+    if (!pathExists.sync(javaHome)) {
+      throw openJDKDownload(source + ' points to a missing folder');
+    } else if (!pathExists.sync(path.resolve(javaHome, 'bin', JAVA_FILENAME))) {
+      throw openJDKDownload(source + ' does not point to a Java runtime.');
     }
-    //No settings, let's try to detect as last resort.
-    const javaRuntimes = await findRuntimes({ withVersion: true, withTags: true });
-    if (javaRuntimes.length) {
-      sortJdksBySource(javaRuntimes);
-      javaHome = javaRuntimes[0].homedir;
-    } else {
-      openJDKDownload(reject, "Java runtime could not be located. Please download and install Java or use the binary server.");
-    }
-    return resolve(javaHome);
-  });
+    return javaHome;
+  }
+  //No settings, let's try to detect as last resort.
+  const javaRuntimes = await findRuntimes({ withVersion: true, withTags: true });
+  if (javaRuntimes.length) {
+    sortJdksBySource(javaRuntimes);
+    javaHome = javaRuntimes[0].homedir;
+  } else {
+    throw openJDKDownload("Java runtime could not be located. Please download and install Java or use the binary server.");
+  }
+  return javaHome;
 }
 
 export async function readXMLJavaHomeConfig(context: ExtensionContext) {
@@ -148,7 +152,7 @@ function checkJavaVersion(java_home: string): Promise<number> {
     cp.execFile(java_home + '/bin/java', ['-version'], {}, (error, stdout, stderr) => {
       const javaVersion = parseMajorVersion(stderr);
       if (javaVersion < 8) {
-        openJDKDownload(reject, 'Java 8 or more recent is required to run. Please download and install a recent Java runtime.');
+        reject(openJDKDownload('Java 8 or more recent is required to run. Please download and install a recent Java runtime.'));
       }
       else {
         resolve(javaVersion);
@@ -179,13 +183,13 @@ export function parseMajorVersion(content: string): number {
   return javaVersion;
 }
 
-function openJDKDownload(reject, cause: string) {
-  reject({
+function openJDKDownload(cause: string): ErrorData {
+  return {
     message: cause,
     label: 'Get the Java runtime',
     openUrl: getOpenJDKDownloadLink(),
     replaceClose: false
-  });
+  };
 }
 
 export function getOpenJDKDownloadLink(): Uri {

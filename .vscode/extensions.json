@@ -1,7 +1,6 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
-    "EditorConfig.EditorConfig",
-    "amodio.tsl-problem-matcher"
+    "EditorConfig.EditorConfig"
   ]
 }
