@@ -522,8 +522,6 @@ becomes
   />
 ```
 
-**Not supported by the experimental formatter.**
-
 ### xml.format.preserveSpace
 
 Element names for which spaces will be preserved. Defaults is the following array:
