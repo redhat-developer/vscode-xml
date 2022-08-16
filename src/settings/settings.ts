@@ -92,10 +92,10 @@ function createReloadWindowMessage(message: string) : string{
 }
 
 function verifyVMArgs() {
-  let currentVMArgs = workspace.getConfiguration("xml.server").get("vmargs");
+  const currentVMArgs = workspace.getConfiguration("xml.server").get("vmargs");
   if(vmArgsCache != undefined) {
     if(vmArgsCache != currentVMArgs) {
-      let selection = createReloadWindowMessage("XML Language Server configuration changed, please restart VS Code.");
+      const selection = createReloadWindowMessage("XML Language Server configuration changed, please restart VS Code.");
       if(selection == ignoreButton) {
         ignoreVMArgs = true;
       }
@@ -107,16 +107,16 @@ function verifyVMArgs() {
 }
 
 function verifyAutoClosing() {
-  let configXML = workspace.getConfiguration();
-  let closeTags = configXML.get("xml.completion.autoCloseTags");
-  let closeBrackets = configXML.get("[xml]")["editor.autoClosingBrackets"];
+  const configXML = workspace.getConfiguration();
+  const closeTags = configXML.get("xml.completion.autoCloseTags");
+  const closeBrackets = configXML.get("[xml]")["editor.autoClosingBrackets"];
   if (closeTags && closeBrackets != "never") {
     window.showWarningMessage(
       "The [xml].editor.autoClosingBrackets setting conflicts with xml.completion.autoCloseTags. It's recommended to disable it.",
       "Disable",
       ignoreButton).then((selection) => {
         if (selection == "Disable") {
-          let scopeInfo : ScopeInfo = getScopeLevel("", "[xml]");
+          const scopeInfo : ScopeInfo = getScopeLevel("", "[xml]");
           workspace.getConfiguration().update("[xml]", { "editor.autoClosingBrackets": "never" }, scopeInfo.configurationTarget).then(
             () => console.log('[xml].editor.autoClosingBrackets globally set to never'),
             (error) => console.log(error)
@@ -130,8 +130,8 @@ function verifyAutoClosing() {
 }
 
 function getScopeLevel(configurationKey : string, key : string) : ScopeInfo{
-  let configXML = workspace.getConfiguration(configurationKey);
-  let result = configXML.inspect(key);
+  const configXML = workspace.getConfiguration(configurationKey);
+  const result = configXML.inspect(key);
   let scope, configurationTarget;
   if(result.workspaceFolderValue == undefined) {
     if(result.workspaceValue == undefined) {
@@ -153,7 +153,7 @@ function getScopeLevel(configurationKey : string, key : string) : ScopeInfo{
     scope = "folder";
     configurationTarget = undefined;
   }
-  let scopeInfo : ScopeInfo = {"scope": scope, "configurationTarget": configurationTarget};
+  const scopeInfo : ScopeInfo = {"scope": scope, "configurationTarget": configurationTarget};
   return scopeInfo;
 }
 
@@ -189,7 +189,7 @@ export function getJavaagentFlag(vmargs) {
  *          }
  */
 export function getXMLSettings(javaHome: string | undefined, logfile: string, externalXmlSettings: any): JSON {
-  let configXML = workspace.getConfiguration().get('xml');
+  const configXML = workspace.getConfiguration().get('xml');
   let xml;
   if (!configXML) { //Set default preferences if not provided
     const defaultValue =
@@ -212,7 +212,7 @@ export function getXMLSettings(javaHome: string | undefined, logfile: string, ex
     }
     xml = defaultValue;
   } else {
-    let x = JSON.stringify(configXML); //configXML is not a JSON type
+    const x = JSON.stringify(configXML); //configXML is not a JSON type
     xml = { "xml": JSON.parse(x) };
   }
   xml['xml']['logs']['file'] = logfile;

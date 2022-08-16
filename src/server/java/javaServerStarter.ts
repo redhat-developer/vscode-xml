@@ -8,6 +8,7 @@ import { RequirementsData } from '../requirements';
 import { HEAP_DUMP_LOCATION, CRASH_ON_OOM, HEAP_DUMP } from './jvmArguments';
 import glob = require('glob');
 
+// eslint-disable-next-line no-var
 declare var v8debug;
 
 export const DEBUG = (typeof v8debug === 'object') || startedInDebugMode();
@@ -25,7 +26,7 @@ export async function prepareJavaExecutable(
 }
 
 function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string[], context: ExtensionContext): string[] {
-  let params: string[] = [];
+  const params: string[] = [];
   if (DEBUG) {
     if (process.env['SUSPEND_SERVER'] === 'true') {
       params.push('-agentlib:jdwp=transport=dt_socket,server=y,address=1054');
@@ -86,8 +87,8 @@ function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string
     params.push('-noverify');
   }
   parseVMargs(params, vmargs);
-  let server_home: string = path.resolve(__dirname, '../server');
-  let launchersFound: Array<string> = glob.sync('**/org.eclipse.lemminx*-uber.jar', { cwd: server_home });
+  const server_home: string = path.resolve(__dirname, '../server');
+  const launchersFound: Array<string> = glob.sync('**/org.eclipse.lemminx*-uber.jar', { cwd: server_home });
   if (launchersFound.length) {
     let xmlJavaExtensionsClasspath = '';
     if (xmlJavaExtensions.length > 0) {
@@ -120,7 +121,7 @@ export function parseVMargs(params: any[], vmargsLine: string) {
   if (!vmargsLine) {
     return;
   }
-  let vmargs = vmargsLine.match(/(?:[^\s"]+|"[^"]*")+/g);
+  const vmargs = vmargsLine.match(/(?:[^\s"]+|"[^"]*")+/g);
   if (vmargs === null) {
     return;
   }

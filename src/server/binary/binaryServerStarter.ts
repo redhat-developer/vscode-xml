@@ -8,10 +8,10 @@ import { Readable } from 'stream';
 import { commands, ExtensionContext, extensions, ProgressLocation, ProgressOptions, window, WorkspaceConfiguration } from "vscode";
 import { Executable } from "vscode-languageclient/node";
 import * as yauzl from 'yauzl';
-import { ClientCommandConstants } from '../../commands/commandConstants';
+import * as ClientCommandConstants from '../../commands/clientCommandConstants';
 import { getProxySettings, getProxySettingsAsEnvironmentVariables, ProxySettings } from '../../settings/proxySettings';
 import { getXMLConfiguration } from "../../settings/settings";
-import { Telemetry } from '../../telemetry';
+import * as Telemetry from '../../telemetry';
 import { addTrustedHash, getTrustedHashes } from './binaryHashManager';
 import glob = require('glob');
 
@@ -331,7 +331,7 @@ async function acceptZipDownloadResponse(response: http.IncomingMessage): Promis
   const serverBinaryZipPath: string = serverBinaryPath + '.zip';
 
   // Download zip
-  await new Promise((resolve, reject) => {
+  await new Promise<void>((resolve, reject) => {
     const serverBinaryZipWriteStream: fs.WriteStream = fs.createWriteStream(serverBinaryZipPath);
     let capturedError: any = null;
     serverBinaryZipWriteStream.on('finish', () => {

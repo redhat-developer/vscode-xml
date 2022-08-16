@@ -2,8 +2,8 @@
 
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { ClientCommandConstants } from './commands/commandConstants';
-const glob = require('glob');
+import * as ClientCommandConstants from './commands/clientCommandConstants';
+import glob = require('glob');
 
 let existingExtensions: Array<string>;
 

@@ -1,9 +1,9 @@
 import * as fs from "fs-extra";
 import { commands, ConfigurationTarget, ExtensionContext, window, workspace } from "vscode";
 import { CloseAction, ErrorAction, ErrorHandler, Message } from "vscode-languageclient";
-import { ClientCommandConstants } from "../commands/commandConstants";
+import * as ClientCommandConstants from "../commands/clientCommandConstants";
 import { HEAP_DUMP_LOCATION } from "../server/java/jvmArguments";
-import { Telemetry } from "../telemetry";
+import * as Telemetry from "../telemetry";
 import glob = require("glob");
 import { totalmem } from "os";
 
@@ -68,7 +68,7 @@ export class ClientErrorHandler implements ErrorHandler {
  */
 export async function cleanUpHeapDumps(context: ExtensionContext): Promise<void> {
   const heapProfileGlob = new glob.GlobSync(`${context.globalStorageUri.fsPath}/java_*.hprof`);
-  for (let heapProfile of heapProfileGlob.found) {
+  for (const heapProfile of heapProfileGlob.found) {
     await fs.remove(heapProfile);
   }
 }
@@ -137,7 +137,7 @@ async function doubleAllocatedMemory() {
   const results = MAX_HEAP_SIZE_EXTRACTOR.exec(vmargs);
   if (results && results[0]) {
     const maxMemArg: string = results[0];
-    const maxMemValue: number = Number(results[1]);
+    const maxMemValue = Number(results[1]);
     const newMaxMemArg: string = maxMemArg.replace(maxMemValue.toString(), (maxMemValue * 2).toString());
     vmargs = vmargs.replace(maxMemArg, newMaxMemArg);
     await workspace.getConfiguration().update("xml.server.vmargs", vmargs, ConfigurationTarget.Global);
