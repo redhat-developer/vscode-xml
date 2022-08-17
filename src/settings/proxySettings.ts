@@ -124,8 +124,9 @@ export function getProxySettingsAsJVMArgs(proxySettings: ProxySettings): string 
  * @param proxySettings the proxy settings to convert into environment variables
  * @returns the proxy settings as environment variables for LemMinX
  */
-export function getProxySettingsAsEnvironmentVariables(proxySettings: ProxySettings): any {
-  const proxyEnv: any = {};
+export function getProxySettingsAsEnvironmentVariables(proxySettings: ProxySettings): Record<string, string> {
+  // process.env inherits from Object, so it's okay to do so here as well
+  const proxyEnv: Record<string, string> = {};
 
   proxyEnv['HTTP_PROXY_HOST'] = proxySettings.host;
   proxyEnv['HTTP_PROXY_PORT'] = proxySettings.port;
@@ -164,7 +165,13 @@ const JVM_PROXY_PASS = 'http.proxyPassword';
  * @returns the address of the proxy
  */
 function getProxyAddress(): string {
-  return workspace.getConfiguration('http').get('proxy', undefined);
+  const fromSettings = workspace.getConfiguration('http').get('proxy', undefined);
+  if (fromSettings) {
+    return fromSettings;
+  }
+  // VS Code allows you to set up the proxy using the environment variables http_proxy and https_proxy
+  // Use this as fallback if the `"http.proxy"` setting isn't set
+  return process.env['http_proxy'];
 }
 
 /**
