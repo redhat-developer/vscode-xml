@@ -1,8 +1,9 @@
 # XML Language Support by Red Hat
 
-[![Join the chat at https://gitter.im/redhat-developer/vscode-xml](https://badges.gitter.im/redhat-developer/vscode-xml.svg)](https://gitter.im/redhat-developer/vscode-xml?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Marketplace Version](https://vsmarketplacebadge.apphb.com/version/redhat.vscode-xml.svg "Current Release")](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/redhat.vscode-xml)](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml)
+[![Join the chat at https://gitter.im/redhat-developer/vscode-xml](https://img.shields.io/gitter/room/redhat-developer/vscode-xml?color=ED0060&style=for-the-badge&logo=gitter)](https://gitter.im/redhat-developer/vscode-xml?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/v/redhat.vscode-xml?color=informational&logo=visualstudiocode&style=for-the-badge&label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/redhat.vscode-xml?logo=visualstudiocode&color=informational&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml)
+[![eslint github action](https://img.shields.io/github/workflow/status/redhat-developer/vscode-xml/lint?label=eslint&logo=eslint&style=for-the-badge)](https://github.com/redhat-developer/vscode-xml/actions/workflows/lint.yaml?query=branch%3Amain)
 
 ### [**NO LONGER REQUIRES JAVA!**](#Requirements) *since v0.15.0*
 
