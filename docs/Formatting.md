@@ -349,8 +349,6 @@ If it is set to `true`, the above document becomes:
   <tag />
   ```
 
-**Not supported by the experimental formatter.**
-
 ***
 
 ### files.insertFinalNewline
