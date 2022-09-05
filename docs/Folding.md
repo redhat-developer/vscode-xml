@@ -1,6 +1,6 @@
 ## Folding
 
-### xml.folding.includeClosingTagInFold
+### xml.foldings.includeClosingTagInFold
 
 When folding, the closing tag will remain unfolded by default.
 
