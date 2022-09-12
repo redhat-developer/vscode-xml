@@ -1,6 +1,6 @@
 # XML Language Support by Red Hat
 
-[![Join the chat at https://gitter.im/redhat-developer/vscode-xml](https://badges.gitter.im/redhat-developer/vscode-xml.svg)](https://gitter.im/redhat-developer/vscode-xml?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
+[![Join the chat at https://gitter.im/redhat-developer/vscode-xml](https://badges.gitter.im/redhat-developer/vscode-xml.svg)](https://gitter.im/redhat-developer/vscode-xml?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Marketplace Version](https://vsmarketplacebadge.apphb.com/version/redhat.vscode-xml.svg "Current Release")](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/redhat.vscode-xml)](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml)
 
@@ -99,6 +99,7 @@ The following settings are supported:
  * [`xml.validation.disallowDocTypeDecl`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md#disallow-doc-type-declarations): Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`.
 * [`xml.validation.resolveExternalEntities`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md#resolve-external-entities): Enable/disable resolve of external entities. Default is `false`. Disabled in untrusted workspace.
 * [`xml.validation.noGrammar`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#grammar): The message severity when a document has no associated grammar. Defaults to `hint`.
+* [`xml.validation.filters`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md#xmlvalidationfilters): Allows XML validation filter to be associated to file name patterns.
 * [`xml.symbols.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Symbols.md#xmlsymbolsenabled): Enable/disable document symbols (Outline). Default is `true`.
 * `xml.symbols.excluded`: Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.
 * [`xml.symbols.maxItemsComputed`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Symbols.md#xmlsymbolsmaxitemscomputed): The maximum number of outline symbols and folding regions computed (limited for performance reasons). Default is `5000`.

@@ -513,3 +513,44 @@ Now, update the xsi:schemaLocation with bad location hint
 ```
 
 In `always` you will have error, in `onValidSchema` you will have none error.
+
+## xml.validation.filters
+
+XML validation filter gives you the capability to define validation rules for files matching a given pattern. For instance if you wish to disable validation for all files which have the `*.myxml` file extension, you must declare this filter in the `settings.json`:
+
+```json
+"xml.validation.filters": [
+   // Declaration of validation filter to disable validation for all *.myxml files.
+   {
+    "pattern": "**.myxml",
+    "enabled": false
+  }
+]
+```
+
+You can use other validation settings (enabled, noGrammar, etc). For instance if you wish to remove the warning no grammar for all files which have the `*.myxml` file extension, you must declare this filter in the `settings.json`:
+
+```json
+"xml.validation.filters": [
+   // Declaration of validation filter to disable validation for all *.myxml files.
+   {
+    "pattern": "**.myxml",
+    "noGrammar": "ignore"
+  }
+]
+```
+
+By default, vscode-xml uses this default validation filter:
+
+```json
+"xml.validation.filters": [
+  {
+    "pattern": "**.exsd",
+    "enabled": false
+  },
+  {
+    "pattern": "**{.project,.classpath,plugin.xml,feature.xml,category.xml,.target,.product}",
+    "noGrammar": "ignore"
+  }
+]
+```
