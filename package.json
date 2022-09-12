@@ -509,6 +509,31 @@
           "markdownDescription": "Enable/disable document symbols (Outline). Default is `true`. No symbols are given if `\"xml.symbols.enabled\": false`.",
           "scope": "window"
         },
+        "xml.validation.filters": {
+          "type": "array",
+          "default": [
+            {
+              "pattern": "**.exsd",
+              "enabled": false
+            },
+            {
+              "pattern": "**{.project,.classpath,plugin.xml,feature.xml,category.xml,.target,.product}",
+              "noGrammar": "ignore"
+            }
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "pattern": {
+                "type": "string",
+                "markdownDescription": "File glob pattern. Example: `**/*.Format.ps1xml`\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
+              }
+            },
+            "required": [
+              "pattern"
+            ]
+          }
+        },
         "xml.symbols.excluded": {
           "type": "array",
           "default": [],
