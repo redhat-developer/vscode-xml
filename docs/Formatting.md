@@ -233,8 +233,6 @@ If this value is set to 0, then all blank lines will be removed during formattin
   </root>
   ```
 
-**Not supported by the experimental formatter.**
-
 ***
 
 ### xml.format.splitAttributes
