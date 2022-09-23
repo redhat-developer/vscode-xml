@@ -328,8 +328,6 @@ If it is set to `true`, the above document becomes:
   <root>Interesting text content values and 1234 numbers</root>
   ```
 
-**Not supported by the experimental formatter.**
-
 ***
 
 ### xml.format.spaceBeforeEmptyCloseTag
