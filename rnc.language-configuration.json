@@ -1,0 +1,28 @@
+// Copy of https://github.com/RussGlover/relaxNgCompactSyntaxHighlighter/blob/master/language-configuration.json
+{
+  "comments": {
+      "lineComment": "#"
+  },
+  // symbols used as brackets
+  "brackets": [
+      ["{", "}"],
+      ["[", "]"],
+      ["(", ")"]
+  ],
+  // symbols that are auto closed when typing
+  "autoClosingPairs": [
+      ["{", "}"],
+      ["[", "]"],
+      ["(", ")"],
+      ["\"", "\""],
+      ["'", "'"]
+  ],
+  // symbols that that can be used to surround a selection
+  "surroundingPairs": [
+      ["{", "}"],
+      ["[", "]"],
+      ["(", ")"],
+      ["\"", "\""],
+      ["'", "'"]
+  ]
+}

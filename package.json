@@ -13,7 +13,10 @@
     "xml",
     "xsl",
     "xsd",
-    "dtd"
+    "dtd",
+    "RelaxNG",
+    "rng",
+    "rnc"
   ],
   "xmlServer": {
     "version": "0.21.1"
@@ -110,6 +113,17 @@
           "DTD",
           "dtd"
         ]
+      },
+      {
+        "id": "rnc",
+        "extensions": [
+          ".rnc"
+        ],
+        "aliases": [
+          "RelaxNG Compact",
+          "rnc"
+        ],
+        "configuration": "./rnc.language-configuration.json"
       }
     ],
     "grammars": [
@@ -117,6 +131,11 @@
         "language": "dtd",
         "scopeName": "text.xml.dtd",
         "path": "./syntaxes/dtd.tmLanguage.json"
+      },
+      {
+        "language": "rnc",
+        "scopeName": "source.rnc",
+        "path": "./syntaxes/rnc.tmLanguage.json"
       }
     ],
     "configuration": {
