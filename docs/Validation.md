@@ -544,10 +544,15 @@ By default, vscode-xml uses this default validation filter:
 
 ```json
 "xml.validation.filters": [
+  // Ignore no grammar hint and disable XSD validation for *.exsd Eclipse files.
   {
     "pattern": "**.exsd",
-    "enabled": false
+    "noGrammar": "ignore",
+    "schema": {
+      "enabled": "never"
+    }    
   },
+  // Ignore no grammar hint for Eclipse files like .project
   {
     "pattern": "**{.project,.classpath,plugin.xml,feature.xml,category.xml,.target,.product}",
     "noGrammar": "ignore"
