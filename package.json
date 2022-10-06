@@ -534,7 +534,10 @@
           "default": [
             {
               "pattern": "**.exsd",
-              "enabled": false
+              "noGrammar": "ignore",
+              "schema": {
+                "enabled" : "never"
+              }
             },
             {
               "pattern": "**{.project,.classpath,plugin.xml,feature.xml,category.xml,.target,.product}",
