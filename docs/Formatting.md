@@ -542,4 +542,30 @@ Max line width. Default is `80`.
 
 Use Schema/DTD grammar information while formatting. Default is `true`.
 
+When this is set to true, the following features are supported:
+
+*1. The element content category will be dependent on the type of the element defined in the schema.*
+
+If an element is of type string (xs:string) as defined in the schema, it will be categorized as `preserve space`.
+
+If an element can contain both text and element as defined in the schema, it will be categorized as `mixed content`.
+
+In this example, `description` is defined as a string type in the schema, while `description2` is of some other type.
+
+```xml
+  <description>a    b     c</description>
+  <description2>a    b     c</description2>
+```
+
+After formatting, you should see that the content of `description` has spaces preserved, while the spaces in `description2` has been normalized.
+
+```xml
+  <description>a    b     c</description>
+  <description2>a b c</description2>
+```
+
+*2. The xml.format.emptyElements setting will respect grammar constraints.*
+
+The collapse option will now respect XSD's `nillable="false"` definitions. The collapse on the element will not be done if the element has `nillable="false"` in the XSD and `xsi:nil="true"` in the XML.
+
 **This setting is only available with experimental formatter.**
