@@ -104,6 +104,8 @@ node('rhel8'){
 }
 
 node('rhel8'){
+	sh 'npm install -g "vsce"'
+	sh 'npm install -g "ovsx"'
 	if(publishToMarketPlace.equals('true') || publishPreRelease.equals('true')){
 
 		if (publishToMarketPlace.equals('true')) {
@@ -127,7 +129,6 @@ node('rhel8'){
 
 		if (publishToMarketPlace.equals('true')) {
 			// Open-VSX Marketplace does not support pre-release
-			sh 'npm install -g "ovsx"'
 			withCredentials([[$class: 'StringBinding', credentialsId: 'open-vsx-access-token', variable: 'OVSX_TOKEN']]) {
 				sh 'ovsx publish -p ${OVSX_TOKEN}' + " ${vsix[0].path}"
 			}
