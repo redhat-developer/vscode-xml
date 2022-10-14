@@ -28,7 +28,7 @@
 				"name": "entity.other.attribute.rnc"
 			}
 		},
-		"match": "\\b(attribute)\\s+([a-zA-Z][a-zA-Z_0-9]*)\\s*\\{",
+		"match": "\\b(attribute)\\s+([a-zA-Z][-a-zA-Z_0-9]*)\\s*\\{",
 		"name": "meta.declaration.attribute.rnc"
 	},
 	{
@@ -43,7 +43,7 @@
 				"name": "entity.other.element.rnc"
 			}
 		},
-		"match": "\\b(element)\\s+([a-zA-Z][a-zA-Z_0-9]*)\\s*\\{",
+		"match": "\\b(element)\\s+([a-zA-Z][-a-zA-Z_0-9]*)\\s*\\{",
 		"name": "meta.declaration.element.rnc"
 	},
 	{
