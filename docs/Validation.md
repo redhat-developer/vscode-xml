@@ -399,6 +399,10 @@ If one of the variables for an association can't be expanded (eg. because vscode
 the association is ignored.
 This feature is specific to the VSCode client.
 
+## Validation with RelaxNG grammar
+
+See [RelaxNG features](Features/RelaxNGFeatures#relaxng-features)
+
 # Other Validation Settings
 
 ## Disallow Doc Type Declarations

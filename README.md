@@ -19,6 +19,7 @@ This VS Code extension provides support for creating and editing XML documents, 
 | ------------------ | ------------------------------------------- |
 | enabled by default | requires additional configuration to enable |
 
+  * [RelaxNG (experimental) support](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Features/RelaxNGFeatures#relaxng-features) (since v0.22.0)
   * Syntax error reporting
   * General code completion
   * [Auto-close tags](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Features/XMLFeatures.md#xml-tag-auto-close)
