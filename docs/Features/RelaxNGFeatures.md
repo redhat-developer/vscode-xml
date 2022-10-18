@@ -22,8 +22,8 @@ You can associate your XML file with `RelaxNG grammar` (`file` or `URL`) using :
 </addressBook> 
 ```
 
- * an `XML catalog` using the same method as [XSD](Validation#XML-catalog-with-XSD)
- * a `file association` using the same method as [XSD](Validation#XML-file-association-with-xsd)
+ * an `XML catalog` using the same method as [XSD](Validation.md#XML-catalog-with-XSD)
+ * a `file association` using the same method as [XSD](Validation.md#XML-file-association-with-xsd)
 
 ## RelaxNG grammar
 
@@ -121,7 +121,7 @@ element addressBook {
 ```
 
 The following file, `addressBook.xml`, references `addressBook.rng` using the `xml-model` processing instruction. 
-[vscode-xml](https://github.com/redhat-developer/vscode-xml) will provide the features based on the grammar shown in [the demo at the beginning of this page](#relaxng-support) when you open `addressBook.xml`.
+[vscode-xml](https://github.com/redhat-developer/vscode-xml) will provide the features based on the grammar shown in [the demo at the beginning of this page](#relaxng-features) when you open `addressBook.xml`.
 
 ```xml
 <?xml-model href="addressBook.rng" type="application/xml"?>
