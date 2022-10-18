@@ -401,7 +401,7 @@ This feature is specific to the VSCode client.
 
 ## Validation with RelaxNG grammar
 
-See [RelaxNG features](Features/RelaxNGFeatures#relaxng-features)
+See [RelaxNG features](Features/RelaxNGFeatures.md#relaxng-features)
 
 # Other Validation Settings
 
