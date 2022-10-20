@@ -1,5 +1,60 @@
 # Change Log
 
+## [0.22.0](https://github.com/redhat-developer/vscode-xml/milestone/30?closed=1) (October 20, 2022)
+
+### Enhancements
+
+ * Support for Relax NG. See [lemminx#237](https://github.com/eclipse/lemminx/issues/237).
+ * Support `xml.format.closingBracketNewLine` setting with experimental formatter. See [lemminx#1247](https://github.com/eclipse/lemminx/issues/1247).
+ * Support `xml.format.xsiSchemaLocationSplit` setting with experimental formatter. See [lemminx#1246](https://github.com/eclipse/lemminx/issues/1246).
+ * Support `xml.format.spaceBeforeEmptyCloseTag` setting with experimental formatter. See [lemminx#1245](https://github.com/eclipse/lemminx/issues/1245).
+ * Support `xml.format.joinContentLines` setting with experimental formatter. See [lemminx#1244](https://github.com/eclipse/lemminx/issues/1244).
+ * Support `xml.format.joinCommentLines` setting with experimental formatter. See [lemminx#1243](https://github.com/eclipse/lemminx/issues/1243).
+ * Support `xml.format.preserveEmptyContent` setting with experimental formatter. See [lemminx#1242](https://github.com/eclipse/lemminx/issues/1242).
+ * Support `xml.format.joinCDATALines` setting with experimental formatter. See [lemminx#1241](https://github.com/eclipse/lemminx/issues/1241).
+ * Support `xml.format.preservedNewlines` setting with experimental formatter. See [lemminx#1240](https://github.com/eclipse/lemminx/issues/1240).
+ * Support `xml.format.enforceQuoteStyle` setting with experimental formatter. See [lemminx#1239](https://github.com/eclipse/lemminx/issues/1239).
+ * Support `xml.format.emptyElements` setting with experimental formatter. See [lemminx#1238](https://github.com/eclipse/lemminx/issues/1238).
+ * Set `xml.format.xsiSchemaLocationSplit` as `onPair` by default. See [#749](https://github.com/redhat-developer/vscode-xml/issues/749).
+ * Set `xml.format.preserveAttributeLineBreaks` to `true` by default. See [#748](https://github.com/redhat-developer/vscode-xml/issues/748). 
+ * Provide comment formatting for experimental formatter. See [lemminx#1259](https://github.com/eclipse/lemminx/issues/1259).
+ * Suppress validation kinds based on file pattern. See [#774](https://github.com/redhat-developer/vscode-xml/pull/774).
+ * Report only XML syntax error for *.exsd files. See [#782](https://github.com/redhat-developer/vscode-xml/pull/782). 
+ * Place relevant information on the first line of error messages. See [lemminx#1145](https://github.com/eclipse/lemminx/issues/1145).
+ * Validate uri of XML catalog. See [lemminx#823](https://github.com/eclipse/lemminx/issues/823).
+ * Improve error message for download error. See [#763](https://github.com/redhat-developer/vscode-xml/issues/763). 
+ * CodeAction for `cvc-complex-type.2.4.b`: `insert all expected` vs. `insert all possible`. See [lemminx#1255](https://github.com/eclipse/lemminx/issues/1255).
+ * Do not complete paths in attr unless beginning of value looks like a path. See [lemminx#1293](https://github.com/eclipse/lemminx/pull/1293).
+ * Add command `Restart Language Server`. See [#539](https://github.com/redhat-developer/vscode-xml/issues/539). 
+ * Use the HTTP proxy configuration for HTTPS as well. See [lemminx#1253](https://github.com/eclipse/lemminx/pull/1253).
+ * Add `usesOnlineServices` tag. See [#701](https://github.com/redhat-developer/vscode-xml/pull/701).
+ * Replace `find-java-home` with `jdk-utils`. See [#627](https://github.com/redhat-developer/vscode-xml/issues/627).
+
+### Bug Fixes
+
+ * Autocompletion of attribute values won't display documentation. See [#736](https://github.com/redhat-developer/vscode-xml/issues/736).
+ * Annotations found in base complex type not shown on hover. See [lemminx#1268](https://github.com/eclipse/lemminx/pull/1268).
+ * Format is wrong with multiple line content. See [#600](https://github.com/redhat-developer/vscode-xml/issues/600).
+ * Format CDATA sections without adding new lines. See [lemminx#1193](https://github.com/eclipseEnable dependabot/lemminx/issues/1193).
+ * Formatting with `xml.format.emptyElements`: `expand` chokes on malformed XML. See [lemminx#650](https://github.com/eclipse/lemminx/issues/650).
+ * Fix format problem with multiple root elements. See [#634](https://github.com/redhat-developer/vscode-xml/issues/634).
+
+### Build
+ 
+ * Make sure that 'vsce' is installed in nodes that use it. See [#789](https://github.com/redhat-developer/vscode-xml/pull/789).
+ * Explicitly set 'main' as target branch for cloning of lemminx repo. See [#750](https://github.com/redhat-developer/vscode-xml/pull/750).
+ * Unit tests should not store data in the `.lemminx` folder under the user's home directory. See [lemminx#1265](https://github.com/eclipse/lemminx/issues/1265).
+ * Set up linting for vscode-xml. See [#438](https://github.com/redhat-developer/vscode-xml/issues/438).
+ * Remove darwin-arm64 platform from generic publishing call. See [#734](https://github.com/redhat-developer/vscode-xml/pull/734).
+ * Server binaries for "osx-x86_64" are not found. See [#729](https://github.com/redhat-developer/vscode-xml/issues/729).
+ * Update badges, add "installs" badge. See [#767](https://github.com/redhat-developer/vscode-xml/pull/767) and [#766](https://github.com/redhat-developer/vscode-xml/issues/766).
+ * Bump terser from 5.6.1 to 5.14.2. See [#741](https://github.com/redhat-developer/vscode-xml/pull/741).
+
+### Other
+
+ * Fix typo with foldings settings. See [#771](https://github.com/redhat-developer/vscode-xml/pull/771).
+ * Added documentation for `XML: Restart Language Server`. See [#743](https://github.com/redhat-developer/vscode-xml/pull/743).
+ 
 ## [0.21.0](https://github.com/redhat-developer/vscode-xml/milestone/29?closed=1) (June 30, 2022)
 
 ### Enhancements
