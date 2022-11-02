@@ -536,7 +536,7 @@
               "pattern": "**.exsd",
               "noGrammar": "ignore",
               "schema": {
-                "enabled" : "never"
+                "enabled": "never"
               }
             },
             {
