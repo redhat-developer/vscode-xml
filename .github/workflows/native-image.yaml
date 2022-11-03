@@ -1,10 +1,25 @@
   name: native-image
   on:
-    schedule:
-      - cron: '0 8 * * *'
+    workflow_call:
+      inputs:
+        publishPreRelease:
+          description: 'Publish a pre-release ?'
+          required: true
+          type: string
+          default: 'true'
   jobs:
+    setup-xml-version:
+      runs-on: ubuntu-latest
+      outputs:
+        xml-server-version: ${{ steps.setup-xml-version.outputs.XML_SERVER_VERSION }}
+      steps:
+      - name: Check Out VS Code XML
+        uses: actions/checkout@v2
+      - id: setup-xml-version
+        run: echo "XML_SERVER_VERSION=$(cat package.json | jq -r .xmlServer.version)" >> $GITHUB_OUTPUT
     build-binary-unix:
       runs-on: ${{ matrix.os }}
+      needs: setup-xml-version
       env:
         GRAALVM_VERSION: 22.0.0.2
         GRAALVM_JAVA: java17
@@ -21,6 +36,7 @@
       - uses: actions/checkout@v2
         with:
           repository: 'eclipse/lemminx'
+          ref: ${{ inputs.publishPreRelease == 'true' && 'main' || needs.setup-xml-version.outputs.xml-server-version }}
       - name: Cache Maven dependencies
         uses: actions/cache@v2
         with:
@@ -47,13 +63,14 @@
       - run: ./mvnw -B package -Dnative -DskipTests $([ $(uname -s) = Linux ] && echo "-Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC") -Dcbi.jarsigner.skip=true
       - run: rm org.eclipse.lemminx/target/*.build_artifacts.txt
       - run: mv org.eclipse.lemminx/target/lemminx-* lemminx-${{ matrix.label }}
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: lemminx-${{ matrix.label }}
           path: lemminx-${{ matrix.label }}
           if-no-files-found: error
     build-binary-windows:
       runs-on: windows-latest
+      needs: setup-xml-version
       env:
         GRAALVM_VERSION: 22.0.0.2
         GRAALVM_JAVA: java17
@@ -62,6 +79,7 @@
         uses: actions/checkout@v2
         with:
           repository: 'eclipse/lemminx'
+          ref: ${{ inputs.publishPreRelease == 'true' && 'main' || needs.setup-xml-version.outputs.xml-server-version }}
       - name: Cache Maven dependencies
         uses: actions/cache@v2
         with:
@@ -87,7 +105,7 @@
           java: ${{env.GRAALVM_JAVA}}
       - run: .\mvnw.cmd -B package -Dnative -DskipTests -D "cbi.jarsigner.skip=true"
       - run: mv org.eclipse.lemminx\target\lemminx-*.exe lemminx-win32.exe
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: lemminx-win32
           path: lemminx-win32.exe
