@@ -412,6 +412,27 @@ If `xml.format.joinContentLines` is set to `true`, the above document becomes:
   ```
 
 ***
+
+### files.trimTrailingWhitespace
+
+  Set to `true` to trim trailing whitespace.  Defaults to `false`
+
+  ```xml
+  <a><a/> [space][space]
+  [space][space]
+  text content [space][space]
+  ```
+
+  becomes...
+
+  ```xml
+  <a><a/>
+
+  text content
+  ```
+
+***
+
 ### xml.format.xsiSchemaLocationSplit
 
   Used to configure how to format the content of `xsi:schemaLocation`.  Defaults to `onPair`
