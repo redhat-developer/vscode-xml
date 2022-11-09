@@ -593,7 +593,7 @@ Element names for which spaces will be preserved. Defaults is the following arra
 
 ### xml.format.maxLineWidth
 
-Max line width. Default is `80`.
+Max line width. Set to `0` to disable this setting. Default is `0`.
 
 **This setting is only available with experimental formatter.**
 

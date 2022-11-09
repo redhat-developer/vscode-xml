@@ -330,8 +330,8 @@
         },
         "xml.format.maxLineWidth": {
           "type": "integer",
-          "default": 80,
-          "markdownDescription": "Max line width. Default is `80`. Supported only with experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatmaxlinewidth%22%7D%5D) for more information.",
+          "default": 0,
+          "markdownDescription": "Max line width. Set to `0` to disable this setting. Default is `0`. Supported only with experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatmaxlinewidth%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.preserveAttributeLineBreaks": {
