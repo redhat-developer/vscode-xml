@@ -114,14 +114,16 @@ function getLanguageClientOptions(
   requirementsData: RequirementsData,
   context: ExtensionContext): LanguageClientOptions {
   return {
-    // Register the server for xml and xsl
+    // Register the server for xml, xsl, dtd, svg
     documentSelector: [
       { scheme: 'file', language: 'xml' },
       { scheme: 'file', language: 'xsl' },
       { scheme: 'file', language: 'dtd' },
+      { scheme: 'file', language: 'svg' },
       { scheme: 'untitled', language: 'xml' },
       { scheme: 'untitled', language: 'xsl' },
-      { scheme: 'untitled', language: 'dtd' }
+      { scheme: 'untitled', language: 'dtd' },
+      { scheme: 'untitled', language: 'svg' }
     ],
     revealOutputChannelOn: RevealOutputChannelOn.Never,
     //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
