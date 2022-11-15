@@ -45,6 +45,7 @@
     "onLanguage:xml",
     "onLanguage:xsl",
     "onLanguage:dtd",
+    "onLanguage:svg",
     "onCommand:xml.open.docs",
     "onCommand:xml.open.docs.home"
   ],
