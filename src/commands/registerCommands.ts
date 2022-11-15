@@ -159,6 +159,12 @@ for (const label of bindingTypes.keys()) {
   bindingTypeOptions.push({ "label": label });
 }
 
+const bindingTypeOptionsForRelaxNG: QuickPickItem[] = [];
+for (const entry of bindingTypes.entries()) {
+  if (entry[1] !== 'standard') {
+    bindingTypeOptionsForRelaxNG.push({ "label": entry[0] });
+  }
+}
 /**
  * The function passed to context subscriptions for grammar association
  *
@@ -168,38 +174,41 @@ for (const label of bindingTypes.keys()) {
 async function grammarAssociationCommand(documentURI: Uri, languageClient: LanguageClient) {
   // A click on Bind to grammar/schema... has been processed in the XML document which is not bound to a grammar
 
-  // Step 1 : open a combo to select the binding type ("standard", "xml-model", "fileAssociation")
-  const pickedBindingTypeOption = await window.showQuickPick(bindingTypeOptions, { placeHolder: "Binding type" });
+  // step 1: Open a dialog to select the XSD, DTD, RelaxNG file to bind.
+  const options: OpenDialogOptions = {
+    canSelectMany: false,
+    openLabel: 'Select XSD, DTD, RNG or RNC file',
+    filters: {
+      'Grammar files': ['xsd', 'dtd', 'rng', 'rnc']
+    }
+  };
+  const fileUri = await window.showOpenDialog(options);
+  const grammarURI = fileUri && fileUri[0];
+  if (!grammarURI) {
+    return;
+  }
+
+  const isRelaxNG = grammarURI.fsPath.endsWith('.rng') || grammarURI.fsPath.endsWith('.rnc');
+  // Step 2 : open a combo to select the binding type ("standard", "xml-model", "fileAssociation")
+  const bindingTypesQuickPick = isRelaxNG ? bindingTypeOptionsForRelaxNG : bindingTypeOptions;
+  const pickedBindingTypeOption = await window.showQuickPick(bindingTypesQuickPick, { placeHolder: "Binding type" });
   if (!pickedBindingTypeOption) {
     return;
   }
   const bindingType = bindingTypes.get(pickedBindingTypeOption.label);
 
-  // Open a dialog to select the XSD, DTD to bind.
-  const options: OpenDialogOptions = {
-    canSelectMany: false,
-    openLabel: 'Select XSD or DTD file',
-    filters: {
-      'Grammar files': ['xsd', 'dtd']
+  // The XSD, DTD has been selected, get the proper syntax for binding this grammar file in the XML document.
+  try {
+    const currentFile = (window.activeTextEditor && window.activeTextEditor.document && window.activeTextEditor.document.languageId === 'xml') ? window.activeTextEditor.document : undefined;
+    if (bindingType === 'fileAssociation') {
+      // Bind grammar using file association
+      await bindWithFileAssociation(documentURI, grammarURI, currentFile);
+    } else {
+      // Bind grammar using standard binding
+      await bindWithStandard(documentURI, grammarURI, bindingType, languageClient);
     }
-  };
-
-  const fileUri = await window.showOpenDialog(options);
-  if (fileUri && fileUri[0]) {
-    // The XSD, DTD has been selected, get the proper syntax for binding this grammar file in the XML document.
-    const grammarURI = fileUri[0];
-    try {
-      const currentFile = (window.activeTextEditor && window.activeTextEditor.document && window.activeTextEditor.document.languageId === 'xml') ? window.activeTextEditor.document : undefined;
-      if (bindingType == 'fileAssociation') {
-        // Bind grammar using file association
-        await bindWithFileAssociation(documentURI, grammarURI, currentFile);
-      } else {
-        // Bind grammar using standard binding
-        await bindWithStandard(documentURI, grammarURI, bindingType, languageClient);
-      }
-    } catch (error) {
-      window.showErrorMessage('Error during grammar binding: ' + error.message);
-    }
+  } catch (error) {
+    window.showErrorMessage('Error during grammar binding: ' + error.message);
   }
 }
 
