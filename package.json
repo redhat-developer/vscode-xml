@@ -16,7 +16,10 @@
     "dtd",
     "RelaxNG",
     "rng",
-    "rnc"
+    "rnc",
+    "TEI",
+    "MEI",
+    "SVG"
   ],
   "xmlServer": {
     "version": "0.23.0"
