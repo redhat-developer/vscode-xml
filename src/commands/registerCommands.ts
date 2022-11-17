@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { commands, ConfigurationTarget, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, TextDocument, Uri, window, workspace, WorkspaceEdit } from "vscode";
+import { commands, ConfigurationTarget, env, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, TextDocument, Uri, window, workspace, WorkspaceEdit } from "vscode";
 import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, ReferencesRequest, TextDocumentEdit, TextDocumentIdentifier } from "vscode-languageclient";
 import { LanguageClient } from 'vscode-languageclient/node';
 import { markdownPreviewProvider } from "../markdownPreviewProvider";
@@ -148,7 +148,7 @@ function registerValidationCommands(context: ExtensionContext) {
   }));
 }
 
-export const bindingTypes = new Map<string, string>([
+const bindingTypes = new Map<string, string>([
   ["Standard (xsi, DOCTYPE)", "standard"],
   ["XML Model association", "xml-model"],
   ["File association", "fileAssociation"]
@@ -174,22 +174,35 @@ for (const entry of bindingTypes.entries()) {
 async function grammarAssociationCommand(documentURI: Uri, languageClient: LanguageClient) {
   // A click on Bind to grammar/schema... has been processed in the XML document which is not bound to a grammar
 
-  // step 1: Open a dialog to select the XSD, DTD, RelaxNG file to bind.
-  const options: OpenDialogOptions = {
-    canSelectMany: false,
-    openLabel: 'Select XSD, DTD, RNG or RNC file',
-    filters: {
-      'Grammar files': ['xsd', 'dtd', 'rng', 'rnc']
+  // step 1: select local / remote Uri type
+  let grammarURI;
+  const uriType = await window.showQuickPick([{ "label": "local" }, { "label": "remote" }], { placeHolder: "Binding type" });
+  if (uriType && uriType.label === 'remote') {
+    let predefinedUrl = await env.clipboard.readText();
+    if (!predefinedUrl || !predefinedUrl.startsWith('http')) {
+      predefinedUrl = '';
     }
-  };
-  const fileUri = await window.showOpenDialog(options);
-  const grammarURI = fileUri && fileUri[0];
+    grammarURI = await window.showInputBox({title:'Fill with schema / grammar URL' , value:predefinedUrl});
+  } else {
+    // step 2.1: Open a dialog to select the XSD, DTD, RelaxNG file to bind.
+    const options: OpenDialogOptions = {
+      canSelectMany: false,
+      openLabel: 'Select XSD, DTD, RNG or RNC file',
+      filters: {
+        'Grammar files': ['xsd', 'dtd', 'rng', 'rnc']
+      }
+    };
+    const fileUri = await window.showOpenDialog(options);
+    grammarURI = fileUri && fileUri[0];
+  }
+
   if (!grammarURI) {
     return;
   }
 
-  const isRelaxNG = grammarURI.fsPath.endsWith('.rng') || grammarURI.fsPath.endsWith('.rnc');
-  // Step 2 : open a combo to select the binding type ("standard", "xml-model", "fileAssociation")
+  const grammarPath = grammarURI.fsPath ? grammarURI.fsPath : grammarURI;
+  const isRelaxNG = grammarPath.endsWith('.rng') || grammarPath.endsWith('.rnc');
+  // Step 3 : open a combo to select the binding type ("standard", "xml-model", "fileAssociation")
   const bindingTypesQuickPick = isRelaxNG ? bindingTypeOptionsForRelaxNG : bindingTypeOptions;
   const pickedBindingTypeOption = await window.showQuickPick(bindingTypesQuickPick, { placeHolder: "Binding type" });
   if (!pickedBindingTypeOption) {
