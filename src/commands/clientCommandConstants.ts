@@ -66,3 +66,12 @@ export const EXECUTE_WORKSPACE_COMMAND = 'xml.workspace.executeCommand';
  * Command to restart connection to language server.
  */
  export const RESTART_LANGUAGE_SERVER = 'xml.restart.language.server';
+
+/**
+ * Command to wrap element.
+ */
+ export const REFACTOR_SURROUND_WITH_TAGS = 'xml.refactor.surround.with.tags';
+
+ export const REFACTOR_SURROUND_WITH_COMMENTS = 'xml.refactor.surround.with.comments';
+
+ export const REFACTOR_SURROUND_WITH_CDATA = 'xml.refactor.surround.with.cdata';

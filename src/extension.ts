@@ -13,13 +13,13 @@
 import * as fs from 'fs-extra';
 import * as os from 'os';
 import * as path from 'path';
-import { ExtensionContext, Uri, extensions, languages } from "vscode";
+import { ExtensionContext, Uri, extensions, languages, commands } from "vscode";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { XMLExtensionApi } from './api/xmlExtensionApi';
 import { getXmlExtensionApiImplementation } from './api/xmlExtensionApiImplementation';
 import { cleanUpHeapDumps } from './client/clientErrorHandler';
 import { getIndentationRules } from './client/indentation';
-import { startLanguageClient } from './client/xmlClient';
+import { startLanguageClient, XML_SUPPORTED_LANGUAGE_IDS } from './client/xmlClient';
 import { registerClientOnlyCommands } from './commands/registerCommands';
 import { collectXmlJavaExtensions } from './plugin';
 import * as requirements from './server/requirements';
@@ -38,6 +38,8 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
 
   languages.setLanguageConfiguration('xml', getIndentationRules());
   languages.setLanguageConfiguration('xsl', getIndentationRules());
+  // Register in the context 'xml.supportedLanguageIds' to use it in command when condition in package.json
+  commands.executeCommand('setContext', 'xml.supportedLanguageIds', XML_SUPPORTED_LANGUAGE_IDS);
 
   let requirementsData: requirements.RequirementsData;
   try {

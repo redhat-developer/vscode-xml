@@ -1,6 +1,7 @@
 import * as path from 'path';
-import { commands, ConfigurationTarget, env, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, TextDocument, Uri, window, workspace, WorkspaceEdit } from "vscode";
-import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, ReferencesRequest, TextDocumentEdit, TextDocumentIdentifier } from "vscode-languageclient";
+import * as vscode from 'vscode';
+import { commands, ConfigurationTarget, env, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, SnippetString, TextDocument, Uri, window, workspace, WorkspaceEdit, Selection } from "vscode";
+import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, ReferencesRequest, TextDocumentEdit, TextDocumentIdentifier, TextEdit } from "vscode-languageclient";
 import { LanguageClient } from 'vscode-languageclient/node';
 import { markdownPreviewProvider } from "../markdownPreviewProvider";
 import { DEBUG } from '../server/java/javaServerStarter';
@@ -29,6 +30,7 @@ export async function registerClientServerCommands(context: ExtensionContext, la
 
   registerCodeLensReferencesCommands(context, languageClient);
   registerValidationCommands(context);
+  registerRefactorCommands(context, languageClient);
   registerAssociationCommands(context, languageClient);
   registerRestartLanguageServerCommand(context, languageClient);
 
@@ -182,7 +184,7 @@ async function grammarAssociationCommand(documentURI: Uri, languageClient: Langu
     if (!predefinedUrl || !predefinedUrl.startsWith('http')) {
       predefinedUrl = '';
     }
-    grammarURI = await window.showInputBox({title:'Fill with schema / grammar URL' , value:predefinedUrl});
+    grammarURI = await window.showInputBox({ title: 'Fill with schema / grammar URL', value: predefinedUrl });
   } else {
     // step 2.1: Open a dialog to select the XSD, DTD, RelaxNG file to bind.
     const options: OpenDialogOptions = {
@@ -365,4 +367,98 @@ function registerRestartLanguageServerCommand(context: ExtensionContext, languag
     languageClient.start();
 
   }));
+}
+
+interface SurroundWithResponse {
+  start: TextEdit;
+  end: TextEdit;
+}
+
+class SurroundWithKind {
+
+  static readonly tags = 'tags';
+  static readonly comments = 'comments';
+  static readonly cdata = 'cdata';
+
+}
+
+/**
+ * Register commands used for refactoring XML files
+ *
+ * @param context the extension context
+ */
+function registerRefactorCommands(context: ExtensionContext, languageClient: LanguageClient) {
+
+  // Surround with Tags (Wrap)
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.REFACTOR_SURROUND_WITH_TAGS, async () => {
+    await surroundWith(SurroundWithKind.tags, languageClient);
+  }));
+
+  // Surround with Comments
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.REFACTOR_SURROUND_WITH_COMMENTS, async () => {
+    await surroundWith(SurroundWithKind.comments, languageClient);
+  }));
+
+
+  // Surround with CDATA
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.REFACTOR_SURROUND_WITH_CDATA, async () => {
+    await surroundWith(SurroundWithKind.cdata, languageClient);
+  }));
+}
+
+async function surroundWith(surroundWithType: SurroundWithKind, languageClient: LanguageClient) {
+  const activeEditor = window.activeTextEditor;
+  if (!activeEditor) {
+    return;
+  }
+  const selection = activeEditor.selections[0];
+  if (!selection) {
+    return;
+  }
+
+  const uri = window.activeTextEditor.document.uri;
+  const identifier = TextDocumentIdentifier.create(uri.toString());
+  const range = languageClient.code2ProtocolConverter.asRange(selection);
+  const supportedSnippet: boolean = vscode.SnippetTextEdit ? true : false;
+
+  let result: SurroundWithResponse;
+  try {
+    result = await commands.executeCommand(ServerCommandConstants.REFACTOR_SURROUND_WITH, identifier, range, surroundWithType, supportedSnippet);
+  } catch (error) {
+    console.log(`Error while surround with : ${error}`);
+  }
+
+  if (!result) {
+    return;
+  }
+
+  const startTag = result.start.newText;
+  const endTag = result.end.newText;
+
+  if (supportedSnippet) {
+    // SnippetTextEdit is supported, uses snippet (with choice) to manage cursor.
+    const startRange = languageClient.protocol2CodeConverter.asRange(result.start.range);
+    const endRange = languageClient.protocol2CodeConverter.asRange(result.end.range);
+    const snippetEdits = [new vscode.SnippetTextEdit(startRange, new SnippetString(startTag)), new vscode.SnippetTextEdit(endRange, new SnippetString(endTag))];
+    const edit = new WorkspaceEdit();
+    edit.set(activeEditor.document.uri, snippetEdits);
+    await workspace.applyEdit(edit);
+  } else {
+    // SnippetTextEdit is not supported, update start / end tag
+    const startPos = languageClient.protocol2CodeConverter.asPosition(result.start.range.start);
+    const endPos = languageClient.protocol2CodeConverter.asPosition(result.end.range.start);
+    activeEditor.edit((selectedText) => {
+      selectedText.insert(startPos, startTag);
+      selectedText.insert(endPos, endTag);
+    })
+
+    if (surroundWithType === SurroundWithKind.tags) {
+      // Force the show of completion
+      const pos = languageClient.protocol2CodeConverter.asPosition(result.start.range.start);
+      const posAfterStartBracket = new Position(pos.line, pos.character + 1);
+      activeEditor.selections = [new Selection(posAfterStartBracket, posAfterStartBracket)];
+      commands.executeCommand("editor.action.triggerSuggest");
+    }
+  }
+
 }

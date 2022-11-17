@@ -684,17 +684,69 @@
         "command": "xml.restart.language.server",
         "title": "Restart XML Language Server",
         "category": "XML"
+      },
+      {
+        "command": "xml.refactor.surround.with.tags",
+        "title": "Surround with Tags (Wrap)",
+        "category": "XML"
+      },
+      {
+        "command": "xml.refactor.surround.with.comments",
+        "title": "Surround with Comments",
+        "category": "XML"
+      },
+      {
+        "command": "xml.refactor.surround.with.cdata",
+        "title": "Surround with CDATA",
+        "category": "XML"
       }
     ],
     "menus": {
       "commandPalette": [
         {
           "command": "xml.validation.current.file",
-          "when": "editorLangId == xml"
+          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+        },
+        {
+          "command": "xml.validation.all.files",
+          "when": "XMLLSReady"
         },
         {
           "command": "xml.command.bind.grammar",
-          "when": "resourceFilename =~ /xml/ && editorIsOpen"
+          "when": "resourceFilename =~ /xml/ && editorIsOpen && XMLLSReady"
+        },
+        {
+          "command": "xml.restart.language.server",
+          "when": "XMLLSReady"
+        },
+        {
+          "command": "xml.refactor.surround.with.tags",
+          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+        },
+        {
+          "command": "xml.refactor.surround.with.comments",
+          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+        },
+        {
+          "command": "xml.refactor.surround.with.cdata",
+          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "xml.refactor.surround.with.tags",
+          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
+          "group": "1_modification"
+        },
+        {
+          "command": "xml.refactor.surround.with.comments",
+          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
+          "group": "1_modification"
+        },
+        {
+          "command": "xml.refactor.surround.with.cdata",
+          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
+          "group": "1_modification"
         }
       ]
     },
