@@ -24,9 +24,14 @@ export const ASSOCIATE_GRAMMAR_INSERT = "xml.associate.grammar.insert";
 /**
  * Command to check if the current XML document is bound to a grammar
  */
-export const CHECK_BOUND_GRAMMAR = "xml.check.bound.grammar"
+export const CHECK_BOUND_GRAMMAR = "xml.check.bound.grammar";
 
 /**
  * Command to check if a given file pattern matches any file on the workspace
  */
-export const CHECK_FILE_PATTERN = "xml.check.file.pattern"
+export const CHECK_FILE_PATTERN = "xml.check.file.pattern";
+
+/**
+ * Command to surround with tags, comments, cdata
+ */
+ export const REFACTOR_SURROUND_WITH = "xml.refactor.surround.with";

@@ -1,6 +1,6 @@
 import { TelemetryEvent } from '@redhat-developer/vscode-redhat-telemetry/lib';
 import { commands, ExtensionContext, extensions, Position, TextDocument, TextEditor, Uri, window, workspace } from 'vscode';
-import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, TextDocumentPositionParams } from "vscode-languageclient";
+import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, DocumentSelector, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, State, TextDocumentPositionParams } from "vscode-languageclient";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { XMLFileAssociation } from '../api/xmlExtensionApi';
 import { registerClientServerCommands } from '../commands/registerCommands';
@@ -13,6 +13,17 @@ import { containsVariableReferenceToCurrentFile } from '../settings/variableSubs
 import * as Telemetry from '../telemetry';
 import { ClientErrorHandler } from './clientErrorHandler';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
+
+export const XML_SUPPORTED_LANGUAGE_IDS = ['xml', 'xsl', 'dtd', 'svg'];
+
+const XML_DOCUMENT_SELECTOR: DocumentSelector =
+  XML_SUPPORTED_LANGUAGE_IDS
+    .map(langId => ({ scheme: 'file', language: langId }))
+    .concat(
+      XML_SUPPORTED_LANGUAGE_IDS
+        .map(langId => ({ scheme: 'untitled', language: langId }))
+    );
+
 
 const ExecuteClientCommandRequest: RequestType<ExecuteCommandParams, any, void> = new RequestType('xml/executeClientCommand');
 
@@ -33,6 +44,11 @@ export async function startLanguageClient(context: ExtensionContext, executable:
 
   const languageClientOptions: LanguageClientOptions = getLanguageClientOptions(logfile, externalXmlSettings, requirementsData, context);
   languageClient = new LanguageClient('xml', 'XML Support', executable, languageClientOptions);
+
+  languageClient.onDidChangeState(e => {
+    // Notify that XML language client is started / stoped
+    commands.executeCommand('setContext', 'XMLLSReady', e.newState == State.Running);
+  });
 
   languageClient.onTelemetry(async (e: TelemetryEvent) => {
     if (e.name === Telemetry.SERVER_INITIALIZED_EVT) {
@@ -120,16 +136,7 @@ function getLanguageClientOptions(
   context: ExtensionContext): LanguageClientOptions {
   return {
     // Register the server for xml, xsl, dtd, svg
-    documentSelector: [
-      { scheme: 'file', language: 'xml' },
-      { scheme: 'file', language: 'xsl' },
-      { scheme: 'file', language: 'dtd' },
-      { scheme: 'file', language: 'svg' },
-      { scheme: 'untitled', language: 'xml' },
-      { scheme: 'untitled', language: 'xsl' },
-      { scheme: 'untitled', language: 'dtd' },
-      { scheme: 'untitled', language: 'svg' }
-    ],
+    documentSelector: XML_DOCUMENT_SELECTOR,
     revealOutputChannelOn: RevealOutputChannelOn.Never,
     //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
     initializationOptions: {
