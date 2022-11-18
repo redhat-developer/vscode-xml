@@ -13,7 +13,7 @@
 import * as fs from 'fs-extra';
 import * as os from 'os';
 import * as path from 'path';
-import { ExtensionContext, extensions, languages } from "vscode";
+import { ExtensionContext, Uri, extensions, languages } from "vscode";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { XMLExtensionApi } from './api/xmlExtensionApi';
 import { getXmlExtensionApiImplementation } from './api/xmlExtensionApiImplementation';
@@ -49,11 +49,8 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
     requirementsData = {} as requirements.RequirementsData;
   }
 
-  let storagePath: string = context.storagePath;
-  if (!storagePath) {
-    storagePath = os.homedir() + "/.lemminx";
-  }
-  const logfile = path.resolve(storagePath + '/lemminx.log');
+  const storageUri = context.storageUri ?? context.globalStorageUri;
+  const logfile = Uri.joinPath(storageUri, 'lemminx.log').fsPath;
   await fs.ensureDir(context.globalStorageUri.fsPath);
   await cleanUpHeapDumps(context);
 
