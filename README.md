@@ -142,15 +142,9 @@ This is an open source project open to anyone. Contributions are extremely welco
 
 For information on getting started, refer to the [CONTRIBUTING instructions](CONTRIBUTING.md).
 
-CI builds can be installed manually by following these instructions:
+Click on `Switch to Pre-Release Version` to enjoy the latest changes.
 
-  1) Download the latest development VSIX archive [from here](http://download.jboss.org/jbosstools/vscode-xml/staging/?C=M;O=D). `(vscode-xml-XXX.vsix)`
-
-  2) Go to the Extensions section in VSCode.
-
-  3) At the top right click the `...` icon.
-
-  4) Select 'Install from VSIX...' and choose the visx file.
+![Switch to Pre-Release](./docs/images/pre-release.png)
 
 Feedback
 ===============
