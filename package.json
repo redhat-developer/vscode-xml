@@ -643,6 +643,14 @@
       "[xsl]": {
         "editor.autoClosingBrackets": "never",
         "files.trimFinalNewlines": true
+      },
+      "[dtd]": {
+        "editor.autoClosingBrackets": "never",
+        "files.trimFinalNewlines": true
+      },
+      "[svg]": {
+        "editor.autoClosingBrackets": "never",
+        "files.trimFinalNewlines": true
       }
     },
     "commands": [

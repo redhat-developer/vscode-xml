@@ -148,7 +148,7 @@ function getLanguageClientOptions(
     errorHandler: new ClientErrorHandler('XML', context),
     synchronize: {
       //preferences starting with these will trigger didChangeConfiguration
-      configurationSection: ['xml', '[xml]', 'files.trimFinalNewlines', 'files.trimTrailingWhitespace', 'files.insertFinalNewline']
+      configurationSection: ['xml', '[xml]', 'files.trimFinalNewlines', 'files.trimTrailingWhitespace', 'files.insertFinalNewline', 'editor.linkedEditing']
     },
     middleware: {
       workspace: {
