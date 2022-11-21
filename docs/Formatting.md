@@ -309,7 +309,8 @@ Set to `true` to normalize the whitespace of content inside an element. Newlines
 
 When `xml.format.joinContentLines` is set to `false`, the following edits will be made:
 
-* text following a line separator will be appropriately indented
+* text following a line separator will be appropriately indented (not applied to cases where the element is categorized as `mixed content`)
+  * Please see [xml.format.experimental](#xmlformatexperimental) for more information on mixed content
 * spaces between text in the same line will be normalized
 * any exisiting new lines will be treated with respect to the [`xml.format.preservedNewlines`](#xmlformatpreservednewlines) setting
 
@@ -318,14 +319,13 @@ For example, before formatting:
   ```xml
   <?xml version='1.0' encoding='UTF-8'?>
   <root>
-  Interesting text      content
+  <a>
+  Interesting 
 
-    <a>
-  test
+              text content
+      </a> values and 
 
-    </a> values     and     1234 numbers
-
-  </root>
+  1234 numbers </root>
   ```
 
 After formatting with `xml.format.joinContentLines` is set to `false` and `xml.format.preservedNewlines` set to `2`:
@@ -333,14 +333,11 @@ After formatting with `xml.format.joinContentLines` is set to `false` and `xml.f
   ```xml
   <?xml version='1.0' encoding='UTF-8'?>
   <root>
-      Interesting text content
-
       <a>
-          test
+          Interesting
 
-      </a> values and 1234 numbers
-
-  </root>
+          text content
+      </a> values and 1234 numbers </root>
   ```
 
 To remove all empty new lines, set `xml.format.preservedNewlines` to `0` for the following result:
@@ -350,18 +347,18 @@ After formatting with `xml.format.joinContentLines` is set to `false` and `xml.f
   ```xml
   <?xml version='1.0' encoding='UTF-8'?>
   <root>
-      Interesting text content
       <a>
-          test
-      </a> values and 1234 numbers
-  </root>
+          Interesting
+          text content
+      </a> values and 1234 numbers </root>
   ```
 
 If `xml.format.joinContentLines` is set to `true`, the above document becomes:
 
   ```xml
   <?xml version='1.0' encoding='UTF-8'?>
-  <root> Interesting text content <a> test </a> values and 1234 numbers </root>
+  <root>
+      <a> Interesting text content </a> values and 1234 numbers </root>
   ```
 
 * line breaks will be inserted where needed with respect to the [`xml.format.maxLineWidth`](#xmlformatmaxlinewidth) setting
