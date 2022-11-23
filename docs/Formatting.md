@@ -1,24 +1,12 @@
 ## Formatting
 
-### xml.format.enabled
+### Formatting strategy
 
-  Set to `false` to disable XML formatting. Defaults to `true`.
+  As the frequency of issues regarding the previous XML formatter increased, we have decided to redo our formatter from scratch. To revert to the old formatter, the setting `xml.format.legacy` should be set to true.
 
-***
+  The old formatter uses the DOM document to rewrite the XML document, or simply a fragment of XML (when range formatting is processed). *Note*: This strategy provides a lot of bugs if XML is not valid (ex : `<%` will format with `<null`).
 
-### xml.format.experimental
-
-  Set to `true` to enable experimental formatter. Defaults to `false`.
-
-  As the frequency of issues regarding the previous XML formatter increased, we have decided to redo our formatter from scratch. *Note*: this new formatter is flagged as experimental since it doesn't support all current formatter settings and uncaught bugs may occur. To enable this experimental formatter, the setting `xml.format.experimental` should be set to true.
-
-  We plan to have the experimental formatter replace the current formatter entirely once we have enough positive feedback and all current formatting settings are supported. To help with this, please don't hesitate to [create issues](https://github.com/redhat-developer/vscode-xml/issues) and give us feedback on this experimental formatter.
-
-  The current formatter uses the DOM document to rewrite the XML document, or simply a fragment of XML (when range formatting is processed). *Note*: This strategy provides a lot of bugs if XML is not valid (ex : `<%` will format with `<null`).
-
-  Any setting unsupported by the experimental formatter will be marked with **Not supported by the experimental formatter**, while settings exclusive to the experimental formatter will be marked with **This setting is only available with experimental formatter**.
-
-  The new strategy used by the experimental formatter formats the current XML by adding or removing some spaces without updating the XML content. The experimental formatter categorizes each element as:
+  The new strategy used by the formatter formats the current XML by adding or removing some spaces without updating the XML content. The formatter categorizes each element as:
 
   * `ignore space`
   * `normalize space`
@@ -46,25 +34,28 @@ Here `foo` is categorized as `ignore space`, because all children of `foo` are t
 
 ```xml
 <foo>
-  abc
-  def
+      abc    def
+  ghi
 </foo>
 ```
 
-Here `foo` is categorized as `normalize space`, it means that it replaces all spaces with a single space. After formatting, you should see this result:
+Here `foo` is categorized as `normalize space` since it only contains text content, it means that it replaces all spaces on the same line with a single space while respecting existing line breaks. After formatting, you should see this result:
 
 ```xml
-<foo> abc def </foo>
+<foo>
+  abc def
+  ghi
+</foo>
 ```
 
  * `preserve space`
 
-If you want to preserve space, you can use `xml:space="preserve"` to preserve spaces in some elements or use the [`xml.format.preserveSpace`](#xml.format.preserveSpace) setting.
+If you want to preserve space, you can use `xml:space="preserve"` to preserve spaces in some elements or use the [`xml.format.preserveSpace`](#xmlformatpreservespace) setting.
 
 ```xml
 <foo xml:space="preserve" >
-  abc
-  def
+     abc
+ def
 </foo>
 ```
 
@@ -72,8 +63,8 @@ Here `foo` is categorized as `preserve space`. After formatting, you should see 
 
 ```xml
 <foo xml:space="preserve" >
-  abc
-  def
+     abc
+ def
 </foo>
 ```
 
@@ -87,12 +78,26 @@ Here `foo` is categorized as `preserve space`. After formatting, you should see 
 </foo>
 ```
 
-Here `foo` is categorized as `mixed content`, since it contains text and tag element. All single spaces are removed. After formatting, you should see this result:
+Here `foo` is categorized as `mixed content`, since it contains text and tag element. All single spaces are removed between text content. After formatting, you should see this result:
 
 ```xml
 <foo>
     <bar></bar> abc def </foo>
 ```
+
+***
+
+### xml.format.enabled
+
+  Set to `false` to disable XML formatting. Defaults to `true`.
+
+***
+
+### xml.format.legacy
+
+  Set to `true` to enable legacy formatter. Defaults to `false`.
+
+  Any setting unsupported by the legacy formatter will be marked with **Not supported by the legacy formatter** in this document and in the settings, while settings exclusive to the legacy formatter will be marked with **This setting is only available with legacy formatter**.
 
 ***
 
@@ -181,6 +186,8 @@ The number of blank lines to leave between tags during formatting.
 
 The default is 2. This means that if more than two consecutive empty lines are left in a document, then the number of blank lines will become 2.
 
+Any number of new lines present that is less than the set number will also be preserved. In other words, if there is 1 new line between tags while `xml.format.preservedNewlines` is set to 2, the single new line will be preserved.
+
   For example, this document:
   ```xml
   <?xml version="1.0" encoding="UTF-8"?>
@@ -192,8 +199,6 @@ The default is 2. This means that if more than two consecutive empty lines are l
 
 
     <child></child>
-
-
 
   </root>
   ```
@@ -207,7 +212,6 @@ The default is 2. This means that if more than two consecutive empty lines are l
 
 
     <child></child>
-
 
   </root>
   ```
@@ -284,6 +288,9 @@ If this value is set to 0, then all blank lines will be removed during formattin
   <project>    </project>
   <a> </a>
   ```
+
+**This setting is only available with legacy formatter.**
+
 ***
 
 ### xml.format.joinCommentLines
@@ -398,7 +405,7 @@ If `xml.format.joinContentLines` is set to `true`, the above document becomes:
 
 ### files.trimFinalNewlines
 
-  Set to `true` to trim final newlines at the end of the document.  Defaults to `false`
+  Set to `true` to trim final newlines at the end of the document. This setting is overridden if `files.insertFinalNewline` is set to `true`. Defaults to `false`
   ```xml
   <a><a/>
 
@@ -589,13 +596,13 @@ Element names for which spaces will be preserved. Defaults is the following arra
 ]
 ```
 
-**This setting is only available with experimental formatter.**
+**Not supported by the legacy formatter.**
 
 ### xml.format.maxLineWidth
 
-Max line width. Set to `0` to disable this setting. Default is `0`.
+Max line width. Set to `0` to disable this setting. Default is `100`.
 
-**This setting is only available with experimental formatter.**
+**Not supported by the legacy formatter.**
 
 ### xml.format.grammarAwareFormatting
 
@@ -627,4 +634,4 @@ After formatting, you should see that the content of `description` has spaces pr
 
 The collapse option will now respect XSD's `nillable="false"` definitions. The collapse on the element will not be done if the element has `nillable="false"` in the XSD and `xsi:nil="true"` in the XML.
 
-**This setting is only available with experimental formatter.**
+**Not supported by the legacy formatter.**
