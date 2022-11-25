@@ -33,9 +33,6 @@ let languageClient: LanguageClient;
 export async function activate(context: ExtensionContext): Promise<XMLExtensionApi> {
 
   await Telemetry.startTelemetry(context);
-  Telemetry.sendTelemetry(Telemetry.SETTINGS_EVT, {
-    preferBinary: (getXMLConfiguration()['server']['preferBinary'] as boolean)
-  });
 
   registerClientOnlyCommands(context);
 
