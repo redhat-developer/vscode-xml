@@ -35,7 +35,12 @@ export async function startLanguageClient(context: ExtensionContext, executable:
   languageClient = new LanguageClient('xml', 'XML Support', executable, languageClientOptions);
 
   languageClient.onTelemetry(async (e: TelemetryEvent) => {
-    return Telemetry.sendTelemetry(e.name, e.properties);
+    if (e.name === Telemetry.SERVER_INITIALIZED_EVT) {
+      e.properties[Telemetry.SETTINGS_EVT] = {
+        preferBinary: (getXMLConfiguration()['server']['preferBinary'] as boolean)
+      };
+      return Telemetry.sendTelemetry(Telemetry.STARTUP_EVT, e.properties);
+    }
   });
 
   context.subscriptions.push(languageClient.start());
