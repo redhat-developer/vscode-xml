@@ -124,6 +124,7 @@ The latest snapshot build of the binary, which tracks the HEAD of this repositor
 
 ## Articles
 
+ * [How the new VSCode XML extension improves developer experience](https://developers.redhat.com/articles/2022/11/29/new-vscode-xml-extension-improves-developer-experience/)
  * [No more Java in vscode-xml 0.15.0!](https://developers.redhat.com/blog/2021/03/12/no-more-java-in-vscode-xml-0-15-0/)
  * [vscode-xml 0.14.0: A more customizable XML extension for VS Code](https://developers.redhat.com/blog/2020/11/10/vscode-xml-0-14-0-a-more-customizable-xml-extension-for-vs-code/)
  * [Improved XML grammar binding and more in Red Hat VS Code XML extension 0.13.0](https://developers.redhat.com/blog/2020/07/08/improved-xml-grammar-binding-and-more-in-red-hat-vs-code-xml-extension-0-13-0/)
