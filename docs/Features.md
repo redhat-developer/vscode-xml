@@ -6,3 +6,4 @@
 - [XSD features](Features/XSDFeatures.md#xsd-features)
 - [DTD features](Features/DTDFeatures.md#dtd-features)
 - [RelaxNG features](Features/RelaxNGFeatures.md#relaxng-features)
+- [XInclude features](Features/XIncludeFeatures.md#xinclude-features)

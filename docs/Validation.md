@@ -563,3 +563,9 @@ By default, vscode-xml uses this default validation filter:
   }
 ]
 ```
+
+## xml.validation.xInclude.enabled
+
+The `xml.validation.xInclude.enabled` gives the capability to enable / disable the validation for XInclude. Defaults to `false`.
+
+See [XInclude features](Features/XIncludeFeatures.md#validation)

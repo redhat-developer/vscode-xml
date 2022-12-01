@@ -514,6 +514,12 @@
           "markdownDescription": "Enable/disable resolve of external entities. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22resolve-external-entities%22%7D%5D) for more information. Disabled for untrusted workspaces",
           "scope": "window"
         },
+        "xml.validation.xInclude.enabled": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Enable/disable validation for `xi:include`. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xmlvalidationxincludeenabled%22%7D%5D) for more information.",
+          "scope": "window"
+        },
         "xml.validation.noGrammar": {
           "type": "string",
           "enum": [
