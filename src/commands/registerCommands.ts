@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import { commands, ConfigurationTarget, env, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, SnippetString, TextDocument, Uri, window, workspace, WorkspaceEdit, Selection } from "vscode";
 import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, ReferencesRequest, TextDocumentEdit, TextDocumentIdentifier, TextEdit } from "vscode-languageclient";
 import { LanguageClient } from 'vscode-languageclient/node';
+import { registerConfigurationUpdateCommand } from '../lsp-commands';
 import { markdownPreviewProvider } from "../markdownPreviewProvider";
 import { DEBUG } from '../server/java/javaServerStarter';
 import { getDirectoryPath, getFileName, getRelativePath, getWorkspaceUri } from '../utils/fileUtils';
@@ -33,6 +34,7 @@ export async function registerClientServerCommands(context: ExtensionContext, la
   registerRefactorCommands(context, languageClient);
   registerAssociationCommands(context, languageClient);
   registerRestartLanguageServerCommand(context, languageClient);
+  registerConfigurationUpdateCommand();
 
   // Register client command to execute custom XML Language Server command
   context.subscriptions.push(commands.registerCommand(ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND, (command, ...rest) => {
