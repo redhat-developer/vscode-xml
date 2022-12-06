@@ -7,3 +7,4 @@
 - [DTD features](Features/DTDFeatures.md#dtd-features)
 - [RelaxNG features](Features/RelaxNGFeatures.md#relaxng-features)
 - [XInclude features](Features/XIncludeFeatures.md#xinclude-features)
+- [XML Catalog features](Features/XMLCatalogFeatures.md#xml-catalog-features)

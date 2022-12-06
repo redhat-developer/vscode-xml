@@ -40,7 +40,7 @@ This VS Code extension provides support for creating and editing XML documents, 
   * XSD based code completion
   * XSL support
   * [XInclude support](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Features/XIncludeFeatures.md#Validation)
-  * [XML catalogs](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md#xml-catalog-with-xsd)
+  * [XML catalogs](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Features/XMLCatalogFeatures.md#xml-catalog-features)
   * File associations
   * Code actions
   * Schema Caching
