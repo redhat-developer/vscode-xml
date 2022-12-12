@@ -1,5 +1,55 @@
 # Change Log
 
+## [0.23.0](https://github.com/redhat-developer/vscode-xml/milestone/31?closed=1) (December 15, 2022)
+
+### Enhancements
+
+ * Codelens, completion, definition, documentLink, highlighting, references, rename support in RelaxNG file. See [#834](https://github.com/redhat-developer/vscode-xml/pull/834).
+ * Provide ability to contribute to vscode-xml with a custom language. See [#589](https://github.com/redhat-developer/vscode-xml/issues/589).
+ * Fill remote URL with "Bind to grammar / schema". See [#808](https://github.com/redhat-developer/vscode-xml/issues/808).
+ * Surround selection with XML element. See [#794](https://github.com/redhat-developer/vscode-xml/issues/794).
+ * Enable the experimental formatter by default and add `xml.format.legacy` setting to retain previous formatter. See [#823](https://github.com/redhat-developer/vscode-xml/pull/823).
+ * Add validation support for `XInclude`. See [#175](https://github.com/redhat-developer/vscode-xml/issues/175).
+ * Support max line length setting. See [#350](https://github.com/redhat-developer/vscode-xml/issues/350).
+ * Add codelens and command to register/unregister catalog. See [#572](https://github.com/redhat-developer/vscode-xml/issues/572).
+ * Set lemminx logfile fallback to global storage. See [#814](https://github.com/redhat-developer/vscode-xml/pull/814).
+ * Combine `startup` & `server.initialized` telemetry events. See [#818](https://github.com/redhat-developer/vscode-xml/issues/818).
+ * Provide the capability to bind RelaxNG schema. See [#807](https://github.com/redhat-developer/vscode-xml/pull/807).
+ * Support `files.trimTrailingWhitespace` setting with experimental formatter. See [#800](https://github.com/redhat-developer/vscode-xml/pull/800).
+ * Remove `xml.format.preserveEmptyContent` setting for experimental formatter. See [lemminx#1346](https://github.com/eclipse/lemminx/issues/1346).
+ * Improve text content formatting for experimental formatter. See [lemminx#1331](https://github.com/eclipse/lemminx/issues/1331).
+
+### Performance
+
+ * Improve formatting performance with `xml.format.grammarAwareFormatting` setting. See [lemminx#1368](https://github.com/eclipse/lemminx/issues/1368).
+
+### Bug Fixes
+
+ * RelaxNG schema validation not working when DOCTYPE declaration missing with file association. See [#831](https://github.com/redhat-developer/vscode-xml/issues/831).
+ * XSD based Autocompletion for substitutionGroup. See [#825](https://github.com/redhat-developer/vscode-xml/issues/825).
+ * Applying XML completion generates invalid XML content. See [#815](https://github.com/redhat-developer/vscode-xml/pull/815).
+ * Add MEI, TEI, SVG as keywords. See [#811](https://github.com/redhat-developer/vscode-xml/pull/811).
+ * Add support for SVG files. See [#805](https://github.com/redhat-developer/vscode-xml/issues/805).
+ * Referenced RelaxNG schema not found via XML catalog when using `xml-model`. See [#804](https://github.com/redhat-developer/vscode-xml/issues/804).
+ * Generate and bind schema doesn't work with experimental formatter. See [#802](https://github.com/redhat-developer/vscode-xml/issues/802).
+ * Fix unexpected behavior of `xml.format.preservedNewlines` with experimental formatter. See [#797](https://github.com/redhat-developer/vscode-xml/issues/797).
+ * Format CDATA sections without adding new lines. See [#585](https://github.com/redhat-developer/vscode-xml/issues/585).
+ * Generate grammar fails on first attempt with experimental formatter. See [lemminx#1382](https://github.com/eclipse/lemminx/issues/1382).
+ * Add tests for `xml.format.grammarAwareFormatting` setting and restore mixed content behaviour. See [lemminx#1364](https://github.com/eclipse/lemminx/pull/1364).
+ * Prevent exception in `DomElementFormatter.formatEndTagElement()`. See [lemminx#1361](https://github.com/eclipse/lemminx/issues/1361).
+ * NPE in CodeLens with empty XML file. See [lemminx#1396](https://github.com/eclipse/lemminx/issues/1396).
+ * Autoclose tag generates an unexpected `>`. See [lemminx#1221](https://github.com/eclipse/lemminx/issues/1221).
+
+### Build
+
+ * Update vscode-redhat-telemetry to 0.5.2. See [#812](https://github.com/redhat-developer/vscode-xml/pull/812).
+ * Fix issues reported by npm-audit. See [#775](https://github.com/redhat-developer/vscode-xml/pull/775), [#799](https://github.com/redhat-developer/vscode-xml/pull/799), and [#828](https://github.com/redhat-developer/vscode-xml/pull/828).
+
+### Other
+
+ * Add link to blog for 0.22.0 release. See [#826](https://github.com/redhat-developer/vscode-xml/pull/826).
+ * Update `xml.format.joinContentLines` settings documentation. See [#817](https://github.com/redhat-developer/vscode-xml/pull/817).
+
 ## [0.22.0](https://github.com/redhat-developer/vscode-xml/milestone/30?closed=1) (October 20, 2022)
 
 ### Enhancements
