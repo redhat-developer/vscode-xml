@@ -31,11 +31,21 @@ You can associate your XML file with `RelaxNG grammar` (`file` or `URL`) using :
 
  * for [RelaxNG XML syntax (*.rng files)](https://relaxng.org/tutorial-20011203.html), it provides the same support as XSD/DTD grammars (completion, hover, validation, etc).
  
-![RelaxNG XML Syntax Overview](../images/RelaxNG/RelaxNGXMLSyntaxOverview.png)
-  
+![RelaxNG grammar XML Syntax Overview](../images/RelaxNG/RelaxNGXMLSyntaxOverview.png)
+
  * for [RelaxNG Compact syntax (*.rnc files)](https://relaxng.org/compact-tutorial-20030326.html) it provides only syntax coloration.
  
 ![RelaxNG Compact Syntax Overview](../images/RelaxNG/RelaxNGCompactSyntaxOverview.png)
+
+### RelaxNG grammar XML Syntax
+
+[vscode-xml](https://github.com/redhat-developer/vscode-xml) provides support for reference between `define/@name` and `ref/@name` with codelens, definition, completion, highlighting, references, rename:
+
+![RelaxNG XML Syntax Define support](../images/RelaxNG/RNGDefineSupport.gif)
+
+It also provides support for `include/@href` and `externalRef/@href` attributes to navigate easily to the referenced `rng` grammar file:
+
+![RelaxNG XML Syntax Href support](../images/RelaxNG/RNGHrefSupport.gif)
 
 # Validation
 
