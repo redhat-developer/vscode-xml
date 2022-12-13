@@ -181,7 +181,10 @@ async function grammarAssociationCommand(documentURI: Uri, languageClient: Langu
   // step 1: select local / remote Uri type
   let grammarURI;
   const uriType = await window.showQuickPick([{ "label": "local" }, { "label": "remote" }], { placeHolder: "Binding type" });
-  if (uriType && uriType.label === 'remote') {
+  if (!uriType) {
+    return;
+  }
+  if (uriType.label === 'remote') {
     let predefinedUrl = await env.clipboard.readText();
     if (!predefinedUrl || !predefinedUrl.startsWith('http')) {
       predefinedUrl = '';
