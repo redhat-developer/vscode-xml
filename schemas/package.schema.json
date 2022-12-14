@@ -1,20 +1,33 @@
 {
-	"$schema": "http://json-schema.org/draft-04/schema#",
-	"title": "XML Language server contributions to package.json",
-	"type": "object",
-	"properties": {
-		"contributes": {
-			"type": "object",
-			"properties": {
-				"xml.javaExtensions": {
-					"type": "array",
-					"markdownDescription": "XML language server extensions",
-					"items": {
-						"type": "string",
-						"description": "Relative path to a XML language server extension JAR file"
-					}
-				}
-			}
-		}
-	}
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "XML Language server contributions to package.json",
+    "type": "object",
+    "properties": {
+        "contributes": {
+            "type": "object",
+            "properties": {
+                "xml.javaExtensions": {
+                    "type": "array",
+                    "markdownDescription": "XML language server extensions",
+                    "items": {
+                        "type": "string",
+                        "description": "Relative path to a XML language server extension JAR file"
+                    }
+                },
+                "xmlLanguageParticipants": {
+                    "type": "array",
+                    "description": "A list of languages that participate with the XML language server.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "languageId": {
+                                "type": "string",
+                                "description": "The id of the language that participates with XML language server."
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

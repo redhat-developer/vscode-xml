@@ -12,18 +12,11 @@ import { getXMLConfiguration, getXMLSettings, onConfigurationChange, subscribeJD
 import { containsVariableReferenceToCurrentFile } from '../settings/variableSubstitution';
 import * as Telemetry from '../telemetry';
 import { ClientErrorHandler } from './clientErrorHandler';
+import { getLanguageParticipants } from './languageParticipants';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
 
-export const XML_SUPPORTED_LANGUAGE_IDS = ['xml', 'xsl', 'dtd', 'svg'];
-
-const XML_DOCUMENT_SELECTOR: DocumentSelector =
-  XML_SUPPORTED_LANGUAGE_IDS
-    .map(langId => ({ scheme: 'file', language: langId }))
-    .concat(
-      XML_SUPPORTED_LANGUAGE_IDS
-        .map(langId => ({ scheme: 'untitled', language: langId }))
-    );
-
+const languageParticipants = getLanguageParticipants();
+export const XML_SUPPORTED_LANGUAGE_IDS = languageParticipants.documentSelector;
 
 const ExecuteClientCommandRequest: RequestType<ExecuteCommandParams, any, void> = new RequestType('xml/executeClientCommand');
 
@@ -136,7 +129,7 @@ function getLanguageClientOptions(
   context: ExtensionContext): LanguageClientOptions {
   return {
     // Register the server for xml, xsl, dtd, svg
-    documentSelector: XML_DOCUMENT_SELECTOR,
+    documentSelector: XML_SUPPORTED_LANGUAGE_IDS,
     revealOutputChannelOn: RevealOutputChannelOn.Never,
     //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
     initializationOptions: {
