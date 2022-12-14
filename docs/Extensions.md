@@ -1,6 +1,36 @@
 # Extensions
 
-## Custom XML Extensions
+## Contribution in package.json
+
+### Custom language
+
+If your vscode extension defines a custom language `myxml` in package.json:
+
+ ```json
+"contributes": {
+    "languages": [
+        {
+            "id": "myxml",
+            "extensions": [
+                ".myxml"
+            ]
+        }
+    ]
+```
+
+and you want that `myxml` language uses [vscode-xml](https://github.com/redhat-developer/vscode-xml) language server, you need to declare it with `xmlLanguageParticipants`: 
+
+ ```json
+"contributes": {
+  "xmlLanguageParticipants": [
+    {
+      "languageId": "myxml"
+    }
+  ]
+}
+```
+   
+## Custom XML Extensions (written in Java)
 
 The [LemMinX - XML Language Server](https://github.com/eclipse/lemminx) can be extended to support custom completion, hover, validation, rename, etc by using the [Java Service Provider Interface (SPI)](https://www.baeldung.com/java-spi) mechanism.
 vscode-xml provides the ability to use your custom XML support provider, by adding external jars to the XML language server's classpath.
