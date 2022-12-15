@@ -22,7 +22,7 @@
     "SVG"
   ],
   "xmlServer": {
-    "version": "0.23.0"
+    "version": "0.23.1"
   },
   "binaryServerDownloadUrl": {
     "linux": "https://github.com/redhat-developer/vscode-xml/releases/download/latest/lemminx-linux.zip",
