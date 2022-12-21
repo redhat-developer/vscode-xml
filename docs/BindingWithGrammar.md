@@ -138,3 +138,11 @@ When an unbound XML file is open, a Document Type Definition/DTD file can be gen
 With the cursor on the first opening tag, use `Ctrl + .` or `Quick Fix...` or the lightbulb that appears and select "Generate foo.dtd and bind with *" to create the file in the the same directory.
 
 ![GenerateDTDFromXML](./images/BindingWithGrammar/GenerateDTDFromXML.gif)
+
+#### Generate RELAX NG from XML
+
+When an unbound XML file is open, a RELAX NG schema can be generated from the opening tag in the XML file.
+
+With the cursor on the first opening tag, use `Ctrl + .` or `Quick Fix...` or the lightbulb that appears and select "Generate foo.rng and bind with RelaxNG" to create the file in the the same directory.
+
+![GenerateRelaxNGFromXML](./images/BindingWithGrammar/GenerateRelaxNGFromXML.gif)
