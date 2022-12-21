@@ -142,3 +142,9 @@ The following file, `addressBook.xml`, references `addressBook.rng` using the `x
   </card>
 </addressBook> 
 ```
+
+# Generate RELAX NG from XML
+
+When an unbound XML file is open, a RELAX NG schema can be generated from the opening tag in the XML file.
+
+See: [Generate RELAX NG from XML](../BindingWithGrammar.md#generate-relax-ng-from-xml).
