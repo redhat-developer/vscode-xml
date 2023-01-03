@@ -9,3 +9,4 @@
 - [XInclude features](Features/XIncludeFeatures.md#xinclude-features)
 - [XML Catalog features](Features/XMLCatalogFeatures.md#xml-catalog-features)
 - [XML References features](Features/XMLReferencesFeatures.md#xml-references-features)
+- [XML Colors features](Features/XMLColorsFeatures.md#xml-colors-features)
