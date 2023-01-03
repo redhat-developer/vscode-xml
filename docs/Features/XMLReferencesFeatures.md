@@ -1,6 +1,6 @@
 # XML References Features
 
-XML References support provides the capability to reference a DOM node (attribute or text) to an another DOM node (attribute or text) with a the `xml.references` settings by using XPath expression : 
+XML References support provides the capability to reference a DOM node (attribute or text) to an another DOM node (attribute or text) with the `xml.references` settings by using XPath expression : 
 
  * `foo/@attr` defines the `attr` attribute node of the `foo` element.
  * `foo/text()` defines the text node of the `foo` element.

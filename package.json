@@ -674,7 +674,42 @@
               "expressions"
             ]
           },
-          "markdownDescription": "Allows XML schemas/ DTD to be associated to file name patterns. Please refer to [XML file association with XSD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-xsd%22%7D%5D) or [XML file association with DTD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-dtd%22%7D%5D) for more information. \n\nExample:\n```json\n[{\n  \"pattern\": \"file1.xml\",\n  \"systemId\": \"path/to/file.xsd\"\n},\n{\n  \"pattern\": \"**/*.xsd\",\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\"\n}]\n```",
+          "markdownDescription": "Allows references for the given file name patterns. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features/XMLReferencesFeatures%22%2C%22section%22%3A%22xmlreferencesfeatures%22%7D%5D) for more information.",
+          "scope": "window"
+        },
+        "xml.colors": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "pattern": {
+                "type": "string",
+                "markdownDescription": "matches the files that colors declared with `expressions` applies to.\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
+              },
+              "expressions": {
+                "type": "array",
+                "default": [],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "xpath": {
+                      "type": "string",
+                      "description": "The color DOM node (attribute, text) declared with XPath (ex: foo/@color, foo/text())"
+                    }
+                  }
+                },
+                "required": [
+                  "xpath"
+                ]
+              }
+            },
+            "required": [
+              "pattern",
+              "expressions"
+            ]
+          },
+          "markdownDescription": "Allows colors for the given file name patterns. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features/XMLColorsFeatures%22%2C%22section%22%3A%22xmlcolorsfeatures%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.extension.jars": {
