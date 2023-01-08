@@ -105,6 +105,12 @@
     "yauzl": "^2.10.0"
   },
   "contributes": {
+    "snippets": [
+      {
+        "language": "xml",
+        "path": "./snippets/xslt-snippets.json"
+      }
+    ],
     "languages": [
       {
         "id": "dtd",

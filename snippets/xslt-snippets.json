@@ -1,0 +1,41 @@
+{
+  "va": {
+    "description": "[va]lue-of",
+    "prefix": "va",
+    "body": [
+      "<xsl:value-of select=\"${1:expression}\"/>"
+    ]
+  },
+  "fo": {
+    "description": "[fo]e-each",
+    "prefix": "fo",
+    "body": [
+      "<xsl:for-each select=\"${1:expression}\">",
+      "\t$0",
+      "</xsl:for-each>"
+    ]
+  },
+  "if": {
+    "description": "[if]",
+    "prefix": "if",
+    "body": [
+      "<xsl:if test=\"${1:expression}\">",
+      "\t$0",
+      "</xsl:if>"
+    ]
+  },
+  "ch": {
+    "description": "[ch]oose",
+    "prefix": "ch",
+    "body": [
+      "<xsl:choose>",
+      "\t<xsl:when test=\"${1:expression}\">",
+      "\t\t",
+      "\t</xsl:when>",
+      "\t<xsl:otherwise>",
+      "\t\t$0",
+      "\t</xsl:otherwise>",
+      "</xsl:choose>"
+    ]
+  }
+}
