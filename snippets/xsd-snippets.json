@@ -1,0 +1,16 @@
+{
+  "el": {
+    "description": "[el]ement",
+    "prefix": "el",
+    "body": [
+      "<xs:element name=\"${1:string}\" type=\"${2|xs:string,xs:decimal,xs:integer,xs:boolean,xs:date,xs:time|}\" default=\"${1:string}\"/>"
+    ]
+  },
+  "at": {
+    "description": "[at]tribute",
+    "prefix": "at",
+    "body": [
+      "<xs:attribute name=\"${1:string}\" type=\"${2|xs:string,xs:decimal,xs:integer,xs:boolean,xs:date,xs:time|}\" default=\"${1:string}\"/>"
+    ]
+  }
+}

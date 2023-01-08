@@ -109,6 +109,10 @@
       {
         "language": "xml",
         "path": "./snippets/xslt-snippets.json"
+      },
+      {
+        "language": "xml",
+        "path": "./snippets/xsd-snippets.json"
       }
     ],
     "languages": [
