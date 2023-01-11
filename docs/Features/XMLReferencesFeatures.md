@@ -4,6 +4,10 @@ XML References support provides the capability to reference a DOM node (attribut
 
  * `foo/@attr` defines the `attr` attribute node of the `foo` element.
  * `foo/text()` defines the text node of the `foo` element.
+ 
+Once you have declared those reference, you will benefit with completion, definition, highlight, validation, rename, find references, and show references count with codelens:
+
+![XML References with TEI](../images/Features/XMLReferencesWithTEI.gif)
 
 ## Attribute node references (foo/@attr)
 
@@ -49,9 +53,12 @@ After saving this setting, you will get completion, go to definition, and highli
 
 The `xml.references` settings is an array of objects with the following properties:
 
- * `pattern`:  matches the files that reference declared with `expressions` applies to. See [glob syntax](https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob) for more information about the pattern syntax. 
+ * `pattern`:  matches the files that reference declared with `expressions` applies to. See [glob syntax](https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob) for more information about the pattern syntax.
+ * `prefix (optional)`: the prefix to use (ex : '#')  for from for all the declared reference expressions.
+ * `multiple (optional)`: true if the from attribute, text can declare several from references and false otherwise for all the declared reference expressions. 
  * `expressions`: array of reference expression:
     * `prefix (optional)`: the prefix to use (ex : '#')  for from.
+    * `multiple (optional)`: true if the from attribute, text can declare several from references and false otherwise.    
     * `from`: the from reference DOM node (attribute, text) declared with XPath (ex: `foo/@attr`, `foo/text()`).
     * `to`: the to reference DOM node (attribute, text) declared with XPath (ex: `foo/@attr`, `foo/text()`).
  
@@ -91,15 +98,44 @@ In this sample, `corresp` attribute in `<anchor corresp="#body-id"></anchor>` re
 "xml.references": [
     {
       "pattern": "**/*.xml",
+      "prefix": "#",      
       "expressions": [
         {
-          "prefix": "#",
           "from": "@resp",
           "to": "persName/@xml:id"
         },
         {
-          "prefix": "#",
           "from": "@corresp",
+          "to": "@xml:id"
+        }
+      ]
+    }
+  ]
+```
+## Multiple target
+
+ If the `origin` attribute (which matches the `from` reference path) declares multiple targets  (which matches the `to` reference path), you can use `multiple` 
+ 
+ Given this XML file where `target` attribute defines several targets separated with whitespace (#body-id #p-id):
+ 
+ ```xml
+ <body xml:id="body-id">
+   <p xml:id="p-id" >Some text here.</p>
+   <link target="#body-id #p-id"></link>
+ </body>
+ ```
+
+In this sample, `target` attribute in `<link target="#body-id #p-id"></link>` references the `body-id` and `p-id` (without `#`) declared in `<body xml:id="body-id">` and `<p xml:id="p-id" >`. It means that the `target` attribute value (with `#`) reference `@xml:id` attribute (without `#`). To support that, you can configure settings by using `multiple`:
+
+```json
+"xml.references": [
+    {
+      "pattern": "**/*.xml",
+      "prefix": "#",
+      "multiple": true,
+      "expressions": [
+        {
+          "from": "link/@target",
           "to": "@xml:id"
         }
       ]
@@ -150,17 +186,5 @@ In this sample, `servlet-mapping/servlet-name` text in `<servlet-name>comingsoon
 XML references have some limitation:
 
  * *references works only for a given XML file*: it is not possible to reference some DOM nodes coming from another XML files. However if the file uses include (like xi:include) the reference will only work in the file which has the include statement, and not in the file being included.
- * *multiple target is not supported*: if the `origin` attribute (which matches the `from` reference path) declares multiple targets  (which matches the `to` reference path), it will not work. 
- 
- Given this XML file where `corresp` attribute defines several targets separated with whitespace (#body-id #p-id):
- 
- ```xml
- <body xml:id="body-id">
-   <p xml:id="p-id" >Some text here.</p>
-   <anchor corresp="#body-id #p-id"></anchor>
- </body>
- ```
- 
- This usecase is not supported today.
  
  If you need those support, please [create an issue](https://github.com/redhat-developer/vscode-xml/issues)
