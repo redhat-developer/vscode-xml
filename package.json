@@ -643,6 +643,14 @@
                 "type": "string",
                 "markdownDescription": "matches the files that reference declared with `expressions` applies to.\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
               },
+              "prefix": {
+                "type": "string",
+                "description": "The prefix to use (ex : '#')  for from for all the declared reference expressions."
+              },
+              "multiple": {
+                "type": "boolean",
+                "description": "true if the from attribute, text can declare several from references and false otherwise for all the declared reference expressions."
+              },
               "expressions": {
                 "type": "array",
                 "default": [],
@@ -652,6 +660,10 @@
                     "prefix": {
                       "type": "string",
                       "description": "The prefix to use (ex : '#')  for from."
+                    },
+                    "multiple": {
+                      "type": "boolean",
+                      "description": "true if the from attribute, text can declare several from references and false otherwise."
                     },
                     "from": {
                       "type": "string",
