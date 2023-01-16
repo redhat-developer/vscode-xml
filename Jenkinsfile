@@ -104,7 +104,7 @@ node('rhel8'){
 }
 
 node('rhel8'){
-	sh 'npm install -g "vsce"'
+	sh 'npm install -g --force "@vscode/vsce"'
 	sh 'npm install -g "ovsx"'
 	if(publishToMarketPlace.equals('true') || publishPreRelease.equals('true')){
 
