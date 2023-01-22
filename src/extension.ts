@@ -36,8 +36,12 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
 
   registerClientOnlyCommands(context);
 
-  languages.setLanguageConfiguration('xml', getIndentationRules());
-  languages.setLanguageConfiguration('xsl', getIndentationRules());
+  // Update indentation rules for all language which are XML.
+  XML_SUPPORTED_LANGUAGE_IDS.forEach(l => {
+    const languageId = <string> l;
+    languages.setLanguageConfiguration(languageId, getIndentationRules());
+  });
+
   // Register in the context 'xml.supportedLanguageIds' to use it in command when condition in package.json
   commands.executeCommand('setContext', 'xml.supportedLanguageIds', XML_SUPPORTED_LANGUAGE_IDS);
 
