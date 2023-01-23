@@ -40,7 +40,7 @@
           key: ${{ runner.os }}-graalvm-${{env.GRAALVM_VERSION}}
           restore-keys: |
             ${{ runner.os }}-graalvm-
-      - uses: DeLaGuardo/setup-graalvm@5.0
+      - uses: DeLaGuardo/setup-graalvm@48f2bf339ab7d35e31029b1822a213681fdfc42e #v5.0
         with:
           graalvm: ${{env.GRAALVM_VERSION}}
           java: ${{env.GRAALVM_JAVA}}
@@ -80,8 +80,8 @@
           key: ${{ runner.os }}-graalvm-${{env.GRAALVM_VERSION}}
           restore-keys: |
             ${{ runner.os }}-graalvm-
-      - uses: ilammy/msvc-dev-cmd@v1.10.0
-      - uses: DeLaGuardo/setup-graalvm@5.0
+      - uses: ilammy/msvc-dev-cmd@7315a94840631165970262a99c72cfb48a65d25d #v1.12.0
+      - uses: DeLaGuardo/setup-graalvm@48f2bf339ab7d35e31029b1822a213681fdfc42e #v5.0
         with:
           graalvm: ${{env.GRAALVM_VERSION}}
           java: ${{env.GRAALVM_JAVA}}
@@ -115,7 +115,7 @@
         run: for f in lemminx-linux lemminx-osx-x86_64 lemminx-win32; do pushd ${f} && chmod u+x ${f}* && zip ../${f}.zip ${f}* && sha256sum ${f}* > ../${f}.sha256 && popd; done
       - name: Release Binary Artifacts
         if: steps.cache-last-commit.outputs.cache-hit != 'true'
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: marvinpinto/action-automatic-releases@919008cf3f741b179569b7a6fb4d8860689ab7f0 #v1.2.1
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
