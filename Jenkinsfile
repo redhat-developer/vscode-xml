@@ -106,9 +106,9 @@ node('rhel8'){
 node('rhel8'){
 	sh 'npm install -g --force "@vscode/vsce"'
 	sh 'npm install -g "ovsx"'
-	if(publishToMarketPlace.equals('true') || publishPreRelease.equals('true')){
+	if(publishToMarketPlace.equals('true') || publishToOVSX.equals('true') || publishPreRelease.equals('true')){
 
-		if (publishToMarketPlace.equals('true')) {
+		if (publishToMarketPlace.equals('true') || publishToOVSX.equals('true')) {
 			timeout(time:2, unit:'DAYS') {
 				input message:'Approve deployment?', submitter: 'fbricon,rgrunber,azerr,davthomp'
 			}
@@ -117,22 +117,29 @@ node('rhel8'){
 		stage "Publish to Marketplaces"
 		unstash 'vsix'
 		def vsix = findFiles(glob: '**.vsix')
+		def platformVsixes = findFiles(glob: '**.vsix', excludes: vsix[0].path)
+
 		// VS Code Marketplace
-		withCredentials([[$class: 'StringBinding', credentialsId: 'vscode_java_marketplace', variable: 'TOKEN']]) {
-			def platformVsixes = findFiles(glob: '**.vsix', excludes: vsix[0].path)
-			for(platformVsix in platformVsixes){
-				sh 'vsce publish -p ${TOKEN}' + " --packagePath ${platformVsix.path}"
+		if (publishToMarketPlace.equals('true') || publishPreRelease.equals('true')) {
+			withCredentials([[$class: 'StringBinding', credentialsId: 'vscode_java_marketplace', variable: 'TOKEN']]) {
+				for(platformVsix in platformVsixes){
+					sh 'vsce publish -p ${TOKEN}' + " --packagePath ${platformVsix.path}"
+				}
+				// Cannot combine packagePath & target, so re-generate (generic) package and publish
+				sh 'vsce publish -p ${TOKEN}' + " ${env.publishPreReleaseFlag}"
 			}
-			// Cannot combine packagePath & target, so re-generate (generic) package and publish
-			sh 'vsce publish -p ${TOKEN} --target win32-ia32 win32-arm64 linux-arm64 linux-armhf alpine-x64 alpine-arm64' + " ${env.publishPreReleaseFlag}"
 		}
 
-		if (publishToMarketPlace.equals('true')) {
-			// Open-VSX Marketplace does not support pre-release
+		// Open-VSX Marketplace
+		if (publishToOVSX.equals('true') || publishPreRelease.equals('true')) {
 			withCredentials([[$class: 'StringBinding', credentialsId: 'open-vsx-access-token', variable: 'OVSX_TOKEN']]) {
-				sh 'ovsx publish -p ${OVSX_TOKEN}' + " ${vsix[0].path}"
+				for(platformVsix in platformVsixes){
+					sh 'ovsx publish -p ${OVSX_TOKEN}' + " --packagePath ${platformVsix.path}"
+				}
+
+				sh 'ovsx publish -p ${OVSX_TOKEN}' + " ${env.publishPreReleaseFlag}"
 			}
 		}
 
-	}// if publishToMarketPlace
+	}// if any publishing
 }
