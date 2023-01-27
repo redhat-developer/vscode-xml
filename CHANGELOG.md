@@ -1,5 +1,43 @@
 # Change Log
 
+## [0.24.0](https://github.com/redhat-developer/vscode-xml/milestone/32?closed=1) (January 31, 2023)
+
+### Enhancements
+
+ * Completion, definition, references, diagnostics, highlight, code lens, rename, linked editing support for XML references. See [#855](https://github.com/redhat-developer/vscode-xml/pull/855).
+ * Code action to add missing required elements with RelaxNG. See [lemminx#1418](https://github.com/eclipse/lemminx/issues/1418).
+ * Improve the RelaxNG schema validation. See [lemminx#1425](https://github.com/eclipse/lemminx/pull/1425).
+ * Code action to generate RelaxNG RNG file. See [lemminx#1405](https://github.com/eclipse/lemminx/issues/1405).
+ * Support indentation for XML contributed languages. See [#862](https://github.com/redhat-developer/vscode-xml/pull/862).
+ * Visually represent colors in XML documents where possible. See [#853](https://github.com/redhat-developer/vscode-xml/pull/853).
+
+### Bug Fixes
+
+ * "Insert element" code actions don't add close tags when auto close tag is disabled. See [lemminx#1458](https://github.com/eclipse/lemminx/issues/1458).
+ * Improve "Insert only required expected elements" by taking care of choice. See [lemminx#1448](https://github.com/eclipse/lemminx/issues/1448).
+ * Linked editing breaks start tag when closing tag manually. See [lemminx#1456](https://github.com/eclipse/lemminx/issues/1456).
+ * Ignore linked editing range when there are no referenced node to update. See [lemminx#1453](https://github.com/eclipse/lemminx/pull/1453).
+ * Formatting selection fails with root element with mixed content. See [lemminx#1414](https://github.com/eclipse/lemminx/issues/1414).
+ * `SAXParseException` in the language server trace when editing an `.rng` file. See [lemminx#1441](https://github.com/eclipse/lemminx/issues/1441).
+ * Ensure attributes on the first line are wrapped correctly. See [lemminx#1439](https://github.com/eclipse/lemminx/issues/1439).
+ * Fix comment formatting with `xml.format.maxLineWidth`. See [#851](https://github.com/redhat-developer/vscode-xml/issues/851).
+ * Permit binding to a schema from an empty document. See [#819](https://github.com/redhat-developer/vscode-xml/issues/819).
+ * RelaxNG validation with `XInclude` / File association report `DOCTYPE` error. See [#845](https://github.com/redhat-developer/vscode-xml/issues/845).
+ * DocumentLink support for `xi:include/@href`. See [lemminx#1401](https://github.com/eclipse/lemminx/issues/1401).
+ * Binary server doesn't show "element missing child" warning in broken RelaxNG. See [lemminx#1460](https://github.com/eclipse/lemminx/issues/1460).
+ * Refactor "Register catalog" code lens to be in catalog package. See [lemminx#1417](https://github.com/eclipse/lemminx/pull/1417).
+
+### Build
+
+ * Move to `vscode-languageclient` 8.0.1. See [#711](https://github.com/redhat-developer/vscode-xml/issues/711).
+ * Publish a generic vsix for all other platforms. See [#865](https://github.com/redhat-developer/vscode-xml/issues/865).
+ * React to `vsce` renaming to `@vscode/vsce`. See [#857](https://github.com/redhat-developer/vscode-xml/pull/857), [#858](https://github.com/redhat-developer/vscode-xml/pull/858).
+ * Use commit SHA-1 for pinning untrusted GitHub actions to a version. See [#864](https://github.com/redhat-developer/vscode-xml/pull/864).
+
+### Documentation
+
+ * Fix `lint.yaml` build status badge. See [#852](https://github.com/redhat-developer/vscode-xml/pull/852).
+
 ## [0.23.0](https://github.com/redhat-developer/vscode-xml/milestone/31?closed=1) (December 15, 2022)
 
 ### Enhancements
@@ -35,7 +73,7 @@
  * Fix unexpected behavior of `xml.format.preservedNewlines` with experimental formatter. See [#797](https://github.com/redhat-developer/vscode-xml/issues/797).
  * Format CDATA sections without adding new lines. See [#585](https://github.com/redhat-developer/vscode-xml/issues/585).
  * Generate grammar fails on first attempt with experimental formatter. See [lemminx#1382](https://github.com/eclipse/lemminx/issues/1382).
- * Add tests for `xml.format.grammarAwareFormatting` setting and restore mixed content behaviour. See [lemminx#1364](https://github.com/eclipse/lemminx/pull/1364).
+ * Add tests for `xml.format.grammarAwareFormatting` setting and restore mixed content behavior. See [lemminx#1364](https://github.com/eclipse/lemminx/pull/1364).
  * Prevent exception in `DomElementFormatter.formatEndTagElement()`. See [lemminx#1361](https://github.com/eclipse/lemminx/issues/1361).
  * NPE in CodeLens with empty XML file. See [lemminx#1396](https://github.com/eclipse/lemminx/issues/1396).
  * Autoclose tag generates an unexpected `>`. See [lemminx#1221](https://github.com/eclipse/lemminx/issues/1221).
