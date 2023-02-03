@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { DocumentSelector } from 'vscode-languageclient';
 import { Event, EventEmitter, extensions } from 'vscode';
+import { DocumentFilter, DocumentSelector } from 'vscode-languageclient';
 
 /**
  * XML language participant contribution.
@@ -30,7 +30,7 @@ export function getLanguageParticipants(): LanguageParticipants {
   function update() {
     const oldLanguages = languages;
 
-    languages = new Set();
+    languages = new Set<string>();
     languages.add('xml');
     languages.add('xsl');
     languages.add('dtd');
@@ -59,7 +59,18 @@ export function getLanguageParticipants(): LanguageParticipants {
 
   return {
     onDidChange: onDidChangeEmmiter.event,
-    get documentSelector() { return Array.from(languages); },
+    get documentSelector() {
+      return Array.from(languages) //
+        .flatMap(language => {
+          return [{
+            language,
+            scheme: 'file',
+          }, {
+            language,
+            scheme: 'untitled',
+          }] as DocumentFilter[];
+        });
+    },
     hasLanguage(languageId: string) { return languages.has(languageId); },
     dispose: () => changeListener.dispose()
   };
