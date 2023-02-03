@@ -5,8 +5,8 @@
     "outDir": "out",
     "alwaysStrict": true,
     "lib": [
-      "es6",
-      "dom"
+      "dom",
+      "es2019"
     ],
     "sourceMap": true,
     "rootDir": ".",
