@@ -49,6 +49,8 @@ export async function startLanguageClient(context: ExtensionContext, executable:
         preferBinary: (getXMLConfiguration()['server']['preferBinary'] as boolean)
       };
       return Telemetry.sendTelemetry(Telemetry.STARTUP_EVT, e.properties);
+    } else {
+      return Telemetry.sendTelemetry(e.name, e.properties);
     }
   });
 
