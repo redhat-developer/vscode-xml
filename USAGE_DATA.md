@@ -22,9 +22,10 @@ vscode-xml has opt-in telemetry collection, provided by [vscode-redhat-telemetry
  * A telemetry event is sent every time you click on the link to the documentation that appears after the Java XML language server crashes due to an Out Of Memory Error.
  * Text Document Information
    * When a document is opened :
-      * The file extension (eg. `xml`, `xsd`, `dtd`)
+      * The file extension (eg. `xml`, `xsd`, `dtd`, `rng`)
       * The associated grammar types (eg. `none`, `doctype`, `xml-model`, `xsi:schemaLocation`, `xsi:noNamespaceSchemaLocation`)
-      * The resolver used to resolve the grammar identifier (eg. `catalog`, `file association`, `embedded catalog.xsd`, `embedded xml.xsd`, `embedded xslt.xsd`)
+      * The grammar identifiers for an XML document (eg. `http://maven.apache.org/xsd/maven-4.0.0.xsd`)
+      * The resolver used to resolve the grammar identifier (eg. `catalog`, `file association`, `embedded catalog.xsd`, `embedded xml.xsd`, `embedded xslt.xsd`, `relaxng.rng`)
 
 ## What's included in the general telemetry data
 
