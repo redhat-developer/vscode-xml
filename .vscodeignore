@@ -12,3 +12,6 @@ Jenkinsfile
 *.jenkins
 images/
 !docs/images
+.tool-versions
+.github/
+.gitignore
