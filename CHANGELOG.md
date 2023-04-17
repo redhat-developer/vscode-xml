@@ -1,5 +1,24 @@
 # Change Log
 
+## [0.25.0](https://github.com/redhat-developer/vscode-xml/milestone/33?closed=1) (April 19, 2023)
+
+### Bug Fixes
+
+ * Multiple `xml(DownloadProblem)` errors when referencing missing schema in file association. See [#878](https://github.com/redhat-developer/vscode-xml/issues/878).
+ * Do not attempt to validate files that use the `git://` protocol. See [#861](https://github.com/redhat-developer/vscode-xml/issues/861).
+ * XML attribute associated to wrong type from XSD.. See [#524](https://github.com/redhat-developer/vscode-xml/issues/524).
+ * Don't include `.github` and `.gitignore` in the packaged extension. See [#891](https://github.com/redhat-developer/vscode-xml/issues/891).
+ * Update required VS Code version to `^1.67.0`. See [#872](https://github.com/redhat-developer/vscode-xml/issues/872).
+ * Comments throws off the `cvc-complex-type.2.3` diagnostic range. See [eclipse/lemminx#1495](https://github.com/eclipse/lemminx/issues/1495).
+ * RNG attribute completion doesn't generate the proper prefix if the namespace is not declared. See [eclipse/lemminx#1489](https://github.com/eclipse/lemminx/issues/1489).
+ * Partial formatting yields wrong indentation depth. See [eclipse/lemminx#1485](https://github.com/eclipse/lemminx/issues/1485).
+ * `NullPointerException` in `documentColor`. See [eclipse/lemminx#1473](https://github.com/eclipse/lemminx/issues/1473).
+ * Adjust error range for RelaxNG "not allowed yet" when there is `choice`. See [eclipse/lemminx#1459](https://github.com/eclipse/lemminx/issues/1459).
+
+### Other
+
+ * Report aggregated telemetry on which grammar files and grammar binding strategies are used. See [#885](https://github.com/redhat-developer/vscode-xml/pull/885).
+
 ## [0.24.0](https://github.com/redhat-developer/vscode-xml/milestone/32?closed=1) (January 31, 2023)
 
 ### Enhancements
