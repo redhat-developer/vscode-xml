@@ -11,15 +11,13 @@
  */
 
 import * as fs from 'fs-extra';
-import * as os from 'os';
-import * as path from 'path';
-import { ExtensionContext, Uri, extensions, languages, commands } from "vscode";
+import { DocumentFilter, DocumentSelector, ExtensionContext, Uri, commands, extensions, languages } from "vscode";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { XMLExtensionApi } from './api/xmlExtensionApi';
 import { getXmlExtensionApiImplementation } from './api/xmlExtensionApiImplementation';
 import { cleanUpHeapDumps } from './client/clientErrorHandler';
 import { getIndentationRules } from './client/indentation';
-import { startLanguageClient, XML_SUPPORTED_LANGUAGE_IDS } from './client/xmlClient';
+import { XML_SUPPORTED_LANGUAGE_IDS, startLanguageClient } from './client/xmlClient';
 import { registerClientOnlyCommands } from './commands/registerCommands';
 import { collectXmlJavaExtensions } from './plugin';
 import * as requirements from './server/requirements';
@@ -37,8 +35,13 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
   registerClientOnlyCommands(context);
 
   // Update indentation rules for all language which are XML.
-  XML_SUPPORTED_LANGUAGE_IDS.forEach(l => {
-    const languageId = <string> l;
+  XML_SUPPORTED_LANGUAGE_IDS.forEach((l: DocumentSelector) => {
+    let languageId: string;
+    if ((l as DocumentFilter).language) {
+      languageId = (l as DocumentFilter).language;
+    } else {
+      languageId = l as string;
+    }
     languages.setLanguageConfiguration(languageId, getIndentationRules());
   });
 
