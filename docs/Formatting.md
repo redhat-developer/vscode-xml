@@ -1,5 +1,16 @@
 ## Formatting
 
+### Indentation
+
+The standard `editor.insertSpaces` & `editor.tabSize` [format settings](https://code.visualstudio.com/docs/editor/codebasics#_indentation) are used for configuring spaces/tabs and their size. To indent XML differently, using language specific settings, add this to your `settings.json`:
+
+```json
+"[xml]": {
+  "editor.defaultFormatter": "redhat.vscode-xml",
+  "editor.tabSize": 2
+},
+```
+
 ### Formatting strategy
 
   As the frequency of issues regarding the previous XML formatter increased, we have decided to redo our formatter from scratch. To revert to the old formatter, the setting `xml.format.legacy` should be set to true.
