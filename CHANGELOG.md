@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.26.0](https://github.com/redhat-developer/vscode-xml/milestone/34?closed=1) (July 10, 2023)
+
+### Bug Fixes
+
+ * `xml.foldings.includeClosingTagInFold` has no effect in binary mode. See [#1523](https://github.com/eclipse/lemminx/issues/1523).
+ * Fix regression in "Auto indent" setting of XML/XSD files. See [#899](https://github.com/redhat-developer/vscode-xml/issues/899).
+
 ## [0.25.0](https://github.com/redhat-developer/vscode-xml/milestone/33?closed=1) (April 19, 2023)
 
 ### Bug Fixes
