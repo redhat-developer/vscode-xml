@@ -56,6 +56,7 @@ jobs:
       - name: Install dependencies
         run: npm install -g typescript "vsce" "ovsx"
       - run: echo "XML_SERVER_VERSION=$(cat package.json | jq -r .xmlServer.version)" >> $GITHUB_ENV
+      - run: echo "EXT_VERSION=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
       - name: Download LemMinX Server Uber Jar
         env:
             downloadLocation: https://github.com/redhat-developer/vscode-xml
@@ -70,7 +71,7 @@ jobs:
       - run: |
           mkdir server/
           if [ -e org.eclipse.lemminx*-uber.jar ]; then
-            cp org.eclipse.lemminx*-uber.jar server/
+            mv org.eclipse.lemminx*-uber.jar server/
           else
             cp ../staging/org.eclipse.lemminx*-uber.jar server/
           fi
@@ -78,7 +79,6 @@ jobs:
         if: ${{ github.event_name == 'schedule' || inputs.publishPreRelease == 'true' }}
         run: |
           npx gulp prepare_pre_release
-          echo "EXT_VERSION=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
           echo "publishPreReleaseFlag=--pre-release" >> $GITHUB_ENV
       - name: Download LemMinX Binary Artifacts
         uses: actions/download-artifact@v3
@@ -104,17 +104,17 @@ jobs:
           for tg in ${!targets[@]}; do
             cp ../staging/lemminx-${targets[${tg}]}* ./server
             cp ../staging/checksums/lemminx-${targets[${tg}]}.sha256 ./server
-            vsce package ${{ env.publishPreReleaseFlag }} --target ${tg} -o vscode-xml-${tg}-${{ env.XML_SERVER_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
+            vsce package ${{ env.publishPreReleaseFlag }} --target ${tg} -o vscode-xml-${tg}-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
             rm ./server/lemminx-*
           done
           cp ../staging/checksums/lemminx-*.sha256 ./server
-          vsce package -o vscode-xml-${{ env.XML_SERVER_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
+          vsce package -o vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
           ls -lash *.vsix
       - name: Upload VSIX Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: vscode-xml
-          path: vscode-xml-*-${{ env.XML_SERVER_VERSION }}-${{github.run_number}}.vsix
+          path: vscode-xml*-${{ env.EXT_VERSION }}-${{github.run_number}}.vsix
           if-no-files-found: error
       - name: Upload LemMinX Uber Jar
         uses: actions/upload-artifact@v2
@@ -127,10 +127,10 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@919008cf3f741b179569b7a6fb4d8860689ab7f0"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ env.XML_SERVER_VERSION }}"
+          automatic_release_tag: "${{ env.EXT_VERSION }}"
           draft: true
           files: |
-            vscode-xml-*-${{ env.XML_SERVER_VERSION }}-${{ github.run_number }}.vsix
+            vscode-xml*-${{ env.EXT_VERSION }}-${{ github.run_number }}.vsix
             ../staging/zips/lemminx-*
             ../staging/checksums/lemminx-*
   release-job:
@@ -147,6 +147,7 @@ jobs:
       - name: Install dependencies
         run: npm install -g typescript "vsce" "ovsx"
       - run: echo "XML_SERVER_VERSION=$(cat package.json | jq -r .xmlServer.version)" >> $GITHUB_ENV
+      - run: echo "EXT_VERSION=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
       - name: Set the link to download the binary server
         env:
             downloadLocation: https://github.com/redhat-developer/vscode-xml
@@ -170,14 +171,14 @@ jobs:
       - name: Publish to VS Code Marketplace
         if: ${{ github.event_name == 'schedule' || inputs.publishToMarketPlace == 'true' || inputs.publishPreRelease == 'true' }}
         run: |
-          for platformVsix in vscode-xml/vscode-xml-*-${{ env.XML_SERVER_VERSION }}-${GITHUB_RUN_NUMBER}.vsix; do
+          for platformVsix in vscode-xml/vscode-xml-*-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix; do
             vsce publish -p ${{ secrets.VSCODE_MARKETPLACE_TOKEN }} --packagePath ${platformVsix}
           done
-          vsce publish -p ${{ secrets.VSCODE_MARKETPLACE_TOKEN }} ${{ env.publishPreReleaseFlag }}
+          vsce publish -p ${{ secrets.VSCODE_MARKETPLACE_TOKEN }} --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix ${{ env.publishPreReleaseFlag }}
       - name: Publish to OpenVSX Registry
         if: ${{ github.event_name == 'schedule' || inputs.publishToOVSX == 'true' || inputs.publishPreRelease == 'true' }}
         run: |
-          for platformVsix in vscode-xml/vscode-xml-*-${{ env.XML_SERVER_VERSION }}-${GITHUB_RUN_NUMBER}.vsix; do
+          for platformVsix in vscode-xml/vscode-xml-*-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix; do
             ovsx publish -p ${{ secrets.OVSX_MARKETPLACE_TOKEN }} --packagePath ${platformVsix}
           done
-          ovsx publish -p ${{ secrets.OVSX_MARKETPLACE_TOKEN }} ${{ env.publishPreReleaseFlag }}
+          ovsx publish -p ${{ secrets.OVSX_MARKETPLACE_TOKEN }}  --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix ${{ env.publishPreReleaseFlag }}
