@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.26.1](https://github.com/redhat-developer/vscode-xml/milestone/35?closed=1) (July 12, 2023)
+
+### Bug Fixes
+
+ * Ensure binary mode supports Linux distributions using an older version of glibc. See [#916](https://github.com/redhat-developer/vscode-xml/issues/916).
+
 ## [0.26.0](https://github.com/redhat-developer/vscode-xml/milestone/34?closed=1) (July 10, 2023)
 
 ### Bug Fixes
