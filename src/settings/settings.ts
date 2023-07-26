@@ -203,7 +203,7 @@ export function getXMLSettings(javaHome: string | undefined, logfile: string, ex
         },
         format: {
           enabled: true,
-          splitAttributes: false
+          splitAttributes: 'preserve'
         },
         completion: {
           autoCloseTags: false
