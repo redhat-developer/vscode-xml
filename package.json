@@ -341,7 +341,7 @@
         "xml.format.preserveAttributeLineBreaks": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Preserve line breaks that appear before and after attributes. This setting is overridden if `#xml.format.splitAttributes#` is set to `true`. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreserveattributelinebreaks%22%7D%5D) for more information.",
+          "markdownDescription": "Preserve line breaks that appear before and after attributes. This setting is overridden if `#xml.format.splitAttributes#` is set to `splitNewLine` or `alignWithFirstAttr`. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreserveattributelinebreaks%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.preserveEmptyContent": {
@@ -404,9 +404,14 @@
           "scope": "window"
         },
         "xml.format.splitAttributes": {
-          "type": "boolean",
-          "default": false,
-          "markdownDescription": "Split multiple attributes each onto a new line. Default is `false`. Indicate level of indentation with `#xml.format.splitAttributesIndentSize#`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatsplitattributes%22%7D%5D) for more information.",
+          "type": "string",
+          "enum": [
+            "preserve",
+            "splitNewLine",
+            "alignWithFirstAttr"
+          ],
+          "default": "preserve",
+          "markdownDescription": "Split multiple attributes each onto a new line or align attributes to the first. Default is `preserve`. Indicate level of indentation with `#xml.format.splitAttributesIndentSize#`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatsplitattributes%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.format.splitAttributesIndentSize": {

@@ -155,7 +155,7 @@ No changes to quotes will occur during formatting if `xml.format.enforceQuoteSty
 
 ### xml.format.preserveAttributeLineBreaks
 
-Preserve line breaks that appear before and after attributes. This setting is overridden if [xml.format.splitAttributes](#xmlformatsplitattributes) is set to `true`. Default is `true`.
+Preserve line breaks that appear before and after attributes. This setting is overridden if [xml.format.splitAttributes](#xmlformatsplitattributes) is set to `splitNewLine` or `alignWithFirstAttr`. Default is `true`.
 
 If set to `true`, formatting does not change the following document:
 
@@ -241,19 +241,34 @@ If this value is set to 0, then all blank lines will be removed during formattin
 
 ### xml.format.splitAttributes
 
-  Set to `true` to split node attributes onto multiple lines during formatting. Defaults to `false`.
-  Overrides the behaviour of [xml.format.preserveAttributeLineBreaks](#xmlformatpreserveattributelinebreaks).
-  Please see [xml.format.splitAttributesIndentSize](#xmlformatsplitAttributesIndentSize) for information on configuring the indentation level of the attributes.
+  Set to `splitNewLine` to split node attributes onto multiple lines during formatting and set to `alignWithFirstAttr` to split node attributes after the first attribute to align with it.
 
+  Available values are `preserve`, `splitNewLine`, and `alignWithFirstAttr`. Defaults to `preserve`.
+
+  Overrides the behaviour of [xml.format.preserveAttributeLineBreaks](#xmlformatpreserveattributelinebreaks).
+
+  Please see [xml.format.splitAttributesIndentSize](#xmlformatsplitAttributesIndentSize) for information on configuring the indentation level of the attributes in the case of `splitNewLine`.
+
+  The following xml:
   ```xml
   <project a="1" b="2" c="3"></project>
   ```
-  becomes...
+
+  Remains the same when set to `preserve`.
+
+  When set to `splitNewLine`, becomes:
   ```xml
   <project
       a="1"
       b="2"
       c="3"></project>
+  ```
+
+  When set to `alignWithFirstAttr`, becomes:
+  ```xml
+  <project a="1"
+           b="2"
+           c="3"></project>
   ```
 
 ***
@@ -453,7 +468,7 @@ If `xml.format.joinContentLines` is set to `true`, the above document becomes:
       weight='20' />
   </ROOT:root>
   ```
-  Note that it references two different external schemas. Additionally, the setting [`xml.format.splitAttributes`](#xmlformatsplitattributes) will be set to true for the formatted examples in order to make the formatted result easier to see.
+  Note that it references two different external schemas. Additionally, the setting [`xml.format.splitAttributes`](#xmlformatsplitattributes) will be set to `splitNewLine` for the formatted examples in order to make the formatted result easier to see.
 
   * When it is set to `none`, the formatter does not change the content of `xsi:schemaLocation`. The above file would not change after formatting.
 
@@ -491,7 +506,7 @@ If `xml.format.joinContentLines` is set to `true`, the above document becomes:
 
 ### xml.format.splitAttributesIndentSize
 
-  Use to configure how many levels to indent the attributes by when [xml.format.splitAttributes](#xmlformatsplitAttributes) is set to `true`.
+  Use to configure how many levels to indent the attributes by when [xml.format.splitAttributes](#xmlformatsplitAttributes) is set to `splitNewLine`.
 
   Here are some examples. For these examples, an indentation is two spaces.
 
@@ -559,7 +574,7 @@ If set to `true`, the closing bracket (`>` or `/>`) of a tag with at least 2 att
 
 The closing bracket will have the same indentation as the attributes (if any), following the indent level defined by [splitAttributesIndentSize](#xmlformatsplitattributesindentsize).
 
-Requires [splitAttributes](#xmlformatsplitattributes) to be set to `true`.
+Requires [splitAttributes](#xmlformatsplitattributes) to be set to `splitNewLine` or `alignWithFirstAttr`.
 
 Defaults to `false`.
 
