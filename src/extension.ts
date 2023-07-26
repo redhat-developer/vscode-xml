@@ -35,13 +35,7 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
   registerClientOnlyCommands(context);
 
   // Update indentation rules for all language which are XML.
-  XML_SUPPORTED_LANGUAGE_IDS.forEach((l: DocumentSelector) => {
-    let languageId: string;
-    if ((l as DocumentFilter).language) {
-      languageId = (l as DocumentFilter).language;
-    } else {
-      languageId = l as string;
-    }
+  XML_SUPPORTED_LANGUAGE_IDS.forEach((languageId: string) => {
     languages.setLanguageConfiguration(languageId, getIndentationRules());
   });
 

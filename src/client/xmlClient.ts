@@ -1,6 +1,6 @@
 import { TelemetryEvent } from '@redhat-developer/vscode-redhat-telemetry/lib';
 import { commands, ExtensionContext, extensions, Position, TextDocument, TextEditor, Uri, window, workspace } from 'vscode';
-import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, DocumentSelector, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, State, TextDocumentPositionParams } from "vscode-languageclient";
+import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, DocumentFilter, DocumentSelector, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, State, TextDocumentPositionParams } from "vscode-languageclient";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { XMLFileAssociation } from '../api/xmlExtensionApi';
 import { registerClientServerCommands } from '../commands/registerCommands';
@@ -16,7 +16,15 @@ import { getLanguageParticipants } from './languageParticipants';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
 
 const languageParticipants = getLanguageParticipants();
-export const XML_SUPPORTED_LANGUAGE_IDS = languageParticipants.documentSelector;
+
+const XML_SUPPORTED_DOCUMENT_SELECTORS = languageParticipants.documentSelector;
+export const XML_SUPPORTED_LANGUAGE_IDS: string[] = XML_SUPPORTED_DOCUMENT_SELECTORS
+  .map(l => {
+    if (l as DocumentFilter) {
+      return (l as DocumentFilter).language;
+    }
+    return l as string;
+  });
 
 const ExecuteClientCommandRequest: RequestType<ExecuteCommandParams, any, void> = new RequestType('xml/executeClientCommand');
 
@@ -130,7 +138,7 @@ function getLanguageClientOptions(
   context: ExtensionContext): LanguageClientOptions {
   return {
     // Register the server for xml, xsl, dtd, svg
-    documentSelector: XML_SUPPORTED_LANGUAGE_IDS,
+    documentSelector: XML_SUPPORTED_DOCUMENT_SELECTORS,
     revealOutputChannelOn: RevealOutputChannelOn.Never,
     //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
     initializationOptions: {
