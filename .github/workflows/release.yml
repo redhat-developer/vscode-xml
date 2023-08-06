@@ -1,6 +1,8 @@
 name: release
 
 on:
+    schedule:
+      - cron: '0 8 * * *'
     workflow_dispatch:
       inputs:
         publishPreRelease:
@@ -28,7 +30,36 @@ on:
             - 'false'
           default: 'false'
 jobs:
+  should-build-change:
+    runs-on: ubuntu-latest
+    outputs:
+        repo-cache-hit: ${{ steps.cache-last-commit.outputs.cache-hit }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: 'eclipse/lemminx'
+          fetch-depth: 2
+          path: lemminx
+      - uses: actions/checkout@v3
+        with:
+          repository: 'redhat-developer/vscode-xml'
+          fetch-depth: 2
+          path: vscode-xml
+      - run: |
+          pushd lemminx
+          git rev-parse HEAD >> ../lastCommit
+          popd
+          pushd vscode-xml
+          git rev-parse HEAD >> ../lastCommit
+      - name: Check New Changes
+        id: cache-last-commit
+        uses: actions/cache@v2
+        with:
+          path: lastCommit
+          key: lastCommit-${{ hashFiles('lastCommit') }}
   build-binaries-job:
+    needs: should-build-change
+    if: ${{ needs.should-build-change.outputs.repo-cache-hit == 'false' || github.event_name != 'schedule' }}
     uses: rgrunber/vscode-xml/.github/workflows/native-image.yaml@main
     with:
       publishPreRelease: ${{ github.event_name == 'schedule' || inputs.publishPreRelease == 'true' }}
