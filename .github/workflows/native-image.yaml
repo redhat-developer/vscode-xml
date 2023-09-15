@@ -21,8 +21,8 @@
       runs-on: ${{ matrix.os }}
       needs: setup-xml-version
       env:
-        GRAALVM_VERSION: 22.0.0.2
-        GRAALVM_JAVA: java17
+        GRAALVM_VERSION: 22.3.3
+        GRAALVM_JAVA: 17
       strategy:
         fail-fast: true
         matrix:
@@ -51,15 +51,15 @@
         uses: actions/cache@v2
         with:
           path: |
-            /opt/hostedtoolcache/GraalVM
-            ~/hostedtoolcache/GraalVM
+            /opt/hostedtoolcache/graalvm-ce-*
+            ~/hostedtoolcache/graalvm-ce-*
           key: ${{ runner.os }}-graalvm-${{env.GRAALVM_VERSION}}
           restore-keys: |
             ${{ runner.os }}-graalvm-
-      - uses: DeLaGuardo/setup-graalvm@48f2bf339ab7d35e31029b1822a213681fdfc42e #v5.0
+      - uses: graalvm/setup-graalvm@0e29e36dce77b07eb899abac809c2fce9d60c140 #v1.1.3.1
         with:
-          graalvm: ${{env.GRAALVM_VERSION}}
-          java: ${{env.GRAALVM_JAVA}}
+          version: ${{env.GRAALVM_VERSION}}
+          java-version: ${{env.GRAALVM_JAVA}}
       - run: ./mvnw -B package -Dnative -DskipTests $([ $(uname -s) = Linux ] && echo "-Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC") -Dcbi.jarsigner.skip=true
       - run: rm org.eclipse.lemminx/target/*.build_artifacts.txt
       - run: mv org.eclipse.lemminx/target/lemminx-* lemminx-${{ matrix.label }}
@@ -72,8 +72,8 @@
       runs-on: windows-latest
       needs: setup-xml-version
       env:
-        GRAALVM_VERSION: 22.0.0.2
-        GRAALVM_JAVA: java17
+        GRAALVM_VERSION: 22.3.3
+        GRAALVM_JAVA: 17
       steps:
       - name: Check out LemMinX
         uses: actions/checkout@v2
@@ -94,15 +94,15 @@
         uses: actions/cache@v2
         with:
           path: |
-            C:\hostedtoolcache\windows\GraalVM
+            C:\hostedtoolcache\windows\graalvm-ce-*
           key: ${{ runner.os }}-graalvm-${{env.GRAALVM_VERSION}}
           restore-keys: |
             ${{ runner.os }}-graalvm-
       - uses: ilammy/msvc-dev-cmd@7315a94840631165970262a99c72cfb48a65d25d #v1.12.0
-      - uses: DeLaGuardo/setup-graalvm@48f2bf339ab7d35e31029b1822a213681fdfc42e #v5.0
+      - uses: graalvm/setup-graalvm@0e29e36dce77b07eb899abac809c2fce9d60c140 #v1.1.3.1
         with:
-          graalvm: ${{env.GRAALVM_VERSION}}
-          java: ${{env.GRAALVM_JAVA}}
+          version: ${{env.GRAALVM_VERSION}}
+          java-version: ${{env.GRAALVM_JAVA}}
       - run: .\mvnw.cmd -B package -Dnative -DskipTests -D "cbi.jarsigner.skip=true"
       - run: mv org.eclipse.lemminx\target\lemminx-*.exe lemminx-win32.exe
       - uses: actions/upload-artifact@v3
@@ -110,35 +110,3 @@
           name: lemminx-win32
           path: lemminx-win32.exe
           if-no-files-found: error
-    release-binary-artifacts:
-      needs: [build-binary-unix, build-binary-windows]
-      runs-on: ubuntu-latest
-      steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: 'eclipse/lemminx'
-          fetch-depth: 2
-      - run: git rev-parse HEAD^ > lastCommit
-      - name: Check New Changes To LS
-        id: cache-last-commit
-        uses: actions/cache@v2
-        with:
-          path: lastCommit
-          key: lastCommit-${{ hashFiles('lastCommit') }}
-      - name: Retrieve Binary Artifacts
-        if: steps.cache-last-commit.outputs.cache-hit != 'true'
-        uses: actions/download-artifact@v3
-      - name: Prepare Binary Artifacts
-        if: steps.cache-last-commit.outputs.cache-hit != 'true'
-        run: for f in lemminx-linux lemminx-osx-x86_64 lemminx-win32; do pushd ${f} && chmod u+x ${f}* && zip ../${f}.zip ${f}* && sha256sum ${f}* > ../${f}.sha256 && popd; done
-      - name: Release Binary Artifacts
-        if: steps.cache-last-commit.outputs.cache-hit != 'true'
-        uses: marvinpinto/action-automatic-releases@919008cf3f741b179569b7a6fb4d8860689ab7f0 #v1.2.1
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Development Build"
-          files: |
-            lemminx-*.zip
-            lemminx-*.sha256
