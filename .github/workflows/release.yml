@@ -59,8 +59,8 @@ jobs:
           key: lastCommit-${{ hashFiles('lastCommit') }}
   build-binaries-job:
     needs: should-build-change
-    if: ${{ needs.should-build-change.outputs.repo-cache-hit == 'false' || github.event_name != 'schedule' }}
-    uses: rgrunber/vscode-xml/.github/workflows/native-image.yaml@main
+    if: ${{ needs.should-build-change.outputs.repo-cache-hit != 'true' || github.event_name != 'schedule' }}
+    uses: redhat-developer/vscode-xml/.github/workflows/native-image.yaml@main
     with:
       publishPreRelease: ${{ github.event_name == 'schedule' || inputs.publishPreRelease == 'true' }}
   packaging-job:
