@@ -139,7 +139,7 @@ jobs:
             rm ./server/lemminx-*
           done
           cp ../staging/checksums/lemminx-*.sha256 ./server
-          vsce package -o vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
+          vsce package ${{ env.publishPreReleaseFlag }} -o vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
           ls -lash *.vsix
       - name: Upload VSIX Artifacts
         uses: actions/upload-artifact@v2
@@ -204,11 +204,11 @@ jobs:
           for platformVsix in vscode-xml/vscode-xml-*-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix; do
             vsce publish -p ${{ secrets.VSCODE_MARKETPLACE_TOKEN }} --packagePath ${platformVsix}
           done
-          vsce publish -p ${{ secrets.VSCODE_MARKETPLACE_TOKEN }} --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix ${{ env.publishPreReleaseFlag }}
+          vsce publish -p ${{ secrets.VSCODE_MARKETPLACE_TOKEN }} --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
       - name: Publish to OpenVSX Registry
         if: ${{ github.event_name == 'schedule' || inputs.publishToOVSX == 'true' || inputs.publishPreRelease == 'true' }}
         run: |
           for platformVsix in vscode-xml/vscode-xml-*-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix; do
             ovsx publish -p ${{ secrets.OVSX_MARKETPLACE_TOKEN }} --packagePath ${platformVsix}
           done
-          ovsx publish -p ${{ secrets.OVSX_MARKETPLACE_TOKEN }}  --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix ${{ env.publishPreReleaseFlag }}
+          ovsx publish -p ${{ secrets.OVSX_MARKETPLACE_TOKEN }}  --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
