@@ -87,7 +87,6 @@ jobs:
       - name: Install dependencies
         run: npm install -g typescript "vsce" "ovsx"
       - run: echo "XML_SERVER_VERSION=$(cat package.json | jq -r .xmlServer.version)" >> $GITHUB_ENV
-      - run: echo "EXT_VERSION=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
       - name: Download LemMinX Server Uber Jar
         env:
             downloadLocation: https://github.com/redhat-developer/vscode-xml
@@ -99,6 +98,11 @@ jobs:
         run: |
           npm install
           npm run vscode:prepublish
+      - name: Prepare Pre-Release
+        if: ${{ github.event_name == 'schedule' || inputs.publishPreRelease == 'true' }}
+        run: |
+          npx gulp prepare_pre_release
+          echo "publishPreReleaseFlag=--pre-release" >> $GITHUB_ENV
       - run: |
           mkdir server/
           if [ -e org.eclipse.lemminx*-uber.jar ]; then
@@ -106,11 +110,7 @@ jobs:
           else
             cp ../staging/org.eclipse.lemminx*-uber.jar server/
           fi
-      - name: Prepare Pre-Release
-        if: ${{ github.event_name == 'schedule' || inputs.publishPreRelease == 'true' }}
-        run: |
-          npx gulp prepare_pre_release
-          echo "publishPreReleaseFlag=--pre-release" >> $GITHUB_ENV
+          echo "EXT_VERSION=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
       - name: Download LemMinX Binary Artifacts
         uses: actions/download-artifact@v3
       - name: Prepare Binary Artifacts For Packaging
@@ -178,7 +178,6 @@ jobs:
       - name: Install dependencies
         run: npm install -g typescript "vsce" "ovsx"
       - run: echo "XML_SERVER_VERSION=$(cat package.json | jq -r .xmlServer.version)" >> $GITHUB_ENV
-      - run: echo "EXT_VERSION=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
       - name: Set the link to download the binary server
         env:
             downloadLocation: https://github.com/redhat-developer/vscode-xml
@@ -190,15 +189,15 @@ jobs:
         run: |
           npm install
           npm run vscode:prepublish
-      - run: |
-          mkdir server/
-          mv lemminx-uber-jar/org.eclipse.lemminx*-uber.jar server/
       - name: Prepare Pre-Release
         if: ${{ github.event_name == 'schedule' || inputs.publishPreRelease == 'true' }}
         run: |
           npx gulp prepare_pre_release
-          echo "EXT_VERSION=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
           echo "publishPreReleaseFlag=--pre-release" >> $GITHUB_ENV
+      - run: |
+          mkdir server/
+          mv lemminx-uber-jar/org.eclipse.lemminx*-uber.jar server/
+          echo "EXT_VERSION=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
       - name: Publish to VS Code Marketplace
         if: ${{ github.event_name == 'schedule' || inputs.publishToMarketPlace == 'true' || inputs.publishPreRelease == 'true' }}
         run: |
