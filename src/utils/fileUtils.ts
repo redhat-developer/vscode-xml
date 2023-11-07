@@ -9,7 +9,7 @@ import { TextDocument, Uri, workspace, WorkspaceFolder } from "vscode";
  */
  export function getWorkspaceUri(document: TextDocument): Uri | undefined {
   const currentWorkspace: WorkspaceFolder = (document && document.uri) ? workspace.getWorkspaceFolder(document.uri) : undefined;
-  return ((currentWorkspace && currentWorkspace.uri) || (workspace.workspaceFolders && workspace.workspaceFolders[0].uri));
+  return ((currentWorkspace && currentWorkspace.uri) || (workspace.workspaceFolders && workspace.workspaceFolders.length > 0 && workspace.workspaceFolders[0].uri));
 }
 
 /**
