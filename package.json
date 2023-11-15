@@ -54,7 +54,6 @@
   ],
   "main": "./dist/extension",
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "vscode:prepublish": "webpack --mode production",
     "compile": "webpack --mode none",
     "watch": "webpack --mode development --watch",
@@ -77,7 +76,7 @@
   "devDependencies": {
     "@types/fs-extra": "^8.1.2",
     "@types/glob": "^7.1.4",
-    "@types/node": "^10.14.16",
+    "@types/node": "^18.17.1",
     "@types/vscode": "^1.37.0",
     "@types/yauzl": "^2.9.1",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
