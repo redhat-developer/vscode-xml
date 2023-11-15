@@ -22,7 +22,7 @@ export function activateTagClosing(tagProvider: (document: TextDocument, positio
   updateEnabledState();
   window.onDidChangeActiveTextEditor(updateEnabledState, null, disposables);
 
-  let timeout: NodeJS.Timer | undefined = undefined;
+  let timeout: NodeJS.Timeout | undefined = undefined;
 
   function updateEnabledState() {
     isEnabled = false;

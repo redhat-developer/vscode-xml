@@ -83,7 +83,7 @@ jobs:
       - name: Set Up NodeJS
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '18'
       - name: Install dependencies
         run: npm install -g typescript "vsce" "ovsx"
       - run: echo "XML_SERVER_VERSION=$(cat package.json | jq -r .xmlServer.version)" >> $GITHUB_ENV
@@ -174,7 +174,7 @@ jobs:
       - name: Set Up NodeJS
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '18'
       - name: Install dependencies
         run: npm install -g typescript "vsce" "ovsx"
       - run: echo "XML_SERVER_VERSION=$(cat package.json | jq -r .xmlServer.version)" >> $GITHUB_ENV
