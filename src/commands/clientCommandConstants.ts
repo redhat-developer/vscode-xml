@@ -43,6 +43,8 @@ export const OPEN_DOCS = 'xml.open.docs';
  */
 export const VALIDATE_CURRENT_FILE = 'xml.validation.current.file';
 
+export const VALIDATE_ONLY_SYNTAX_CURRENT_FILE = 'xml.validation.syntax.current.file';
+
 export const VALIDATE_ALL_FILES = 'xml.validation.all.files';
 
 export const OPEN_DOCS_HOME = 'xml.open.docs.home';

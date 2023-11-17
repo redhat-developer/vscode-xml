@@ -141,6 +141,27 @@ function registerValidationCommands(context: ExtensionContext) {
         window.showErrorMessage('Error during XML validation ' + error.message);
       });
   }));
+
+  // Revalidate (Only XML syntax) current file
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.VALIDATE_ONLY_SYNTAX_CURRENT_FILE, async (identifierParam, validationArgs) => {
+    let identifier = identifierParam;
+    if (!identifier) {
+      const uri = window.activeTextEditor.document.uri;
+      identifier = TextDocumentIdentifier.create(uri.toString());
+    }
+    const configXML = workspace.getConfiguration().get('xml.validation');
+    const x = JSON.stringify(configXML); //configXML is not a JSON type
+    const validationSettings =  JSON.parse(x);
+    validationSettings['dtd']['enabled'] = 'never';
+    validationSettings['schema']['enabled'] = 'never';
+    commands.executeCommand(ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND, ServerCommandConstants.VALIDATE_CURRENT_FILE, identifier, validationArgs, validationSettings).
+      then(() => {
+        window.showInformationMessage('The current XML file was successfully validated (XML Syntax Only).');
+      }, error => {
+        window.showErrorMessage('Error during XML validation (XML Syntax Only) ' + error.message);
+      });
+  }));
+
   // Revalidate all open files
   context.subscriptions.push(commands.registerCommand(ClientCommandConstants.VALIDATE_ALL_FILES, async () => {
     commands.executeCommand(ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND, ServerCommandConstants.VALIDATE_ALL_FILES).
