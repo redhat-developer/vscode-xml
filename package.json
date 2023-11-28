@@ -728,6 +728,52 @@
           "markdownDescription": "Allows colors for the given file name patterns. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features/XMLColorsFeatures%22%2C%22section%22%3A%22xmlcolorsfeatures%22%7D%5D) for more information.",
           "scope": "window"
         },
+        "xml.filePathSupport.mappings": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "pattern": {
+                "type": "string",
+                "markdownDescription": "matches the files that file path declared with `expressions` applies to.\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
+              },
+              "expressions": {
+                "type": "array",
+                "default": [],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "xpath": {
+                      "type": "string",
+                      "description": "The file path DOM node (attribute, text) declared with XPath (ex: foo/@path, foo/text())"
+                    },
+                    "filter": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "String array which contains allowed file extensions (ex: [\".png\", \".gif\", \".jpg\"])"
+                    },
+                    "separator": {
+                      "type": "string",
+                      "description": "Separator character to use if multiple file paths are allowed (ex: \";\")"
+                    }
+                  }
+                },
+                "required": [
+                  "xpath"
+                ]
+              }
+            },
+            "required": [
+              "pattern",
+              "expressions"
+            ]
+          },
+          "markdownDescription": "Allows file path for the given file name patterns. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features/XMLFilePathSupport%22%2C%22section%22%3A%22xmlfilepathsfeatures%22%7D%5D) for more information.",
+          "scope": "window"
+        },
         "xml.extension.jars": {
           "type": "array",
           "default": [],
