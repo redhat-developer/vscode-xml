@@ -11,7 +11,7 @@
  */
 
 import * as fs from 'fs-extra';
-import { DocumentFilter, DocumentSelector, ExtensionContext, Uri, commands, extensions, languages } from "vscode";
+import { ExtensionContext, Uri, commands, extensions, languages } from "vscode";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { XMLExtensionApi } from './api/xmlExtensionApi';
 import { getXmlExtensionApiImplementation } from './api/xmlExtensionApiImplementation';
