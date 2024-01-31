@@ -21,15 +21,17 @@
       runs-on: ${{ matrix.os }}
       needs: setup-xml-version
       env:
-        GRAALVM_VERSION: 22.3.3
+        GRAALVM_DISTRO: graalvm
         GRAALVM_JAVA: 17
       strategy:
         fail-fast: true
         matrix:
-          os: [macos-latest, ubuntu-20.04]
+          os: [macos-latest, macos-14, ubuntu-20.04]
           include:
             - os: macos-latest
               label: 'osx-x86_64'
+            - os: macos-14
+              label: 'osx-aarch_64'
             - os: ubuntu-20.04
               label: 'linux'
       steps:
@@ -51,17 +53,16 @@
         uses: actions/cache@v2
         with:
           path: |
-            /opt/hostedtoolcache/graalvm-ce-*
-            ~/hostedtoolcache/graalvm-ce-*
-          key: ${{ runner.os }}-graalvm-${{env.GRAALVM_VERSION}}
+            /opt/hostedtoolcache/graalvm-jdk-*
+            ~/hostedtoolcache/graalvm-jdk-*
+          key: ${{ runner.os }}-graalvm-jdk-${{ env.GRAALVM_JAVA }}
           restore-keys: |
-            ${{ runner.os }}-graalvm-
-      - uses: graalvm/setup-graalvm@0e29e36dce77b07eb899abac809c2fce9d60c140 #v1.1.3.1
+            ${{ runner.os }}-graalvm-jdk-
+      - uses: graalvm/setup-graalvm@a1b47fdf04e772fed6b3b46131e226f9aea5e169 #v1.1.6
         with:
-          version: ${{env.GRAALVM_VERSION}}
+          distribution: ${{env.GRAALVM_DISTRO}}
           java-version: ${{env.GRAALVM_JAVA}}
       - run: ./mvnw -B package -Dnative -DskipTests $([ $(uname -s) = Linux ] && echo "-Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC") -Dcbi.jarsigner.skip=true
-      - run: rm org.eclipse.lemminx/target/*.build_artifacts.txt
       - run: mv org.eclipse.lemminx/target/lemminx-* lemminx-${{ matrix.label }}
       - uses: actions/upload-artifact@v3
         with:
@@ -72,7 +73,7 @@
       runs-on: windows-latest
       needs: setup-xml-version
       env:
-        GRAALVM_VERSION: 22.3.3
+        GRAALVM_DISTRO: graalvm
         GRAALVM_JAVA: 17
       steps:
       - name: Check out LemMinX
@@ -95,13 +96,13 @@
         with:
           path: |
             C:\hostedtoolcache\windows\graalvm-ce-*
-          key: ${{ runner.os }}-graalvm-${{env.GRAALVM_VERSION}}
+          key: ${{ runner.os }}-graalvm-*
           restore-keys: |
             ${{ runner.os }}-graalvm-
       - uses: ilammy/msvc-dev-cmd@7315a94840631165970262a99c72cfb48a65d25d #v1.12.0
-      - uses: graalvm/setup-graalvm@0e29e36dce77b07eb899abac809c2fce9d60c140 #v1.1.3.1
+      - uses: graalvm/setup-graalvm@a1b47fdf04e772fed6b3b46131e226f9aea5e169 #v1.1.6
         with:
-          version: ${{env.GRAALVM_VERSION}}
+          distribution: ${{env.GRAALVM_DISTRO}}
           java-version: ${{env.GRAALVM_JAVA}}
       - run: .\mvnw.cmd -B package -Dnative -DskipTests -D "cbi.jarsigner.skip=true"
       - run: mv org.eclipse.lemminx\target\lemminx-*.exe lemminx-win32.exe
