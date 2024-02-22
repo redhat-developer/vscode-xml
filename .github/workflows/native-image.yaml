@@ -14,7 +14,7 @@
         xml-server-version: ${{ steps.setup-xml-version.outputs.XML_SERVER_VERSION }}
       steps:
       - name: Check Out VS Code XML
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - id: setup-xml-version
         run: echo "XML_SERVER_VERSION=$(cat package.json | jq -r .xmlServer.version)" >> $GITHUB_OUTPUT
     build-binary-unix:
@@ -35,12 +35,12 @@
             - os: ubuntu-20.04
               label: 'linux'
       steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           repository: 'eclipse/lemminx'
           ref: ${{ inputs.publishPreRelease == 'true' && 'main' || needs.setup-xml-version.outputs.xml-server-version }}
       - name: Cache Maven dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             ~/.m2/repository
@@ -50,7 +50,7 @@
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Cache GraalVM
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             /opt/hostedtoolcache/graalvm-jdk-*
@@ -64,7 +64,7 @@
           java-version: ${{env.GRAALVM_JAVA}}
       - run: ./mvnw -B package -Dnative -DskipTests $([ $(uname -s) = Linux ] && echo "-Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC") -Dcbi.jarsigner.skip=true
       - run: mv org.eclipse.lemminx/target/lemminx-* lemminx-${{ matrix.label }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: lemminx-${{ matrix.label }}
           path: lemminx-${{ matrix.label }}
@@ -77,12 +77,12 @@
         GRAALVM_JAVA: 17
       steps:
       - name: Check out LemMinX
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: 'eclipse/lemminx'
           ref: ${{ inputs.publishPreRelease == 'true' && 'main' || needs.setup-xml-version.outputs.xml-server-version }}
       - name: Cache Maven dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             ~/.m2/repository
@@ -92,7 +92,7 @@
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Cache GraalVM
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             C:\hostedtoolcache\windows\graalvm-ce-*
@@ -106,7 +106,7 @@
           java-version: ${{env.GRAALVM_JAVA}}
       - run: .\mvnw.cmd -B package -Dnative -DskipTests -D "cbi.jarsigner.skip=true"
       - run: mv org.eclipse.lemminx\target\lemminx-*.exe lemminx-win32.exe
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: lemminx-win32
           path: lemminx-win32.exe

@@ -35,12 +35,12 @@ jobs:
     outputs:
         repo-cache-hit: ${{ steps.cache-last-commit.outputs.cache-hit }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: 'eclipse/lemminx'
           fetch-depth: 2
           path: lemminx
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: 'redhat-developer/vscode-xml'
           fetch-depth: 2
@@ -53,14 +53,14 @@ jobs:
           git rev-parse HEAD >> ../lastCommit
       - name: Check New Changes
         id: cache-last-commit
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: lastCommit
           key: lastCommit-${{ hashFiles('lastCommit') }}
   build-binaries-job:
     needs: should-build-change
     if: ${{ needs.should-build-change.outputs.repo-cache-hit != 'true' || github.event_name != 'schedule' }}
-    uses: redhat-developer/vscode-xml/.github/workflows/native-image.yaml@main
+    uses: rgrunber/vscode-xml/.github/workflows/native-image.yaml@main
     with:
       publishPreRelease: ${{ github.event_name == 'schedule' || inputs.publishPreRelease == 'true' }}
   packaging-job:
@@ -69,7 +69,7 @@ jobs:
     steps:
       - name: Checkout LemMinX
         if: "${{ github.event_name == 'schedule' || inputs.publishPreRelease == 'true' }}"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: eclipse/lemminx
       - name: Build LemMinX Server Uber Jar
@@ -79,9 +79,9 @@ jobs:
           mkdir ../staging
           cp org.eclipse.lemminx/target/org.eclipse.lemminx*-uber.jar ../staging
       - name: Check Out VS Code XML
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Set Up NodeJS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
       - name: Install dependencies
@@ -112,7 +112,7 @@ jobs:
           fi
           echo "EXT_VERSION=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
       - name: Download LemMinX Binary Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Prepare Binary Artifacts For Packaging
         run:  |
           mkdir -p ../staging/zips ../staging/checksums
@@ -142,13 +142,13 @@ jobs:
           vsce package ${{ env.publishPreReleaseFlag }} -o vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
           ls -lash *.vsix
       - name: Upload VSIX Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: vscode-xml
           path: vscode-xml*-${{ env.EXT_VERSION }}-${{github.run_number}}.vsix
           if-no-files-found: error
       - name: Upload LemMinX Uber Jar
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: lemminx-uber-jar
           path: server/org.eclipse.lemminx*-uber.jar
@@ -170,9 +170,9 @@ jobs:
     needs: packaging-job
     steps:
       - name: Check Out VS Code XML
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Set Up NodeJS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
       - name: Install dependencies
@@ -184,7 +184,7 @@ jobs:
         if: ${{ inputs.publishToMarketPlace == 'true' }}
         run: sed -i -e "s|${{ env.downloadLocation }}/releases/download/latest|${{ env.downloadLocation }}/releases/download/${{ env.XML_SERVER_VERSION }}|g" package.json
       - name: Download VSIX & LemMinX Server Uber Jar
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Build vscode-xml
         run: |
           npm install
@@ -202,13 +202,13 @@ jobs:
         if: ${{ github.event_name == 'schedule' || inputs.publishToMarketPlace == 'true' || inputs.publishPreRelease == 'true' }}
         run: |
           for platformVsix in vscode-xml/vscode-xml-*-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix; do
-            vsce publish -p ${{ secrets.VSCODE_MARKETPLACE_TOKEN }} --packagePath ${platformVsix}
+            vsce publish --skip-duplicate -p ${{ secrets.VSCODE_MARKETPLACE_TOKEN }} --packagePath ${platformVsix}
           done
-          vsce publish -p ${{ secrets.VSCODE_MARKETPLACE_TOKEN }} --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
+          vsce publish --skip-duplicate -p ${{ secrets.VSCODE_MARKETPLACE_TOKEN }} --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
       - name: Publish to OpenVSX Registry
         if: ${{ github.event_name == 'schedule' || inputs.publishToOVSX == 'true' || inputs.publishPreRelease == 'true' }}
         run: |
           for platformVsix in vscode-xml/vscode-xml-*-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix; do
-            ovsx publish -p ${{ secrets.OVSX_MARKETPLACE_TOKEN }} --packagePath ${platformVsix}
+            ovsx publish --skip-duplicate -p ${{ secrets.OVSX_MARKETPLACE_TOKEN }} --packagePath ${platformVsix}
           done
-          ovsx publish -p ${{ secrets.OVSX_MARKETPLACE_TOKEN }}  --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
+          ovsx publish --skip-duplicate -p ${{ secrets.OVSX_MARKETPLACE_TOKEN }}  --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
