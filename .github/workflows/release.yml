@@ -85,7 +85,7 @@ jobs:
         with:
           node-version: '18'
       - name: Install dependencies
-        run: npm install -g typescript "vsce" "ovsx"
+        run: npm install -g typescript "@vscode/vsce" "ovsx"
       - run: echo "XML_SERVER_VERSION=$(cat package.json | jq -r .xmlServer.version)" >> $GITHUB_ENV
       - name: Download LemMinX Server Uber Jar
         env:
@@ -176,7 +176,7 @@ jobs:
         with:
           node-version: '18'
       - name: Install dependencies
-        run: npm install -g typescript "vsce" "ovsx"
+        run: npm install -g typescript "@vscode/vsce" "ovsx"
       - run: echo "XML_SERVER_VERSION=$(cat package.json | jq -r .xmlServer.version)" >> $GITHUB_ENV
       - name: Set the link to download the binary server
         env:
