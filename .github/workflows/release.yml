@@ -153,6 +153,17 @@ jobs:
           name: lemminx-uber-jar
           path: server/org.eclipse.lemminx*-uber.jar
           if-no-files-found: error
+      - name: Publish to GH Pre-Release Tab
+        if: ${{ github.event_name == 'schedule' || inputs.publishPreRelease == 'true' }}
+        uses: "marvinpinto/action-automatic-releases@919008cf3f741b179569b7a6fb4d8860689ab7f0"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            ../staging/zips/lemminx-*
+            ../staging/checksums/lemminx-*
       - name: Publish to GH Release Tab
         if: ${{ inputs.publishToMarketPlace == 'true' && inputs.publishToOVSX == 'true' }}
         uses: "marvinpinto/action-automatic-releases@919008cf3f741b179569b7a6fb4d8860689ab7f0"

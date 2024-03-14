@@ -27,6 +27,7 @@
   "binaryServerDownloadUrl": {
     "linux": "https://github.com/redhat-developer/vscode-xml/releases/download/latest/lemminx-linux.zip",
     "osx-x86_64": "https://github.com/redhat-developer/vscode-xml/releases/download/latest/lemminx-osx-x86_64.zip",
+    "osx-aarch_64": "https://github.com/redhat-developer/vscode-xml/releases/download/latest/lemminx-osx-aarch_64.zip",
     "win32": "https://github.com/redhat-developer/vscode-xml/releases/download/latest/lemminx-win32.zip"
   },
   "capabilities": {
