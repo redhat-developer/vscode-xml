@@ -11,12 +11,12 @@ export function getIndentationRules(): LanguageConfiguration {
     },
     onEnterRules: [
       {
-        beforeText: new RegExp(`<([_:\\w][_:\\w-.\\d]*)([^/>]*(?!/)>)[^<]*$`, 'i'),
+        beforeText: new RegExp(`<([_:\\w][_:\\w-.\\d]*)(([^/>]|/[^>]*["'])*(?!/)>)[^<]*$`, 'i'),
         afterText: /^<\/([_:\w][_:\w-.\d]*)\s*>/i,
         action: { indentAction: IndentAction.IndentOutdent }
       },
       {
-        beforeText: new RegExp(`<(\\w[\\w\\d]*)([^/>]*(?!/)>)[^<]*$`, 'i'),
+        beforeText: new RegExp(`<(\\w[\\w\\d]*)(([^/>]|/[^>]*["'])*(?!/)>)[^<]*$`, 'i'),
         action: { indentAction: IndentAction.Indent }
       }
     ]
