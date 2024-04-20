@@ -34,7 +34,7 @@
               label: 'osx-aarch_64'
             - os: ubuntu-20.04
               label: 'linux'
-              props: -Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC
+              prop: -Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC
             - os: ubuntu-22.04
               label: 'alpine'
               prop: -Dgraalvm.static=--static
