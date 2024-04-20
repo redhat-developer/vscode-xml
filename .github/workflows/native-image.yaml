@@ -26,7 +26,7 @@
       strategy:
         fail-fast: true
         matrix:
-          os: [macos-latest, macos-14, ubuntu-20.04]
+          os: [macos-latest, macos-14, ubuntu-20.04, ubuntu-22.04]
           include:
             - os: macos-latest
               label: 'osx-x86_64'
@@ -34,6 +34,11 @@
               label: 'osx-aarch_64'
             - os: ubuntu-20.04
               label: 'linux'
+              props: -Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC
+            - os: ubuntu-22.04
+              label: 'alpine'
+              prop: -Dgraalvm.static=--static
+
       steps:
       - uses: actions/checkout@v4
         with:
@@ -62,7 +67,7 @@
         with:
           distribution: ${{env.GRAALVM_DISTRO}}
           java-version: ${{env.GRAALVM_JAVA}}
-      - run: ./mvnw -B package -Dnative -DskipTests $([ $(uname -s) = Linux ] && echo "-Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC") -Dcbi.jarsigner.skip=true
+      - run: ./mvnw -B package -Dnative -DskipTests ${{ matrix.prop }} -Dcbi.jarsigner.skip=true
       - run: mv org.eclipse.lemminx/target/lemminx-* lemminx-${{ matrix.label }}
       - uses: actions/upload-artifact@v4
         with:
