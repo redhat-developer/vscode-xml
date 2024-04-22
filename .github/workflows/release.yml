@@ -116,7 +116,7 @@ jobs:
       - name: Prepare Binary Artifacts For Packaging
         run:  |
           mkdir -p ../staging/zips ../staging/checksums
-          for f in lemminx-linux lemminx-osx-{x86_64,aarch_64} lemminx-win32; do
+          for f in lemminx-{linux,alpine} lemminx-osx-{x86_64,aarch_64} lemminx-win32; do
             pushd ${f}
             chmod u+x ${f}*
             zip ../../staging/zips/${f}.zip ${f}*
