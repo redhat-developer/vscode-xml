@@ -26,7 +26,7 @@
       strategy:
         fail-fast: true
         matrix:
-          os: [macos-latest, macos-14, ubuntu-20.04, ubuntu-22.04]
+          os: [macos-latest, macos-14, ubuntu-20.04, ubuntu-20.04]
           include:
             - os: macos-latest
               label: 'osx-x86_64'
@@ -35,7 +35,7 @@
             - os: ubuntu-20.04
               label: 'linux'
               prop: -Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC
-            - os: ubuntu-22.04
+            - os: ubuntu-20.04
               label: 'alpine'
               prop: -Dgraalvm.static=--static
 
