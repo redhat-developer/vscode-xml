@@ -19,8 +19,8 @@ This VS Code extension provides support for creating and editing XML documents, 
 | ------------------ | ------------------------------------------- |
 | enabled by default | requires additional configuration to enable |
 
-- * [XML References features](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Features/XMLReferencesFeatures.md#xml-references-features) (since v0.24.0)
-- * [XML Colors features](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Features/XMLColorsFeatures.md#xml-colors-features) (since v0.24.0)
+  * [XML References features](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Features/XMLReferencesFeatures.md#xml-references-features) (since v0.24.0)
+  * [XML Colors features](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Features/XMLColorsFeatures.md#xml-colors-features) (since v0.24.0)
   * [RelaxNG (experimental) support](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Features/RelaxNGFeatures.md#relaxng-features) (since v0.22.0)
   * [Surround with Tags, Comments, CDATA](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Refactor.md#refactor) (since v0.23.0)
   * Syntax error reporting
