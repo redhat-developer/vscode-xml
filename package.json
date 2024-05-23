@@ -2,7 +2,7 @@
   "name": "vscode-xml",
   "displayName": "XML",
   "description": "XML Language Support by Red Hat",
-  "version": "0.26.1",
+  "version": "0.26.2",
   "author": "Red Hat",
   "publisher": "redhat",
   "icon": "icons/icon128.png",
@@ -95,7 +95,7 @@
     "webpack-cli": "^4.6.0"
   },
   "dependencies": {
-    "@redhat-developer/vscode-redhat-telemetry": "0.7.0",
+    "@redhat-developer/vscode-redhat-telemetry": "^0.8.0",
     "expand-home-dir": "^0.0.3",
     "fs-extra": "^8.1.0",
     "glob": "^7.1.4",
