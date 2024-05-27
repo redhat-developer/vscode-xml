@@ -1,5 +1,32 @@
 # Change Log
 
+## [0.27.0](https://github.com/redhat-developer/vscode-xml/milestone/36?closed=1) (May 27, 2024)
+
+### Enhancements
+
+ * Setting to specify which attributes should be treated as filepaths for the purpose of editor features. See [#945](https://github.com/redhat-developer/vscode-xml/issues/945).
+ * Align XML attributes when formatting. See [#272](https://github.com/redhat-developer/vscode-xml/issues/272).
+ * Provide a Progress support API for LemMinX extension. See [eclipse/lemminx#1562](https://github.com/eclipse/lemminx/issues/1562).
+ * Reduce size of completion items by implementing `itemDefaults` for `CompletionList`. See [eclipse/lemminx#1561](https://github.com/eclipse/lemminx/issues/1561).
+
+### Bug Fixes
+
+ * `OpenQuoteExpected` error for `ATTLIST` breaks DTD validation. See [#943](https://github.com/redhat-developer/vscode-xml/issues/943).
+ * Error range for `src-annotation`. See [eclipse/lemminx#1276](https://github.com/eclipse/lemminx/issues/1276).
+ * XML support crashes when workspace folders are empty. See [#940](https://github.com/redhat-developer/vscode-xml/issues/940).
+ * "Surround" Commands are not shown in the Command Palette. See [#923](https://github.com/redhat-developer/vscode-xml/issues/923).
+ * `XInclude` cannot be activated with binary mode. See [#922](https://github.com/redhat-developer/vscode-xml/issues/922).
+ * Error when booting extension on Mac Silicon. See [#974](https://github.com/redhat-developer/vscode-xml/issues/974).
+ * Update @redhat-developer/vscode-redhat-telemetry to 0.8.0. See [#995](https://github.com/redhat-developer/vscode-xml/pull/995).
+ * Clarify source of indentation in documentation. See [#902](https://github.com/redhat-developer/vscode-xml/issues/902).
+
+### Build
+
+ * Update GH Actions release workflow, and automate pre-releases. See [#933](https://github.com/redhat-developer/vscode-xml/pull/933).
+ * Add support for LemMinX binary natively on MacOS aarch64. See [#898](https://github.com/redhat-developer/vscode-xml/issues/898).
+ * Add support for Alpine Linux. See [#986](https://github.com/redhat-developer/vscode-xml/issues/986).
+ * Update to Node 18. See [#928](https://github.com/redhat-developer/vscode-xml/issues/928).
+
 ## [0.26.1](https://github.com/redhat-developer/vscode-xml/milestone/35?closed=1) (July 12, 2023)
 
 ### Bug Fixes

@@ -2,7 +2,7 @@
   "name": "vscode-xml",
   "displayName": "XML",
   "description": "XML Language Support by Red Hat",
-  "version": "0.26.2",
+  "version": "0.27.0",
   "author": "Red Hat",
   "publisher": "redhat",
   "icon": "icons/icon128.png",
@@ -22,7 +22,7 @@
     "SVG"
   ],
   "xmlServer": {
-    "version": "0.26.1"
+    "version": "0.28.0"
   },
   "binaryServerDownloadUrl": {
     "linux": "https://github.com/redhat-developer/vscode-xml/releases/download/latest/lemminx-linux.zip",
