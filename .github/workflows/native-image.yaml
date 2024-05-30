@@ -29,9 +29,9 @@
           label: [osx-x86_64, osx-aarch_64, linux, alpine]
           include:
             - label: osx-x86_64
-              os: macos-latest
+              os: macos-13
             - label: osx-aarch_64
-              os: macos-14
+              os: macos-latest
             - label: linux
               os: ubuntu-20.04
               prop: -Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC
