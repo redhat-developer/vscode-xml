@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.27.1](https://github.com/redhat-developer/vscode-xml/milestone/37?closed=1) (May 31, 2024)
+
+### Build
+ * Use the appropriate Github Actions runner for MacOS Intel architecture. See [#1001](https://github.com/redhat-developer/vscode-xml/issues/1001).
+ * Use the correct extension version in download URL for binary server. See [#999](https://github.com/redhat-developer/vscode-xml/pull/999).
+
 ## [0.27.0](https://github.com/redhat-developer/vscode-xml/milestone/36?closed=1) (May 27, 2024)
 
 ### Enhancements
