@@ -219,7 +219,7 @@ function getPlatform (): ReturnType<typeof os.platform> | 'alpine' {
     const lines = osRelease.split('\n')
     for (const line of lines) {
       const [key, value] = line.split('=')
-      if (key === 'ID') return value as 'alpine'
+      if (key === 'ID' && value === 'alpine') return value
     }
   }
   return os.platform()
