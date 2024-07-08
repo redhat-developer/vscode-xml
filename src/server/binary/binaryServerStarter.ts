@@ -207,12 +207,31 @@ function getBinaryEnvironment(): any {
 }
 
 /**
+ * Returns the platform of the current operating system.
+ * If the OS is Alpine Linux, it returns 'alpine'.
+ * Otherwise, it returns the platform string provided by the 'os' module.
+ *
+ * @returns The platform of the current operating system.
+ */
+function getPlatform (): ReturnType<typeof os.platform> | 'alpine' {
+  if (fs.existsSync('/etc/os-release')) {
+    const osRelease = fs.readFileSync('/etc/os-release', 'utf8')
+    const lines = osRelease.split('\n')
+    for (const line of lines) {
+      const [key, value] = line.split('=')
+      if (key === 'ID') return value as 'alpine'
+    }
+  }
+  return os.platform()
+}
+
+/**
  * Returns the name of the server binary file for the current OS and architecture
  *
  * @return the name of the server binary file for the current OS and architecture
  */
 function getServerBinaryNameWithoutExtension(): string {
-  switch (os.platform()) {
+  switch (getPlatform()) {
     case 'darwin':
       switch (os.arch()) {
         case 'arm64':
@@ -221,7 +240,7 @@ function getServerBinaryNameWithoutExtension(): string {
           return 'lemminx-osx-x86_64';
       }
     default:
-      return `lemminx-${os.platform}`;
+      return `lemminx-${getPlatform()}`;
   }
 }
 
