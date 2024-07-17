@@ -214,14 +214,7 @@ function getBinaryEnvironment(): any {
  * @returns The platform of the current operating system.
  */
 function getPlatform (): ReturnType<typeof os.platform> | 'alpine' {
-  if (fs.existsSync('/etc/os-release')) {
-    const osRelease = fs.readFileSync('/etc/os-release', 'utf8')
-    const lines = osRelease.split('\n')
-    for (const line of lines) {
-      const [key, value] = line.split('=')
-      if (key === 'ID' && value === 'alpine') return value
-    }
-  }
+  if (fs.existsSync('/etc/alpine-release')) return 'alpine'
   return os.platform()
 }
 
