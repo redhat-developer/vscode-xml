@@ -213,7 +213,7 @@ function getBinaryEnvironment(): any {
  *
  * @returns The platform of the current operating system.
  */
-function getPlatform (): ReturnType<typeof os.platform> | 'alpine' {
+function getPlatform (): NodeJS.Platform | 'alpine' {
   if (fs.existsSync('/etc/alpine-release')) return 'alpine'
   return os.platform()
 }
