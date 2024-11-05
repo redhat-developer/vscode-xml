@@ -59,18 +59,7 @@ export function getLanguageParticipants(): LanguageParticipants {
 
   return {
     onDidChange: onDidChangeEmmiter.event,
-    get documentSelector() {
-      return Array.from(languages) //
-        .flatMap(language => {
-          return [{
-            language,
-            scheme: 'file',
-          }, {
-            language,
-            scheme: 'untitled',
-          }] as DocumentFilter[];
-        });
-    },
+    get documentSelector() { return Array.from(languages); },
     hasLanguage(languageId: string) { return languages.has(languageId); },
     dispose: () => changeListener.dispose()
   };
