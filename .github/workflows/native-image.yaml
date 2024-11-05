@@ -21,7 +21,7 @@
       runs-on: ${{ matrix.os }}
       needs: setup-xml-version
       env:
-        GRAALVM_DISTRO: graalvm
+        GRAALVM_DISTRO: graalvm-community
         GRAALVM_JAVA: 17
       strategy:
         fail-fast: true
@@ -57,12 +57,12 @@
         uses: actions/cache@v4
         with:
           path: |
-            /opt/hostedtoolcache/graalvm-jdk-*
-            ~/hostedtoolcache/graalvm-jdk-*
-          key: ${{ runner.os }}-graalvm-jdk-${{ env.GRAALVM_JAVA }}
+            /opt/hostedtoolcache/${{env.GRAALVM_DISTRO}}-jdk-*
+            ~/hostedtoolcache/${{env.GRAALVM_DISTRO}}-jdk-*
+          key: ${{ runner.os }}-${{env.GRAALVM_DISTRO}}-jdk-${{ env.GRAALVM_JAVA }}
           restore-keys: |
-            ${{ runner.os }}-graalvm-jdk-
-      - uses: graalvm/setup-graalvm@a1b47fdf04e772fed6b3b46131e226f9aea5e169 #v1.1.6
+            ${{ runner.os }}-${{env.GRAALVM_DISTRO}}-jdk-
+      - uses: graalvm/setup-graalvm@557ffcf459751b4d92319ee255bf3bec9b73964c #v1.2.5
         with:
           distribution: ${{env.GRAALVM_DISTRO}}
           java-version: ${{env.GRAALVM_JAVA}}
@@ -77,7 +77,7 @@
       runs-on: windows-latest
       needs: setup-xml-version
       env:
-        GRAALVM_DISTRO: graalvm
+        GRAALVM_DISTRO: graalvm-community
         GRAALVM_JAVA: 17
       steps:
       - name: Check out LemMinX
@@ -99,12 +99,12 @@
         uses: actions/cache@v4
         with:
           path: |
-            C:\hostedtoolcache\windows\graalvm-ce-*
-          key: ${{ runner.os }}-graalvm-*
+            C:\hostedtoolcache\windows\${{env.GRAALVM_DISTRO}}-*
+          key: ${{ runner.os }}-${{env.GRAALVM_DISTRO}}-jdk-${{ env.GRAALVM_JAVA }}
           restore-keys: |
-            ${{ runner.os }}-graalvm-
+            ${{ runner.os }}-${{env.GRAALVM_DISTRO}}-jdk-
       - uses: ilammy/msvc-dev-cmd@7315a94840631165970262a99c72cfb48a65d25d #v1.12.0
-      - uses: graalvm/setup-graalvm@a1b47fdf04e772fed6b3b46131e226f9aea5e169 #v1.1.6
+      - uses: graalvm/setup-graalvm@557ffcf459751b4d92319ee255bf3bec9b73964c #v1.2.5
         with:
           distribution: ${{env.GRAALVM_DISTRO}}
           java-version: ${{env.GRAALVM_JAVA}}
