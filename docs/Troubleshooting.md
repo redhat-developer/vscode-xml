@@ -27,7 +27,8 @@ You can kill the process by:
 If you are working with large XML files or referencing large schema files,
 this may lead to the language server running out of memory.
 The Java language server is more likely to run out memory than the binary language server.
-Switching to the binary language server
+[Switching to the binary language server](Preferences.md#server-binary-mode)
+(via the `xml.server.preferBinary` setting)
 or increasing the memory available to the Java language server could resolve this issue.
 
 If you get an Out of Memory Error, but aren't working with large XML files,
