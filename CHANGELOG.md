@@ -1,5 +1,19 @@
 # Change Log
 
+## [0.27.2](https://github.com/redhat-developer/vscode-xml/milestone/38?closed=1) (November 25, 2024)
+
+### Bug Fixes
+
+ * Fix support for working with XML files on shared folders. See [#1033](https://github.com/redhat-developer/vscode-xml/issues/1033).
+ * Fix interaction between `<xi:include>` and `<?xml-model>` PI. See [#1021](https://github.com/redhat-developer/vscode-xml/issues/1021).
+ * Support `xsi:type` overrides when resolving content model. See [eclipse-lemminx/lemminx#1647](https://github.com/eclipse-lemminx/lemminx/pull/1647).
+
+### Build
+
+ * Fix binary build for Alpine linux. See [#1015](https://github.com/redhat-developer/vscode-xml/issues/1015).
+ * Switch from GraalVM to GraalVM Community for native image build. See [#1035](https://github.com/redhat-developer/vscode-xml/pull/1035).
+ * Fix builds on MacOS ARM64 with Java 8 (Temurin). See [#1646](https://github.com/eclipse-lemminx/lemminx/pull/1646).
+
 ## [0.27.1](https://github.com/redhat-developer/vscode-xml/milestone/37?closed=1) (May 31, 2024)
 
 ### Build
