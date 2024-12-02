@@ -49,6 +49,7 @@ const config = {
   },
   plugins: [
     new ESLintPlugin({
+      configType: "flat",
       extensions: [
         ".ts",
         ".js"
