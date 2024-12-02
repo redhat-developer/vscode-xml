@@ -13,7 +13,7 @@ import { getProxySettings, getProxySettingsAsEnvironmentVariables, ProxySettings
 import { getXMLConfiguration } from "../../settings/settings";
 import * as Telemetry from '../../telemetry';
 import { addTrustedHash, getTrustedHashes } from './binaryHashManager';
-import glob = require('glob');
+import * as glob from 'glob';
 
 const HTTPS_PATTERN = /^https:\/\//;
 const JAR_ZIP_AND_HASH_REJECTOR = /(?:\.jar)|(?:\.zip)|(?:\.sha256)$/;

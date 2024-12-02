@@ -53,10 +53,6 @@ function isMac() {
   return /^darwin/.test(process.platform);
 }
 
-function isLinux() {
-  return /^linux/.test(process.platform);
-}
-
 function mvnw() {
   return isWin() ? "mvnw.cmd" : server_dir + "/mvnw";
 }

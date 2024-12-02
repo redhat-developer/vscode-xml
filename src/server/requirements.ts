@@ -5,8 +5,8 @@ import { findRuntimes, getSources, IJavaRuntime } from 'jdk-utils';
 import * as path from 'path';
 import { ConfigurationTarget, env, ExtensionContext, Uri, window, workspace } from 'vscode';
 import { getJavaagentFlag, getJavaConfiguration, getKey, getXMLConfiguration, IS_WORKSPACE_JDK_ALLOWED, IS_WORKSPACE_JDK_XML_ALLOWED, IS_WORKSPACE_VMARGS_XML_ALLOWED, xmlServerVmargs } from '../settings/settings';
-import pathExists = require('path-exists');
-import expandHomeDir = require('expand-home-dir');
+import * as pathExists from 'path-exists';
+import * as expandHomeDir from 'expand-home-dir';
 
 const isWindows = process.platform.indexOf('win') === 0;
 const JAVA_FILENAME = 'java' + (isWindows ? '.exe' : '');

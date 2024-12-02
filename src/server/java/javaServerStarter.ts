@@ -6,7 +6,7 @@ import { getProxySettings, getProxySettingsAsJVMArgs, jvmArgsContainsProxySettin
 import { getJavaagentFlag, getKey, getXMLConfiguration, IS_WORKSPACE_VMARGS_XML_ALLOWED, xmlServerVmargs } from '../../settings/settings';
 import { RequirementsData } from '../requirements';
 import { HEAP_DUMP_LOCATION, CRASH_ON_OOM, HEAP_DUMP } from './jvmArguments';
-import glob = require('glob');
+import * as glob from 'glob';
 
 // eslint-disable-next-line no-var
 declare var v8debug;

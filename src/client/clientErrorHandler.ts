@@ -4,7 +4,7 @@ import { CloseAction, CloseHandlerResult, ErrorAction, ErrorHandler, ErrorHandle
 import * as ClientCommandConstants from "../commands/clientCommandConstants";
 import { HEAP_DUMP_LOCATION } from "../server/java/jvmArguments";
 import * as Telemetry from "../telemetry";
-import glob = require("glob");
+import * as glob from "glob";
 import { totalmem } from "os";
 
 /**
