@@ -8,14 +8,14 @@ const server_dir = '../lemminx';
 
 gulp.task('build_server', function (done) {
   cp.execSync(mvnw() + " clean verify -DskipTests", { cwd: server_dir, stdio: [0, 1, 2] });
-  gulp.src(server_dir + '/org.eclipse.lemminx/target/org.eclipse.lemminx-uber.jar')
+  gulp.src(server_dir + '/org.eclipse.lemminx/target/org.eclipse.lemminx-uber.jar', { encoding: false })
     .pipe(gulp.dest('./server'));
   done();
 });
 
 gulp.task('build_server_with_binary', function (done) {
   cp.execSync(mvnw() + " clean verify -DskipTests -Dnative", { cwd: server_dir, stdio: [0, 1, 2] });
-  gulp.src([server_dir + '/org.eclipse.lemminx/target/org.eclipse.lemminx-uber.jar', server_dir + '/org.eclipse.lemminx/target/lemminx-*'])
+  gulp.src([server_dir + '/org.eclipse.lemminx/target/org.eclipse.lemminx-uber.jar', server_dir + '/org.eclipse.lemminx/target/lemminx-*'], { encoding: false })
     .pipe(gulp.dest('./server'))
     .on('end', function () {
       glob.Glob('./server/lemminx-*.txt', (_er, txtfiles) => {
