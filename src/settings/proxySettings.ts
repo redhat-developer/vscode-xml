@@ -75,7 +75,7 @@ export function getProxySettings(): ProxySettings {
     return null;
   }
   const regexResult = HOST_AND_PORT_EXTRACTOR.exec(proxyAddress);
-  if (!regexResult[1]) {
+  if (!regexResult || !regexResult[1]) {
     return null;
   }
   const host: string = regexResult[1];
@@ -152,7 +152,7 @@ export function jvmArgsContainsProxySettings(jvmArgs: string): boolean {
   );
 }
 
-const HOST_AND_PORT_EXTRACTOR = /https?:\/\/([^:/]+)(?::([0-9]+))?/;
+const HOST_AND_PORT_EXTRACTOR = /(?:https?:\/\/)?([^:/]+)(?::([0-9]+))?/;
 
 const JVM_PROXY_HOST = 'http.proxyHost';
 const JVM_PROXY_PORT = 'http.proxyPort';
