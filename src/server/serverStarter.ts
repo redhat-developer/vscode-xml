@@ -32,7 +32,7 @@ export async function prepareExecutable(
     const CONFIGURE_JAVA = 'More Info';
     const DISABLE_WARNING = 'Disable Warning';
     window.showInformationMessage('Extensions to the XML language server were detected, but no Java was found. '
-      + 'In order to use these extensions, please install and configure a Java runtime (Java 8 or more recent).',
+      + 'In order to use these extensions, please install and configure a Java runtime (Java 11 or more recent).',
       DOWNLOAD_JAVA, CONFIGURE_JAVA, DISABLE_WARNING)
       .then((selection: string) => {
         if (selection === DOWNLOAD_JAVA) {

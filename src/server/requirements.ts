@@ -128,6 +128,7 @@ function sortJdksBySource(jdks: IJavaRuntime[]) {
     }
   }
   rankedJdks.filter(jdk => jdk.rank === undefined).forEach(jdk => jdk.rank = sources.length);
+  rankedJdks.filter(jdk => jdk.version.major >= 11);
   rankedJdks.sort((a, b) => a.rank - b.rank);
 }
 
@@ -151,8 +152,8 @@ function checkJavaVersion(java_home: string): Promise<number> {
   return new Promise((resolve, reject) => {
     cp.execFile(java_home + '/bin/java', ['-version'], {}, (error, stdout, stderr) => {
       const javaVersion = parseMajorVersion(stderr);
-      if (javaVersion < 8) {
-        reject(openJDKDownload('Java 8 or more recent is required to run. Please download and install a recent Java runtime.'));
+      if (javaVersion < 11) {
+        reject(openJDKDownload('Java 11 or more recent is required to run. Please download and install a recent Java runtime.'));
       }
       else {
         resolve(javaVersion);

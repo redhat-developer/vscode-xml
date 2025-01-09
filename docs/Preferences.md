@@ -12,7 +12,7 @@
   * An environment variable `JAVA_HOME` or `JDK_HOME`
 
   Please note:
-  * The path should end at the parent folder that contains the bin folder. As an example, use `/usr/lib/jvm/java-1.8.0` if the bin folder exists at `/usr/lib/jvm/java-1.8.0/bin`.
+  * The path should end at the parent folder that contains the bin folder. As an example, use `/usr/lib/jvm/jre-11` if the bin folder exists at `/usr/lib/jvm/jre-11/bin`.
   * If the path is not set, the extension will attempt to find the path to the JDK or JRE.
 
 ## Server VM Arguments

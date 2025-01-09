@@ -8,7 +8,7 @@ Contributions are essential for keeping this extension great. We try to keep it 
 
   * latest [Visual Studio Code](https://code.visualstudio.com/)
   * [Node.js](https://nodejs.org/) v4.0.0 or higher
-  * [JDK 8+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+  * [JDK 11+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
   * [Maven](https://maven.apache.org/)
 
 ### Steps
@@ -118,8 +118,7 @@ If you submit a LemMinX PR, GitHub Actions will generate a binary for your PR th
 If you need to generate a LemMinX binary locally for whatever reason, follow these steps:
 
 1. Download and set up [GraalVM and its dependencies](https://www.graalvm.org/docs/getting-started/)
-    * either 20.x or 21.x should work
-    * The version for Java 11 is preferred, since it is hard to set up GraalVM Java 8 on Windows
+    * The latest version should work
 2. Make sure that the environment variable `JAVA_HOME` points to the GraalVM installation.
 3. Run `./mvnw clean package -DskipTests -Dnative` from the root of the LemMinX repository
     * This will use a lot of memory (> 4 GB) and take a while
