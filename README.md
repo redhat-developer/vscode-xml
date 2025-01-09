@@ -58,18 +58,18 @@ or you can read this documentation inside vscode with the command `Open XML Docu
 
 For running the binary version:
   * Windows, macOS, or Linux, on a x86_64 CPU
-    * We do not currently support running on Linux installations without `libc` present
+    * ~~We do not currently support running on Linux installations without `libc` present~~ See [#1016](https://github.com/redhat-developer/vscode-xml/pull/1016)
   * Java is not required for this version
   * The binary is automatically downloaded by vscode-xml if it is needed, with no additional action required on the part of the user.
 
 For running the Java version (required if you want to run [extensions](./docs/Extensions.md#custom-xml-extensions) to the base XML features):
-  * Java JDK (or JRE) 8 or more recent
+  * Java JDK (or JRE) 11 or more recent
   * Ensure Java path is set in either:
     * `xml.java.home` in VSCode preferences
     * `java.home` in VSCode preferences
     * Environment variable `JAVA_HOME` or `JDK_HOME`
     * **Note**: The path should end at the parent folder that contains the `bin` folder.
-      **Example Path**: `/usr/lib/jvm/java-1.8.0` if `bin` exists at `/usr/lib/jvm/java-1.8.0/bin`.
+      **Example Path**: `/usr/lib/jvm/jre-11` if `bin` exists at `/usr/lib/jvm/jre-11/bin`.
     * **Note**: If the path is not set, the extension will attempt to find the path to the JDK or JRE.
 
 See [how to set java home](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#java-home) for more information how this extension searches for Java.
@@ -78,7 +78,7 @@ See [how to set java home](https://github.com/redhat-developer/vscode-xml/blob/m
 
 The following settings are supported:
 
-* [`xml.java.home`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#java-home): Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server if the Java server is being run. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
+* [`xml.java.home`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#java-home): Specifies the folder path to the JDK (11 or more recent) used to launch the XML Language Server if the Java server is being run. If not set, falls back  to either the `java.home` preference or the `JAVA_HOME` or `JDK_HOME` environment variables.
 * [`xml.server.vmargs`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#server-vm-arguments): Specifies extra VM arguments used to launch the XML Language Server.
    Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector.
 * [`xml.server.workDir`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#server-cache-path): Set a custom folder path for cached XML Schemas. An absolute path is expected, although the `~` prefix (for the user home directory) is supported. Default is `~/.lemminx`.
