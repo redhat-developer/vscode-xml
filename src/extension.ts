@@ -11,7 +11,7 @@
  */
 
 import * as fs from 'fs-extra';
-import { ExtensionContext, Uri, commands, extensions, languages } from "vscode";
+import { ConfigurationTarget, ExtensionContext, Uri, commands, extensions, languages, window, workspace } from "vscode";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { XMLExtensionApi } from './api/xmlExtensionApi';
 import { getXmlExtensionApiImplementation } from './api/xmlExtensionApiImplementation';
@@ -46,6 +46,17 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
   try {
     requirementsData = await requirements.resolveRequirements(context);
   } catch (error) {
+    if (!workspace.getConfiguration('xml').get('server.preferBinary') && error.message !== requirements.NO_JAVA_FOUND) {
+      const USE_BINARY = 'Always use binary server';
+      void window.showWarningMessage(error.message + ' The binary server will be used instead. Please consider downloading and installing a recent Java runtime, or configuring vscode-xml to always use the binary server.', USE_BINARY, error.label) //
+        .then(button => {
+          if (button === error.label) {
+            commands.executeCommand('vscode.open', error.openUrl);
+          } else if (button === USE_BINARY) {
+            workspace.getConfiguration('xml').update('server.preferBinary', true, ConfigurationTarget.Global);
+          }
+        });
+    }
     requirementsData = {} as requirements.RequirementsData;
   }
 
