@@ -11,6 +11,8 @@ import * as expandHomeDir from 'expand-home-dir';
 const isWindows = process.platform.indexOf('win') === 0;
 const JAVA_FILENAME = 'java' + (isWindows ? '.exe' : '');
 
+export const NO_JAVA_FOUND = "Java runtime could not be located.";
+
 export interface RequirementsData {
   java_home: string;
   java_version: number;
@@ -50,7 +52,7 @@ async function checkJavaRuntime(context: ExtensionContext): Promise<string> {
   if (javaHome) {
     javaHome = expandHomeDir(javaHome);
     if (!pathExists.sync(javaHome)) {
-      throw openJDKDownload(source + ' points to a missing folder');
+      throw openJDKDownload(source + ' points to a missing folder.');
     } else if (!pathExists.sync(path.resolve(javaHome, 'bin', JAVA_FILENAME))) {
       throw openJDKDownload(source + ' does not point to a Java runtime.');
     }
@@ -62,7 +64,7 @@ async function checkJavaRuntime(context: ExtensionContext): Promise<string> {
     sortJdksBySource(javaRuntimes);
     javaHome = javaRuntimes[0].homedir;
   } else {
-    throw openJDKDownload("Java runtime could not be located. Please download and install Java or use the binary server.");
+    throw openJDKDownload(NO_JAVA_FOUND);
   }
   return javaHome;
 }
@@ -153,7 +155,7 @@ function checkJavaVersion(java_home: string): Promise<number> {
     cp.execFile(java_home + '/bin/java', ['-version'], {}, (error, stdout, stderr) => {
       const javaVersion = parseMajorVersion(stderr);
       if (javaVersion < 11) {
-        reject(openJDKDownload('Java 11 or more recent is required to run. Please download and install a recent Java runtime.'));
+        reject(openJDKDownload('The Java version specified is older than Java 11.'));
       }
       else {
         resolve(javaVersion);
