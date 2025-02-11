@@ -243,7 +243,7 @@ export function getXMLSettings(javaHome: string | undefined, logfile: string, ex
     }
   })
   externalXmlSettings.xmlFileAssociations.forEach(element => {
-    if (!xml['xml']['fileAssociations'].some(fileAssociation => fileAssociation.systemId === element.systemId)) {
+    if (!xml['xml']['fileAssociations'].some(fileAssociation => fileAssociation.pattern === element.pattern)) {
       xml['xml']['fileAssociations'].push(element);
     }
   });
