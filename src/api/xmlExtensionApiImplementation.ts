@@ -43,7 +43,7 @@ export function getXmlExtensionApiImplementation(languageClient: LanguageClient,
     addXMLFileAssociations: (fileAssociations: XMLFileAssociation[]) => {
       const externalfileAssociations = externalXmlSettings.xmlFileAssociations;
       fileAssociations.forEach(element => {
-        if (!externalfileAssociations.some(fileAssociation => fileAssociation.systemId === element.systemId)) {
+        if (!externalfileAssociations.some(fileAssociation => fileAssociation.pattern === element.pattern)) {
           externalfileAssociations.push(element);
         }
       });
@@ -54,7 +54,7 @@ export function getXmlExtensionApiImplementation(languageClient: LanguageClient,
     removeXMLFileAssociations: (fileAssociations: XMLFileAssociation[]) => {
       const externalfileAssociations = externalXmlSettings.xmlFileAssociations;
       fileAssociations.forEach(element => {
-        const itemIndex = externalfileAssociations.findIndex(fileAssociation => fileAssociation.systemId === element.systemId) //returns -1 if item not found
+        const itemIndex = externalfileAssociations.findIndex(fileAssociation => fileAssociation.pattern === element.pattern) //returns -1 if item not found
         if (itemIndex > -1) {
           externalfileAssociations.splice(itemIndex, 1);
         }
