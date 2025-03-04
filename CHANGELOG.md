@@ -1,5 +1,19 @@
 # Change Log
 
+## [0.28.0](https://github.com/redhat-developer/vscode-xml/milestone/39?closed=1) (March 5, 2025)
+
+### Breaking Changes
+ * Update to Java 11. See [eclipse-lemminx/lemminx#1721](https://github.com/eclipse-lemminx/lemminx/pull/1721)
+   * _Rationale_: Several of lemminx's dependencies now require Java 11, so we were unable to update to the latest versions until we adopted Java 11.
+
+### Bug Fixes
+
+ * Use GraalVM CPU architecture compatibility mode in order to support older CPUs. See [#1055](https://github.com/redhat-developer/vscode-xml/issues/1055).
+ * File associations should have unique `pattern`, not unique `systemId` (schema). See [#1053](https://github.com/redhat-developer/vscode-xml/issues/1053).
+ * Alert the user when the extension falls back to the binary when the supplied Java version is < 11. See [#1049](https://github.com/redhat-developer/vscode-xml/issues/1049).
+ * Fix extension crash when proxy settings address doesn't begin with `http://` or `https://`. See [#1046](https://github.com/redhat-developer/vscode-xml/pull/1046).
+ * Handle attribute with text equal to single quote (i.e. "). See [eclipse-lemminx/lemminx#1726](https://github.com/eclipse-lemminx/lemminx/pull/1726).
+
 ## [0.27.2](https://github.com/redhat-developer/vscode-xml/milestone/38?closed=1) (November 25, 2024)
 
 ### Bug Fixes
