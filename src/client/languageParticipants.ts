@@ -6,6 +6,16 @@
 import { Event, EventEmitter, extensions } from 'vscode';
 import { DocumentFilter, DocumentSelector } from 'vscode-languageclient';
 
+const SCHEMES: string[] = [
+  'untitled',
+  'file',
+  'ftp',
+  'http',
+  'https',
+  'ssh',
+  'streamfile',
+];
+
 /**
  * XML language participant contribution.
  */
@@ -59,7 +69,16 @@ export function getLanguageParticipants(): LanguageParticipants {
 
   return {
     onDidChange: onDidChangeEmmiter.event,
-    get documentSelector() { return Array.from(languages); },
+    get documentSelector() {
+      return SCHEMES.flatMap(scheme => {
+        return Array.from(languages).map(language => {
+          return {
+            language,
+            scheme
+          } as DocumentFilter;
+        });
+      });
+    },
     hasLanguage(languageId: string) { return languages.has(languageId); },
     dispose: () => changeListener.dispose()
   };
