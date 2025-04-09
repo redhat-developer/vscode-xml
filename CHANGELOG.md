@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.28.1](https://github.com/redhat-developer/vscode-xml/milestone/40?closed=1) (April 9, 2025)
+
+### Bug Fixes
+
+ * Prevent validation errors from appearing in `.git` files. See [#1063](https://github.com/redhat-developer/vscode-xml/issues/1063).
+ * Fix autoindent. See [#1051](https://github.com/redhat-developer/vscode-xml/issues/1051).
+ * Fix "format selection" changing self-closing tags that are out of range. See [#1059](https://github.com/redhat-developer/vscode-xml/issues/1059).
+
 ## [0.28.0](https://github.com/redhat-developer/vscode-xml/milestone/39?closed=1) (March 5, 2025)
 
 ### Breaking Changes
