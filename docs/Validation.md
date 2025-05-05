@@ -518,6 +518,14 @@ Now, update the xsi:schemaLocation with bad location hint
 
 In `always` you will have error, in `onValidSchema` you will have none error.
 
+## xml.validation.dtd.enabled
+
+The `xml.validation.dtd.enabled` gives the capability to enable / disable the validation based on DTD. It can be configured with 3 values:
+
+ * `always`: enable DTD based validation.
+ * `never`: disable DTD based validation.
+ * `onValidDTD`: enable DTD based validation only when the declared DOCTYPE is valid.
+
 ## xml.validation.filters
 
 XML validation filter gives you the capability to define validation rules for files matching a given pattern. For instance if you wish to disable validation for all files which have the `*.myxml` file extension, you must declare this filter in the `settings.json`:
@@ -554,7 +562,7 @@ By default, vscode-xml uses this default validation filter:
     "noGrammar": "ignore",
     "schema": {
       "enabled": "never"
-    }    
+    }
   },
   // Ignore no grammar hint for Eclipse files like .project
   {
