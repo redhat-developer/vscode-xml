@@ -1,5 +1,15 @@
 # Change Log
 
+## [0.29.0](https://github.com/redhat-developer/vscode-xml/milestone/41) (May 8, 2025)
+
+### Enhancements
+
+ * Show hex colours with colour picker when `#` is missing. See [#1073](https://github.com/redhat-developer/vscode-xml/issues/1073).
+
+### Build
+
+ * Add smoke tests for the binary server. See [#1075](https://github.com/redhat-developer/vscode-xml/issues/1075).
+
 ## [0.28.1](https://github.com/redhat-developer/vscode-xml/milestone/40?closed=1) (April 9, 2025)
 
 ### Bug Fixes
