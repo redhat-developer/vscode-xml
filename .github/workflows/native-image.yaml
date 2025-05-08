@@ -33,10 +33,10 @@
             - label: osx-aarch_64
               os: macos-latest
             - label: linux
-              os: ubuntu-20.04
+              os: ubuntu-22.04
               prop: -Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC
             - label: alpine
-              os: ubuntu-20.04
+              os: ubuntu-22.04
               prop: -Dgraalvm.static=--static
       steps:
       - uses: actions/checkout@v4
