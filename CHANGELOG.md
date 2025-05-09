@@ -9,6 +9,7 @@
 ### Build
 
  * Add smoke tests for the binary server. See [#1075](https://github.com/redhat-developer/vscode-xml/issues/1075).
+ * Drop support for Alpine Linux-specific version. See [#1083](https://github.com/redhat-developer/vscode-xml/pull/1083)
 
 ## [0.28.1](https://github.com/redhat-developer/vscode-xml/milestone/40?closed=1) (April 9, 2025)
 
