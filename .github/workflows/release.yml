@@ -1,48 +1,49 @@
 name: release
 
 on:
-    schedule:
-      - cron: '0 8 * * *'
-    workflow_dispatch:
-      inputs:
-        publishPreRelease:
-          description: 'Publish a pre-release ?'
-          required: true
-          type: choice
-          options:
-            - 'true'
-            - 'false'
-          default: 'true'
-        publishToMarketPlace:
-          description: 'Publish to VS Code Marketplace ?'
-          required: true
-          type: choice
-          options:
-            - 'true'
-            - 'false'
-          default: 'false'
-        publishToOVSX:
-          description: 'Publish to OpenVSX Registry ?'
-          required: true
-          type: choice
-          options:
-            - 'true'
-            - 'false'
-          default: 'false'
+  schedule:
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+    inputs:
+      publishPreRelease:
+        description: "Publish a pre-release ?"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+        default: "true"
+      publishToMarketPlace:
+        description: "Publish to VS Code Marketplace ?"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+        default: "false"
+      publishToOVSX:
+        description: "Publish to OpenVSX Registry ?"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+        default: "false"
+
 jobs:
   should-build-change:
     runs-on: ubuntu-latest
     outputs:
-        repo-cache-hit: ${{ steps.cache-last-commit.outputs.cache-hit }}
+      repo-cache-hit: ${{ steps.cache-last-commit.outputs.cache-hit }}
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: 'eclipse/lemminx'
+          repository: "eclipse/lemminx"
           fetch-depth: 2
           path: lemminx
       - uses: actions/checkout@v4
         with:
-          repository: 'redhat-developer/vscode-xml'
+          repository: "redhat-developer/vscode-xml"
           fetch-depth: 2
           path: vscode-xml
       - run: |
@@ -57,12 +58,14 @@ jobs:
         with:
           path: lastCommit
           key: lastCommit-${{ hashFiles('lastCommit') }}
+
   build-binaries-job:
     needs: should-build-change
     if: ${{ needs.should-build-change.outputs.repo-cache-hit != 'true' || github.event_name != 'schedule' }}
     uses: redhat-developer/vscode-xml/.github/workflows/native-image.yaml@main
     with:
       publishPreRelease: ${{ github.event_name == 'schedule' || inputs.publishPreRelease == 'true' }}
+
   packaging-job:
     runs-on: ubuntu-latest
     needs: build-binaries-job
@@ -83,7 +86,7 @@ jobs:
       - name: Set Up NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
       - name: Install dependencies
         run: npm install -g typescript "@vscode/vsce" "ovsx"
       - name: Build vscode-xml
@@ -101,12 +104,13 @@ jobs:
           echo "EXT_VERSION=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
       - name: Download LemMinX Server Uber Jar
         env:
-            downloadLocation: https://github.com/redhat-developer/vscode-xml
+          downloadLocation: https://github.com/redhat-developer/vscode-xml
         if: "${{ inputs.publishToMarketPlace == 'true' || inputs.publishToOVSX == 'true' }}"
         run: |
           curl -Lo org.eclipse.lemminx-${{ env.XML_SERVER_VERSION }}-uber.jar https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/${{ env.XML_SERVER_VERSION }}/org.eclipse.lemminx-${{ env.XML_SERVER_VERSION }}-uber.jar
           sed -i -e "s|${{ env.downloadLocation }}/releases/download/latest|${{ env.downloadLocation }}/releases/download/${{ env.EXT_VERSION }}|g" package.json
-      - run: |
+      - name: Copy Uber Jar to server/
+        run: |
           mkdir server/
           if [ -e org.eclipse.lemminx*-uber.jar ]; then
             mv org.eclipse.lemminx*-uber.jar server/
@@ -116,7 +120,7 @@ jobs:
       - name: Download LemMinX Binary Artifacts
         uses: actions/download-artifact@v4
       - name: Prepare Binary Artifacts For Packaging
-        run:  |
+        run: |
           mkdir -p ../staging/zips ../staging/checksums
           for f in lemminx-linux lemminx-osx-{x86_64,aarch_64} lemminx-win32; do
             pushd ${f}
@@ -177,6 +181,7 @@ jobs:
             vscode-xml*-${{ env.EXT_VERSION }}-${{ github.run_number }}.vsix
             ../staging/zips/lemminx-*
             ../staging/checksums/lemminx-*
+
   release-job:
     environment: ${{ (inputs.publishToMarketPlace == 'true' || inputs.publishToOVSX == 'true') && 'release' || 'pre-release' }}
     runs-on: ubuntu-latest
@@ -187,7 +192,7 @@ jobs:
       - name: Set Up NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
       - name: Install dependencies
         run: npm install -g typescript "@vscode/vsce" "ovsx"
       - name: Download VSIX & LemMinX Server Uber Jar

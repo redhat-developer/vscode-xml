@@ -1,35 +1,34 @@
 name: Continuous Integration
-on: [ push, pull_request ]
+on: [push, pull_request]
 jobs:
-
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: npm i --also=dev
-    - name: Run TypeScript compiler (under webpack)
-      run: npm run compile
-    - name: Run ESLint
-      run: npm run eslint
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm i --also=dev
+      - name: Run TypeScript compiler (under webpack)
+        run: npm run compile
+      - name: Run ESLint
+        run: npm run eslint
 
   build-test-native-image:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        repository: 'eclipse/lemminx'
-    - uses: graalvm/setup-graalvm@557ffcf459751b4d92319ee255bf3bec9b73964c #v1.2.5
-      with:
-        distribution: graalvm-community
-        java-version: 17
-    - run: ./mvnw -B package -Dnative -DskipTests -Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC -Dcbi.jarsigner.skip=true
-    - run: mv org.eclipse.lemminx/target/lemminx-* lemminx-linux
-    - uses: actions/upload-artifact@v4
-      with:
-        name: lemminx-linux
-        path: lemminx-linux
-        if-no-files-found: error
+      - uses: actions/checkout@v4
+        with:
+          repository: "eclipse/lemminx"
+      - uses: graalvm/setup-graalvm@557ffcf459751b4d92319ee255bf3bec9b73964c #v1.2.5
+        with:
+          distribution: graalvm-community
+          java-version: 17
+      - run: ./mvnw -B package -Dnative -DskipTests -Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC -Dcbi.jarsigner.skip=true
+      - run: mv org.eclipse.lemminx/target/lemminx-* lemminx-linux
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lemminx-linux
+          path: lemminx-linux
+          if-no-files-found: error
 
   smoke-test:
     runs-on: ubuntu-latest

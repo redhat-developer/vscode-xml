@@ -1,44 +1,46 @@
-  name: native-image
-  on:
-    workflow_call:
-      inputs:
-        publishPreRelease:
-          description: 'Publish a pre-release ?'
-          required: true
-          type: string
-          default: 'true'
-  jobs:
-    setup-xml-version:
-      runs-on: ubuntu-latest
-      outputs:
-        xml-server-version: ${{ steps.setup-xml-version.outputs.XML_SERVER_VERSION }}
-      steps:
+name: native-image
+on:
+  workflow_call:
+    inputs:
+      publishPreRelease:
+        description: "Publish a pre-release ?"
+        required: true
+        type: string
+        default: "true"
+
+jobs:
+  setup-xml-version:
+    runs-on: ubuntu-latest
+    outputs:
+      xml-server-version: ${{ steps.setup-xml-version.outputs.XML_SERVER_VERSION }}
+    steps:
       - name: Check Out VS Code XML
         uses: actions/checkout@v4
       - id: setup-xml-version
         run: echo "XML_SERVER_VERSION=$(cat package.json | jq -r .xmlServer.version)" >> $GITHUB_OUTPUT
-    build-binary-unix:
-      runs-on: ${{ matrix.os }}
-      needs: setup-xml-version
-      env:
-        GRAALVM_DISTRO: graalvm-community
-        GRAALVM_JAVA: 17
-      strategy:
-        fail-fast: true
-        matrix:
-          label: [osx-x86_64, osx-aarch_64, linux]
-          include:
-            - label: osx-x86_64
-              os: macos-13
-            - label: osx-aarch_64
-              os: macos-latest
-            - label: linux
-              os: ubuntu-22.04
-              prop: -Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC
-      steps:
+
+  build-binary-unix:
+    runs-on: ${{ matrix.os }}
+    needs: setup-xml-version
+    env:
+      GRAALVM_DISTRO: graalvm-community
+      GRAALVM_JAVA: 17
+    strategy:
+      fail-fast: true
+      matrix:
+        label: [osx-x86_64, osx-aarch_64, linux]
+        include:
+          - label: osx-x86_64
+            os: macos-13
+          - label: osx-aarch_64
+            os: macos-latest
+          - label: linux
+            os: ubuntu-22.04
+            prop: -Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC
+    steps:
       - uses: actions/checkout@v4
         with:
-          repository: 'eclipse/lemminx'
+          repository: "eclipse/lemminx"
           ref: ${{ inputs.publishPreRelease == 'true' && 'main' || needs.setup-xml-version.outputs.xml-server-version }}
       - name: Cache Maven dependencies
         uses: actions/cache@v4
@@ -70,17 +72,18 @@
           name: lemminx-${{ matrix.label }}
           path: lemminx-${{ matrix.label }}
           if-no-files-found: error
-    build-binary-windows:
-      runs-on: windows-latest
-      needs: setup-xml-version
-      env:
-        GRAALVM_DISTRO: graalvm-community
-        GRAALVM_JAVA: 17
-      steps:
+
+  build-binary-windows:
+    runs-on: windows-latest
+    needs: setup-xml-version
+    env:
+      GRAALVM_DISTRO: graalvm-community
+      GRAALVM_JAVA: 17
+    steps:
       - name: Check out LemMinX
         uses: actions/checkout@v4
         with:
-          repository: 'eclipse/lemminx'
+          repository: "eclipse/lemminx"
           ref: ${{ inputs.publishPreRelease == 'true' && 'main' || needs.setup-xml-version.outputs.xml-server-version }}
       - name: Cache Maven dependencies
         uses: actions/cache@v4
