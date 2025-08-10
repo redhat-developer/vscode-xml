@@ -17,7 +17,7 @@
 
 ## Server VM Arguments
 
-  Can be accessed through `xml.server.vmargs`.
+  Can be accessed through `xml.server.vmargs`. For a complete list of system properties, see [LemMinX's documentation](https://github.com/eclipse-lemminx/lemminx/blob/main/docs/Configuration.md#system-properties).
 
 ### Setting up Proxy
 
