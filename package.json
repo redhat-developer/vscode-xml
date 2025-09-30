@@ -371,7 +371,9 @@
             "screen",
             "synopsis",
             "pre",
-            "xd:pre"
+            "xd:pre",
+            "style",
+            "script"
           ],
           "items": {
             "type": "string"
