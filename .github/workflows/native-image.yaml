@@ -26,14 +26,17 @@
       strategy:
         fail-fast: true
         matrix:
-          label: [osx-x86_64, osx-aarch_64, linux]
+          label: [osx-x86_64, osx-aarch_64, linux-x86_64, linux-aarch_64]
           include:
             - label: osx-x86_64
               os: macos-13
             - label: osx-aarch_64
               os: macos-latest
-            - label: linux
+            - label: linux-x86_64
               os: ubuntu-22.04
+              prop: -Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC
+            - label: linux-aarch_64
+              os: ubuntu-22.04-arm
               prop: -Dgraalvm.static=-H:+StaticExecutableWithDynamicLibC
       steps:
       - uses: actions/checkout@v4
