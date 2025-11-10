@@ -213,13 +213,22 @@ function getBinaryEnvironment(): any {
  */
 function getServerBinaryNameWithoutExtension(): string {
   switch (os.platform()) {
-    case 'darwin':
+    case 'darwin': {
       switch (os.arch()) {
         case 'arm64':
           return 'lemminx-osx-aarch_64';
         default:
           return 'lemminx-osx-x86_64';
       }
+    }
+    case 'linux': {
+      switch (os.arch()) {
+        case 'arm64':
+          return 'lemminx-linux-aarch_64';
+        default:
+          return 'lemminx-linux-x86_64';
+      }
+    }
     default:
       return `lemminx-${os.platform()}`;
   }

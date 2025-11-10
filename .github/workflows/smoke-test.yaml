@@ -1,0 +1,59 @@
+name: Smoke test
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
+      label:
+        required: true
+        type: string
+      graalOpt:
+        required: false
+        type: string
+      startx:
+        required: false
+        type: string
+
+jobs:
+  build-test-native-image:
+    runs-on: ${{ inputs.os }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: 'eclipse/lemminx'
+    - uses: graalvm/setup-graalvm@557ffcf459751b4d92319ee255bf3bec9b73964c #v1.2.5
+      with:
+        distribution: graalvm-community
+        java-version: 17
+    - run: ./mvnw -B package -Dnative -DskipTests ${{ inputs.graalOpt }} -Dcbi.jarsigner.skip=true
+    - run: mv org.eclipse.lemminx/target/lemminx-* lemminx-${{ inputs.label }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: lemminx-${{ inputs.label }}
+        path: lemminx-${{ inputs.label }}
+        if-no-files-found: error
+
+  smoke-test:
+    runs-on: ${{ inputs.os }}
+    needs: build-test-native-image
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: lemminx-${{ inputs.label }}
+          path: server
+      - name: Make lemminx binary executable
+        run: chmod u+x ./server/lemminx-${{ inputs.label }}
+      - name: Make lemminx binary trusted
+        run: openssl sha256 ./server/lemminx-${{ inputs.label }} | awk '{print $2}' > ./server/lemminx-${{ inputs.label }}.sha256
+      - name: Install dependencies
+        run: npm i --also=dev
+      - name: Run smoke test suite
+        run: ${{ inputs.startx }} npm test
+      - name: Delete lemminx binary
+        if: always()
+        uses: geekyeggo/delete-artifact@e46cfb9575865f907c2beb2e4170b5f4c7d77c52
+        with:
+          name: lemminx-${{ inputs.label }}
