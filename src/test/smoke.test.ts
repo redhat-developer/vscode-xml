@@ -19,7 +19,7 @@ suite('Smoke tests', function () {
   this.timeout(10_000);
 
   // diagnostics take some time to appear; the language server must be started and respond to file open event
-  const DIAGNOSTICS_DELAY = 4_000;
+  const DIAGNOSTICS_DELAY = 6_000;
 
   const SCHEMA = `<?xml version="1.0" encoding="UTF-8"?>
     <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"

@@ -220,6 +220,13 @@ function getServerBinaryNameWithoutExtension(): string {
         default:
           return 'lemminx-osx-x86_64';
       }
+    case 'linux':
+      switch (os.arch()) {
+        case 'arm64':
+          return 'lemminx-linux-aarch_64';
+        default:
+          return 'lemminx-linux-x86_64';
+      }
     default:
       return `lemminx-${os.platform()}`;
   }
