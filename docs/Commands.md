@@ -20,6 +20,12 @@ This command re-triggers the [XML Validation](Validation.md#xml-validation) for 
 
 When the [Server Cache Path](Preferences.md#server-cache-path) is activated, the command removes the referenced XSD, DTD grammar from the local cache.
 
+## Revalidate current XML file (XML Syntax Only)
+
+This command re-triggers the [XML Validation](Validation.md#xml-validation) for the current file only for XML syntax even if XML is bound to a DTD, XML Schema, RelaxNG.
+
+When the [Server Cache Path](Preferences.md#server-cache-path) is activated, the command removes the referenced XSD, DTD grammar from the local cache.
+
 ## Revalidate all open XML files
 
 This command re-triggers the [XML Validation](Validation.md#xml-validation) for the all opened XML files.
