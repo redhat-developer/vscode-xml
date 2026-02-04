@@ -62,7 +62,7 @@
     "pretest": "npm run compile && npm run test-compile",
     "test": "vscode-test",
     "eslint": "npx eslint .",
-    "build-server": "./node_modules/.bin/gulp build_server"
+    "build-server": "npx gulp build_server"
   },
   "repository": {
     "type": "git",
