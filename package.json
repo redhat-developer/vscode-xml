@@ -507,6 +507,22 @@
           "markdownDescription": "Enable/disable schema based validation. Default is `always`. Ignored if `#xml.validation.enabled#` is set to `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xmlvalidationschemaenabled%22%7D%5D) for more information.",
           "scope": "window"
         },
+        "xml.validation.dtd.enabled": {
+          "type": "string",
+          "default": "always",
+          "enum": [
+            "always",
+            "never",
+            "onValidDTD"
+          ],
+          "markdownEnumDescriptions": [
+            "Enable DTD based validation.",
+            "Disable DTD based validation.",
+            "Enable DTD based validation only when the declared DOCTYPE is valid for the root element."
+          ],
+          "markdownDescription": "Enable/disable DTD based validation. Default is `always`. Ignored if `#xml.validation.enabled#` is set to `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xmlvalidationdtdenabled%22%7D%5D) for more information.",
+          "scope": "window"
+        },
         "xml.validation.disallowDocTypeDecl": {
           "type": "boolean",
           "default": false,
@@ -813,6 +829,11 @@
         "category": "XML"
       },
       {
+        "command": "xml.validation.syntax.current.file",
+        "title": "Revalidate current XML file (XML syntax Only)",
+        "category": "XML"
+      },
+      {
         "command": "xml.validation.all.files",
         "title": "Revalidate all opened XML files",
         "category": "XML"
@@ -848,6 +869,10 @@
         {
           "command": "xml.validation.current.file",
           "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+        },
+        {
+          "command": "xml.validation.syntax.current.file",
+          "when": "editorLangId == xml && XMLLSReady"
         },
         {
           "command": "xml.validation.all.files",
