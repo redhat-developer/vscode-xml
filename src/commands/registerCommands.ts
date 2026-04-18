@@ -32,6 +32,7 @@ export async function registerClientServerCommands(context: ExtensionContext, la
   registerCodeLensReferencesCommands(context, languageClient);
   registerValidationCommands(context);
   registerRefactorCommands(context, languageClient);
+  registerMinifyCommand(context, languageClient);
   registerAssociationCommands(context, languageClient);
   registerRestartLanguageServerCommand(context, languageClient);
   registerConfigurationUpdateCommand();
