@@ -29,3 +29,19 @@ When the [Server Cache Path](Preferences.md#server-cache-path) is activated, the
 ## Restart XML Language Server
 
 This command restarts the XML language server.
+
+## Minify XML Document
+
+This command minifies the current XML document by removing unnecessary whitespace while preserving the document's structure and content.
+
+The minification can be triggered via the **Source > Minify XML** menu.
+
+The minification process:
+- Removes all indentation and line breaks between elements
+- Removes whitespace between the XML declaration and the root element
+- Normalizes whitespace sequences inside text content to a single space
+- Preserves whitespace in elements with `xml:space="preserve"` attribute
+- Preserves content in CDATA sections
+- Reduces multiple spaces between attributes to a single space
+
+This is useful for reducing file size before transmitting or storing XML documents.

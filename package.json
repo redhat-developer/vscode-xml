@@ -841,6 +841,11 @@
         "command": "xml.refactor.surround.with.cdata",
         "title": "Surround with CDATA",
         "category": "XML"
+      },
+      {
+        "command": "xml.minify",
+        "title": "Minify XML Document",
+        "category": "XML"
       }
     ],
     "menus": {
@@ -871,6 +876,10 @@
         },
         {
           "command": "xml.refactor.surround.with.cdata",
+          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+        },
+        {
+          "command": "xml.minify",
           "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
         }
       ],

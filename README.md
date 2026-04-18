@@ -46,6 +46,7 @@ This VS Code extension provides support for creating and editing XML documents, 
   * File associations
   * Code actions
   * Schema Caching
+  * [Minify XML](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Commands.md#minify-xml-document)
 
 See the [changelog](CHANGELOG.md) for the latest release.
 

@@ -32,6 +32,7 @@ export async function registerClientServerCommands(context: ExtensionContext, la
   registerCodeLensReferencesCommands(context, languageClient);
   registerValidationCommands(context);
   registerRefactorCommands(context, languageClient);
+  registerMinifyCommand(context, languageClient);
   registerAssociationCommands(context, languageClient);
   registerRestartLanguageServerCommand(context, languageClient);
   registerConfigurationUpdateCommand();
@@ -466,4 +467,44 @@ async function surroundWith(surroundWithType: SurroundWithKind, languageClient: 
     }
   }
 
+}
+
+/**
+ * Register command to minify XML document
+ *
+ * @param context the extension context
+ * @param languageClient the language client
+ */
+function registerMinifyCommand(context: ExtensionContext, languageClient: LanguageClient) {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.MINIFY_DOCUMENT, async () => {
+    const activeEditor = window.activeTextEditor;
+    if (!activeEditor || activeEditor.document.languageId !== 'xml') {
+      return;
+    }
+
+    const uri = activeEditor.document.uri;
+    const identifier = TextDocumentIdentifier.create(uri.toString());
+
+    try {
+      // Call the server command to get the minified text edits
+      const edits: TextEdit[] = await commands.executeCommand(
+        ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND,
+        ServerCommandConstants.MINIFY_DOCUMENT,
+        identifier
+      );
+
+      if (!edits || edits.length === 0) {
+        return;
+      }
+
+      // Apply the text edits
+      const workEdits = new WorkspaceEdit();
+      for (const edit of edits) {
+        workEdits.replace(uri, languageClient.protocol2CodeConverter.asRange(edit.range), edit.newText);
+      }
+      await workspace.applyEdit(workEdits);
+    } catch (error) {
+      window.showErrorMessage('Error during XML minification: ' + error.message);
+    }
+  }));
 }
