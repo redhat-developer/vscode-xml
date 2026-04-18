@@ -35,3 +35,8 @@ export const CHECK_FILE_PATTERN = "xml.check.file.pattern";
  * Command to surround with tags, comments, cdata
  */
  export const REFACTOR_SURROUND_WITH = "xml.refactor.surround.with";
+
+/**
+ * Command to minify XML document
+ */
+ export const MINIFY_DOCUMENT = "xml.minify.document";
