@@ -29,7 +29,7 @@
           label: [osx-x86_64, osx-aarch_64, linux-x86_64, linux-aarch_64]
           include:
             - label: osx-x86_64
-              os: macos-13
+              os: macos-latest-large
             - label: osx-aarch_64
               os: macos-latest
             - label: linux-x86_64
