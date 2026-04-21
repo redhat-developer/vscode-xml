@@ -1,5 +1,30 @@
 # Change Log
 
+## [0.29.1](https://github.com/redhat-developer/vscode-xml/milestone/42) (April 21, 2026)
+
+### Enhancements
+ * XML Minify support. See [#1139](https://github.com/redhat-developer/vscode-xml/issues/pull/1139).
+ * Support XPath predicates with wildcards. See [lemminx#1762](https://github.com/eclipse-lemminx/lemminx/pull/1762).
+
+### Bug Fixes
+ * Error: Illegal argument: range. See [#1110](https://github.com/redhat-developer/vscode-xml/issues/1110).
+ * Incorrectly formatting inside `<style>` tags. See [#1104](https://github.com/redhat-developer/vscode-xml/issues/1104).
+ * Do not create document links with zero length range. See [lemminx##1761](https://github.com/eclipse-lemminx/lemminx/pull/1761).
+ * Check for dynamic registration in textDocument/typeDefinition and workspace/executeCommand. See [lemminx#1748](https://github.com/eclipse-lemminx/lemminx/pull/1748).
+ * Do not format text content of `<style>` and `<script>`. See [lemminx#1755](https://github.com/eclipse-lemminx/lemminx/pull/1755).
+
+### Performance
+ * Improve formatting memory. See [lemminx#1768](https://github.com/eclipse-lemminx/lemminx/pull/1768).
+ * DOM Memory improvement. See [lemminx#1770](https://github.com/eclipse-lemminx/lemminx/pull/1770)
+
+### Build
+ * Use npx. See [#1125](https://github.com/redhat-developer/vscode-xml/pull/1125).
+ * linux-aarch64 build. See [#1112](https://github.com/redhat-developer/vscode-xml/pull/1112).
+
+### Other
+ * Use `ProcessHandle` instead of shell script to check for parent process. See [lemminx#1753](https://github.com/eclipse-lemminx/lemminx/pull/1753).
+ * docs: complete system properties. See [#1102](https://github.com/redhat-developer/vscode-xml/pull/1102).
+
 ## [0.29.0](https://github.com/redhat-developer/vscode-xml/milestone/41) (May 8, 2025)
 
 ### Enhancements
