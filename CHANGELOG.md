@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.29.2](https://github.com/redhat-developer/vscode-xml/milestone/43) (April 23, 2026)
+
+### Bug Fixes
+ * When running on Linux, the extension doesn't trust the binary. See [#1145](https://github.com/redhat-developer/vscode-xml/issues/1145).
+
+### Build
+ * Run smoke tests for the binary builds on all platforms. See [#1115](https://github.com/redhat-developer/vscode-xml/pull/1115).
+
 ## [0.29.1](https://github.com/redhat-developer/vscode-xml/milestone/42) (April 21, 2026)
 
 ### Enhancements
