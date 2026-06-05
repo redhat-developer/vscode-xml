@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.29.3](https://github.com/redhat-developer/vscode-xml/milestone/44?closed=1) (June 8, 2026)
+
+### Bug Fixes
+ * Handle referencing schemas through UNC paths. See [lemminx#1782](https://github.com/eclipse-lemminx/lemminx/pull/1782).
+
 ## [0.29.2](https://github.com/redhat-developer/vscode-xml/milestone/43) (April 23, 2026)
 
 ### Bug Fixes
