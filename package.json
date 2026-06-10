@@ -99,7 +99,7 @@
     "glob": "^7.1.4",
     "jdk-utils": "^0.4.3",
     "path-exists": "^4.0.0",
-    "vscode-languageclient": "^8.0.1",
+    "vscode-languageclient": "^9.0.0",
     "yauzl": "^2.10.0"
   },
   "contributes": {

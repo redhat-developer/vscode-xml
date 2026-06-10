@@ -290,7 +290,9 @@ async function bindWithStandard(documentURI: Uri, grammarURI: Uri, bindingType: 
   const lspTextDocumentEdit = <TextDocumentEdit>result;
   const workEdits = new WorkspaceEdit();
   for (const edit of lspTextDocumentEdit.edits) {
-    workEdits.replace(documentURI, languageClient.protocol2CodeConverter.asRange(edit.range), edit.newText);
+    if ('newText' in edit) {
+      workEdits.replace(documentURI, languageClient.protocol2CodeConverter.asRange(edit.range), edit.newText);
+    }
   }
   workspace.applyEdit(workEdits); // apply the edits
 }
@@ -500,7 +502,9 @@ function registerMinifyCommand(context: ExtensionContext, languageClient: Langua
       // Apply the text edits
       const workEdits = new WorkspaceEdit();
       for (const edit of edits) {
-        workEdits.replace(uri, languageClient.protocol2CodeConverter.asRange(edit.range), edit.newText);
+        if ('newText' in edit) {
+          workEdits.replace(uri, languageClient.protocol2CodeConverter.asRange(edit.range), edit.newText);
+        }
       }
       await workspace.applyEdit(workEdits);
     } catch (error) {
