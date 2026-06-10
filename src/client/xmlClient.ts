@@ -45,7 +45,9 @@ export async function startLanguageClient(context: ExtensionContext, executable:
 
   const languageClientOptions: LanguageClientOptions = getLanguageClientOptions(logfile, externalXmlSettings, requirementsData, context);
   languageClient = new LanguageClient('xml', 'XML Support', executable, languageClientOptions);
-
+  //In vscode-languageclient version 9.0.0, inline completion (textDocument/inlineCompletion) is a proposed feature
+  // TODO remove registerProposedFeatures once upgraded to 10.x
+  languageClient.registerProposedFeatures();
   languageClient.onDidChangeState(e => {
     // Notify that XML language client is started / stoped
     commands.executeCommand('setContext', 'XMLLSReady', e.newState == State.Running);
