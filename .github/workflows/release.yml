@@ -83,7 +83,7 @@ jobs:
       - name: Set Up NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Install dependencies
         run: npm install -g typescript "@vscode/vsce" "ovsx"
       - name: Build vscode-xml
@@ -188,7 +188,7 @@ jobs:
       - name: Set Up NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Install dependencies
         run: npm install -g typescript "@vscode/vsce" "ovsx"
       - name: Download VSIX & LemMinX Server Uber Jar

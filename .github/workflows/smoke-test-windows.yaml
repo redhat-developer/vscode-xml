@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         repository: 'eclipse/lemminx'
-    - uses: graalvm/setup-graalvm@557ffcf459751b4d92319ee255bf3bec9b73964c #v1.2.5
+    - uses: graalvm/setup-graalvm@8c5543b71f44568342e106336639979e94a8f6de #v1.6.1
       with:
         distribution: graalvm-community
         java-version: 17
@@ -34,6 +34,9 @@ jobs:
     needs: build-test-native-image
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - uses: actions/download-artifact@v4
         with:
           name: lemminx-${{ inputs.label }}

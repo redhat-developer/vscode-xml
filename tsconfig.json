@@ -14,7 +14,8 @@
       {
         "name": "eslint"
       }
-    ]
+    ],
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules",
