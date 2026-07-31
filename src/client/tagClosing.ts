@@ -78,7 +78,7 @@ export function activateTagClosing(tagProvider: (document: TextDocument, positio
             }
           }
         }
-      }, (_reason: any) => {
+      }, (_reason: unknown) => {
         console.log('xml/closeTag request has been cancelled');
       });
       timeout = void 0;

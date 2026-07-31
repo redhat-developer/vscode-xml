@@ -55,7 +55,7 @@ function sendEmptyStartUp() {
  * @param data the telemetry data
  * @throws Error if the telemetry service has not been started yet
  */
-export async function sendTelemetry(eventName: string, data?: any): Promise<void> {
+export async function sendTelemetry(eventName: string, data?: unknown): Promise<void> {
   if (!_telemetryManager) {
     throw new Error("The telemetry service for vscode-xml has not been started yet");
   }

@@ -104,7 +104,7 @@ function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string
 }
 
 function startedInDebugMode(): boolean {
-  const args = (process as any).execArgv as string[];
+  const args = process.execArgv;
   return hasDebugFlag(args);
 }
 
@@ -117,7 +117,7 @@ function hasDebugFlag(args: string[]): boolean {
 }
 
 //exported for tests
-export function parseVMargs(params: any[], vmargsLine: string) {
+export function parseVMargs(params: string[], vmargsLine: string) {
   if (!vmargsLine) {
     return;
   }

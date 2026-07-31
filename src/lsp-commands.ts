@@ -25,28 +25,28 @@ export function registerConfigurationUpdateCommand(): Disposable {
   return commands.registerCommand(CommandKind.UPDATE_CONFIGURATION, resolveConfigurationItemEdit);
 }
 
-function resolveConfigurationItemEdit<T>(configurationItemEdit: ConfigurationItemEdit) {
+function resolveConfigurationItemEdit(configurationItemEdit: ConfigurationItemEdit) {
   if (configurationItemEdit.valueKind == ConfigurationItemValueKind.file) {
     configurationItemEdit.value = resolveFilePath(configurationItemEdit.value);
   }
   switch (configurationItemEdit.editType) {
     case ConfigurationItemEditType.Add:
-      addToPreferenceArray<T>(configurationItemEdit.section, configurationItemEdit.value);
+      addToPreferenceArray(configurationItemEdit.section, configurationItemEdit.value);
       break;
     case ConfigurationItemEditType.Delete: {
-      removeFromPreferenceArray<T>(configurationItemEdit.section, configurationItemEdit.value);
+      removeFromPreferenceArray(configurationItemEdit.section, configurationItemEdit.value);
     }
   }
 }
 
-function resolveFilePath(filePath: any): any {
+function resolveFilePath(filePath: string): string {
   const currentWorkspaceUri = getWorkspaceUri(window.activeTextEditor.document).toString();
   return getDirectoryPath(filePath).includes(currentWorkspaceUri) ? getRelativePath(currentWorkspaceUri, filePath) : filePath;
 
 }
 
-function addToPreferenceArray<T>(key: string, value: T): void {
-  const configArray: T[] = workspace.getConfiguration().get<T[]>(key, []);
+function addToPreferenceArray(key: string, value: string): void {
+  const configArray: string[] = workspace.getConfiguration().get<string[]>(key, []);
   if (configArray.includes(value)) {
     return;
   }
@@ -54,8 +54,8 @@ function addToPreferenceArray<T>(key: string, value: T): void {
   workspace.getConfiguration().update(key, configArray, ConfigurationTarget.Workspace);
 }
 
-function removeFromPreferenceArray<T>(key: string, value: T): void {
-  const configArray: T[] = workspace.getConfiguration().get<T[]>(key, []);
+function removeFromPreferenceArray(key: string, value: string): void {
+  const configArray: string[] = workspace.getConfiguration().get<string[]>(key, []);
   if (!configArray.includes(value)) {
     return;
   }
@@ -65,7 +65,7 @@ function removeFromPreferenceArray<T>(key: string, value: T): void {
 
 interface ConfigurationItemEdit {
   section: string;
-  value: any;
+  value: string;
   editType: ConfigurationItemEditType;
   valueKind: ConfigurationItemValueKind;
 }

@@ -7,7 +7,7 @@ import * as glob from 'glob';
 
 let existingExtensions: Array<string>;
 
-export function collectXmlJavaExtensions(extensions: readonly vscode.Extension<any>[], jars: string[]): string[] {
+export function collectXmlJavaExtensions(extensions: readonly vscode.Extension<unknown>[], jars: string[]): string[] {
 	const result = [];
 	if (extensions && extensions.length) {
 		for (const extension of extensions) {
@@ -30,7 +30,7 @@ export function collectXmlJavaExtensions(extensions: readonly vscode.Extension<a
 	return result;
 }
 
-export function onExtensionChange(extensions: readonly vscode.Extension<any>[], jars: string[]) {
+export function onExtensionChange(extensions: readonly vscode.Extension<unknown>[], jars: string[]) {
 	if (!existingExtensions) {
 		return;
 	}

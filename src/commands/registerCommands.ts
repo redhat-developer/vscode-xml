@@ -40,7 +40,7 @@ export async function registerClientServerCommands(context: ExtensionContext, la
   // Register client command to execute custom XML Language Server command
   context.subscriptions.push(commands.registerCommand(ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND, (command, ...rest) => {
     let token: CancellationToken;
-    let commandArgs: any[] = rest;
+    let commandArgs: unknown[] = rest;
     if (rest && rest.length && CancellationToken.is(rest[rest.length - 1])) {
       token = rest[rest.length - 1];
       commandArgs = rest.slice(0, rest.length - 1);

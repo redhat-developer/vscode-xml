@@ -13,19 +13,19 @@ export default tseslint.config(
       "dist/**",
       "server/**",
       "out/**",
+      ".vscode-test"
     ],
   },
   {
     files: [ "src/**/*" ],
     rules: {
       "@typescript-eslint/no-unused-vars": [
-        "warn",
+        "error",
         {
           "argsIgnorePattern": "^_",
           "caughtErrorsIgnorePattern": "^_"
         }
       ],
-      "@typescript-eslint/no-explicit-any": "warn",
     }
   }, {
     files: [

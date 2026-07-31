@@ -1,6 +1,6 @@
 import { TelemetryEvent } from '@redhat-developer/vscode-redhat-telemetry/lib';
 import { commands, ExtensionContext, extensions, Position, TextDocument, TextEditor, Uri, window, workspace } from 'vscode';
-import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, DocumentFilter, DocumentSelector, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, State, TextDocumentPositionParams } from "vscode-languageclient";
+import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, DocumentFilter, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, State, TextDocumentPositionParams } from "vscode-languageclient";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { XMLFileAssociation } from '../api/xmlExtensionApi';
 import { registerClientServerCommands } from '../commands/registerCommands';
@@ -26,14 +26,14 @@ export const XML_SUPPORTED_LANGUAGE_IDS: string[] = XML_SUPPORTED_DOCUMENT_SELEC
     return l as string;
   });
 
-const ExecuteClientCommandRequest: RequestType<ExecuteCommandParams, any, void> = new RequestType('xml/executeClientCommand');
+const ExecuteClientCommandRequest: RequestType<ExecuteCommandParams, unknown, void> = new RequestType('xml/executeClientCommand');
 
-const TagCloseRequest: RequestType<TextDocumentPositionParams, AutoCloseResult, any> = new RequestType('xml/closeTag');
+const TagCloseRequest: RequestType<TextDocumentPositionParams, AutoCloseResult, unknown> = new RequestType('xml/closeTag');
 
 interface ActionableMessage {
   severity: MessageType;
   message: string;
-  data?: any;
+  data?: unknown;
   commands?: Command[];
 }
 
@@ -97,7 +97,7 @@ export async function startLanguageClient(context: ExtensionContext, executable:
   // Copied from:
   // https://github.com/redhat-developer/vscode-java/pull/1081/files
   languageClient.onRequest(ConfigurationRequest.type, (params: ConfigurationParams) => {
-    const result: any[] = [];
+    const result: unknown[] = [];
     const activeEditor: TextEditor | undefined = window.activeTextEditor;
     for (const item of params.items) {
       if (activeEditor && activeEditor.document.uri.toString() === Uri.parse(item.scopeUri).toString()) {
@@ -122,7 +122,7 @@ export async function startLanguageClient(context: ExtensionContext, executable:
     }
   }));
 
-  const onDidGrantWorkspaceTrust = (workspace as any).onDidGrantWorkspaceTrust;
+  const onDidGrantWorkspaceTrust = workspace.onDidGrantWorkspaceTrust;
   if (onDidGrantWorkspaceTrust !== undefined) {
     context.subscriptions.push(onDidGrantWorkspaceTrust(() => {
       languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirementsData.java_home, logfile, externalXmlSettings) });
@@ -198,7 +198,7 @@ function setupActionableNotificationListener(languageClient: LanguageClient): vo
     show(notification.message, ...titles).then((selection) => {
       for (const action of notification.commands) {
         if (action.title === selection) {
-          const args: any[] = (action.arguments) ? action.arguments : [];
+          const args: unknown[] = (action.arguments) ? action.arguments : [];
           commands.executeCommand(action.command, ...args);
           break;
         }

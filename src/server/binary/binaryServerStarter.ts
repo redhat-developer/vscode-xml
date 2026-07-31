@@ -5,7 +5,7 @@ import * as https from 'https';
 import * as os from 'os';
 import * as path from 'path';
 import { Readable } from 'stream';
-import { commands, ExtensionContext, extensions, ProgressLocation, ProgressOptions, window, WorkspaceConfiguration } from "vscode";
+import { commands, extensions, ProgressLocation, ProgressOptions, window, WorkspaceConfiguration } from "vscode";
 import { Executable } from "vscode-languageclient/node";
 import * as yauzl from 'yauzl';
 import * as ClientCommandConstants from '../../commands/clientCommandConstants';
@@ -27,7 +27,7 @@ export const ABORTED_ERROR: Error = new Error('XML Language Server download canc
  * @throws if the binary doesn't exist and can't be downloaded, or if the binary is not trusted
  * @returns Returns the executable to launch LemMinX (the XML Language Server) as a binary
  */
-export async function prepareBinaryExecutable(context: ExtensionContext): Promise<Executable> {
+export async function prepareBinaryExecutable(): Promise<Executable> {
   const binaryArgs: string = getXMLConfiguration().get("server.binary.args");
   let binaryExecutable: Executable;
   return getServerBinaryPath()
@@ -68,7 +68,7 @@ async function getServerBinaryPath(): Promise<string> {
         // checks read/execute permissions
         fs.accessSync(binaryPath, fs.constants.R_OK | fs.constants.X_OK)
         return Promise.resolve(binaryPath);
-      } catch(e) {
+      } catch {
         window.showErrorMessage('Permission(s) denied for the specified XML language server binary. Using the default binary...');
       }
     } else {
@@ -134,18 +134,18 @@ async function downloadBinary(): Promise<string> {
       });
   });
   downloadPromise.then((_binaryPath) => {
-    const data: any = {};
+    const data: { [x: string]: string } = {};
     data[Telemetry.BINARY_DOWNLOAD_STATUS_PROP] = Telemetry.BINARY_DOWNLOAD_SUCCEEDED;
     Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_EVT, data);
   });
   downloadPromise.catch(e => {
     if (e !== ABORTED_ERROR) {
-      const data: any = {};
+      const data: { [x: string]: string } = {};
       data[Telemetry.BINARY_DOWNLOAD_STATUS_PROP] = Telemetry.BINARY_DOWNLOAD_FAILED;
       data['error'] = e.toString();
       Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_EVT, data);
     } else {
-      const data: any = {};
+      const data: { [x: string]: string } = {};
       data[Telemetry.BINARY_DOWNLOAD_STATUS_PROP] = Telemetry.BINARY_DOWNLOAD_ABORTED;
       Telemetry.sendTelemetry(Telemetry.BINARY_DOWNLOAD_EVT, data);
     }
@@ -188,7 +188,7 @@ async function checkBinaryHash(binaryPath: string): Promise<boolean> {
       }
       return askIfTrustsUnrecognizedBinary(hashDigest, binaryPath);
     })
-    .catch((err: any) => {
+    .catch((_err) => {
       return false;
     });
 }
@@ -198,7 +198,7 @@ async function checkBinaryHash(binaryPath: string): Promise<boolean> {
  *
  * @returns the environment variables to use to run the server as an object
  */
-function getBinaryEnvironment(): any {
+function getBinaryEnvironment(): { [x: string]: string } {
   const proxySettings: ProxySettings = getProxySettings();
   if (proxySettings) {
     return { ...process.env, ...getProxySettingsAsEnvironmentVariables(proxySettings) };
@@ -324,7 +324,7 @@ function showProgressForDownload(response: http.IncomingMessage, httpClient: htt
           resolve();
         });
       });
-      cancelToken.onCancellationRequested((_e: any) => {
+      cancelToken.onCancellationRequested((_e: unknown) => {
         httpClient.abort();
       })
       return downloadFinish;
@@ -346,7 +346,7 @@ async function acceptZipDownloadResponse(response: http.IncomingMessage): Promis
   // Download zip
   await new Promise<void>((resolve, reject) => {
     const serverBinaryZipWriteStream: fs.WriteStream = fs.createWriteStream(serverBinaryZipPath);
-    let capturedError: any = null;
+    let capturedError = null;
     serverBinaryZipWriteStream.on('finish', () => {
       serverBinaryZipWriteStream.close();
     });
@@ -368,7 +368,7 @@ async function acceptZipDownloadResponse(response: http.IncomingMessage): Promis
   // Extract zip
   return new Promise((resolve, reject)=> {
     const serverBinaryWriteStream: fs.WriteStream = fs.createWriteStream(serverBinaryPath);
-    let capturedError: any = null;
+    let capturedError = null;
     serverBinaryWriteStream.on('finish', () => {
       serverBinaryWriteStream.close();
     });

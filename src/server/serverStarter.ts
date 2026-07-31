@@ -48,7 +48,7 @@ export async function prepareExecutable(
   }
 
   if (useBinary) {
-    return prepareBinaryExecutable(context)
+    return prepareBinaryExecutable()
       .catch((e) => {
         const javaServerMessage = hasJava ? 'Falling back to the Java server.' : 'Cannot start XML language server, since Java is missing.';
         if (e === ABORTED_ERROR) {

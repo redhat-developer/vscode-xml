@@ -1,5 +1,6 @@
 import * as path from 'path';
 import { commands, Extension, extensions, window, workspace, WorkspaceConfiguration } from "vscode";
+import { ExternalXmlSettings } from './externalXmlSettings';
 import { getVariableSubstitutedAssociations } from "./variableSubstitution";
 
 export interface ScopeInfo {
@@ -65,7 +66,7 @@ export function subscribeJDKChangeConfiguration() {
       if(params.affectsConfiguration("java")) {
         const newJavaConfig = getJavaConfiguration();
         //don't need to handle reload message if redhat.java extension exists (it will handle it)
-        const redhatJavaExtension: Extension<any> = extensions.getExtension("redhat.java");
+        const redhatJavaExtension: Extension<unknown> = extensions.getExtension("redhat.java");
         const isJavaExtensionActive: boolean = redhatJavaExtension != null && redhatJavaExtension.isActive;
         if(!isJavaExtensionActive && hasPreferenceChanged(oldJavaConfig, newJavaConfig, "home")) { // checks "java.home"
           createReloadWindowMessage("`java.home` path has changed. Please restart VS Code.");
@@ -188,7 +189,7 @@ export function getJavaagentFlag(vmargs) {
  *            'xml': {...}
  *          }
  */
-export function getXMLSettings(javaHome: string | undefined, logfile: string, externalXmlSettings: any): JSON {
+export function getXMLSettings(javaHome: string | undefined, logfile: string, externalXmlSettings: ExternalXmlSettings): JSON {
   const configXML = workspace.getConfiguration().get('xml');
   let xml;
   if (!configXML) { //Set default preferences if not provided
@@ -227,7 +228,7 @@ export function getXMLSettings(javaHome: string | undefined, logfile: string, ex
   };
 
   // Check workspace trust
-  const isWorkspaceTrusted = (workspace as any).isTrusted;
+  const isWorkspaceTrusted = workspace.isTrusted;
   if (isWorkspaceTrusted !== undefined && !isWorkspaceTrusted) {
     xml['xml']['validation']['resolveExternalEntities'] = false;
     xml['xml']['downloadExternalResources']['enabled'] = false;
