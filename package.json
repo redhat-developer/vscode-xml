@@ -190,6 +190,12 @@
           "description": "The XML Language server allows other VSCode extensions to extend its functionality. It requires Java-specific features in order to do this. If extensions to the XML language server are detected, but a binary XML language server is run, a warning will appear. This setting can be used to disable this warning.",
           "scope": "window"
         },
+        "xml.mcp.enabled": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Enable multi-client mode. When enabled, the XML language server listens on a TCP socket and registers itself in `${workspace}/.lsp-servers/lemminx.json`, allowing MCP servers (like languagetools) to connect and share the same server instance. Requires restart to take effect.",
+          "scope": "window"
+        },
         "xml.server.binary.path": {
           "type": "string",
           "description": "Specify the path of a custom binary version of the XML server to use. A binary will be downloaded if this is not set.",

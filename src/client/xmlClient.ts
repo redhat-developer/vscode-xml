@@ -1,7 +1,7 @@
 import { TelemetryEvent } from '@redhat-developer/vscode-redhat-telemetry/lib';
 import { commands, ExtensionContext, extensions, Position, TextDocument, TextEditor, Uri, window, workspace } from 'vscode';
 import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, DocumentFilter, DocumentSelector, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, State, TextDocumentPositionParams } from "vscode-languageclient";
-import { Executable, LanguageClient } from 'vscode-languageclient/node';
+import { LanguageClient, ServerOptions } from 'vscode-languageclient/node';
 import { XMLFileAssociation } from '../api/xmlExtensionApi';
 import { registerClientServerCommands } from '../commands/registerCommands';
 import * as ServerCommandConstants from '../commands/serverCommandConstants';
@@ -41,10 +41,10 @@ const ActionableNotification = new NotificationType<ActionableMessage>('xml/acti
 
 let languageClient: LanguageClient;
 
-export async function startLanguageClient(context: ExtensionContext, executable: Executable, logfile: string, externalXmlSettings: ExternalXmlSettings, requirementsData: RequirementsData): Promise<LanguageClient> {
+export async function startLanguageClient(context: ExtensionContext, serverOptions: ServerOptions, logfile: string, externalXmlSettings: ExternalXmlSettings, requirementsData: RequirementsData): Promise<LanguageClient> {
 
   const languageClientOptions: LanguageClientOptions = getLanguageClientOptions(logfile, externalXmlSettings, requirementsData, context);
-  languageClient = new LanguageClient('xml', 'XML Support', executable, languageClientOptions);
+  languageClient = new LanguageClient('xml', 'XML Support', serverOptions, languageClientOptions);
   //In vscode-languageclient version 9.0.0, inline completion (textDocument/inlineCompletion) is a proposed feature
   // TODO remove registerProposedFeatures once upgraded to 10.x
   languageClient.registerProposedFeatures();

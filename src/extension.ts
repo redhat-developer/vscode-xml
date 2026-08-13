@@ -12,7 +12,7 @@
 
 import * as fs from 'fs-extra';
 import { ConfigurationTarget, ExtensionContext, Uri, commands, extensions, languages, window, workspace } from "vscode";
-import { Executable, LanguageClient } from 'vscode-languageclient/node';
+import { Executable, LanguageClient, ServerOptions } from 'vscode-languageclient/node';
 import { XMLExtensionApi } from './api/xmlExtensionApi';
 import { getXmlExtensionApiImplementation } from './api/xmlExtensionApiImplementation';
 import { cleanUpHeapDumps } from './client/clientErrorHandler';
@@ -67,7 +67,7 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
 
   const externalXmlSettings: ExternalXmlSettings = new ExternalXmlSettings();
 
-  const serverOptions: Executable = await prepareExecutable(
+  const serverOptions: ServerOptions = await prepareExecutable(
     requirementsData, collectXmlJavaExtensions(extensions.all, getXMLConfiguration().get("extension.jars", [])), context);
 
   languageClient = await startLanguageClient(context, serverOptions, logfile, externalXmlSettings, requirementsData);

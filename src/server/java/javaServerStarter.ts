@@ -1,6 +1,6 @@
 import * as os from 'os';
 import * as path from 'path';
-import { ExtensionContext, window, workspace } from 'vscode';
+import { env, ExtensionContext, version as vscodeVersion, window, workspace } from 'vscode';
 import { Executable } from 'vscode-languageclient/node';
 import { getProxySettings, getProxySettingsAsJVMArgs, jvmArgsContainsProxySettings, ProxySettings } from '../../settings/proxySettings';
 import { getJavaagentFlag, getKey, getXMLConfiguration, IS_WORKSPACE_VMARGS_XML_ALLOWED, xmlServerVmargs } from '../../settings/settings';
@@ -19,13 +19,17 @@ export async function prepareJavaExecutable(
   xmlJavaExtensions: string[]
 ): Promise<Executable> {
 
+  const mcpEnabled = getXMLConfiguration().get('mcp.enabled', false);
+  const workspacePath = workspace.workspaceFolders?.[0]?.uri.fsPath || '';
+
+  // Always use stdio mode, but pass MCP parameters if enabled
   return {
     command: path.resolve(requirements.java_home + '/bin/java'),
-    args: prepareParams(requirements, xmlJavaExtensions, context)
+    args: prepareParams(requirements, xmlJavaExtensions, context, mcpEnabled, workspacePath)
   } as Executable;
 }
 
-function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string[], context: ExtensionContext): string[] {
+function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string[], context: ExtensionContext, mcpEnabled?: boolean, workspacePath?: string): string[] {
   const params: string[] = [];
   if (DEBUG) {
     if (process.env['SUSPEND_SERVER'] === 'true') {
@@ -96,7 +100,17 @@ function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string
       xmlJavaExtensionsClasspath = pathSeparator + xmlJavaExtensions.join(pathSeparator);
     }
     params.push('-cp'); params.push(path.resolve(server_home, launchersFound[0]) + xmlJavaExtensionsClasspath);
+
+    // Always use stdio launcher
     params.push('org.eclipse.lemminx.XMLServerLauncher');
+
+    // Add MCP arguments if enabled
+    if (mcpEnabled && workspacePath) {
+      params.push('--mcp-enabled');
+      params.push('--workspace'); params.push(workspacePath);
+      params.push('--client-name'); params.push(env.appName); // e.g., "Visual Studio Code", "VSCodium"
+      params.push('--client-version'); params.push(vscodeVersion);
+    }
   } else {
     return null;
   }
@@ -135,3 +149,5 @@ export function parseVMargs(params: any[], vmargsLine: string) {
     }
   });
 }
+
+
