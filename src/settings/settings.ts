@@ -107,9 +107,8 @@ function verifyVMArgs() {
 }
 
 function verifyAutoClosing() {
-  const configXML = workspace.getConfiguration();
-  const closeTags = configXML.get("xml.completion.autoCloseTags");
-  const closeBrackets = configXML.get("[xml]")["editor.autoClosingBrackets"];
+  const closeTags = getXMLConfiguration().get('completion.autoCloseTags');
+  const closeBrackets = workspace.getConfiguration('editor', { languageId: 'xml' }).get('autoClosingBrackets');
   if (closeTags && closeBrackets != "never") {
     window.showWarningMessage(
       "The [xml].editor.autoClosingBrackets setting conflicts with xml.completion.autoCloseTags. It's recommended to disable it.",

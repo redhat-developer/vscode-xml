@@ -34,7 +34,7 @@ export function activateTagClosing(tagProvider: (document: TextDocument, positio
     if (!supportedLanguages[document.languageId]) {
       return;
     }
-    if (!workspace.getConfiguration(undefined, document.uri).get<boolean>(configName)) {
+    if (!workspace.getConfiguration().get<boolean>(configName)) {
       return;
     }
     isEnabled = true;
