@@ -843,6 +843,11 @@
         "category": "XML"
       },
       {
+        "command": "xml.refactor.surround.with.ignoreFormatting",
+        "title": "Ignore Formatting",
+        "category": "XML"
+      },
+      {
         "command": "xml.minify",
         "title": "Minify XML Document",
         "category": "XML"
@@ -879,6 +884,10 @@
           "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
         },
         {
+          "command": "xml.refactor.surround.with.ignoreFormatting",
+          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+        },
+        {
           "command": "xml.minify",
           "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
         }
@@ -896,6 +905,11 @@
         },
         {
           "command": "xml.refactor.surround.with.cdata",
+          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
+          "group": "1_modification"
+        },
+        {
+          "command": "xml.refactor.surround.with.ignoreFormatting",
           "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
           "group": "1_modification"
         }

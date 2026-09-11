@@ -387,6 +387,7 @@ class SurroundWithKind {
   static readonly tags = 'tags';
   static readonly comments = 'comments';
   static readonly cdata = 'cdata';
+  static readonly ignoreFormatting = 'ignoreFormatting';
 
 }
 
@@ -411,6 +412,11 @@ function registerRefactorCommands(context: ExtensionContext, languageClient: Lan
   // Surround with CDATA
   context.subscriptions.push(commands.registerCommand(ClientCommandConstants.REFACTOR_SURROUND_WITH_CDATA, async () => {
     await surroundWith(SurroundWithKind.cdata, languageClient);
+  }));
+
+  // Ignore Formatting
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.REFACTOR_SURROUND_WITH_IGNORE_FORMATTING, async () => {
+    await surroundWith(SurroundWithKind.ignoreFormatting, languageClient);
   }));
 }
 

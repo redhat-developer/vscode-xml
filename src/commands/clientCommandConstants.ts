@@ -76,6 +76,8 @@ export const EXECUTE_WORKSPACE_COMMAND = 'xml.workspace.executeCommand';
 
  export const REFACTOR_SURROUND_WITH_CDATA = 'xml.refactor.surround.with.cdata';
 
+ export const REFACTOR_SURROUND_WITH_IGNORE_FORMATTING = 'xml.refactor.surround.with.ignoreFormatting';
+
 /**
  * Command to minify XML document.
  */
