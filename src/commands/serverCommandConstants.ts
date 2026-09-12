@@ -10,6 +10,11 @@ import * as ClientCommandConstants from "./clientCommandConstants";
 export const AUTO_CLOSE_TAGS = 'xml.completion.autoCloseTags';
 
 /**
+ * Auto create quotes after attribute =
+ */
+export const AUTO_CREATE_QUOTES = 'xml.completion.autoCreateQuotes';
+
+/**
  * Commands to revalidate files with an LSP command on the XML Language Server
  */
 export const VALIDATE_CURRENT_FILE = ClientCommandConstants.VALIDATE_CURRENT_FILE;

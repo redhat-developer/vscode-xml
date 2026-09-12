@@ -1,6 +1,6 @@
 import { TelemetryEvent } from '@redhat-developer/vscode-redhat-telemetry/lib';
 import { commands, ExtensionContext, extensions, Position, TextDocument, TextEditor, Uri, window, workspace } from 'vscode';
-import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, DocumentFilter, DocumentSelector, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, State, TextDocumentPositionParams } from "vscode-languageclient";
+import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, DocumentFilter, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, State } from "vscode-languageclient";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
 import { XMLFileAssociation } from '../api/xmlExtensionApi';
 import { registerClientServerCommands } from '../commands/registerCommands';
@@ -13,7 +13,7 @@ import { containsVariableReferenceToCurrentFile } from '../settings/variableSubs
 import * as Telemetry from '../telemetry';
 import { ClientErrorHandler } from './clientErrorHandler';
 import { getLanguageParticipants } from './languageParticipants';
-import { activateTagClosing, AutoCloseResult } from './tagClosing';
+import { activateAutoInsertion, AutoInsertResult } from './autoInsertion';
 
 const languageParticipants = getLanguageParticipants();
 
@@ -28,7 +28,13 @@ export const XML_SUPPORTED_LANGUAGE_IDS: string[] = XML_SUPPORTED_DOCUMENT_SELEC
 
 const ExecuteClientCommandRequest: RequestType<ExecuteCommandParams, any, void> = new RequestType('xml/executeClientCommand');
 
-const TagCloseRequest: RequestType<TextDocumentPositionParams, AutoCloseResult, any> = new RequestType('xml/closeTag');
+interface AutoInsertParams {
+  kind: 'autoQuote' | 'autoClose';
+  textDocument: { uri: string };
+  position: { line: number; character: number };
+}
+
+const AutoInsertRequest: RequestType<AutoInsertParams, AutoInsertResult, any> = new RequestType('xml/autoInsert');
 
 interface ActionableMessage {
   severity: MessageType;
@@ -80,13 +86,16 @@ export async function startLanguageClient(context: ExtensionContext, executable:
 
   registerClientServerCommands(context, languageClient);
 
-  // Setup autoCloseTags
-  const tagProvider = (document: TextDocument, position: Position) => {
-    const param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
-    const text = languageClient.sendRequest(TagCloseRequest, param);
-    return text;
+  // Setup auto-insertion (autoClose tags + autoQuote attributes)
+  const autoInsertProvider = (kind: 'autoQuote' | 'autoClose', document: TextDocument, position: Position) => {
+    const param: AutoInsertParams = {
+      kind,
+      textDocument: languageClient.code2ProtocolConverter.asTextDocumentIdentifier(document),
+      position: languageClient.code2ProtocolConverter.asPosition(position)
+    };
+    return languageClient.sendRequest(AutoInsertRequest, param);
   };
-  context.subscriptions.push(activateTagClosing(tagProvider, { xml: true, xsl: true }, ServerCommandConstants.AUTO_CLOSE_TAGS));
+  context.subscriptions.push(activateAutoInsertion(autoInsertProvider, { xml: true, xsl: true }, ServerCommandConstants.AUTO_CLOSE_TAGS, ServerCommandConstants.AUTO_CREATE_QUOTES));
 
   if (extensions.onDidChange) {// Theia doesn't support this API yet
     context.subscriptions.push(extensions.onDidChange(() => {
