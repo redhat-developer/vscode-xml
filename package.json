@@ -430,6 +430,12 @@
           "markdownDescription": "Enable/disable autoclosing of XML tags. Default is `true`. \n\nIMPORTANT: Turn off `#editor.autoClosingTags#` for this to work.",
           "scope": "window"
         },
+        "xml.completion.autoCreateQuotes": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable/disable automatic creation of quotes for XML attribute values when typing `=`. Default is `true`.",
+          "scope": "window"
+        },
         "xml.completion.autoCloseRemovesContent": {
           "type": "boolean",
           "default": true,
