@@ -114,7 +114,7 @@ function registerCodeLensReferencesCommands(context: ExtensionContext, languageC
     const uri = Uri.parse(uriString);
     workspace.openTextDocument(uri).then(document => {
       // Consume references service from the XML Language Server
-      const param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
+      const param = languageClient.code2ProtocolConverter.asReferenceParams(document, position, { includeDeclaration: true });
       languageClient.sendRequest(ReferencesRequest.type, param).then(locations => {
         commands.executeCommand(ClientCommandConstants.EDITOR_SHOW_REFERENCES, uri, languageClient.protocol2CodeConverter.asPosition(position), locations.map(languageClient.protocol2CodeConverter.asLocation));
       })

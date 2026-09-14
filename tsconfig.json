@@ -1,21 +1,30 @@
 {
   "compilerOptions": {
+    "target": "es2020",
     "module": "commonjs",
-    "target": "es6",
+    "moduleResolution": "bundler",
+
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "strictFunctionTypes": false,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "useUnknownInCatchVariables": false,
+
     "outDir": "out",
     "alwaysStrict": true,
     "lib": [
-      "dom",
-      "es2019"
+      "es2020"
     ],
-    "sourceMap": true,
+    
     "rootDir": ".",
     "plugins": [
       {
         "name": "eslint"
       }
     ],
-    "skipLibCheck": true
+    "types": ["node", "vscode", "mocha"]
   },
   "exclude": [
     "node_modules",
