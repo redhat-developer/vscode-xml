@@ -82,3 +82,8 @@ export const EXECUTE_WORKSPACE_COMMAND = 'xml.workspace.executeCommand';
  * Command to minify XML document.
  */
  export const MINIFY_DOCUMENT = 'xml.minify';
+
+/**
+ * VSCode client command to generate XML from a grammar file.
+ */
+export const GENERATE_XML_FROM_GRAMMAR = 'xml.generate.fromGrammar';

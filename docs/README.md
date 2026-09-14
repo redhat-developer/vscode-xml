@@ -13,6 +13,8 @@ Welcome to the [vscode-xml](https://github.com/redhat-developer/vscode-xml) docu
   * [Features](Features.md#features): Notable info and demos on features available to use.
   * [Proxy](Proxy.md#proxy): Instructions for setting up vscode-xml to work behind a proxy.
   * [Binding With Grammar](BindingWithGrammar.md#binding-with-grammar): Extension feature to bind an XML document to a grammar/schema file.
+  * [Generate XML from Grammar](GenerateXMLFromGrammar.md#generate-xml-from-grammar): Generate a complete XML document from a grammar file (XSD, DTD, RelaxNG, RNC).
+  * [Generate Schema from XML](BindingWithGrammar.md#binding-with-new-grammar): Generate an XSD, DTD, or RelaxNG schema from an existing XML document.
 
 ## Developer Guide
 
