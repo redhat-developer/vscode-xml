@@ -45,3 +45,13 @@ export const CHECK_FILE_PATTERN = "xml.check.file.pattern";
  * Command to minify XML document
  */
  export const MINIFY_DOCUMENT = "xml.minify.document";
+
+/**
+ * Command to list root elements from a grammar
+ */
+export const LIST_ROOT_ELEMENTS = "xml.grammar.listRootElements";
+
+/**
+ * Command to generate XML from a grammar and root element
+ */
+export const GENERATE_XML = "xml.grammar.generate";

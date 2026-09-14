@@ -43,6 +43,9 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
   // Register in the context 'xml.supportedLanguageIds' to use it in command when condition in package.json
   commands.executeCommand('setContext', 'xml.supportedLanguageIds', XML_SUPPORTED_LANGUAGE_IDS);
 
+  // Register 'xml.grammarFileExtensions' context for grammar file detection in menus
+  commands.executeCommand('setContext', 'xml.grammarFileExtensions', ['.xsd', '.dtd', '.rng', '.rnc']);
+
   // Detect XML encoding from prolog and reopen with correct encoding if needed
   activateXmlEncodingDetection(context, XML_SUPPORTED_LANGUAGE_IDS);
 
