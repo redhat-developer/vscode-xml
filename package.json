@@ -269,6 +269,58 @@
           "markdownDescription": "Minimize the closing tag after folding. Default is `false`.",
           "scope": "window"
         },
+        "xml.generation.maxDepth": {
+          "type": "integer",
+          "default": 10,
+          "minimum": 1,
+          "maximum": 100,
+          "markdownDescription": "Maximum depth for nested element generation when using **Generate XML from Grammar**. Default is `10`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22GenerateXMLFromGrammar%22%2C%22section%22%3A%22settings%22%7D%5D) for more information.",
+          "scope": "window"
+        },
+        "xml.generation.optionalElements": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Generate optional elements (minOccurs=0) when using **Generate XML from Grammar**. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22GenerateXMLFromGrammar%22%2C%22section%22%3A%22settings%22%7D%5D) for more information.",
+          "scope": "window"
+        },
+        "xml.generation.typeDefaults": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Generate type-aware default values (e.g. `0` for `xs:integer`, `2026-01-01` for `xs:date`) when using **Generate XML from Grammar**. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22GenerateXMLFromGrammar%22%2C%22section%22%3A%22settings%22%7D%5D) for more information.",
+          "scope": "window"
+        },
+        "xml.generation.profiles": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "pattern": {
+                "type": "string",
+                "description": "Glob pattern matched against the grammar URI (e.g. \"**/*spring-beans*.xsd\")."
+              },
+              "maxDepth": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "description": "Maximum depth for nested element generation."
+              },
+              "optionalElements": {
+                "type": "boolean",
+                "description": "Whether to generate optional elements."
+              },
+              "typeDefaults": {
+                "type": "boolean",
+                "description": "Whether to generate type-aware default values."
+              }
+            },
+            "required": [
+              "pattern"
+            ]
+          },
+          "markdownDescription": "Per-grammar generation profiles. Each profile has a `pattern` (glob matched against the grammar URI) and overrides global generation settings. The first matching profile wins. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22GenerateXMLFromGrammar%22%2C%22section%22%3A%22profiles%22%7D%5D) for more information.\n\nExample:\n```json\n[{\n  \"pattern\": \"**/*spring-beans*.xsd\",\n  \"maxDepth\": 5,\n  \"optionalElements\": false\n}]\n```",
+          "scope": "window"
+        },
         "xml.format.enabled": {
           "type": "boolean",
           "default": true,
@@ -857,6 +909,11 @@
         "command": "xml.minify",
         "title": "Minify XML Document",
         "category": "XML"
+      },
+      {
+        "command": "xml.generate.fromGrammar",
+        "title": "Generate XML from Grammar",
+        "category": "XML"
       }
     ],
     "menus": {
@@ -896,28 +953,49 @@
         {
           "command": "xml.minify",
           "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+        },
+        {
+          "command": "xml.generate.fromGrammar",
+          "when": "XMLLSReady"
         }
       ],
       "editor/context": [
         {
           "command": "xml.refactor.surround.with.tags",
           "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
-          "group": "1_modification"
+          "group": "0_xml@1"
         },
         {
           "command": "xml.refactor.surround.with.comments",
           "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
-          "group": "1_modification"
+          "group": "0_xml@2"
         },
         {
           "command": "xml.refactor.surround.with.cdata",
           "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
-          "group": "1_modification"
+          "group": "0_xml@3"
         },
         {
           "command": "xml.refactor.surround.with.ignoreFormatting",
           "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
-          "group": "1_modification"
+          "group": "0_xml@4"
+        },
+        {
+          "command": "xml.generate.fromGrammar",
+          "when": "resourceExtname in xml.grammarFileExtensions && XMLLSReady",
+          "group": "0_xml@5"
+        },
+        {
+          "command": "xml.minify",
+          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
+          "group": "0_xml@6"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "xml.generate.fromGrammar",
+          "when": "resourceExtname in xml.grammarFileExtensions && XMLLSReady",
+          "group": "0_xml"
         }
       ]
     },

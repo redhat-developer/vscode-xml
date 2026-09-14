@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { commands, ConfigurationTarget, env, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, SnippetString, TextDocument, Uri, window, workspace, WorkspaceEdit, Selection } from "vscode";
@@ -34,6 +35,7 @@ export async function registerClientServerCommands(context: ExtensionContext, la
   registerRefactorCommands(context, languageClient);
   registerMinifyCommand(context, languageClient);
   registerAssociationCommands(context, languageClient);
+  registerGenerateXMLCommands(context, languageClient);
   registerRestartLanguageServerCommand(context, languageClient);
   registerConfigurationUpdateCommand();
 
@@ -518,3 +520,185 @@ function registerMinifyCommand(context: ExtensionContext, languageClient: Langua
     }
   }));
 }
+
+interface RootElementInfo {
+  name: string;
+  namespace: string;
+}
+
+/**
+ * Register commands for generating XML from grammar files
+ *
+ * @param context the extension context
+ * @param languageClient the language server client
+ */
+function registerGenerateXMLCommands(context: ExtensionContext, languageClient: LanguageClient) {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.GENERATE_XML_FROM_GRAMMAR, async (grammarFileUri?: Uri) => {
+    await generateXMLFromGrammarCommand(grammarFileUri, context);
+  }));
+}
+
+/**
+ * Multi-step wizard to generate an XML document from a grammar (XSD, DTD, RelaxNG, RNC).
+ *
+ * When invoked from explorer context menu, the grammar URI is passed directly (skips step 1).
+ * When invoked from command palette, step 1 asks user to select a grammar file.
+ *
+ * @param grammarFileUri optional grammar file URI (from context menu)
+ */
+async function generateXMLFromGrammarCommand(grammarFileUri: Uri | undefined, context: ExtensionContext) {
+  let grammarURI: string;
+
+  if (grammarFileUri) {
+    // Invoked from context menu on a grammar file — skip step 1
+    grammarURI = grammarFileUri.toString();
+  } else {
+    // Invoked from command palette — step 1: select grammar file
+    const grammarType = await window.showQuickPick(
+      [{ label: "local" }, { label: "remote" }],
+      { placeHolder: "Select grammar source" }
+    );
+    if (!grammarType) return;
+
+    if (grammarType.label === 'remote') {
+      let predefinedUrl = await env.clipboard.readText();
+      if (!predefinedUrl || !predefinedUrl.startsWith('http')) {
+        predefinedUrl = '';
+      }
+      const inputUrl = await window.showInputBox({
+        title: 'Enter grammar URL (XSD, DTD, RNG, RNC)',
+        value: predefinedUrl
+      });
+      if (!inputUrl) return;
+      grammarURI = inputUrl;
+    } else {
+      const options: OpenDialogOptions = {
+        canSelectMany: false,
+        openLabel: 'Select grammar file',
+        filters: {
+          'Grammar files': ['xsd', 'dtd', 'rng', 'rnc']
+        }
+      };
+      const fileUri = await window.showOpenDialog(options);
+      if (!fileUri || !fileUri[0]) return;
+      grammarURI = fileUri[0].toString();
+    }
+  }
+
+  if (!grammarURI) return;
+
+  // Step 2: List root elements from the grammar
+  let rootElements: RootElementInfo[];
+  try {
+    rootElements = await commands.executeCommand(
+      ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND,
+      ServerCommandConstants.LIST_ROOT_ELEMENTS,
+      grammarURI
+    );
+  } catch (error) {
+    window.showErrorMessage('Error listing root elements: ' + error.message);
+    return;
+  }
+
+  if (!rootElements || rootElements.length === 0) {
+    window.showWarningMessage('No root elements found in the selected grammar.');
+    return;
+  }
+
+  // If only one root element, skip the selection step
+  let selectedRootElement: string;
+  if (rootElements.length === 1) {
+    selectedRootElement = rootElements[0].name;
+  } else {
+    const items: QuickPickItem[] = rootElements.map(e => ({
+      label: e.name,
+      description: e.namespace || ''
+    }));
+    const picked = await window.showQuickPick(items, { placeHolder: 'Select root element' });
+    if (!picked) return;
+    selectedRootElement = picked.label;
+  }
+
+  // Step 3: Generate XML content (server resolves settings from configuration)
+  let xmlContent: string;
+  try {
+    xmlContent = await commands.executeCommand(
+      ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND,
+      ServerCommandConstants.GENERATE_XML,
+      grammarURI,
+      selectedRootElement
+    );
+  } catch (error) {
+    window.showErrorMessage('Error generating XML: ' + error.message);
+    return;
+  }
+
+  if (!xmlContent) {
+    window.showWarningMessage('Failed to generate XML content.');
+    return;
+  }
+
+  // Open the generated XML in a new untitled document named after the root element.
+  // Build a full path so the Save dialog suggests the right directory.
+  let baseDir: string;
+  if (grammarURI.startsWith('file:')) {
+    baseDir = path.dirname(Uri.parse(grammarURI).fsPath);
+  } else if (workspace.workspaceFolders && workspace.workspaceFolders.length > 0) {
+    baseDir = workspace.workspaceFolders[0].uri.fsPath;
+  } else {
+    baseDir = '';
+  }
+  let suggestedName = selectedRootElement + '.xml';
+  let suggestedPath = baseDir ? path.join(baseDir, suggestedName) : suggestedName;
+  let untitledUri = Uri.file(suggestedPath).with({ scheme: 'untitled' });
+  let counter = 0;
+  while (workspace.textDocuments.some(d => d.uri.toString() === untitledUri.toString()) ||
+         (baseDir && fs.existsSync(path.join(baseDir, suggestedName)))) {
+    counter++;
+    suggestedName = selectedRootElement + '-' + counter + '.xml';
+    suggestedPath = baseDir ? path.join(baseDir, suggestedName) : suggestedName;
+    untitledUri = Uri.file(suggestedPath).with({ scheme: 'untitled' });
+  }
+  const doc = await workspace.openTextDocument(untitledUri);
+  const editor = await window.showTextDocument(doc);
+  await editor.edit(editBuilder => {
+    editBuilder.insert(new Position(0, 0), xmlContent);
+  });
+
+  // After saving an untitled document, replace absolute grammar file URI with relative path
+  if (grammarURI.startsWith('file:') && doc.isUntitled) {
+    const untitledUri = doc.uri.toString();
+    const grammarFsPath = Uri.parse(grammarURI).fsPath;
+    const saveDisposable = workspace.onDidSaveTextDocument(async (savedDoc) => {
+      const content = savedDoc.getText();
+      if (!content.includes(grammarURI)) {
+        return;
+      }
+      saveDisposable.dispose();
+      closeDisposable.dispose();
+      const savedDir = path.dirname(savedDoc.uri.fsPath);
+      const relativePath = path.relative(savedDir, grammarFsPath).replace(/\\/g, '/');
+      const edit = new WorkspaceEdit();
+      let startIndex = 0;
+      while (true) {
+        const idx = content.indexOf(grammarURI, startIndex);
+        if (idx === -1) break;
+        const startPos = savedDoc.positionAt(idx);
+        const endPos = savedDoc.positionAt(idx + grammarURI.length);
+        edit.replace(savedDoc.uri, new vscode.Range(startPos, endPos), relativePath);
+        startIndex = idx + grammarURI.length;
+      }
+      await workspace.applyEdit(edit);
+      await savedDoc.save();
+    });
+    // Clean up if the untitled document is closed without saving
+    const closeDisposable = workspace.onDidCloseTextDocument((closedDoc) => {
+      if (closedDoc.uri.toString() === untitledUri) {
+        saveDisposable.dispose();
+        closeDisposable.dispose();
+      }
+    });
+    context.subscriptions.push(saveDisposable, closeDisposable);
+  }
+}
+

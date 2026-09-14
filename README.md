@@ -47,6 +47,8 @@ This VS Code extension provides support for creating and editing XML documents, 
   * Code actions
   * Schema Caching
   * [Minify XML](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Commands.md#minify-xml-document)
+  * [Generate XML from Grammar](https://github.com/redhat-developer/vscode-xml/blob/main/docs/GenerateXMLFromGrammar.md#generate-xml-from-grammar)
+  * [Generate Schema from XML](https://github.com/redhat-developer/vscode-xml/blob/main/docs/BindingWithGrammar.md#binding-with-new-grammar)
 
 See the [changelog](CHANGELOG.md) for the latest release.
 
