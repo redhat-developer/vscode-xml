@@ -433,6 +433,33 @@
           "markdownDescription": "Element names for which spaces will be preserved. Not supported by legacy formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreservespace%22%7D%5D) for more information.",
           "scope": "window"
         },
+        "xml.format.mixedContent": {
+          "type": "string",
+          "enum": [
+            "normalize",
+            "reflow",
+            "expand",
+            "preserve"
+          ],
+          "markdownEnumDescriptions": [
+            "Collapse inline whitespace to a single space. Newlines in mixed content are collapsed to spaces. Does not respect `#xml.format.blockElements#` (use `reflow` for block/inline distinction). This is the backward-compatible default behavior.",
+            "Collapse inline whitespace to a single space and preserve existing newlines. When `#xml.format.maxLineWidth#` is set, content soft-wraps at word and element boundaries.",
+            "Like `reflow`, but always puts each mixed content child on its own line. Unlike `reflow`, does not depend on `#xml.format.maxLineWidth#`.",
+            "Don't reformat mixed content at all. Whitespace and line breaks are kept as-is."
+          ],
+          "default": "normalize",
+          "markdownDescription": "Controls how mixed content (text + child elements) is formatted. Default is `normalize`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatmixedcontent%22%7D%5D) for more information.",
+          "scope": "window"
+        },
+        "xml.format.blockElements": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "Element names to treat as block in mixed content. Listed elements get their own line with indentation. Unlisted elements stay inline with surrounding text. Only effective in `reflow` mode. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatblockelements%22%7D%5D) for more information.",
+          "scope": "window"
+        },
         "xml.format.spaceBeforeEmptyCloseTag": {
           "type": "boolean",
           "default": true,

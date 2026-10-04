@@ -96,6 +96,8 @@ Here `foo` is categorized as `mixed content`, since it contains text and tag ele
     <bar></bar> abc def </foo>
 ```
 
+The mixed content behavior can be configured with [`xml.format.mixedContent`](#xmlformatmixedcontent) and [`xml.format.blockElements`](#xmlformatblockelements).
+
 ***
 
 ### xml.format.enabled
@@ -625,6 +627,12 @@ Element names for which spaces will be preserved. Defaults is the following arra
 
 Max line width. Set to `0` to disable this setting. Default is `100`.
 
+This setting affects the following formatting behaviors:
+
+* **`normalize space` elements** — when text content exceeds the max line width, it wraps to a new line at word boundaries.
+* **`xml.format.mixedContent` = `reflow`** — mixed content (text + child elements) soft-wraps at word and element boundaries when the line exceeds the max width. See [`xml.format.mixedContent`](#xmlformatmixedcontent) for details.
+* **`xml.format.splitAttributes` = `preserve`** — when the start tag (element name + attributes) exceeds the max line width, attributes are moved to a new line.
+
 **Not supported by the legacy formatter.**
 
 ### xml.format.grammarAwareFormatting
@@ -656,5 +664,296 @@ After formatting, you should see that the content of `description` has spaces pr
 *2. The xml.format.emptyElements setting will respect grammar constraints.*
 
 The collapse option will now respect XSD's `nillable="false"` definitions. The collapse on the element will not be done if the element has `nillable="false"` in the XSD and `xsi:nil="true"` in the XML.
+
+**Not supported by the legacy formatter.**
+
+### xml.format.mixedContent
+
+Controls how mixed content (text + child elements) is formatted. Available values are `normalize`, `reflow`, `expand`, and `preserve`. Default is `normalize`.
+
+#### `normalize` (default)
+
+Collapse inline whitespace to a single space. Newlines within text nodes are collapsed to spaces. This is the backward-compatible default behavior. Note that [`xml.format.blockElements`](#xmlformatblockelements) has no effect in this mode — use `reflow` for block/inline element distinction.
+
+```xml
+<p>text   <b>bold</b>   more</p>
+```
+becomes:
+```xml
+<p>text <b>bold</b> more</p>
+```
+
+Newlines within text nodes are also collapsed:
+
+```xml
+<p>text
+  <b>bold</b>
+  more</p>
+```
+becomes:
+```xml
+<p>text <b>bold</b> more</p>
+```
+
+However, line breaks in whitespace-only gaps between sibling elements are preserved (with normalized indentation):
+
+```xml
+<root>
+  <a>aaa</a>
+  <b>bbb</b>
+</root>
+```
+stays unchanged — the line breaks between `<a>` and `<b>` are not collapsed because they are whitespace-only gaps between elements, not text content.
+
+#### `reflow`
+
+Collapse inline whitespace to a single space, but **preserve newlines within text nodes** (unlike `normalize` which collapses them to spaces). When [`xml.format.maxLineWidth`](#xmlformatmaxlinewidth) is set, content **soft-wraps** at word and element boundaries when the line exceeds the available width.
+
+```xml
+<!-- Inline spaces collapsed -->
+<p>text   <b>bold</b>   more</p>
+```
+becomes:
+```xml
+<p>text <b>bold</b> more</p>
+```
+
+```xml
+<!-- Existing newline before end tag is preserved -->
+<line>Foo (ref <b>bar</b>)
+</line>
+```
+stays unchanged — the newline before `</line>` is not collapsed.
+
+**Soft-wrap with `maxLineWidth`:**
+
+If the content fits on one line, it stays flat:
+```xml
+<p>text <b>bold</b> more</p>
+```
+
+If it overflows `maxLineWidth`, content soft-wraps at the overflow point. Consider this input with `<b>` and `<div>` elements:
+
+```xml
+<p> Click <b>here</b> to see the <div>important details</div> and then <b>submit</b> the final <div>report</div> for review. </p>
+```
+
+By default (`blockElements` not set), all elements are inline. With `maxLineWidth` = `80`, content wraps at the overflow point:
+
+```xml
+<p> Click <b>here</b> to see the <div>important details</div> and then
+  <b>submit</b> the final <div>report</div> for review.
+</p>
+```
+
+Both `<b>` and `<div>` stay inline — they only move to a new line when they would exceed the line width.
+
+With [`xml.format.blockElements`](#xmlformatblockelements) set to `["div"]`, `<div>` is a **block element** — it always starts on its own line, and text after it also starts on a new line. `<b>` stays inline (not listed):
+
+```xml
+<p> Click <b>here</b> to see the
+  <div>important details</div>
+  and then <b>submit</b> the final
+  <div>report</div>
+  for review.
+</p>
+```
+
+With `blockElements` set to `["b", "div"]` (all elements are block), every element goes on its own line:
+
+```xml
+<p> Click
+  <b>here</b>
+  to see the
+  <div>important details</div>
+  and then
+  <b>submit</b>
+  the final
+  <div>report</div>
+  for review.
+</p>
+```
+
+**MyBatis example** — `reflow` with `maxLineWidth` = `80`:
+
+```xml
+<update id="updateEmp"> update emp <set><if test="name != null">name=#{name},</if><if test="gender != null">gender=#{gender},</if></set> where id=#{id} </update>
+```
+becomes:
+```xml
+<update id="updateEmp"> update emp
+  <set>
+    <if test="name != null">name=#{name},</if>
+    <if test="gender != null">gender=#{gender},</if>
+  </set> where id=#{id}
+</update>
+```
+
+Text-only elements like `<if>` have their content joined on one line. The `<set>` block is moved to its own line when it overflows the available width.
+
+**How `maxLineWidth` affects wrapping:**
+
+The `reflow` mode depends on `maxLineWidth` to decide where to wrap. Different values produce different results. Consider this input:
+
+```xml
+<root><bbbbbb>c<g>hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</g><g>kkkkkkkkk</g></bbbbbb></root>
+```
+
+With `maxLineWidth` = `100`, the first `<g>` fits on the same line as `c`:
+
+```xml
+<root>
+  <bbbbbb>c <g>hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</g>
+    <g>kkkkkkkkk</g>
+  </bbbbbb>
+</root>
+```
+
+With `maxLineWidth` = `80`, the first `<g>` exceeds the width and wraps to a new line:
+
+```xml
+<root>
+  <bbbbbb>c
+    <g>hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</g>
+    <g>kkkkkkkkk</g>
+  </bbbbbb>
+</root>
+```
+
+#### `expand`
+
+Like `reflow` (whitespace normalization, text node newlines preserved), but each mixed content child is **always** put on its own line. Unlike `reflow`, `expand` does not depend on `maxLineWidth` — it always expands mixed content children to their own lines:
+
+```xml
+<p>text <b>bold</b> more</p>
+```
+always becomes:
+```xml
+<p>
+  text
+  <b>bold</b>
+  more
+</p>
+```
+
+This is useful when you always want expanded mixed content without configuring `maxLineWidth`:
+```xml
+<root><bbbbbb>c<g>hhhhhhhhhhhh</g><g>kkkkkkkkk</g></bbbbbb></root>
+```
+becomes:
+```xml
+<root>
+  <bbbbbb>
+    c
+    <g>hhhhhhhhhhhh</g>
+    <g>kkkkkkkkk</g>
+  </bbbbbb>
+</root>
+```
+
+**MyBatis example** — `expand`:
+
+```xml
+<update id="updateEmp"> update emp <set><if test="name != null">name=#{name},</if><if test="gender != null">gender=#{gender},</if></set> where id=#{id} </update>
+```
+becomes:
+```xml
+<update id="updateEmp">
+  update emp
+  <set>
+    <if test="name != null">name=#{name},</if>
+    <if test="gender != null">gender=#{gender},</if>
+  </set>
+  where id=#{id}
+</update>
+```
+
+#### `preserve`
+
+Don't reformat mixed content at all. Whitespace and line breaks are kept as-is:
+
+```xml
+<p>text   <b>bold</b>   more</p>
+```
+stays unchanged.
+
+#### Notes
+
+The [`xml.format.preserveSpace`](#xmlformatpreservespace) setting takes priority over `xml.format.mixedContent`. If an element is listed in `preserveSpace`, its content is always preserved regardless of the `mixedContent` setting.
+
+**Not supported by the legacy formatter.**
+
+***
+
+### xml.format.blockElements
+
+Element names to treat as block in mixed content. Default is `[]` (empty — no block elements).
+
+This setting controls which child elements get their own line (block) and which stay on the same line as surrounding text (inline). Since XML is not HTML, there is no universal list of "block" elements — element names are specific to each XML vocabulary (XHTML, MyBatis, DocBook, etc.), so no default list is provided.
+
+The two possible configurations:
+
+* **`[]` (default)** — No elements are block. All elements stay inline with surrounding text, and only move to a new line when they overflow `maxLineWidth`. This is the backward-compatible behavior.
+
+* **`["div", "section"]` (explicit list)** — Listed elements are block (always on their own line with indentation). All other elements stay inline. Use this for prose XML where you know which elements are structural blocks.
+
+For example, with this input containing `<b>` (inline) and `<div>` (block) elements:
+
+  ```xml
+  <p> Click <b>here</b> to see the <div>important details</div> and then <b>submit</b> the final <div>report</div> for review. </p>
+  ```
+
+  With `blockElements` set to `["div"]` and `maxLineWidth` set to `80`, `<div>` is block but `<b>` stays inline (not listed):
+  ```xml
+  <p> Click <b>here</b> to see the
+    <div>important details</div>
+    and then <b>submit</b> the final
+    <div>report</div>
+    for review.
+  </p>
+  ```
+
+Here `<div>` gets its own line (it is in the list), while `<b>` stays inline (it is not in the list). Text after a block element also starts on a new line.
+
+#### Interaction with `xml.format.mixedContent`
+
+`blockElements` only works with `reflow` mode:
+
+* **Block elements** (listed) always start on their own line with indentation, regardless of `maxLineWidth`. Text following a block element also starts on a new line.
+
+* **Inline elements** (not listed) stay on the same line as surrounding text. When `maxLineWidth` is set, they soft-wrap to a new line only when the element would exceed the available line width.
+
+* With `normalize` (default): `blockElements` has no effect — newlines within text nodes are collapsed.
+
+* With `expand`: all elements are expanded (each on its own line), regardless of `blockElements`.
+
+* With `preserve`: `blockElements` has no effect — all content is kept as-is.
+
+**Not supported by the legacy formatter.**
+
+***
+
+### @formatter:off / @formatter:on
+
+You can disable formatting for specific sections of an XML document by surrounding them with `@formatter:off` and `@formatter:on` comments:
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <root>
+    <!-- @formatter:off -->
+    <keep>
+      <this    exactly="as"
+        is />
+    </keep>
+    <!-- @formatter:on -->
+    <format>
+      <this />
+    </format>
+  </root>
+  ```
+
+After formatting, the content between `<!-- @formatter:off -->` and `<!-- @formatter:on -->` is preserved as-is, while the rest of the document is formatted normally.
+
+You can also use the `Surround with @formatter:off/@formatter:on` command to quickly wrap selected content with these comments. Select the XML content you want to protect from formatting, then use the command palette or context menu to surround it.
 
 **Not supported by the legacy formatter.**
