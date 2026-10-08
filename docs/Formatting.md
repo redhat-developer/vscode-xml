@@ -168,7 +168,7 @@ No changes to quotes will occur during formatting if `xml.format.enforceQuoteSty
 
 ### xml.format.preserveAttributeLineBreaks
 
-Preserve line breaks that appear before and after attributes. This setting is overridden if [xml.format.splitAttributes](#xmlformatsplitattributes) is set to `splitNewLine` or `alignWithFirstAttr`. Default is `true`.
+Preserve line breaks that appear before and after attributes. This setting is overridden if [xml.format.splitAttributes](#xmlformatsplitattributes) is set to a force or auto mode (e.g., `force`, `force-aligned`, `auto`). It is respected by `preserve` and `preserve-aligned` modes. Default is `true`.
 
 If set to `true`, formatting does not change the following document:
 
@@ -254,22 +254,41 @@ If this value is set to 0, then all blank lines will be removed during formattin
 
 ### xml.format.splitAttributes
 
-  Set to `splitNewLine` to split node attributes onto multiple lines during formatting and set to `alignWithFirstAttr` to split node attributes after the first attribute to align with it.
+  Controls how attributes are wrapped across lines. The values follow the same naming convention as VS Code's `html.format.wrapAttributes` for consistency, so users familiar with HTML formatting will recognize the behavior.
 
-  Available values are `preserve`, `splitNewLine`, and `alignWithFirstAttr`. Defaults to `preserve`.
+  Available values:
 
-  Overrides the behaviour of [xml.format.preserveAttributeLineBreaks](#xmlformatpreserveattributelinebreaks).
+  | Value | When to wrap | Alignment |
+  |---|---|---|
+  | `preserve` (default) | Existing breaks preserved; wrap on `maxLineWidth` overflow | Normal indent (level+1) |
+  | `auto` | When `maxLineWidth` exceeded | `splitAttributesIndentSize` |
+  | `force` | Always (except first attr) | `splitAttributesIndentSize` |
+  | `force-aligned` | Always (except first attr) | Align with first attribute |
+  | `force-expand-multiline` | Always (all attrs) | `splitAttributesIndentSize` |
+  | `aligned-multiple` | When `maxLineWidth` exceeded | Align with first attribute |
+  | `preserve-aligned` | Preserve existing breaks; wrap on `maxLineWidth` overflow | Align with first attribute |
 
-  Please see [xml.format.splitAttributesIndentSize](#xmlformatsplitAttributesIndentSize) for information on configuring the indentation level of the attributes in the case of `splitNewLine`.
+  The legacy values `splitNewLine` (equivalent to `force-expand-multiline`) and `alignWithFirstAttr` (equivalent to `force-aligned`) are still supported but deprecated.
+
+  Overrides the behaviour of [xml.format.preserveAttributeLineBreaks](#xmlformatpreserveattributelinebreaks), except for `preserve` and `preserve-aligned` which respect it.
+
+  Please see [xml.format.splitAttributesIndentSize](#xmlformatsplitattributesindentsize) for information on configuring the indentation level of the attributes.
 
   The following xml:
   ```xml
   <project a="1" b="2" c="3"></project>
   ```
 
-  Remains the same when set to `preserve`.
+  Remains the same when set to `preserve` or `auto` (assuming it fits within `maxLineWidth`).
 
-  When set to `splitNewLine`, becomes:
+  When set to `force`, first attribute stays on the tag line:
+  ```xml
+  <project a="1"
+      b="2"
+      c="3"></project>
+  ```
+
+  When set to `force-expand-multiline` (or legacy `splitNewLine`), all attributes including the first go on new lines:
   ```xml
   <project
       a="1"
@@ -277,11 +296,66 @@ If this value is set to 0, then all blank lines will be removed during formattin
       c="3"></project>
   ```
 
-  When set to `alignWithFirstAttr`, becomes:
+  When set to `force-aligned` (or legacy `alignWithFirstAttr`), attributes align with the first:
   ```xml
   <project a="1"
            b="2"
            c="3"></project>
+  ```
+
+  When set to `auto` with `xml.format.maxLineWidth` = 100, attributes stay on one line (fits within 100):
+  ```xml
+  <root>
+    <mapper namespace="com.example.UserMapper" resultType="User" />
+  </root>
+  ```
+
+  When set to `auto` with `xml.format.maxLineWidth` = 50, attributes wrap when the line exceeds 50:
+  ```xml
+  <root>
+    <mapper namespace="com.example.UserMapper"
+        resultType="User" />
+  </root>
+  ```
+
+  Like HTML `auto`, multiple attributes can stay on the same continuation line as long as they fit within `maxLineWidth`:
+  ```xml
+  <!-- auto, maxLineWidth=80 -->
+  <beans val1="val1" val2="val2" val3="val3" val4="val4" val5="val5" val6="val6"
+      val7="val7" val8="val8">
+  </beans>
+  ```
+
+  When set to `aligned-multiple` with `xml.format.maxLineWidth` = 100, attributes stay on one line (fits within 100):
+  ```xml
+  <root>
+    <mapper namespace="com.example.UserMapper" resultType="User" />
+  </root>
+  ```
+
+  When set to `aligned-multiple` with `xml.format.maxLineWidth` = 50, attributes wrap and align with the first attribute:
+  ```xml
+  <root>
+    <mapper namespace="com.example.UserMapper"
+            resultType="User" />
+  </root>
+  ```
+
+  With `aligned-multiple`, continuation lines also allow multiple attributes:
+  ```xml
+  <!-- aligned-multiple, maxLineWidth=80 -->
+  <beans val1="val1" val2="val2" val3="val3" val4="val4" val5="val5" val6="val6"
+         val7="val7" val8="val8">
+  </beans>
+  ```
+
+  When set to `preserve-aligned` with `xml.format.maxLineWidth` = 80, existing line breaks are preserved and aligned, and overflow causes wrapping aligned with the first attribute:
+  ```xml
+  <root>
+    <element val1="val1" val2="val2" val3="val3" val4="val4" val5="val5"
+             val6="val6" val7="val7" val8="val8" val9="val9">
+    </element>
+  </root>
   ```
 
 ***
@@ -481,7 +555,7 @@ If `xml.format.joinContentLines` is set to `true`, the above document becomes:
       weight='20' />
   </ROOT:root>
   ```
-  Note that it references two different external schemas. Additionally, the setting [`xml.format.splitAttributes`](#xmlformatsplitattributes) will be set to `splitNewLine` for the formatted examples in order to make the formatted result easier to see.
+  Note that it references two different external schemas. Additionally, the setting [`xml.format.splitAttributes`](#xmlformatsplitattributes) will be set to `force-expand-multiline` (or legacy `splitNewLine`) for the formatted examples in order to make the formatted result easier to see.
 
   * When it is set to `none`, the formatter does not change the content of `xsi:schemaLocation`. The above file would not change after formatting.
 
@@ -519,7 +593,7 @@ If `xml.format.joinContentLines` is set to `true`, the above document becomes:
 
 ### xml.format.splitAttributesIndentSize
 
-  Use to configure how many levels to indent the attributes by when [xml.format.splitAttributes](#xmlformatsplitAttributes) is set to `splitNewLine`.
+  Use to configure how many levels to indent the attributes by when [xml.format.splitAttributes](#xmlformatsplitattributes) uses an indent-based mode (`force`, `force-expand-multiline`, `auto`, or legacy `splitNewLine`).
 
   Here are some examples. For these examples, an indentation is two spaces.
 
@@ -587,7 +661,7 @@ If set to `true`, the closing bracket (`>` or `/>`) of a tag with at least 2 att
 
 The closing bracket will have the same indentation as the attributes (if any), following the indent level defined by [splitAttributesIndentSize](#xmlformatsplitattributesindentsize).
 
-Requires [splitAttributes](#xmlformatsplitattributes) to be set to `splitNewLine` or `alignWithFirstAttr`.
+Requires [splitAttributes](#xmlformatsplitattributes) to be set to a non-preserve mode (e.g., `force`, `force-aligned`, `force-expand-multiline`, `auto`, `aligned-multiple`).
 
 Defaults to `false`.
 
@@ -631,7 +705,7 @@ This setting affects the following formatting behaviors:
 
 * **`normalize space` elements** — when text content exceeds the max line width, it wraps to a new line at word boundaries.
 * **`xml.format.mixedContent` = `reflow`** — mixed content (text + child elements) soft-wraps at word and element boundaries when the line exceeds the max width. See [`xml.format.mixedContent`](#xmlformatmixedcontent) for details.
-* **`xml.format.splitAttributes` = `preserve`** — when the start tag (element name + attributes) exceeds the max line width, attributes are moved to a new line.
+* **`xml.format.splitAttributes` = `preserve`, `preserve-aligned`, `auto`, or `aligned-multiple`** — when the start tag (element name + attributes) exceeds the max line width, attributes are moved to a new line. With `auto`, attributes are indented using `splitAttributesIndentSize`; with `aligned-multiple` or `preserve-aligned`, they align with the first attribute.
 
 **Not supported by the legacy formatter.**
 
