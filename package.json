@@ -520,6 +520,161 @@
           "default": false,
           "markdownDescription": "The option to put a closing bracket on a newline when `#xml.format.splitAttributes#` is `true`. Default value is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatclosingbracketnewline%22%7D%5D) for more information."
         },
+        "xml.format.profiles": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "pattern": {
+                "type": "string",
+                "markdownDescription": "File path glob pattern to match against the document URI. Example: `**/pom.xml`.\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22documentmatcher%22%7D%5D) for more information."
+              },
+              "namespaceURI": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Root element namespace URI patterns (glob supported). Example: `http://docbook.org/ns/docbook*` matches DocBook 5.x.\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22namespaceuri%22%7D%5D) for more information."
+              },
+              "rootElement": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Root element name patterns (glob supported). Example: `mapper` matches `<mapper>`. Uses local name (without prefix).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22rootelement%22%7D%5D) for more information."
+              },
+              "publicId": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "DOCTYPE public ID patterns (glob supported). Example: `-//mybatis.org//DTD Mapper*` matches MyBatis mapper DTDs.\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22publicid%22%7D%5D) for more information."
+              },
+              "systemId": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "DOCTYPE system ID patterns (glob supported). Example: `http://mybatis.org/dtd/*` matches MyBatis DTDs.\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22systemid%22%7D%5D) for more information."
+              },
+              "grammarURI": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Resolved grammar URI patterns (glob supported). Matches against grammar URIs from DOCTYPE systemId, `<?xml-model?>` href, file associations, or XML catalog.\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22grammaruri%22%7D%5D) for more information."
+              },
+              "enabled": {
+                "type": "boolean",
+                "markdownDescription": "Override `#xml.format.enabled#`. Enable/disable ability to format document."
+              },
+              "legacy": {
+                "type": "boolean",
+                "markdownDescription": "Override `#xml.format.legacy#`. Enable/disable legacy formatter."
+              },
+              "emptyElements": {
+                "type": "string",
+                "enum": ["ignore", "collapse", "expand"],
+                "markdownDescription": "Override `#xml.format.emptyElements#`. Expand/collapse empty elements."
+              },
+              "enforceQuoteStyle": {
+                "type": "string",
+                "enum": ["preferred", "ignore"],
+                "markdownEnumDescriptions": [
+                  "Use preferred quote style set by `xml.preferences.quoteStyle` when formatting.",
+                  "Ignore quote style formatting."
+                ],
+                "markdownDescription": "Override `#xml.format.enforceQuoteStyle#`. Enforce `preferred` quote style or `ignore` quote style when formatting."
+              },
+              "grammarAwareFormatting": {
+                "type": "boolean",
+                "markdownDescription": "Override `#xml.format.grammarAwareFormatting#`. Use Schema/DTD grammar information while formatting."
+              },
+              "joinCDATALines": {
+                "type": "boolean",
+                "markdownDescription": "Override `#xml.format.joinCDATALines#`. Join lines in CDATA content during formatting."
+              },
+              "joinCommentLines": {
+                "type": "boolean",
+                "markdownDescription": "Override `#xml.format.joinCommentLines#`. Join comment content on format."
+              },
+              "joinContentLines": {
+                "type": "boolean",
+                "markdownDescription": "Override `#xml.format.joinContentLines#`. Normalize the whitespace of content inside an element."
+              },
+              "maxLineWidth": {
+                "type": "integer",
+                "markdownDescription": "Override `#xml.format.maxLineWidth#`. Max line width. Set to `0` to disable."
+              },
+              "preserveAttributeLineBreaks": {
+                "type": "boolean",
+                "markdownDescription": "Override `#xml.format.preserveAttributeLineBreaks#`. Preserve line breaks that appear before and after attributes."
+              },
+              "preserveEmptyContent": {
+                "type": "boolean",
+                "markdownDescription": "Override `#xml.format.preserveEmptyContent#`. Preserve empty content/whitespace in a tag. Supported only with legacy formatter."
+              },
+              "preservedNewlines": {
+                "type": "integer",
+                "enum": [0, 1, 2, 3],
+                "markdownDescription": "Override `#xml.format.preservedNewlines#`. Maximum number of preserved new lines per section. `0` removes all new lines."
+              },
+              "preserveSpace": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Override `#xml.format.preserveSpace#`. Element names for which spaces will be preserved."
+              },
+              "mixedContent": {
+                "type": "string",
+                "enum": ["normalize", "reflow", "expand", "preserve"],
+                "markdownEnumDescriptions": [
+                  "Collapse inline whitespace to a single space. Newlines in mixed content are collapsed to spaces.",
+                  "Collapse inline whitespace to a single space and preserve existing newlines. Content soft-wraps at word and element boundaries.",
+                  "Like `reflow`, but always puts each mixed content child on its own line.",
+                  "Don't reformat mixed content at all. Whitespace and line breaks are kept as-is."
+                ],
+                "markdownDescription": "Override `#xml.format.mixedContent#`. Controls how mixed content (text + child elements) is formatted."
+              },
+              "blockElements": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Override `#xml.format.blockElements#`. Element names to treat as block in mixed content. Only effective in `reflow` mode."
+              },
+              "spaceBeforeEmptyCloseTag": {
+                "type": "boolean",
+                "markdownDescription": "Override `#xml.format.spaceBeforeEmptyCloseTag#`. Insert space before end of self closing tag.\nExample: `<tag/> -> <tag />`."
+              },
+              "xsiSchemaLocationSplit": {
+                "type": "string",
+                "enum": ["onElement", "onPair", "none"],
+                "markdownEnumDescriptions": [
+                  "Put a new line after each namespace and URI, arranging them into one column.",
+                  "Put a new line after each URI, arranging the content into pairs of namespace and URI.",
+                  "Ignore `xsi:schemaLocation` content formatting."
+                ],
+                "markdownDescription": "Override `#xml.format.xsiSchemaLocationSplit#`. Split `xsi:schemaLocation` content."
+              },
+              "splitAttributes": {
+                "type": "string",
+                "enum": ["preserve", "auto", "force", "force-aligned", "force-expand-multiline", "aligned-multiple", "preserve-aligned", "splitNewLine", "alignWithFirstAttr"],
+                "markdownEnumDescriptions": [
+                  "Keep existing attribute layout. Attributes only wrap when `xml.format.maxLineWidth` is exceeded.",
+                  "Wrap attributes when the line exceeds `xml.format.maxLineWidth`, using `xml.format.splitAttributesIndentSize` for indentation.",
+                  "Always wrap each attribute except the first onto its own line.",
+                  "Always wrap each attribute except the first onto its own line, aligned with the first attribute.",
+                  "Always wrap every attribute (including the first) onto its own line.",
+                  "Wrap attributes when the line exceeds `xml.format.maxLineWidth`, aligned with the first attribute.",
+                  "Preserve existing line breaks, but align wrapped attributes with the first attribute.",
+                  "**Deprecated** — use `force-expand-multiline` instead.",
+                  "**Deprecated** — use `force-aligned` instead."
+                ],
+                "markdownDescription": "Override `#xml.format.splitAttributes#`. Controls how attributes are wrapped across lines."
+              },
+              "splitAttributesIndentSize": {
+                "type": "number",
+                "markdownDescription": "Override `#xml.format.splitAttributesIndentSize#`. How many levels to indent the attributes by when `splitAttributes` is set."
+              },
+              "closingBracketNewLine": {
+                "type": "boolean",
+                "markdownDescription": "Override `#xml.format.closingBracketNewLine#`. Put closing bracket on a newline when attributes are split."
+              }
+            },
+            "additionalProperties": false
+          },
+          "markdownDescription": "Per-document formatting profiles. Each profile matches documents by file path, namespace URI, DOCTYPE, or grammar URI, and overrides global `xml.format.*` settings for matching documents. All matching criteria are combined with AND; the first matching profile wins. Only specified format fields override the global defaults.\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22documentmatcher%22%7D%5D) for information about matching criteria.\n\nExample:\n```json\n[{\n  \"namespaceURI\": [\"http://docbook.org/ns/docbook*\"],\n  \"mixedContent\": \"preserve\"\n},{\n  \"pattern\": \"**/pom.xml\",\n  \"splitAttributes\": \"force-expand-multiline\"\n}]\n```",
+          "scope": "window"
+        },
         "xml.completion.autoCloseTags": {
           "type": "boolean",
           "default": true,
@@ -702,7 +857,32 @@
             "properties": {
               "pattern": {
                 "type": "string",
-                "markdownDescription": "File glob pattern. Example: `**/*.Format.ps1xml`\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
+                "markdownDescription": "File glob pattern. Example: `**/*.Format.ps1xml`\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22documentmatcher%22%7D%5D) for more information."
+              },
+              "namespaceURI": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Root element namespace URI patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22namespaceuri%22%7D%5D) for more information."
+              },
+              "rootElement": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Root element name patterns (glob supported). Example: `mapper` matches `<mapper>`. Uses local name (without prefix).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22rootelement%22%7D%5D) for more information."
+              },
+              "publicId": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "DOCTYPE public ID patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22publicid%22%7D%5D) for more information."
+              },
+              "systemId": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "DOCTYPE system ID patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22systemid%22%7D%5D) for more information."
+              },
+              "grammarURI": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Resolved grammar URI patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22grammaruri%22%7D%5D) for more information."
               },
               "expressions": {
                 "type": "array",
@@ -737,7 +917,7 @@
               "expressions"
             ]
           },
-          "markdownDescription": "Allows XML symbols filter to be associated to file name patterns. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22xmlsymbolsfilters%22%7D%5D) for more information.. \n\nExample:\n```json\n[\n  {\n    \"pattern\": \"pom.xml\",\n    \"expressions\": [\n      {\n        \"xpath\": \"//text()\"\n      }\n    ]\n  }\n]\n```",
+          "markdownDescription": "Allows XML symbols filter to be associated to file name patterns or [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22documentmatcher%22%7D%5D) criteria. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22xmlsymbolsfilters%22%7D%5D) for more information.\n\nExample:\n```json\n[\n  {\n    \"pattern\": \"pom.xml\",\n    \"expressions\": [\n      {\n        \"xpath\": \"//text()\"\n      }\n    ]\n  }\n]\n```",
           "scope": "window"
         },
         "xml.references": {
@@ -748,7 +928,32 @@
             "properties": {
               "pattern": {
                 "type": "string",
-                "markdownDescription": "matches the files that reference declared with `expressions` applies to.\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
+                "markdownDescription": "Matches the files that reference declared with `expressions` applies to.\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22documentmatcher%22%7D%5D) for more information."
+              },
+              "namespaceURI": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Root element namespace URI patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22namespaceuri%22%7D%5D) for more information."
+              },
+              "rootElement": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Root element name patterns (glob supported). Example: `mapper` matches `<mapper>`. Uses local name (without prefix).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22rootelement%22%7D%5D) for more information."
+              },
+              "publicId": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "DOCTYPE public ID patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22publicid%22%7D%5D) for more information."
+              },
+              "systemId": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "DOCTYPE system ID patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22systemid%22%7D%5D) for more information."
+              },
+              "grammarURI": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Resolved grammar URI patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22grammaruri%22%7D%5D) for more information."
               },
               "prefix": {
                 "type": "string",
@@ -793,7 +998,7 @@
               "expressions"
             ]
           },
-          "markdownDescription": "Allows references for the given file name patterns. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features/XMLReferencesFeatures%22%2C%22section%22%3A%22xmlreferencesfeatures%22%7D%5D) for more information.",
+          "markdownDescription": "Allows references for the given file name patterns or [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22documentmatcher%22%7D%5D) criteria. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features/XMLReferencesFeatures%22%2C%22section%22%3A%22xmlreferencesfeatures%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.colors": {
@@ -804,7 +1009,32 @@
             "properties": {
               "pattern": {
                 "type": "string",
-                "markdownDescription": "matches the files that colors declared with `expressions` applies to.\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
+                "markdownDescription": "Matches the files that colors declared with `expressions` applies to.\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22documentmatcher%22%7D%5D) for more information."
+              },
+              "namespaceURI": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Root element namespace URI patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22namespaceuri%22%7D%5D) for more information."
+              },
+              "rootElement": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Root element name patterns (glob supported). Example: `mapper` matches `<mapper>`. Uses local name (without prefix).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22rootelement%22%7D%5D) for more information."
+              },
+              "publicId": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "DOCTYPE public ID patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22publicid%22%7D%5D) for more information."
+              },
+              "systemId": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "DOCTYPE system ID patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22systemid%22%7D%5D) for more information."
+              },
+              "grammarURI": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Resolved grammar URI patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22grammaruri%22%7D%5D) for more information."
               },
               "expressions": {
                 "type": "array",
@@ -828,7 +1058,7 @@
               "expressions"
             ]
           },
-          "markdownDescription": "Allows colors for the given file name patterns. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features/XMLColorsFeatures%22%2C%22section%22%3A%22xmlcolorsfeatures%22%7D%5D) for more information.",
+          "markdownDescription": "Allows colors for the given file name patterns or [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22documentmatcher%22%7D%5D) criteria. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features/XMLColorsFeatures%22%2C%22section%22%3A%22xmlcolorsfeatures%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.filePathSupport.mappings": {
@@ -839,7 +1069,32 @@
             "properties": {
               "pattern": {
                 "type": "string",
-                "markdownDescription": "matches the files that file path declared with `expressions` applies to.\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
+                "markdownDescription": "Matches the files that file path declared with `expressions` applies to.\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22documentmatcher%22%7D%5D) for more information."
+              },
+              "namespaceURI": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Root element namespace URI patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22namespaceuri%22%7D%5D) for more information."
+              },
+              "rootElement": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Root element name patterns (glob supported). Example: `mapper` matches `<mapper>`. Uses local name (without prefix).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22rootelement%22%7D%5D) for more information."
+              },
+              "publicId": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "DOCTYPE public ID patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22publicid%22%7D%5D) for more information."
+              },
+              "systemId": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "DOCTYPE system ID patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22systemid%22%7D%5D) for more information."
+              },
+              "grammarURI": {
+                "type": "array",
+                "items": { "type": "string" },
+                "markdownDescription": "Resolved grammar URI patterns (glob supported).\n\nSee [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22grammaruri%22%7D%5D) for more information."
               },
               "expressions": {
                 "type": "array",
@@ -874,7 +1129,7 @@
               "expressions"
             ]
           },
-          "markdownDescription": "Allows file path for the given file name patterns. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features/XMLFilePathSupport%22%2C%22section%22%3A%22xmlfilepathsfeatures%22%7D%5D) for more information.",
+          "markdownDescription": "Allows file path for the given file name patterns or [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22documentmatcher%22%7D%5D) criteria. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features/XMLFilePathSupport%22%2C%22section%22%3A%22xmlfilepathsfeatures%22%7D%5D) for more information.",
           "scope": "window"
         },
         "xml.extension.jars": {

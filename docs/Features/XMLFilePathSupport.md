@@ -100,6 +100,25 @@ If you need to restrict file path completion on `image/@src` files with the `.pn
 ]
 ```
 
+## Document Matcher
+
+In addition to the `pattern` property which matches by file path, `xml.filePathSupport.mappings` supports [Document Matcher](../DocumentMatcher.md) criteria to match documents by root element name (`rootElement`), namespace URI (`namespaceURI`), DOCTYPE (`publicId`, `systemId`), or grammar URI (`grammarURI`). For example, to apply file path support to documents with a specific namespace:
+
+```json
+"xml.filePathSupport.mappings": [
+   {
+      "namespaceURI": ["http://example.org/myapp"],
+      "expressions": [
+         {
+            "xpath": "config/include/@path"
+         }
+      ]
+   }
+]
+```
+
+See [Document Matcher](../DocumentMatcher.md) for details about all matching criteria and glob syntax.
+
 ## Separator to declare multiple file paths.
 
 Given this `paths.xml` file:
