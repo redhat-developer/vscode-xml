@@ -53,7 +53,7 @@ In other words, displaying attributes or text nodes depends on the XML file.
 
 Symbols filter are composed with:
 
-* `pattern` (required) : a regular expression matching the file names to which this filter should apply.
+* `pattern` (optional) : a file glob pattern matching the file names to which this filter should apply. In addition to `pattern`, you can use [Document Matcher](DocumentMatcher.md) criteria (`rootElement`, `namespaceURI`, `publicId`, `systemId`, `grammarURI`) to match documents by root element name, namespace URI, DOCTYPE, or grammar URI. See [Document Matcher](DocumentMatcher.md) for details.
 * `expressions` (required) : defines a list of expressions. An expression is composed of:
   *  `xpath` (required) : defines a basic xpath to declare the attribute or the text node which is concerned by the expression (see [XPath expression](#xpath-expression) below).
   *  `excluded` (optional): true if the node which matches the xpath must be excluded or not. By default, `excluded` is set to false.

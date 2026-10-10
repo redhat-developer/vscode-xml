@@ -68,3 +68,22 @@ You can declare this settings:
    }
 ]
 ```
+
+## Document Matcher
+
+In addition to the `pattern` property which matches by file path, `xml.colors` supports [Document Matcher](../DocumentMatcher.md) criteria to match documents by root element name (`rootElement`), namespace URI (`namespaceURI`), DOCTYPE (`publicId`, `systemId`), or grammar URI (`grammarURI`). For example, to apply color support to all XML files with a `<resources>` root element:
+
+```json
+"xml.colors": [
+   {
+      "rootElement": ["resources"],
+      "expressions": [
+         {
+            "xpath": "resources/color/text()"
+         }
+      ]
+   }
+]
+```
+
+See [Document Matcher](../DocumentMatcher.md) for details about all matching criteria and glob syntax.

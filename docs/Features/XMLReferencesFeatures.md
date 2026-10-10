@@ -181,6 +181,26 @@ In this sample, `servlet-mapping/servlet-name` text in `<servlet-name>comingsoon
 
 ![XML References with web.xml](../images/Features/XMLReferencesWithWebXML.gif)
 
+## Document Matcher
+
+In addition to the `pattern` property which matches by file path, `xml.references` supports [Document Matcher](../DocumentMatcher.md) criteria to match documents by root element name (`rootElement`), namespace URI (`namespaceURI`), DOCTYPE (`publicId`, `systemId`), or grammar URI (`grammarURI`). For example, to apply references to all DocBook 4.x documents by DOCTYPE:
+
+```json
+"xml.references": [
+   {
+      "publicId": ["-//OASIS//DTD DocBook XML V4.*"],
+      "expressions": [
+         {
+            "from": "xref/@linkend",
+            "to": "@id"
+         }
+      ]
+   }
+]
+```
+
+See [Document Matcher](../DocumentMatcher.md) for details about all matching criteria and glob syntax.
+
 ### Limitation
 
 XML references have some limitation:
