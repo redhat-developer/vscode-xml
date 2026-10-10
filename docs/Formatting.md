@@ -1031,3 +1031,33 @@ After formatting, the content between `<!-- @formatter:off -->` and `<!-- @forma
 You can also use the `Surround with @formatter:off/@formatter:on` command to quickly wrap selected content with these comments. Select the XML content you want to protect from formatting, then use the command palette or context menu to surround it.
 
 **Not supported by the legacy formatter.**
+
+## Formatting profiles
+
+The `xml.format.profiles` setting allows you to override formatting settings for specific documents. Each profile matches documents using [Document Matcher](DocumentMatcher.md) criteria (file path pattern, root element name, namespace URI, DOCTYPE public/system ID, or grammar URI) and overrides global `xml.format.*` settings for matching documents.
+
+Format override fields are specified directly on the profile object (flat structure). Only specified fields override the global defaults; unspecified fields inherit the global values. The first matching profile wins.
+
+```json
+"xml.format.profiles": [
+  {
+    "namespaceURI": ["http://docbook.org/ns/docbook*"],
+    "mixedContent": "preserve"
+  },
+  {
+    "pattern": "**/pom.xml",
+    "splitAttributes": "force-expand-multiline"
+  },
+  {
+    "publicId": ["-//mybatis.org//DTD Mapper*"],
+    "closingBracketNewLine": true
+  }
+]
+```
+
+In this example:
+- DocBook 5.x documents use `mixedContent: preserve` (all other settings inherited from global)
+- Maven POM files use `splitAttributes: force-expand-multiline`
+- MyBatis mapper files put the closing bracket on a new line
+
+See [Document Matcher](DocumentMatcher.md) for details about matching criteria and glob syntax.
