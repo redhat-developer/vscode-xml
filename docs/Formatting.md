@@ -11,6 +11,77 @@ The standard `editor.insertSpaces` & `editor.tabSize` [format settings](https://
 },
 ```
 
+### Per-folder and per-language formatting settings
+
+All `xml.format.*` settings have `language-overridable` scope, which means they can be overridden per workspace folder (in multi-root workspaces) and per language ID.
+
+#### Per-folder overrides (multi-root workspace)
+
+In a [multi-root workspace](https://code.visualstudio.com/docs/editor/multi-root-workspaces), each folder can have its own `.vscode/settings.json` with different formatting settings:
+
+**Folder A** `.vscode/settings.json`:
+```json
+{
+  "xml.format.splitAttributes": "preserve",
+  "xml.format.maxLineWidth": 120
+}
+```
+
+**Folder B** `.vscode/settings.json`:
+```json
+{
+  "xml.format.splitAttributes": "force-expand-multiline",
+  "xml.format.maxLineWidth": 80
+}
+```
+
+When formatting an XML file, the XML language server pulls the settings scoped to that file's workspace folder.
+
+#### Per-language overrides
+
+If you have a custom language ID registered as an XML language participant (see [Extensions - Custom language](Extensions.md#custom-language)), you can override formatting settings per language:
+
+```json
+{
+  "xml.format.splitAttributes": "preserve",
+  "[myxml]": {
+    "xml.format.splitAttributes": "force-expand-multiline"
+  }
+}
+```
+
+XML files use `splitAttributes: "preserve"`, while files with language ID `myxml` use `splitAttributes: "force-expand-multiline"`.
+
+#### Example: AXAML files with different formatting
+
+[AXAML](https://github.com/nickvdyck/axaml) files (`.axaml`) are XML-based but often require different formatting rules. To set this up:
+
+1. Create or install an extension that registers the `axaml` language with `xmlLanguageParticipants` (see [Extensions - Custom language](Extensions.md#custom-language)), or use the `xml.languageParticipants` setting (see [Extensions - Custom language via settings](Extensions.md#custom-language-via-settings)).
+
+2. Map `.axaml` files to the `axaml` language ID:
+
+   ```json
+   "files.associations": {
+     "*.axaml": "axaml"
+   }
+   ```
+
+3. Override formatting settings for `axaml`:
+
+   ```json
+   {
+     "xml.format.splitAttributes": "preserve",
+     "[axaml]": {
+       "xml.format.splitAttributes": "force-expand-multiline",
+       "xml.format.maxLineWidth": 120
+     }
+   }
+   ```
+
+This way, `.xml` files are formatted with `splitAttributes: "preserve"`, while `.axaml` files use `force-expand-multiline` with a wider line width.
+
+***
+
 ### Formatting strategy
 
   As the frequency of issues regarding the previous XML formatter increased, we have decided to redo our formatter from scratch. To revert to the old formatter, the setting `xml.format.legacy` should be set to true.
