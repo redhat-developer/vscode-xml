@@ -78,7 +78,7 @@
 
   Can be accessed through `xml.fileAssociations`.
 
-  Provides ability to associate a schema with a file pattern.
+  Provides ability to associate a schema with a file pattern. Both `pattern` and `systemId` support [variable substitution](Validation.md#file-variables) (e.g. `${workspaceFolder}`, `${fileDirname}`, `${env:Name}`).
 
   Example:
   ```json
@@ -88,8 +88,8 @@
      "pattern": "file1.xml"
     },
     {
-     "systemId": "http://www.w3.org/2001/XMLSchema.xsd",
-     "pattern": "**/*.xsd"
+     "systemId": "${workspaceFolder}/schemas/config.xsd",
+     "pattern": "${workspaceFolder}/config/**/*.xml"
     }
   ]
   ```

@@ -1,6 +1,5 @@
 import * as path from 'path';
 import { commands, Extension, extensions, window, workspace, WorkspaceConfiguration } from "vscode";
-import { getVariableSubstitutedAssociations } from "./variableSubstitution";
 
 export interface ScopeInfo {
   scope: "default" | "global" | "workspace" | "folder";
@@ -247,9 +246,6 @@ export function getXMLSettings(javaHome: string | undefined, logfile: string, ex
       xml['xml']['fileAssociations'].push(element);
     }
   });
-
-  // Apply variable substitutions for file associations
-  xml['xml']['fileAssociations'] = [...getVariableSubstitutedAssociations(xml['xml']['fileAssociations'])];
 
   return xml;
 }

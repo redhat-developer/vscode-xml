@@ -2,14 +2,12 @@ import { TelemetryEvent } from '@redhat-developer/vscode-redhat-telemetry/lib';
 import { commands, ExtensionContext, extensions, Position, TextDocument, TextEditor, Uri, window, workspace } from 'vscode';
 import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, DocumentFilter, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, State } from "vscode-languageclient";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
-import { XMLFileAssociation } from '../api/xmlExtensionApi';
 import { registerClientServerCommands } from '../commands/registerCommands';
 import * as ServerCommandConstants from '../commands/serverCommandConstants';
 import { onExtensionChange } from '../plugin';
 import { RequirementsData } from "../server/requirements";
 import { ExternalXmlSettings } from "../settings/externalXmlSettings";
 import { getXMLConfiguration, getXMLSettings, onConfigurationChange, subscribeJDKChangeConfiguration } from "../settings/settings";
-import { containsVariableReferenceToCurrentFile } from '../settings/variableSubstitution';
 import * as Telemetry from '../telemetry';
 import { ClientErrorHandler } from './clientErrorHandler';
 import { getLanguageParticipants } from './languageParticipants';
@@ -134,15 +132,6 @@ export async function startLanguageClient(context: ExtensionContext, executable:
     }
     return result;
   });
-
-  // When the current document changes, update variable values that refer to the current file if these variables are referenced,
-  // and send the updated settings to the server
-  context.subscriptions.push(window.onDidChangeActiveTextEditor(() => {
-    if (containsVariableReferenceToCurrentFile(getXMLConfiguration().get('fileAssociations') as XMLFileAssociation[])) {
-      languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirementsData.java_home, logfile, externalXmlSettings) });
-      onConfigurationChange();
-    }
-  }));
 
   const onDidGrantWorkspaceTrust = (workspace as any).onDidGrantWorkspaceTrust;
   if (onDidGrantWorkspaceTrust !== undefined) {
