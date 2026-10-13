@@ -215,17 +215,72 @@ Please note that you can use wildcards in the pattern (ex: `foo*.xml`):
 
 In this case, all XML files that start with foo and end with .xml will be associated with the XSD (foo1.xml, foo2.xml, etc)
 
-You can also use the following three variables in either the `pattern` or `systemId`:
+You can also use variables in either the `pattern` or `systemId`. Variables are resolved per document at match time.
 
- | Variable                    | Meaning                                                                  |
- | --------------------------- | ------------------------------------------------------------------------ |
- | ${workspaceFolder}          | The absolute path to root folder of the workspace that is currently open |
- | ${fileDirname}              | The absolute path to the folder of the file that is currently opened     |
- | ${fileBasenameNoExtension}  | The current opened file's basename with no file extension                |
+#### File variables
 
-If one of the variables for an association can't be expanded (eg. because vscode is opened in rootless mode),
-the association is ignored.
-This feature is specific to the VSCode client.
+ | Variable                    | Description                                          | Example (`/home/user/project/src/data/test.xml`) |
+ | --------------------------- | ---------------------------------------------------- | ------------------------------------------------ |
+ | `${file}`                   | Full path of the document                            | `/home/user/project/src/data/test.xml`           |
+ | `${fileDirname}`            | Directory of the document                            | `/home/user/project/src/data`                    |
+ | `${fileBasename}`           | File name with extension                             | `test.xml`                                       |
+ | `${fileBasenameNoExtension}`| File name without extension                          | `test`                                           |
+ | `${fileExtname}`            | File extension (with dot)                            | `.xml`                                           |
+
+#### Workspace variables
+
+ | Variable                    | Description                                          | Example (workspace: `/home/user/project`)        |
+ | --------------------------- | ---------------------------------------------------- | ------------------------------------------------ |
+ | `${workspaceFolder}`        | Workspace folder containing the document             | `/home/user/project`                             |
+ | `${workspaceFolderBasename}`| Name of the workspace folder                         | `project`                                        |
+ | `${fileWorkspaceFolder}`    | Same as `${workspaceFolder}`                         | `/home/user/project`                             |
+ | `${relativeFile}`           | Document path relative to workspace folder           | `src/data/test.xml`                              |
+ | `${relativeFileDirname}`    | Directory of the relative path                       | `src/data`                                       |
+
+In a multi-root workspace, the deepest workspace folder that contains the document is used. If no workspace folder contains the document, the first workspace folder is used as fallback.
+
+#### Environment variables
+
+ | Variable                    | Description                                          |
+ | --------------------------- | ---------------------------------------------------- |
+ | `${env:Name}`               | Value of environment variable `Name`                 |
+
+If an environment variable is not set, the variable reference is left unchanged.
+
+#### Examples with variables
+
+Associate all XML files under a workspace `data/` folder with a schema next to each file:
+
+```json
+"xml.fileAssociations": [
+   {
+       "systemId": "${fileDirname}/schema.xsd",
+       "pattern": "${workspaceFolder}/data/**/*.xml"
+   }
+]
+```
+
+Use an environment variable to point to a shared schema directory:
+
+```json
+"xml.fileAssociations": [
+   {
+       "systemId": "${env:SCHEMA_HOME}/myschema.xsd",
+       "pattern": "**/*.myxml"
+   }
+]
+```
+
+Use a schema stored inside the workspace:
+
+```json
+"xml.fileAssociations": [
+   {
+       "systemId": "${workspaceFolder}/schemas/config.xsd",
+       "pattern": "${workspaceFolder}/config/**/*.xml"
+   }
+]
+```
 
 Please note that if the XSD defines a `targetNamespace="http://foo"` like the following `foo.xsd` XSD file:
 
@@ -387,17 +442,7 @@ Please note that you can use wildcards in the pattern (ex: `foo*.xml`):
 
 In this case, all XML files that start with foo and end with .xml will be associated with the DTD (foo1.xml, foo2.xml, etc)
 
-You can also use the following three variables in either the `pattern` or `systemId`:
-
- | Variable                    | Meaning                                                                  |
- | --------------------------- | ------------------------------------------------------------------------ |
- | ${workspaceFolder}          | The absolute path to root folder of the workspace that is currently open |
- | ${fileDirname}              | The absolute path to the folder of the file that is currently opened     |
- | ${fileBasenameNoExtension}  | The current opened file's basename with no file extension                |
-
-If one of the variables for an association can't be expanded (eg. because vscode is opened in rootless mode),
-the association is ignored.
-This feature is specific to the VSCode client.
+You can also use variables in either the `pattern` or `systemId`. See [variable substitution in XSD file associations](#file-variables) for the full list of supported variables and examples.
 
 ## Validation with RelaxNG grammar
 
