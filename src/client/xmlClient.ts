@@ -103,20 +103,33 @@ export async function startLanguageClient(context: ExtensionContext, executable:
     }));
   }
 
-  // Copied from:
-  // https://github.com/redhat-developer/vscode-java/pull/1081/files
   languageClient.onRequest(ConfigurationRequest.type, (params: ConfigurationParams) => {
     const result: any[] = [];
     const activeEditor: TextEditor | undefined = window.activeTextEditor;
     for (const item of params.items) {
-      if (activeEditor && activeEditor.document.uri.toString() === Uri.parse(item.scopeUri).toString()) {
-        if (item.section === "xml.format.insertSpaces") {
-          result.push(activeEditor.options.insertSpaces);
-        } else if (item.section === "xml.format.tabSize") {
-          result.push(activeEditor.options.tabSize);
+      const scopeUri = item.scopeUri ? Uri.parse(item.scopeUri) : undefined;
+      const isActiveDocument = activeEditor && scopeUri
+        && activeEditor.document.uri.toString() === scopeUri.toString();
+      if (isActiveDocument && item.section === "xml.format.insertSpaces") {
+        result.push(activeEditor.options.insertSpaces);
+      } else if (isActiveDocument && item.section === "xml.format.tabSize") {
+        result.push(activeEditor.options.tabSize);
+      } else if (scopeUri) {
+        const doc = workspace.textDocuments.find(
+          d => d.uri.toString() === scopeUri.toString());
+        const scope = doc
+          ? { uri: scopeUri, languageId: doc.languageId }
+          : scopeUri;
+        if (!item.section) {
+          result.push(workspace.getConfiguration(undefined, scope));
+        } else {
+          const lastDot = item.section.lastIndexOf('.');
+          const sectionPrefix = lastDot > 0 ? item.section.substring(0, lastDot) : undefined;
+          const key = lastDot > 0 ? item.section.substring(lastDot + 1) : item.section;
+          result.push(workspace.getConfiguration(sectionPrefix, scope).get(key));
         }
       } else {
-        result.push(workspace.getConfiguration(null, Uri.parse(item.scopeUri)).get(item.section));
+        result.push(workspace.getConfiguration().get(item.section));
       }
     }
     return result;

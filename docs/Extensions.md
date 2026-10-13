@@ -29,7 +29,36 @@ and you want that `myxml` language uses [vscode-xml](https://github.com/redhat-d
   ]
 }
 ```
-   
+
+### Custom language via settings
+
+If you don't want to create an extension, you can register a custom language ID using the `xml.languageParticipants` setting. This enables XML language features (completion, validation, formatting) for custom language IDs without syntax coloring.
+
+1. Map the file extension to a language ID:
+
+   ```json
+   "files.associations": {
+     "*.myxml": "myxml"
+   }
+   ```
+
+2. Register the language ID with vscode-xml:
+
+   ```json
+   "xml.languageParticipants": ["myxml"]
+   ```
+
+3. Optionally, override XML settings per language:
+
+   ```json
+   "[myxml]": {
+     "xml.format.splitAttributes": "force-expand-multiline",
+     "xml.format.maxLineWidth": 120
+   }
+   ```
+
+**Note:** This setting-based approach does not provide syntax coloring. For full support including syntax coloring, create an extension that registers the language with a TextMate grammar (see [Custom language](#custom-language) above).
+
 ## Custom XML Extensions (written in Java)
 
 The [LemMinX - XML Language Server](https://github.com/eclipse/lemminx) can be extended to support custom completion, hover, validation, rename, etc by using the [Java Service Provider Interface (SPI)](https://www.baeldung.com/java-spi) mechanism.

@@ -263,6 +263,15 @@
           "markdownDescription": "Allows XML schemas/ DTD to be associated to file name patterns. Please refer to [XML file association with XSD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-xsd%22%7D%5D) or [XML file association with DTD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-dtd%22%7D%5D) for more information. \n\nExample:\n```json\n[{\n  \"pattern\": \"file1.xml\",\n  \"systemId\": \"path/to/file.xsd\"\n},\n{\n  \"pattern\": \"**/*.xsd\",\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\"\n}]\n```",
           "scope": "window"
         },
+        "xml.languageParticipants": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "Additional VS Code language IDs to be handled by the XML language server. Combine with `files.associations` to map custom file extensions.\n\nExample: to format `.axaml` files as XML:\n1. Add `\"files.associations\": { \"*.axaml\": \"axaml\" }`\n2. Add `\"xml.languageParticipants\": [\"axaml\"]`\n3. Optionally override settings per language: `\"[axaml]\": { \"xml.format.maxLineWidth\": 120 }`",
+          "scope": "window"
+        },
         "xml.foldings.includeClosingTagInFold": {
           "type": "boolean",
           "default": false,
@@ -325,7 +334,7 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "Enable/disable ability to format document. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatenabled%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.emptyElements": {
           "type": "string",
@@ -336,7 +345,7 @@
           ],
           "default": "ignore",
           "markdownDescription": "Expand/collapse empty elements. Default is `ignore`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatemptyelements%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.enforceQuoteStyle": {
           "type": "string",
@@ -350,55 +359,55 @@
           ],
           "default": "ignore",
           "markdownDescription": "Enforce `preferred` quote style (set by `#xml.preferences.quoteStyle#`) or `ignore` quote style when formatting. Default is `ignore`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatenforcequotestyle%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.legacy": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Enable/disable legacy formatter. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatlegacy%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.grammarAwareFormatting": {
           "type": "boolean",
           "default": true,
           "markdownDescription": "Use Schema/DTD grammar information while formatting. Default is `true`. Not supported by legacy formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatgrammarawareformatting%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.joinCDATALines": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Set to `true` to join lines in CDATA content during formatting. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincdatalines%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.joinCommentLines": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Join comment content on format. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincommentlines%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.joinContentLines": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincontentlines%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.maxLineWidth": {
           "type": "integer",
           "default": 100,
           "markdownDescription": "Max line width. Set to `0` to disable this setting. Default is `100`. Not supported by legacy formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatmaxlinewidth%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.preserveAttributeLineBreaks": {
           "type": "boolean",
           "default": true,
           "markdownDescription": "Preserve line breaks that appear before and after attributes. This setting is overridden if `#xml.format.splitAttributes#` is set to any mode except `preserve` or `preserve-aligned`. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreserveattributelinebreaks%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.preserveEmptyContent": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Preserve empty content/whitespace in a tag. Default is `false`. Supported only with legacy formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreserveemptycontent%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.preservedNewlines": {
           "type": "integer",
@@ -410,7 +419,7 @@
           ],
           "default": 2,
           "markdownDescription": "Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines. Default is `2`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreservednewlines%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.preserveSpace": {
           "type": "array",
@@ -431,7 +440,7 @@
             "type": "string"
           },
           "markdownDescription": "Element names for which spaces will be preserved. Not supported by legacy formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreservespace%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.mixedContent": {
           "type": "string",
@@ -449,7 +458,7 @@
           ],
           "default": "normalize",
           "markdownDescription": "Controls how mixed content (text + child elements) is formatted. Default is `normalize`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatmixedcontent%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.blockElements": {
           "type": "array",
@@ -458,13 +467,13 @@
             "type": "string"
           },
           "markdownDescription": "Element names to treat as block in mixed content. Listed elements get their own line with indentation. Unlisted elements stay inline with surrounding text. Only effective in `reflow` mode. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatblockelements%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.spaceBeforeEmptyCloseTag": {
           "type": "boolean",
           "default": true,
           "markdownDescription": "Insert space before end of self closing tag. \nExample:\n  ```<tag/> -> <tag />```. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatspacebeforeemptyclosetag%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.xsiSchemaLocationSplit": {
           "type": "string",
@@ -480,7 +489,7 @@
           ],
           "default": "onPair",
           "markdownDescription": "Split `xsi:schemaLocation` content. Default is `onPair`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatxsischemalocationsplit%22%7D%5D) for more information",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.splitAttributes": {
           "type": "string",
@@ -508,17 +517,19 @@
           ],
           "default": "preserve",
           "markdownDescription": "Controls how attributes are wrapped across lines. Values follow the same naming convention as VS Code's `html.format.wrapAttributes` for consistency. Default is `preserve`. Indicate level of indentation with `#xml.format.splitAttributesIndentSize#`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatsplitattributes%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.format.splitAttributesIndentSize": {
           "type": "number",
           "default": 2,
-          "markdownDescription": "How many levels to indent the attributes by when `#xml.format.splitAttributes#` is `true`. Default value is `2`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatsplitattributesindentsize%22%7D%5D) for more information"
+          "markdownDescription": "How many levels to indent the attributes by when `#xml.format.splitAttributes#` is `true`. Default value is `2`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatsplitattributesindentsize%22%7D%5D) for more information",
+          "scope": "language-overridable"
         },
         "xml.format.closingBracketNewLine": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "The option to put a closing bracket on a newline when `#xml.format.splitAttributes#` is `true`. Default value is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatclosingbracketnewline%22%7D%5D) for more information."
+          "markdownDescription": "The option to put a closing bracket on a newline when `#xml.format.splitAttributes#` is `true`. Default value is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatclosingbracketnewline%22%7D%5D) for more information.",
+          "scope": "language-overridable"
         },
         "xml.completion.autoCloseTags": {
           "type": "boolean",

@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { Event, EventEmitter, extensions } from 'vscode';
+import { Event, EventEmitter, extensions, workspace } from 'vscode';
 import { DocumentFilter, DocumentSelector } from 'vscode-languageclient';
 
 const SCHEMES: string[] = [
@@ -57,6 +57,17 @@ export function getLanguageParticipants(): LanguageParticipants {
         }
       }
     }
+
+    const settingParticipants = workspace.getConfiguration('xml').get<string[]>('languageParticipants', []);
+    if (!Array.isArray(settingParticipants)) {
+      return !isEqualSet(languages, oldLanguages);
+    }
+    for (const languageId of settingParticipants) {
+      if (typeof languageId === 'string') {
+        languages.add(languageId);
+      }
+    }
+
     return !isEqualSet(languages, oldLanguages);
   }
   update();
@@ -64,6 +75,14 @@ export function getLanguageParticipants(): LanguageParticipants {
   const changeListener = extensions.onDidChange(_ => {
     if (update()) {
       onDidChangeEmmiter.fire();
+    }
+  });
+
+  const configListener = workspace.onDidChangeConfiguration(e => {
+    if (e.affectsConfiguration('xml.languageParticipants')) {
+      if (update()) {
+        onDidChangeEmmiter.fire();
+      }
     }
   });
 
@@ -80,7 +99,7 @@ export function getLanguageParticipants(): LanguageParticipants {
       });
     },
     hasLanguage(languageId: string) { return languages.has(languageId); },
-    dispose: () => changeListener.dispose()
+    dispose: () => { changeListener.dispose(); configListener.dispose(); }
   };
 }
 
