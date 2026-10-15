@@ -87,3 +87,9 @@ export const EXECUTE_WORKSPACE_COMMAND = 'xml.workspace.executeCommand';
  * VSCode client command to generate XML from a grammar file.
  */
 export const GENERATE_XML_FROM_GRAMMAR = 'xml.generate.fromGrammar';
+
+/**
+ * Resolve a TextMate grammar path for a given language ID.
+ * Called by the XML language server to find grammars from installed VS Code extensions.
+ */
+export const TEXT_MATE_GRAMMAR = 'xml.textMateGrammar';

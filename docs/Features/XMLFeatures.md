@@ -58,6 +58,22 @@ When placing the cursor on an XML tag, the corresponding opening/closing tag wil
 
 ![Highlight Corresponding XML](../images/Features/HighlightCorrespondingXML.gif)
 
+## Semantic Tokens
+
+LemMinX provides LSP semantic tokens for XML documents to enhance syntax highlighting beyond what TextMate grammars offer. Semantic tokens provide precise, context-aware highlighting for:
+
+| Token Type | Description |
+|---|---|
+| Property | Attribute names (e.g., `id`, `name`) |
+| Variable | Entity references (e.g., `&amp;`) |
+| Type | Element and notation names |
+
+Semantic tokens work alongside the TextMate grammar-based highlighting and provide additional semantic information that the editor theme can use for more accurate coloring.
+
+### Embedded Language Highlighting
+
+LemMinX also supports syntax highlighting for embedded language content inside XML text and CDATA nodes (e.g., Groovy, SQL, JavaScript) using TextMate grammars. See [XML Embedded Languages features](XMLEmbeddedLanguagesFeatures.md#xml-embedded-languages-features) for more information.
+
 ## Symbols from Outline and Breadcrumbs
 
 The `OUTLINE` dropdown under `EXPLORER` details the XML tags in the document and their children. The `Breadcrumbs` bar also shows the hierarchy of the tag that the cursor is on. Both features permit jumping to the tag(s) displayed.
