@@ -38,6 +38,7 @@ export async function registerClientServerCommands(context: ExtensionContext, la
   registerGenerateXMLCommands(context, languageClient);
   registerRestartLanguageServerCommand(context, languageClient);
   registerConfigurationUpdateCommand();
+  registerTextMateGrammarCommand(context);
 
   // Register client command to execute custom XML Language Server command
   context.subscriptions.push(commands.registerCommand(ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND, (command, ...rest) => {
@@ -700,5 +701,27 @@ async function generateXMLFromGrammarCommand(grammarFileUri: Uri | undefined, co
     });
     context.subscriptions.push(saveDisposable, closeDisposable);
   }
+}
+
+/**
+ * Register the command to resolve TextMate grammar paths for embedded languages.
+ * Called by the XML language server via xml/executeClientCommand.
+ */
+function registerTextMateGrammarCommand(context: ExtensionContext) {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.TEXT_MATE_GRAMMAR, (languageId: string) => {
+    for (const ext of vscode.extensions.all) {
+      const grammars = ext.packageJSON?.contributes?.grammars;
+      if (!Array.isArray(grammars)) {
+        continue;
+      }
+      for (const grammar of grammars) {
+        if (grammar.language === languageId && grammar.path) {
+          const grammarPath = path.join(ext.extensionPath, grammar.path);
+          return { grammarPath: grammarPath, scopeName: grammar.scopeName || '' };
+        }
+      }
+    }
+    return null;
+  }));
 }
 
