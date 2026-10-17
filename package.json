@@ -1224,6 +1224,11 @@
         "command": "xml.generate.fromGrammar",
         "title": "Generate XML from Grammar",
         "category": "XML"
+      },
+      {
+        "command": "xml.generate.grammarFromXml",
+        "title": "Generate Grammar from XML",
+        "category": "XML"
       }
     ],
     "menus": {
@@ -1267,6 +1272,10 @@
         {
           "command": "xml.generate.fromGrammar",
           "when": "XMLLSReady"
+        },
+        {
+          "command": "xml.generate.grammarFromXml",
+          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady && xml.activeDocumentHasNoGrammar"
         }
       ],
       "editor/context": [
@@ -1299,12 +1308,22 @@
           "command": "xml.minify",
           "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
           "group": "0_xml@6"
+        },
+        {
+          "command": "xml.generate.grammarFromXml",
+          "when": "resourceExtname == .xml && XMLLSReady && xml.activeDocumentHasNoGrammar",
+          "group": "0_xml@7"
         }
       ],
       "explorer/context": [
         {
           "command": "xml.generate.fromGrammar",
           "when": "resourceExtname in xml.grammarFileExtensions && XMLLSReady",
+          "group": "0_xml"
+        },
+        {
+          "command": "xml.generate.grammarFromXml",
+          "when": "resourceExtname == .xml && XMLLSReady",
           "group": "0_xml"
         }
       ]
