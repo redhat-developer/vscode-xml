@@ -1,25 +1,32 @@
 # Refactor
 
+[vscode-xml](https://github.com/redhat-developer/vscode-xml) provides several refactoring commands to wrap selected XML content. All Surround with commands are available from:
+
+- **Command palette** (`Ctrl+Shift+P`): type `Surround`
+- **Editor context menu**: right-click on an XML file
+
+If you prefer using the keyboard, you can associate each command with a keybinding. See [Keyboard Shortcuts editor](https://code.visualstudio.com/docs/getstarted/keybindings#_keyboard-shortcuts-editor) for more information.
+
 ## Surround with Tags (Wrap)
 
-This refactor command gives the capability to select an XML content and surround it with a given tag. To execute this command you can:
-
- * use command palette (`Ctrl+P`) and type `Surround`
+Select XML content and surround it with a given tag:
 
 ![Surround with Tags](images/Refactor/SurroundWithTags.gif)
 
- * use contextual menu
-
-If you prefer using keyboard to process `Surround with Tags (Wrap)`,you need to associate this command with a keybinding. See [Keyboard Shortcuts editor](https://code.visualstudio.com/docs/getstarted/keybindings#_keyboard-shortcuts-editor) for more informations.
-
 ## Surround with Comments
 
-Similar to `Surround with Tags (Wrap)`, you can comment out the selected XML content:
+Comment out the selected XML content:
 
-![Surround with Tags](images/Refactor/SurroundWithComments.gif)
+![Surround with Comments](images/Refactor/SurroundWithComments.gif)
 
 ## Surround with CDATA
 
-Similar to `Surround with Tags (Wrap)`, you can surround the selected XML content with CDATA:
+Surround the selected XML content with CDATA:
 
-![Surround with Tags](images/Refactor/SurroundWithCDATA.gif)
+![Surround with CDATA](images/Refactor/SurroundWithCDATA.gif)
+
+## Surround with Ignore Formatting
+
+Surround the selected XML content with `<!-- @formatter:off -->` / `<!-- @formatter:on -->` markers to preserve formatting in that region.
+
+![Ignore Formatting](images/Refactor/IgnoreFormatting.gif)
