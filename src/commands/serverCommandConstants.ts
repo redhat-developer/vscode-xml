@@ -55,3 +55,8 @@ export const LIST_ROOT_ELEMENTS = "xml.grammar.listRootElements";
  * Command to generate XML from a grammar and root element
  */
 export const GENERATE_XML = "xml.grammar.generate";
+
+/**
+ * Command to generate a grammar (XSD, DTD, RelaxNG) from an XML document
+ */
+export const GENERATE_GRAMMAR_FROM_XML = "xml.grammar.generateFromXml";

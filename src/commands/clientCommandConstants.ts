@@ -87,3 +87,8 @@ export const EXECUTE_WORKSPACE_COMMAND = 'xml.workspace.executeCommand';
  * VSCode client command to generate XML from a grammar file.
  */
 export const GENERATE_XML_FROM_GRAMMAR = 'xml.generate.fromGrammar';
+
+/**
+ * VSCode client command to generate a grammar (XSD, DTD, RelaxNG) from an XML file.
+ */
+export const GENERATE_GRAMMAR_FROM_XML = 'xml.generate.grammarFromXml';

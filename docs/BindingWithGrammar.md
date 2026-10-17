@@ -2,6 +2,8 @@
 
 [vscode-xml](https://github.com/redhat-developer/vscode-xml) provides support for automatic XML schema/grammar binding through generation and/or using an existing `.xsd/.dtd` file.
 
+> **Tip:** You can also [generate a grammar from an XML document](GenerateGrammarFromXML.md) or [generate an XML document from a grammar](GenerateXMLFromGrammar.md).
+
 ![Binding Wizard Demo](./images/BindingWithGrammar/BindingWizardDemo.gif)
 
 [Validation with XSD grammar](Validation.md#validation-with-xsd-grammar) and [Validation with DTD grammar](Validation.md#validation-with-dtd-grammar) provide more information on manual binding of an XML document.
@@ -48,8 +50,8 @@ After opening the binding wizard using one of the methods mentioned above, a dro
 If the selected file is an XSD file, this option will bind the grammar file by adding the `xmlns:xsi` (with the value as "http://www.w3.org/2001/XMLSchema-instance") and `xsi:noNamespaceSchemaLocation` (with the value as the path to the grammar file) attributes to the root tag:
 ```xml
 <foo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:noNamespaceSchemaLocation="foo.xsd">
-    <bar />
+    xsi:noNamespaceSchemaLocation="foo.xsd">
+  <bar />
 </foo>
 ```
 
@@ -60,9 +62,9 @@ If the XSD file contains a `targetNamespace` attribute, with an `elementFormDefa
 then the XML document will have the `targetNamespace` set as a `xmlns` attribute and an additional attribute for `xsi:schemaLocation`:
 ```xml
 <foo xmlns="http://foo"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://foo foo.xsd">
-    <bar />
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://foo foo.xsd">
+  <bar />
 </foo>
 ```
 
@@ -117,32 +119,6 @@ With the cursor on the first opening tag, use `Ctrl + .`, `Quick Fix...` or the 
 
 ## Binding with New Grammar
 
-Consider the case where the directory only contains `foo.xml` (i.e. there does not exist an appropriate `.xsd/.dtd` file to bind).
+If no grammar file exists yet, you can generate one from the XML document and bind it in one step.
 
-A file can be generated using a [Quick Fix](#quick-fix-1).
-
-### Quick Fix
-
-#### Generate XSD from XML
-
-When an unbound XML file is open, an XML Schema/XSD file can be generated from the opening tag in the XML file.
-
-With the cursor on the first opening tag, use `Ctrl + .` or `Quick Fix...` or the lightbulb that appears and select "Generate foo.xsd and bind with *" to create the file in the the same directory.
-
-![GenerateXSDFromXML](./images/BindingWithGrammar/GenerateXSDFromXML.gif)
-
-#### Generate DTD from XML
-
-When an unbound XML file is open, a Document Type Definition/DTD file can be generated from the opening tag in the XML file.
-
-With the cursor on the first opening tag, use `Ctrl + .` or `Quick Fix...` or the lightbulb that appears and select "Generate foo.dtd and bind with *" to create the file in the the same directory.
-
-![GenerateDTDFromXML](./images/BindingWithGrammar/GenerateDTDFromXML.gif)
-
-#### Generate RELAX NG from XML
-
-When an unbound XML file is open, a RELAX NG schema can be generated from the opening tag in the XML file.
-
-With the cursor on the first opening tag, use `Ctrl + .` or `Quick Fix...` or the lightbulb that appears and select "Generate foo.rng and bind with RelaxNG" to create the file in the the same directory.
-
-![GenerateRelaxNGFromXML](./images/BindingWithGrammar/GenerateRelaxNGFromXML.gif)
+See [Generate Grammar from XML](GenerateGrammarFromXML.md) for the full documentation (command wizard, Quick Fix, examples).
