@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { commands, ConfigurationTarget, env, ExtensionContext, OpenDialogOptions, Position, QuickPickItem, SnippetString, TextDocument, Uri, window, workspace, WorkspaceEdit, Selection } from "vscode";
+import { commands, ConfigurationTarget, env, ExtensionContext, languages, OpenDialogOptions, Position, QuickPickItem, SnippetString, TextDocument, Uri, window, workspace, WorkspaceEdit, Selection } from "vscode";
 import { CancellationToken, ExecuteCommandParams, ExecuteCommandRequest, ReferencesRequest, TextDocumentEdit, TextDocumentIdentifier, TextEdit } from "vscode-languageclient";
 import { LanguageClient } from 'vscode-languageclient/node';
 import { registerConfigurationUpdateCommand } from '../lsp-commands';
@@ -36,6 +36,7 @@ export async function registerClientServerCommands(context: ExtensionContext, la
   registerMinifyCommand(context, languageClient);
   registerAssociationCommands(context, languageClient);
   registerGenerateXMLCommands(context, languageClient);
+  registerGenerateGrammarFromXMLCommands(context, languageClient);
   registerRestartLanguageServerCommand(context, languageClient);
   registerConfigurationUpdateCommand();
 
@@ -702,3 +703,231 @@ async function generateXMLFromGrammarCommand(grammarFileUri: Uri | undefined, co
   }
 }
 
+const grammarTypeExtensionMap: Map<string, string> = new Map([
+  ['XSD', 'xsd'],
+  ['DTD', 'dtd'],
+  ['RelaxNG', 'rng'],
+  ['RelaxNG Compact', 'rnc']
+]);
+
+interface GenerateGrammarResult {
+  grammarContent: string;
+  bindingEdit?: TextDocumentEdit;
+}
+
+/**
+ * Register commands for generating grammar from XML files
+ */
+function registerGenerateGrammarFromXMLCommands(context: ExtensionContext, languageClient: LanguageClient) {
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.GENERATE_GRAMMAR_FROM_XML, async (xmlFileUri?: Uri) => {
+    await generateGrammarFromXMLCommand(xmlFileUri, languageClient, context);
+  }));
+
+  const updateGrammarContext = async () => {
+    const editor = window.activeTextEditor;
+    if (!editor || editor.document.languageId !== 'xml') {
+      commands.executeCommand('setContext', 'xml.activeDocumentHasNoGrammar', false);
+      return;
+    }
+    try {
+      const canBind = await checkCanBindGrammar(editor.document.uri);
+      commands.executeCommand('setContext', 'xml.activeDocumentHasNoGrammar', canBind);
+    } catch {
+      commands.executeCommand('setContext', 'xml.activeDocumentHasNoGrammar', false);
+    }
+  };
+
+  context.subscriptions.push(window.onDidChangeActiveTextEditor(() => updateGrammarContext()));
+  context.subscriptions.push(languages.onDidChangeDiagnostics((e) => {
+    const activeUri = window.activeTextEditor?.document.uri;
+    if (activeUri && e.uris.some(u => u.toString() === activeUri.toString())) {
+      updateGrammarContext();
+    }
+  }));
+  updateGrammarContext();
+}
+
+/**
+ * Multi-step wizard to generate a grammar (XSD, DTD, RelaxNG) from an XML document.
+ *
+ * Flow:
+ *  1. Select grammar type (XSD, DTD, RelaxNG)
+ *  2. Select binding type (filtered by grammar type)
+ *  3. Enter grammar file name
+ *  4. Call server to generate grammar + apply binding
+ */
+async function generateGrammarFromXMLCommand(xmlFileUri: Uri | undefined, languageClient: LanguageClient, context: ExtensionContext) {
+  // Determine the XML document URI
+  let documentURI: Uri;
+  if (xmlFileUri) {
+    documentURI = xmlFileUri;
+  } else if (window.activeTextEditor?.document?.languageId === 'xml') {
+    documentURI = window.activeTextEditor.document.uri;
+  } else {
+    window.showErrorMessage('No XML document selected.');
+    return;
+  }
+
+  if (documentURI.scheme !== 'file') {
+    window.showErrorMessage('Save the XML document to disk before generating a grammar.');
+    return;
+  }
+
+  // Ensure the document is open so the language server knows about it
+  await workspace.openTextDocument(documentURI);
+
+  // Check if the XML already has a bound grammar
+  const canBind = await checkCanBindGrammar(documentURI);
+  if (!canBind) {
+    window.showErrorMessage('The document is already bound to a grammar.');
+    return;
+  }
+
+  // Step 1: Choose grammar type
+  const grammarTypeItems: QuickPickItem[] = [
+    { label: 'XSD', description: 'XML Schema Definition' },
+    { label: 'DTD', description: 'Document Type Definition' },
+    { label: 'RelaxNG', description: 'RelaxNG XML Syntax (.rng)' },
+    { label: 'RelaxNG Compact', description: 'RelaxNG Compact Syntax (.rnc)' }
+  ];
+  const pickedGrammarType = await window.showQuickPick(grammarTypeItems, {
+    placeHolder: 'Select grammar type to generate'
+  });
+  if (!pickedGrammarType) return;
+
+  const grammarExt = grammarTypeExtensionMap.get(pickedGrammarType.label);
+
+  // Step 2: Choose binding type (filtered by grammar type)
+  const xmlModelOption: QuickPickItem = { label: 'xml-model', description: 'Adds <?xml-model href="..."?> processing instruction before root element' };
+  const fileAssociationOption: QuickPickItem = { label: 'File association', description: 'Configures xml.fileAssociations setting in VS Code (no XML modification)' };
+  let bindingOptions: QuickPickItem[];
+  switch (pickedGrammarType.label) {
+    case 'XSD':
+      bindingOptions = [
+        { label: 'xsi:schemaLocation', description: 'Adds xsi:noNamespaceSchemaLocation or xsi:schemaLocation attribute depending on namespace' },
+        xmlModelOption,
+        fileAssociationOption
+      ];
+      break;
+    case 'DTD':
+      bindingOptions = [
+        { label: 'DOCTYPE', description: 'Adds <!DOCTYPE root SYSTEM "..."> declaration before root element' },
+        xmlModelOption,
+        fileAssociationOption
+      ];
+      break;
+    case 'RelaxNG':
+    case 'RelaxNG Compact':
+      bindingOptions = [
+        xmlModelOption,
+        fileAssociationOption
+      ];
+      break;
+    default:
+      return;
+  }
+  const pickedBindingType = await window.showQuickPick(bindingOptions, {
+    placeHolder: 'Select binding type'
+  });
+  if (!pickedBindingType) return;
+
+  // Step 3: Grammar filename
+  const xmlBaseName = path.basename(documentURI.fsPath, path.extname(documentURI.fsPath));
+  const defaultGrammarName = `${xmlBaseName}.${grammarExt}`;
+  const grammarFileName = await window.showInputBox({
+    title: 'Grammar file name',
+    value: defaultGrammarName,
+    prompt: 'Enter the name of the grammar file to generate',
+    validateInput: (value) => {
+      if (!value || value.trim().length === 0) {
+        return 'File name cannot be empty';
+      }
+      return null;
+    }
+  });
+  if (!grammarFileName) return;
+
+  // Build full grammar path (same directory as XML)
+  const xmlDir = path.dirname(documentURI.fsPath);
+  const grammarFilePath = path.resolve(xmlDir, grammarFileName);
+
+  if (path.dirname(grammarFilePath) !== path.resolve(xmlDir)) {
+    window.showErrorMessage('The grammar file name must not contain path segments.');
+    return;
+  }
+  if (grammarFilePath === path.resolve(documentURI.fsPath)) {
+    window.showErrorMessage('The grammar output cannot overwrite the source XML document.');
+    return;
+  }
+
+  // Check if grammar file already exists
+  let bindOnly = false;
+  if (fs.existsSync(grammarFilePath)) {
+    const choice = await window.showWarningMessage(
+      `The file "${grammarFileName}" already exists.`,
+      'Overwrite', 'Bind to existing file'
+    );
+    if (choice === 'Bind to existing file') {
+      bindOnly = true;
+    } else if (choice !== 'Overwrite') {
+      return;
+    }
+  }
+
+  // Step 4: Generate grammar via server command
+  const identifier = TextDocumentIdentifier.create(documentURI.toString());
+  const grammarFileUri = Uri.file(grammarFilePath);
+  const isFileAssociation = pickedBindingType.label === 'File association';
+  const bindingType = isFileAssociation ? undefined : pickedBindingType.label;
+
+  // Pass editor formatting options so the server can format the generated grammar
+  const editor = window.activeTextEditor;
+  const formattingOptions = {
+    tabSize: editor?.options.tabSize as number ?? 2,
+    insertSpaces: editor?.options.insertSpaces as boolean ?? true
+  };
+
+  try {
+    const result: GenerateGrammarResult = await commands.executeCommand(
+      ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND,
+      ServerCommandConstants.GENERATE_GRAMMAR_FROM_XML,
+      identifier,
+      grammarExt,
+      grammarFileUri.toString(),
+      bindingType,
+      formattingOptions
+    );
+
+    if (!bindOnly) {
+      if (!result || !result.grammarContent) {
+        window.showErrorMessage('Failed to generate grammar.');
+        return;
+      }
+      // Write the grammar file
+      fs.writeFileSync(grammarFilePath, result.grammarContent, 'utf8');
+    }
+
+    // Open the grammar file (generated or existing)
+    const grammarDoc = await workspace.openTextDocument(grammarFileUri);
+    await window.showTextDocument(grammarDoc, { preview: false });
+
+    // Apply binding
+    if (isFileAssociation) {
+      const xmlDoc = workspace.textDocuments.find(d => d.uri.toString() === documentURI.toString());
+      await bindWithFileAssociation(documentURI, grammarFileUri, xmlDoc);
+    } else if (result.bindingEdit) {
+      const workEdits = new WorkspaceEdit();
+      for (const edit of result.bindingEdit.edits) {
+        if ('newText' in edit) {
+          workEdits.replace(documentURI, languageClient.protocol2CodeConverter.asRange(edit.range), edit.newText);
+        }
+      }
+      const applied = await workspace.applyEdit(workEdits);
+      if (!applied) {
+        window.showWarningMessage('Grammar was generated but the binding could not be applied to the XML document.');
+      }
+    }
+  } catch (error) {
+    window.showErrorMessage('Error generating grammar: ' + error.message);
+  }
+}

@@ -2,6 +2,8 @@
 
 [vscode-xml](https://github.com/redhat-developer/vscode-xml) can generate a complete, well-formed XML document from a grammar file (XSD, DTD, RelaxNG, or RNC). The generated XML includes proper grammar binding, all declared elements and attributes, and type-aware default values.
 
+> **Tip:** Generation also works in the other direction: you can [generate a grammar from an existing XML document](GenerateGrammarFromXML.md).
+
 ## How to use
 
 ### From the Command Palette
@@ -10,15 +12,19 @@ Open the command palette with `Ctrl+Shift+P` and run:
 
 **XML: Generate XML from Grammar**
 
-This opens a wizard that lets you:
-
-1. **Select a grammar file** (`.xsd`, `.dtd`, `.rng`, or `.rnc`)
-2. **Choose a root element** from the grammar's declared elements
-3. A new XML document is generated and opened in the editor
-
 ### From the Context Menu
 
-Right-click on a grammar file in the **Explorer** or in the **Editor** and select **Generate XML from Grammar**. This skips the grammar selection step and goes directly to root element selection.
+Right-click on a grammar file (`.xsd`, `.dtd`, `.rng`, `.rnc`) in the **Explorer** or in the **Editor** and select **Generate XML from Grammar**. This skips the grammar selection step and goes directly to root element selection.
+
+![Generate XML from Grammar context menu](images/GenerateXMLFromGrammar/GenerateXMLFromGrammarContextMenu.png)
+
+## Wizard Steps
+
+The wizard guides you through the following steps:
+
+1. **Select a grammar file** (`.xsd`, `.dtd`, `.rng`, or `.rnc`) — skipped when launched from a grammar file context menu
+2. **Choose a root element** from the grammar's declared elements
+3. A new XML document is generated and opened in the editor
 
 ## Supported Grammar Types
 
