@@ -122,6 +122,12 @@ When XML file is associated with a DTD file, hover documentation based on tags, 
 
 ![Hover Based On DTD](../images/Features/HoverBasedOnDTD.gif)
 
+### Writing documentation for hover
+
+The documentation content in XSD (`xs:documentation`) and DTD (comments) supports HTML formatting that is automatically rendered as Markdown in the hover tooltip. This includes inline formatting (`<b>`, `<i>`, `<code>`), links, tables, lists, code blocks, and more.
+
+See [Writing Documentation for Hover Tooltips](../HoverDocumentation.md) for the full list of supported HTML elements and how to write documentation that renders well.
+
 ## Validation Support
 
 ### Syntax validation
