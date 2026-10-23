@@ -2,10 +2,18 @@
 
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as os from 'os';
 import * as ClientCommandConstants from './commands/clientCommandConstants';
 import * as glob from 'glob';
 
 let existingExtensions: Array<string>;
+
+function expandHome(p: string): string {
+	if (p === '~' || p.startsWith('~/') || p.startsWith('~\\')) {
+		return path.join(os.homedir(), p.slice(1));
+	}
+	return p;
+}
 
 export function collectXmlJavaExtensions(extensions: readonly vscode.Extension<any>[], jars: string[]): string[] {
 	const result = [];
@@ -23,7 +31,7 @@ export function collectXmlJavaExtensions(extensions: readonly vscode.Extension<a
 		}
 	}
 	for (const extension of jars) {
-		result.push(...glob.sync(extension));
+		result.push(...glob.sync(expandHome(extension)));
 	}
 	// Make a copy of extensions:
 	existingExtensions = result.slice();
