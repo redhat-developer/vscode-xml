@@ -9,8 +9,11 @@ import * as glob from 'glob';
 let existingExtensions: Array<string>;
 
 function expandHome(p: string): string {
-	if (p === '~' || p.startsWith('~/') || p.startsWith('~\\')) {
-		return path.join(os.homedir(), p.slice(1));
+	if (p === '~') {
+		return os.homedir();
+	}
+	if (p.startsWith('~/') || p.startsWith('~\\')) {
+		return path.join(os.homedir(), p.slice(2));
 	}
 	return p;
 }
