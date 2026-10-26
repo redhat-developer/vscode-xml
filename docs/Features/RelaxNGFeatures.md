@@ -13,6 +13,7 @@ It supports both:
 
 You can associate your XML file with `RelaxNG grammar` (`file` or `URL`) using :
 
+ * the [Binding Wizard](../BindingWithGrammar.md#relaxng-binding) (XML Model or Catalog entry)
  * an `xml-model` processing instruction
 
 ```xml
@@ -147,4 +148,4 @@ The following file, `addressBook.xml`, references `addressBook.rng` using the `x
 
 When an unbound XML file is open, a RELAX NG schema can be generated from the opening tag in the XML file.
 
-See: [Generate RELAX NG from XML](../BindingWithGrammar.md#generate-relax-ng-from-xml).
+See: [Generate Grammar from XML](../GenerateGrammarFromXML.md).

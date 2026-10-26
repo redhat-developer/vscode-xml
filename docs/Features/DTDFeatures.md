@@ -1,5 +1,9 @@
 # DTD Features
 
+## Binding
+
+See [Binding with Grammar](../BindingWithGrammar.md#dtd-binding) to associate an XML file with a DTD using the binding wizard.
+
 ## CodeLens Support
 
 CodeLens is supported for `.dtd` files, which can show where an element declaration is referenced.

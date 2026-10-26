@@ -60,3 +60,18 @@ export const GENERATE_XML = "xml.grammar.generate";
  * Command to generate a grammar (XSD, DTD, RelaxNG) from an XML document
  */
 export const GENERATE_GRAMMAR_FROM_XML = "xml.grammar.generateFromXml";
+
+/**
+ * Command to list all bindable catalog entries
+ */
+export const LIST_BINDABLE_CATALOG_ENTRIES = "xml.catalog.entries.bindable";
+
+/**
+ * Command to add an entry to a catalog file
+ */
+export const ADD_CATALOG_ENTRY = "xml.catalog.entry.add";
+
+/**
+ * Command to create a new catalog file
+ */
+export const CREATE_CATALOG = "xml.catalog.create";

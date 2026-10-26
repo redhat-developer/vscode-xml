@@ -1,5 +1,9 @@
 # XSD Features
 
+## Binding
+
+See [Binding with Grammar](../BindingWithGrammar.md#xsd-binding) to associate an XML file with an XSD using the binding wizard.
+
 ## CodeLens Support
 
 CodeLens is supported for `.xsd` files, which can show where a type is referenced.
