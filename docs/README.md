@@ -11,6 +11,7 @@ Welcome to the [vscode-xml](https://github.com/redhat-developer/vscode-xml) docu
   * [Symbols](Symbols.md#symbols): More info on the available settings for the document symbols (outline).
   * [Troubleshooting](Troubleshooting.md#troubleshooting): Info on troubleshooting and fixes to issues.
   * [Features](Features.md#features): Notable info and demos on features available to use.
+  * [Semantic Highlighting](Features/SemanticHighlighting.md#semantic-highlighting): Highlights required elements and attributes when XML is bound to a grammar (XSD, RelaxNG, DTD).
   * [Proxy](Proxy.md#proxy): Instructions for setting up vscode-xml to work behind a proxy.
   * [Binding With Grammar](BindingWithGrammar.md#binding-with-grammar): Extension feature to bind an XML document to a grammar/schema file.
   * Generation: [XML from Grammar](GenerateXMLFromGrammar.md) | [Grammar from XML](GenerateGrammarFromXML.md) — generate in both directions (XSD, DTD, RelaxNG, RNC).
