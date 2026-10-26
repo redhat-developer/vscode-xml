@@ -182,10 +182,18 @@ for (const entry of bindingTypes.entries()) {
 async function grammarAssociationCommand(documentURI: Uri, languageClient: LanguageClient) {
   // A click on Bind to grammar/schema... has been processed in the XML document which is not bound to a grammar
 
-  // step 1: select local / remote Uri type
+  // step 1: select local / remote / catalog Uri type
   let grammarURI;
-  const uriType = await window.showQuickPick([{ "label": "local" }, { "label": "remote" }], { placeHolder: "Binding type" });
+  const uriType = await window.showQuickPick([
+    { label: "local", description: "Select a grammar file from the local file system" },
+    { label: "remote", description: "Enter a remote URL for the grammar" },
+    { label: "Catalog entry", description: "Bind using an XML catalog entry" }
+  ], { placeHolder: "How do you want to bind the grammar?" });
   if (!uriType) {
+    return;
+  }
+  if (uriType.label === 'Catalog entry') {
+    await catalogBindingFlow(documentURI, languageClient);
     return;
   }
   if (uriType.label === 'remote') {
@@ -313,6 +321,310 @@ function addToValueToSettingArray<T>(key: string, value: T): void {
   }
   settingArray.push(value);
   workspace.getConfiguration().update(key, settingArray, ConfigurationTarget.Workspace);
+}
+
+/**
+ * Bindable catalog entry returned by the server
+ */
+interface BindableCatalogEntry {
+  catalogURI: string;
+  entryType: string;
+  identifier: string;
+  targetURI: string;
+  uriValue: string;
+  grammarType: string;
+}
+
+/**
+ * Flow for binding an XML document to a grammar via an XML catalog entry
+ */
+async function catalogBindingFlow(documentURI: Uri, languageClient: LanguageClient) {
+  let entries: BindableCatalogEntry[];
+  try {
+    entries = await commands.executeCommand(
+      ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND,
+      ServerCommandConstants.LIST_BINDABLE_CATALOG_ENTRIES
+    );
+  } catch (error) {
+    window.showErrorMessage('Error listing catalog entries: ' + error.message);
+    return;
+  }
+
+  if (!entries || entries.length === 0) {
+    const choice = await window.showQuickPick([
+      { label: "Create new catalog...", description: "Create a new XML catalog file and add an entry" },
+      { label: "Select existing catalog...", description: "Select an existing catalog file and add an entry" }
+    ], { placeHolder: "No catalog entries found" });
+    if (!choice) return;
+
+    let catalogURI: string;
+    if (choice.label === "Create new catalog...") {
+      catalogURI = await createCatalogFlow();
+    } else {
+      catalogURI = await selectExistingCatalogFlow();
+    }
+    if (!catalogURI) return;
+
+    await addCatalogEntryFlow(catalogURI, documentURI, languageClient);
+    return;
+  }
+
+  const items: (QuickPickItem & { entry?: BindableCatalogEntry })[] = [];
+
+  const entriesByCatalog = new Map<string, BindableCatalogEntry[]>();
+  for (const entry of entries) {
+    const existing = entriesByCatalog.get(entry.catalogURI) || [];
+    existing.push(entry);
+    entriesByCatalog.set(entry.catalogURI, existing);
+  }
+
+  for (const [catURI, catalogEntries] of entriesByCatalog) {
+    items.push({
+      label: getFileName(catURI),
+      kind: vscode.QuickPickItemKind.Separator
+    } as any);
+
+    for (const entry of catalogEntries) {
+      items.push({
+        label: `${entry.entryType.toUpperCase()}  ${entry.identifier}`,
+        description: getFileName(entry.targetURI),
+        detail: entry.grammarType.toUpperCase(),
+        entry: entry
+      });
+    }
+  }
+
+  items.push({
+    label: '',
+    kind: vscode.QuickPickItemKind.Separator
+  } as any);
+  items.push({
+    label: "$(add) Add new catalog entry...",
+    description: "Create a new entry in a catalog file"
+  });
+
+  const picked = await window.showQuickPick(items, {
+    placeHolder: "Select a catalog entry to bind",
+    matchOnDescription: true,
+    matchOnDetail: true
+  });
+
+  if (!picked) return;
+
+  if (!picked.entry) {
+    const catalogOptions: QuickPickItem[] = [];
+    for (const cat of entriesByCatalog.keys()) {
+      catalogOptions.push({ label: getFileName(cat), description: cat });
+    }
+    catalogOptions.push({ label: "$(add) Create new catalog...", description: "Create a new catalog file" });
+
+    const catalogPick = await window.showQuickPick(catalogOptions, {
+      placeHolder: "Which catalog should contain the new entry?"
+    });
+    if (!catalogPick) return;
+
+    let catalogURI: string;
+    if (catalogPick.label.includes("Create new catalog")) {
+      catalogURI = await createCatalogFlow();
+    } else {
+      catalogURI = catalogPick.description;
+    }
+    if (!catalogURI) return;
+
+    await addCatalogEntryFlow(catalogURI, documentURI, languageClient);
+    return;
+  }
+
+  await bindWithCatalogEntry(documentURI, picked.entry, languageClient);
+}
+
+async function bindWithCatalogEntry(documentURI: Uri, entry: BindableCatalogEntry, languageClient: LanguageClient) {
+  const identifier = TextDocumentIdentifier.create(documentURI.toString());
+  try {
+    const result = await commands.executeCommand(
+      ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND,
+      ServerCommandConstants.ASSOCIATE_GRAMMAR_INSERT,
+      identifier,
+      entry.entryType,
+      "catalog",
+      entry.identifier,
+      entry.targetURI,
+      entry.uriValue
+    );
+    const lspTextDocumentEdit = <TextDocumentEdit>result;
+    const workEdits = new WorkspaceEdit();
+    for (const edit of lspTextDocumentEdit.edits) {
+      if ('newText' in edit) {
+        workEdits.replace(documentURI, languageClient.protocol2CodeConverter.asRange(edit.range), edit.newText);
+      }
+    }
+    await workspace.applyEdit(workEdits);
+  } catch (error) {
+    window.showErrorMessage('Error binding grammar via catalog: ' + error.message);
+  }
+}
+
+async function createCatalogFlow(): Promise<string | undefined> {
+  const saveOptions: vscode.SaveDialogOptions = {
+    saveLabel: 'Create Catalog',
+    filters: { 'XML Catalog': ['xml'] },
+    defaultUri: workspace.workspaceFolders?.[0]?.uri
+  };
+  const fileUri = await window.showSaveDialog(saveOptions);
+  if (!fileUri) return undefined;
+
+  let catalogContent: string;
+  try {
+    catalogContent = await commands.executeCommand(
+      ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND,
+      ServerCommandConstants.CREATE_CATALOG,
+      fileUri.toString()
+    );
+  } catch (error) {
+    catalogContent = '<?xml version="1.0" encoding="UTF-8"?>\n<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">\n</catalog>\n';
+  }
+
+  const encoder = new TextEncoder();
+  await workspace.fs.writeFile(fileUri, encoder.encode(catalogContent));
+
+  addToValueToSettingArray('xml.catalogs', fileUri.fsPath);
+
+  const doc = await workspace.openTextDocument(fileUri);
+  await window.showTextDocument(doc, { preview: false });
+
+  return fileUri.toString();
+}
+
+async function selectExistingCatalogFlow(): Promise<string | undefined> {
+  const options: OpenDialogOptions = {
+    canSelectMany: false,
+    openLabel: 'Select XML Catalog',
+    filters: { 'XML files': ['xml'] }
+  };
+  const fileUri = await window.showOpenDialog(options);
+  if (!fileUri || !fileUri[0]) return undefined;
+
+  addToValueToSettingArray('xml.catalogs', fileUri[0].fsPath);
+
+  return fileUri[0].toString();
+}
+
+async function addCatalogEntryFlow(catalogURI: string, documentURI: Uri, languageClient: LanguageClient) {
+  let grammarURI: string;
+  const uriType = await window.showQuickPick(
+    [{ label: "local" }, { label: "remote" }],
+    { placeHolder: "Select grammar source" }
+  );
+  if (!uriType) return;
+
+  if (uriType.label === 'remote') {
+    let predefinedUrl = await env.clipboard.readText();
+    if (!predefinedUrl || !predefinedUrl.startsWith('http')) {
+      predefinedUrl = '';
+    }
+    grammarURI = await window.showInputBox({
+      title: 'Enter grammar URL',
+      value: predefinedUrl
+    });
+  } else {
+    const options: OpenDialogOptions = {
+      canSelectMany: false,
+      openLabel: 'Select grammar file',
+      filters: { 'Grammar files': ['xsd', 'dtd', 'rng', 'rnc'] }
+    };
+    const fileUri = await window.showOpenDialog(options);
+    if (!fileUri || !fileUri[0]) return;
+    grammarURI = fileUri[0].toString();
+  }
+  if (!grammarURI) return;
+
+  const grammarPath = grammarURI.toLowerCase();
+  const defaultEntryType = grammarPath.endsWith('.dtd') ? 'public' : 'uri';
+
+  const entryTypeOptions: QuickPickItem[] = [
+    { label: 'public', description: 'Map a PUBLIC identifier to the grammar (recommended for DTDs)' },
+    { label: 'system', description: 'Map a SYSTEM identifier to the grammar' },
+    { label: 'uri', description: 'Map a URI/namespace to the grammar (recommended for XSD/RNG)' }
+  ];
+  const reorderedOptions = entryTypeOptions.sort((a, b) => {
+    if (a.label === defaultEntryType) return -1;
+    if (b.label === defaultEntryType) return 1;
+    return 0;
+  });
+
+  const pickedEntryType = await window.showQuickPick(reorderedOptions, {
+    placeHolder: 'Select catalog entry type'
+  });
+  if (!pickedEntryType) return;
+  const entryType = pickedEntryType.label;
+
+  let identifierPrompt: string;
+  let identifierPlaceholder: string;
+  switch (entryType) {
+    case 'public':
+      identifierPrompt = 'Enter the PUBLIC identifier';
+      identifierPlaceholder = '-//Example//DTD My Document//EN';
+      break;
+    case 'system':
+      identifierPrompt = 'Enter the SYSTEM identifier';
+      identifierPlaceholder = 'http://example.com/schema.dtd';
+      break;
+    default:
+      identifierPrompt = 'Enter the URI/namespace';
+      identifierPlaceholder = 'http://example.com/schema';
+      break;
+  }
+  const identifier = await window.showInputBox({
+    title: identifierPrompt,
+    placeHolder: identifierPlaceholder,
+    prompt: identifierPrompt,
+    validateInput: (value) => {
+      if (!value || value.trim().length === 0) {
+        return 'Identifier cannot be empty';
+      }
+      return null;
+    }
+  });
+  if (!identifier) return;
+
+  try {
+    const result = await commands.executeCommand(
+      ClientCommandConstants.EXECUTE_WORKSPACE_COMMAND,
+      ServerCommandConstants.ADD_CATALOG_ENTRY,
+      catalogURI,
+      entryType,
+      identifier,
+      grammarURI
+    );
+    if (result) {
+      const lspTextDocumentEdit = <TextDocumentEdit>result;
+      const catalogFileUri = Uri.parse(lspTextDocumentEdit.textDocument.uri);
+      const workEdits = new WorkspaceEdit();
+      for (const edit of lspTextDocumentEdit.edits) {
+        if ('newText' in edit) {
+          workEdits.replace(catalogFileUri, languageClient.protocol2CodeConverter.asRange(edit.range), edit.newText);
+        }
+      }
+      await workspace.applyEdit(workEdits);
+      const catalogDoc = workspace.textDocuments.find(d => d.uri.toString() === catalogFileUri.toString());
+      if (catalogDoc) {
+        await catalogDoc.save();
+      }
+    }
+  } catch (error) {
+    window.showErrorMessage('Error adding catalog entry: ' + error.message);
+    return;
+  }
+
+  let grammarType = 'dtd';
+  if (grammarURI.toLowerCase().endsWith('.xsd')) grammarType = 'xsd';
+  else if (grammarURI.toLowerCase().endsWith('.rng')) grammarType = 'rng';
+  else if (grammarURI.toLowerCase().endsWith('.rnc')) grammarType = 'rnc';
+
+  const entry: BindableCatalogEntry = {
+    catalogURI, entryType, identifier, targetURI: grammarURI, uriValue: grammarURI, grammarType
+  };
+  await bindWithCatalogEntry(documentURI, entry, languageClient);
 }
 
 /**
