@@ -709,6 +709,11 @@
           "default": false,
           "markdownDescription": "Enable/disable XML CodeLens. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22CodeLens%22%2C%22section%22%3A%22Code%20Lens%22%7D%5D) for information about CodeLens features"
         },
+        "xml.semanticTokens.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable/disable XML Semantic Highlighting. Default is `true`. When enabled and an XML file is associated with a grammar (XSD, RelaxNG, or DTD), required elements and attributes are visually highlighted. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features%2FSemanticHighlighting%22%2C%22section%22%3A%22Semantic%20Highlighting%22%7D%5D) for more information."
+        },
         "xml.preferences.quoteStyle": {
           "type": "string",
           "enum": [
