@@ -49,6 +49,8 @@ This VS Code extension provides support for creating and editing XML documents, 
   * [Minify XML](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Commands.md#minify-xml-document)
   * [Generate XML from Grammar](https://github.com/redhat-developer/vscode-xml/blob/main/docs/GenerateXMLFromGrammar.md#generate-xml-from-grammar)
   * [Generate Schema from XML](https://github.com/redhat-developer/vscode-xml/blob/main/docs/BindingWithGrammar.md#binding-with-new-grammar)
+  * *[Code Lens](https://github.com/redhat-developer/vscode-xml/blob/main/docs/CodeLens.md) when `xml.codeLens.enabled` is enabled*
+  * *[Inlay Hints](https://github.com/redhat-developer/vscode-xml/blob/main/docs/InlayHint.md) when `xml.inlayHint.enabled` is enabled*
 
 See the [changelog](CHANGELOG.md) for the latest release.
 
@@ -100,6 +102,7 @@ The following settings are supported:
 * `xml.autoCloseTags.enabled` : Enable/disable autoclosing of XML tags. Default is `true`.
   **IMPORTANT**: The following settings must be turned of for this to work: `editor.autoClosingTags`, `editor.autoClosingBrackets`.
 * [`xml.codeLens.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/CodeLens.md): Enable/disable XML CodeLens. Default is `false`.
+* [`xml.inlayHint.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/InlayHint.md): Enable/disable XML Inlay Hints (default values, attribute types, element types). Default is `false`.
 * [`xml.preferences.showSchemaDocumentationType`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md#documentation-type): Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`.
 * [`xml.validation.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md): Enable/disable all validation. Default is `true`.
  * [`xml.validation.namespaces.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md#xmlvalidationsnamespacesenabled): Enable/disable namespaces validation. Default is `always`. Ignored if [`xml.validation.enabled`](https://github.com/redhat-developer/vscode-xml/blob/main/docs/Validation.md) is set to `false`.

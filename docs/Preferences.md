@@ -136,6 +136,10 @@ See the [Formatting page](Formatting.md#formatting).
 
 Use `xml.codeLens.enabled` in order to enable or disable code lens. Please see [the Code Lens page](CodeLens.md#code-lens) for more information.
 
+## Inlay Hint
+
+Use `xml.inlayHint.enabled` to enable inlay hints (default is `false`). Once enabled, use `xml.inlayHint.showDefaultValue`, `xml.inlayHint.showAttributeType`, and `xml.inlayHint.showElementType` to control individual inlay hint features. Please see [the Inlay Hint page](InlayHint.md#inlay-hint) for more information.
+
 ## Tag Auto Closing
 
 The closing tags for elements should automatically be added when typing `>` to complete an opening tag.
