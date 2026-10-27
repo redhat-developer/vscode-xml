@@ -709,6 +709,26 @@
           "default": false,
           "markdownDescription": "Enable/disable XML CodeLens. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22CodeLens%22%2C%22section%22%3A%22Code%20Lens%22%7D%5D) for information about CodeLens features"
         },
+        "xml.inlayHint.enabled": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Enable/disable XML inlay hints. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22InlayHint%22%2C%22section%22%3A%22Inlay%20Hint%22%7D%5D) for more information."
+        },
+        "xml.inlayHint.showDefaultValue": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show default attribute values defined by the grammar (XSD, DTD) as inlay hints. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22InlayHint%22%2C%22section%22%3A%22Inlay%20Hint%22%7D%5D) for more information."
+        },
+        "xml.inlayHint.showAttributeType": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show the type of XML attributes (e.g., `: xs:integer`) as inlay hints after the attribute name. Types equal to `xs:string` are filtered out. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22InlayHint%22%2C%22section%22%3A%22Inlay%20Hint%22%7D%5D) for more information."
+        },
+        "xml.inlayHint.showElementType": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show the type of XML elements (e.g., `: xs:integer`) as inlay hints before the closing `>` of the start tag. Types equal to `xs:string` are filtered out. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22InlayHint%22%2C%22section%22%3A%22Inlay%20Hint%22%7D%5D) for more information."
+        },
         "xml.semanticTokens.enabled": {
           "type": "boolean",
           "default": true,
