@@ -450,6 +450,54 @@ See [RelaxNG features](Features/RelaxNGFeatures.md#relaxng-features)
 
 # Other Validation Settings
 
+## Per-folder and per-language validation settings
+
+The following `xml.validation.*` settings have `language-overridable` scope, which means they can be overridden per workspace folder (in multi-root workspaces) and per language ID:
+
+ * `xml.validation.enabled`
+ * `xml.validation.namespaces.enabled`
+ * `xml.validation.schema.enabled`
+ * `xml.validation.disallowDocTypeDecl`
+ * `xml.validation.resolveExternalEntities`
+ * `xml.validation.xInclude.enabled`
+ * `xml.validation.noGrammar`
+
+### Per-folder overrides (multi-root workspace)
+
+In a [multi-root workspace](https://code.visualstudio.com/docs/editor/multi-root-workspaces), each folder can have its own `.vscode/settings.json` with different validation settings:
+
+**Folder A** `.vscode/settings.json`:
+```json
+{
+  "xml.validation.enabled": true,
+  "xml.validation.schema.enabled": "always"
+}
+```
+
+**Folder B** `.vscode/settings.json`:
+```json
+{
+  "xml.validation.enabled": false
+}
+```
+
+When validating an XML file, the XML language server pulls the settings scoped to that file's workspace folder.
+
+### Per-language overrides
+
+If you have a custom language ID registered as an XML language participant (see [Extensions - Custom language](Extensions.md#custom-language)), you can override validation settings per language:
+
+```json
+{
+  "xml.validation.noGrammar": "hint",
+  "[myxml]": {
+    "xml.validation.noGrammar": "ignore"
+  }
+}
+```
+
+XML files report a hint for documents without a grammar, while files with language ID `myxml` silently ignore it.
+
 ## Disallow Doc Type Declarations
 
 If `xml.validation.disallowDocTypeDeclaration` is set to `true` (default is `false`), all Doc Type Declarations (DTD) will be marked as errors. The DOCTYPE is marked as an error regardless if the doctype is an internally declared or a reference to an external DTD. Standalone `.dtd` files are not marked as an error.
