@@ -766,7 +766,7 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "Enable/disable all validation. Default is `true`.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.validation.namespaces.enabled": {
           "type": "string",
@@ -782,7 +782,7 @@
             "Enable namespaces validation only when the root element declares an xmlns namespace."
           ],
           "markdownDescription": "Enable/disable namespaces validation. Default is `always`. Ignored if `#xml.validation.enabled#` is set to `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xmlnamespaceschemaenabled%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.validation.schema.enabled": {
           "type": "string",
@@ -798,25 +798,25 @@
             "Enable schema based validation only when the declared xsi:schemaLocation hint or xsi:noNamespaceSchemaLocation is valid for the root element."
           ],
           "markdownDescription": "Enable/disable schema based validation. Default is `always`. Ignored if `#xml.validation.enabled#` is set to `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xmlvalidationschemaenabled%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.validation.disallowDocTypeDecl": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22disallow-doc-type-declarations%22%7D%5D) for more information",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.validation.resolveExternalEntities": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Enable/disable resolve of external entities. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22resolve-external-entities%22%7D%5D) for more information. Disabled for untrusted workspaces",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.validation.xInclude.enabled": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Enable/disable validation for `xi:include`. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xmlvalidationxincludeenabled%22%7D%5D) for more information.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.validation.noGrammar": {
           "type": "string",
@@ -829,7 +829,7 @@
           ],
           "default": "hint",
           "markdownDescription": "The message severity when a document has no associated grammar. Default is `hint`.",
-          "scope": "window"
+          "scope": "language-overridable"
         },
         "xml.symbols.enabled": {
           "type": "boolean",
