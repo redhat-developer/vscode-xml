@@ -168,7 +168,8 @@ function getLanguageClientOptions(
         },
         actionableNotificationSupport: true,
         openSettingsCommandSupport: true,
-        bindingWizardSupport: true
+        bindingWizardSupport: true,
+        triggerSuggestCommandSupport: true
       }
     },
     errorHandler: new ClientErrorHandler('XML', context),

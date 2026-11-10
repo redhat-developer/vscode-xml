@@ -45,7 +45,8 @@ export function getLanguageParticipants(): LanguageParticipants {
     languages.add('xsl');
     languages.add('dtd');
     languages.add('svg');
-
+    languages.add('rnc');
+    
     for (const extension of extensions.all /*extensions.allAcrossExtensionHosts*/) {
       const xmlLanguageParticipants = extension.packageJSON?.contributes?.xmlLanguageParticipants as LanguageParticipantContribution[];
       if (Array.isArray(xmlLanguageParticipants)) {
