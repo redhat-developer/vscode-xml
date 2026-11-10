@@ -6,6 +6,7 @@
 - [XSD features](Features/XSDFeatures.md#xsd-features)
 - [DTD features](Features/DTDFeatures.md#dtd-features)
 - [RelaxNG features](Features/RelaxNGFeatures.md#relaxng-features)
+- [RNC features](Features/RNCFeatures.md#rnc-relax-ng-compact-syntax-features)
 - [XInclude features](Features/XIncludeFeatures.md#xinclude-features)
 - [XML Catalog features](Features/XMLCatalogFeatures.md#xml-catalog-features)
 - [XML References features](Features/XMLReferencesFeatures.md#xml-references-features)

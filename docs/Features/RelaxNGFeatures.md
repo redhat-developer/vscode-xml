@@ -34,7 +34,7 @@ You can associate your XML file with `RelaxNG grammar` (`file` or `URL`) using :
  
 ![RelaxNG grammar XML Syntax Overview](../images/RelaxNG/RelaxNGXMLSyntaxOverview.png)
 
- * for [RelaxNG Compact syntax (*.rnc files)](https://relaxng.org/compact-tutorial-20030326.html) it provides only syntax coloration.
+ * for [RelaxNG Compact syntax (*.rnc files)](https://relaxng.org/compact-tutorial-20030326.html) it provides full language support including completion, hover, go-to-definition, references, rename, code lens, code actions, formatting, folding, document symbols, and diagnostics. See the [RNC Features](RNCFeatures.md) page for details.
  
 ![RelaxNG Compact Syntax Overview](../images/RelaxNG/RelaxNGCompactSyntaxOverview.png)
 
