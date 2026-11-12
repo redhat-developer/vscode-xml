@@ -1168,6 +1168,12 @@
           "markdownDescription": "Allows file path for the given file name patterns or [Document Matcher](command:xml.open.docs?%5B%7B%22page%22%3A%22DocumentMatcher%22%2C%22section%22%3A%22documentmatcher%22%7D%5D) criteria. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features/XMLFilePathSupport%22%2C%22section%22%3A%22xmlfilepathsfeatures%22%7D%5D) for more information.",
           "scope": "window"
         },
+        "xml.rnc.format.blankLinesBetweenDefines": {
+          "type": "integer",
+          "default": 1,
+          "markdownDescription": "Number of blank lines to insert between top-level definitions in RNC files. Default is `1`.",
+          "scope": "language-overridable"
+        },
         "xml.extension.jars": {
           "type": "array",
           "default": [],
@@ -1276,23 +1282,23 @@
         },
         {
           "command": "xml.refactor.surround.with.tags",
-          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+          "when": "editorLangId in xml.xmlMarkupLanguageIds && XMLLSReady"
         },
         {
           "command": "xml.refactor.surround.with.comments",
-          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+          "when": "editorLangId in xml.xmlMarkupLanguageIds && XMLLSReady"
         },
         {
           "command": "xml.refactor.surround.with.cdata",
-          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+          "when": "editorLangId in xml.xmlMarkupLanguageIds && XMLLSReady"
         },
         {
           "command": "xml.refactor.surround.with.ignoreFormatting",
-          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+          "when": "editorLangId in xml.xmlMarkupLanguageIds && XMLLSReady"
         },
         {
           "command": "xml.minify",
-          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady"
+          "when": "editorLangId in xml.xmlMarkupLanguageIds && XMLLSReady"
         },
         {
           "command": "xml.generate.fromGrammar",
@@ -1300,28 +1306,28 @@
         },
         {
           "command": "xml.generate.grammarFromXml",
-          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady && xml.activeDocumentHasNoGrammar"
+          "when": "editorLangId in xml.xmlMarkupLanguageIds && XMLLSReady && xml.activeDocumentHasNoGrammar"
         }
       ],
       "editor/context": [
         {
           "command": "xml.refactor.surround.with.tags",
-          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
+          "when": "editorLangId in xml.xmlMarkupLanguageIds && XMLLSReady",
           "group": "0_xml@1"
         },
         {
           "command": "xml.refactor.surround.with.comments",
-          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
+          "when": "editorLangId in xml.xmlMarkupLanguageIds && XMLLSReady",
           "group": "0_xml@2"
         },
         {
           "command": "xml.refactor.surround.with.cdata",
-          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
+          "when": "editorLangId in xml.xmlMarkupLanguageIds && XMLLSReady",
           "group": "0_xml@3"
         },
         {
           "command": "xml.refactor.surround.with.ignoreFormatting",
-          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
+          "when": "editorLangId in xml.xmlMarkupLanguageIds && XMLLSReady",
           "group": "0_xml@4"
         },
         {
@@ -1331,7 +1337,7 @@
         },
         {
           "command": "xml.minify",
-          "when": "editorLangId in xml.supportedLanguageIds && XMLLSReady",
+          "when": "editorLangId in xml.xmlMarkupLanguageIds && XMLLSReady",
           "group": "0_xml@6"
         },
         {
