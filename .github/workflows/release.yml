@@ -182,6 +182,9 @@ jobs:
     environment: ${{ (inputs.publishToMarketPlace == 'true' || inputs.publishToOVSX == 'true') && 'release' || 'pre-release' }}
     runs-on: ubuntu-latest
     needs: packaging-job
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Check Out VS Code XML
         uses: actions/checkout@v4
@@ -210,13 +213,13 @@ jobs:
         if: ${{ github.event_name == 'schedule' || inputs.publishToMarketPlace == 'true' || inputs.publishPreRelease == 'true' }}
         run: |
           for platformVsix in vscode-xml/vscode-xml-*-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix; do
-            vsce publish --skip-duplicate -p ${{ secrets.VSCODE_MARKETPLACE_TOKEN }} --packagePath ${platformVsix}
+            vsce publish --oidc --skip-duplicate --packagePath ${platformVsix}
           done
-          vsce publish --skip-duplicate -p ${{ secrets.VSCODE_MARKETPLACE_TOKEN }} --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
+          vsce publish --oidc --skip-duplicate --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
       - name: Publish to OpenVSX Registry
         if: ${{ github.event_name == 'schedule' || inputs.publishToOVSX == 'true' || inputs.publishPreRelease == 'true' }}
         run: |
           for platformVsix in vscode-xml/vscode-xml-*-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix; do
-            ovsx publish --skip-duplicate -p ${{ secrets.OVSX_MARKETPLACE_TOKEN }} --packagePath ${platformVsix}
+            ovsx publish --trusted-publishing --skip-duplicate --packagePath ${platformVsix}
           done
-          ovsx publish --skip-duplicate -p ${{ secrets.OVSX_MARKETPLACE_TOKEN }}  --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
+          ovsx publish --trusted-publishing --skip-duplicate  --packagePath vscode-xml/vscode-xml-${{ env.EXT_VERSION }}-${GITHUB_RUN_NUMBER}.vsix
