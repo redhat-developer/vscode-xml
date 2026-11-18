@@ -68,12 +68,12 @@ To do that:
 
  * create a Java project which provides a custom XML extension providing your custom completion, hover, validation, rename, etc:
  * create the XML extension like [MavenLemminxExtension](https://github.com/eclipse/lemminx-maven/blob/master/lemminx-maven/src/main/java/org/eclipse/lemminx/extensions/maven/MavenLemminxExtension.java).
- * register your custom completion participant in the XML extension like [MavenCompletionParticipant](https://github.com/eclipse/lemminx-maven/blob/master/lemminx-maven/src/main/java/org/eclipse/lemminx/extensions/maven/MavenCompletionParticipant.java#L75)
+ * register your custom completion participant in the XML extension like [MavenCompletionParticipant](https://github.com/eclipse-lemminx/lemminx-maven/blob/master/lemminx-maven/src/main/java/org/eclipse/lemminx/extensions/maven/participants/completion/MavenCompletionParticipant.java)
  * register your custom XML extension with [Java Service Provider Interface (SPI)](https://www.baeldung.com/java-spi) mechanism in the [/META-INF/services/org.eclipse.lemminx.services.extensions.IXMLExtension](https://github.com/eclipse/lemminx-maven/blob/master/lemminx-maven/src/main/resources/META-INF/services/org.eclipse.lemminx.services.extensions.IXMLExtension) file.
  * build a JAR `your-custom-xml-extension.jar`.
  * refer to [Running your Java LemMinX extension](#Running-your-Java-LemMinX-extension) for instructions on setting up the Java LemMinX extension to run in VS Code
 
-You can see the [vscode-xml-maven](https://github.com/angelozerr/vscode-xml-maven) sample which registers custom maven completion [MavenCompletionParticipant](https://github.com/eclipse/lemminx-maven/blob/master/lemminx-maven/src/main/java/org/eclipse/lemminx/extensions/maven/MavenCompletionParticipant.java#L210) for scope:
+You can see the [vscode-xml-maven](https://github.com/angelozerr/vscode-xml-maven) sample which registers custom maven completion [MavenCompletionParticipant](https://github.com/eclipse-lemminx/lemminx-maven/blob/master/lemminx-maven/src/main/java/org/eclipse/lemminx/extensions/maven/participants/completion/MavenCompletionParticipant.java) for scope:
 
 ![demo of vscode xml maven suggesting different scopes for a dependency](./images/vscode-xml-maven.gif)
 
