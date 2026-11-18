@@ -361,3 +361,129 @@ Selecting `addressBook` as root element generates:
 ```
 
 See [Generate XML from Grammar](../GenerateXMLFromGrammar.md) for more details.
+
+## Inlay Hints
+
+### Inherited start declaration
+
+When an RNC file uses `include` without its own `start` declaration, the editor shows an inlay hint at the end of the include URI displaying the inherited `start` pattern from the included file.
+
+**Example — `order-schema.rnc`:**
+```rnc
+start = element order {
+  attribute id { text },
+  element item { text }+
+}
+```
+
+**Example — `order-extension.rnc`** (simple include, inherits `start`):
+```rnc
+include "order-schema.rnc"  ← start = element order { … }
+                             ↑ inlay hint
+```
+
+The hint shows a truncated form of the full `start` pattern. Hovering over `include` also shows the inherited definitions (see [Hover on `include`](#hover-on-include)).
+
+The hint is **not** shown when the include overrides `start` explicitly:
+```rnc
+include "order-schema.rnc" {
+  start = element orders { element order { … }+ }
+}
+```
+
+<!-- TODO: screenshot RNCInlayHintInheritedStart.png -->
+
+## Diagnostics
+
+### Missing `start` element
+
+When an RNC file has no `start` declaration and no `include`, a **Missing `start` element** error is reported:
+
+```rnc
+root = element root { text }
+^--- error: missing "start" element
+```
+
+### No diagnostic for included fragments
+
+When a file is intentionally a **grammar fragment** — a reusable set of defines without its own `start` — and another grammar includes it with a `start` override, the diagnostic is suppressed:
+
+**`fragment.rnc`** — no `start` (designed to be included):
+```rnc
+item = element item { text }
+address = element address { text }
+```
+
+**`main.rnc`** — includes the fragment and provides `start`:
+```rnc
+include "fragment.rnc" {
+  start = element root { item+, address }
+}
+```
+
+In this case, `fragment.rnc` does **not** show the "missing `start` element" error because `main.rnc` provides the `start` via the include override block `{ start = ... }`.
+
+> **Prerequisite:** This suppression requires the [Workspace Index](../WorkspaceIndex.md) to be enabled (`"xml.workspaceIndex.enabled": true`) so that LemMinX can detect which files include the fragment.
+
+<!-- TODO: screenshot RNCFragmentNoMissingStart.png -->
+
+## Workspace Index
+
+When [Workspace Index](../WorkspaceIndex.md) is enabled (`"xml.workspaceIndex.enabled": true`), RNC grammar files gain two additional cross-file features.
+
+### Sample files
+
+Consider a workspace with one RNC grammar, a second RNC that includes it, and two XML files that reference it:
+
+**`order-schema.rnc`**
+```rnc
+start = element order {
+  attribute id { text },
+  element item { text }+
+}
+```
+
+**`order-schema-extended.rnc`** — includes the base RNC via `include`
+```rnc
+include "order-schema.rnc" {
+  start = element orders {
+    element order {
+      attribute id { text },
+      element item { text }+
+    }+
+  }
+}
+```
+
+**`order-xml-model.xml`** — references the RNC via `<?xml-model?>`
+```xml
+<?xml-model href="order-schema.rnc" type="application/relax-ng-compact-syntax"?>
+<order id="1">
+  <item>Widget</item>
+</order>
+```
+
+**`orders-xml-model.xml`** — references the extended RNC
+```xml
+<?xml-model href="order-schema-extended.rnc" type="application/relax-ng-compact-syntax"?>
+<orders>
+  <order id="1"><item>Widget</item></order>
+  <order id="2"><item>Gadget</item></order>
+</orders>
+```
+
+Opening `order-schema.rnc` shows a **"1 reference"** code lens (`order-xml-model.xml`). `order-schema-extended.rnc` shows **"1 reference"** (`orders-xml-model.xml`) and also appears as a referencing file of `order-schema.rnc` via the `include`.
+
+### Code lens — N references
+
+A **"N references"** code lens appears above the root element of the `.rnc` file, showing how many XML files in the workspace reference it. Click it (or use **Find All References**) to open the References panel with the exact location of each reference.
+
+> **Prerequisite:** Code lens must also be enabled — set `"xml.codeLens.enabled": true`.
+
+<!-- TODO: add screenshot here (WorkspaceIndexCodeLensRNC.png) -->
+
+### Rename grammar file
+
+Renaming an `.rnc` file in the VS Code Explorer automatically updates all XML files that reference it (via `<?xml-model?>`).
+
+See [Workspace Index](../WorkspaceIndex.md) for full setup and details.

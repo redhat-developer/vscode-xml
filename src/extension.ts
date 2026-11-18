@@ -19,6 +19,7 @@ import { cleanUpHeapDumps } from './client/clientErrorHandler';
 import { getIndentationRules } from './client/indentation';
 import { activateXmlEncodingDetection } from './client/xmlEncoding';
 import { XML_SUPPORTED_LANGUAGE_IDS, startLanguageClient } from './client/xmlClient';
+import { suggestWorkspaceIndexIfNeeded } from './client/workspaceIndexSuggestion';
 import { registerClientOnlyCommands } from './commands/registerCommands';
 import { collectXmlJavaExtensions } from './plugin';
 import * as requirements from './server/requirements';
@@ -82,6 +83,8 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
     requirementsData, collectXmlJavaExtensions(extensions.all, getXMLConfiguration().get("extension.jars", [])), context);
 
   languageClient = await startLanguageClient(context, serverOptions, logfile, externalXmlSettings, requirementsData);
+
+  suggestWorkspaceIndexIfNeeded(context);
 
   return getXmlExtensionApiImplementation(languageClient, logfile, externalXmlSettings, requirementsData);
 }
