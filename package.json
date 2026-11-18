@@ -734,6 +734,50 @@
           "default": true,
           "markdownDescription": "Enable/disable XML Semantic Highlighting. Default is `true`. When enabled and an XML file is associated with a grammar (XSD, RelaxNG, or DTD), required elements and attributes are visually highlighted. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Features%2FSemanticHighlighting%22%2C%22section%22%3A%22Semantic%20Highlighting%22%7D%5D) for more information."
         },
+        "xml.workspaceIndex.enabled": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Enable/disable the workspace Bloom index. Default is `false`. When enabled, the server builds a per-file Bloom filter index at startup to power cross-file grammar reference features: **Find References** on grammar files and **automatic reference updates on rename**. Must be enabled explicitly — set to `true` to activate. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22WorkspaceIndex%22%2C%22section%22%3A%22Workspace%20Index%22%7D%5D) for more information."
+        },
+        "xml.workspaceIndex.excludeDirectories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            ".git",
+            ".hg",
+            ".svn",
+            "node_modules",
+            "target",
+            "build",
+            ".gradle",
+            "out",
+            "dist",
+            "bin"
+          ],
+          "markdownDescription": "Directory names to skip when building the workspace index at startup. Any directory whose name exactly matches an entry in this list (and all its descendants) is excluded from the scan. Use this to avoid indexing generated output, dependency caches, and VCS metadata folders. Requires `xml.workspaceIndex.enabled: true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22WorkspaceIndex%22%2C%22section%22%3A%22Workspace%20Index%22%7D%5D) for more information.",
+          "scope": "resource"
+        },
+        "xml.workspaceIndex.headLimits": {
+          "type": "object",
+          "default": {
+            "**/*.xml":  "64KB",
+            "**/*.xsd":  "512KB",
+            "**/*.dtd":  "512KB",
+            "**/*.rng":  "512KB",
+            "**/*.rnc":  "512KB",
+            "**/*.wsdl": "512KB",
+            "**/*.xsl":  "512KB",
+            "**/*.xslt": "512KB"
+          },
+          "additionalProperties": {
+            "type": ["string", "null"],
+            "description": "Size limit as a human-readable string (e.g. \"64KB\", \"512Ko\", \"1MB\") or null for no limit."
+          },
+          "markdownDescription": "Per-file read limits during workspace indexing. Keys are glob patterns (e.g. `\"**/*.xsd\"`, `\"**/vendor/**\"`); the longest matching pattern wins. Values are human-readable size strings: `\"64KB\"`, `\"512Ko\"`, `\"1MB\"`, `\"1Mo\"` (case-insensitive), a raw byte count, or `null`/`\"0\"` for no limit. Files that exceed their limit are marked as *partially indexed* and always returned as reference candidates (no false negatives). The special patterns `\"*\"`, `\"**\"`, and `\"**/*\"` act as catch-all defaults. By default: 64 KB for `.xml` files and 512 KB for grammar files — prevents OOM on workspaces with large XSD/XML files. Use `{\"*\": null}` to disable all limits. Requires `xml.workspaceIndex.enabled: true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22WorkspaceIndex%22%2C%22section%22%3A%22xml.workspaceIndex.headLimits%22%7D%5D) for more information.",
+          "scope": "resource"
+        },
         "xml.preferences.quoteStyle": {
           "type": "string",
           "enum": [
@@ -1260,6 +1304,11 @@
         "command": "xml.generate.grammarFromXml",
         "title": "Generate Grammar from XML",
         "category": "XML"
+      },
+      {
+        "command": "xml.grammar.findReferences",
+        "title": "Find References",
+        "category": "XML"
       }
     ],
     "menus": {
@@ -1331,9 +1380,14 @@
           "group": "0_xml@4"
         },
         {
-          "command": "xml.generate.fromGrammar",
+          "command": "xml.grammar.findReferences",
           "when": "resourceExtname in xml.grammarFileExtensions && XMLLSReady",
           "group": "0_xml@5"
+        },
+        {
+          "command": "xml.generate.fromGrammar",
+          "when": "resourceExtname in xml.grammarFileExtensions && XMLLSReady",
+          "group": "0_xml@6"
         },
         {
           "command": "xml.minify",
@@ -1348,14 +1402,19 @@
       ],
       "explorer/context": [
         {
+          "command": "xml.grammar.findReferences",
+          "when": "resourceExtname in xml.grammarFileExtensions && XMLLSReady",
+          "group": "0_xml@1"
+        },
+        {
           "command": "xml.generate.fromGrammar",
           "when": "resourceExtname in xml.grammarFileExtensions && XMLLSReady",
-          "group": "0_xml"
+          "group": "0_xml@2"
         },
         {
           "command": "xml.generate.grammarFromXml",
           "when": "resourceExtname == .xml && XMLLSReady",
-          "group": "0_xml"
+          "group": "0_xml@3"
         }
       ]
     },

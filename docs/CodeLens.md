@@ -60,3 +60,29 @@ Here is a demonstration of the above Code Lens:
 Here is a demonstration of the code lens for `xs:element`:
 
 ![An element root is declared that contains an element boot. Above the declaration of boot, there is a code lens that links to the reference in root.](./images/CodeLens/XSDElementCodeLens.gif)
+
+### Grammar file references (Workspace Index)
+
+When [Workspace Index](WorkspaceIndex.md) is enabled (`"xml.workspaceIndex.enabled": true`) **and** code lens is enabled (`"xml.codeLens.enabled": true`), grammar files (`.xsd`, `.dtd`, `.rng`, `.rnc`) show a **"N references"** code lens above the root element, indicating how many XML files in the workspace reference that grammar file.
+
+<!-- TODO: add screenshot here (WorkspaceIndexCodeLens.png) -->
+
+Click the code lens (or use **Find All References** with the cursor inside the grammar file) to open the References panel listing every XML file and the exact line of each reference.
+
+You can also trigger this lookup without code lens via **right-click → Find References** on a grammar file in the Explorer or editor context menu. This entry is always visible for grammar files. If the Workspace Index is not yet enabled, clicking it will offer to enable it automatically; accepting enables the index and immediately opens the References panel for that file.
+
+This is distinct from the XSD/DTD code lenses above, which show references *within* the grammar file itself. The workspace index code lens shows references *from XML files* to the grammar file as a whole.
+
+See [Workspace Index](WorkspaceIndex.md) for setup and details.
+
+### Catalog entry references (Workspace Index)
+
+When [Workspace Index](WorkspaceIndex.md) is enabled **and** code lens is enabled, each `<uri>`, `<system>`, and `<public>` entry in a registered XML catalog shows a **"N references"** code lens indicating how many XML files use that catalog mapping.
+
+<!-- TODO: screenshot CodeLensCatalogEntryReferences.png -->
+
+The count is based on the catalog identifier (`name`, `systemId`, or `publicId`) — the value that XML files use to bind to the grammar (via `xmlns=`, `SYSTEM`, or `PUBLIC`), not the grammar filename.
+
+Click the code lens to open the References panel listing all XML files that reference that catalog mapping.
+
+See [XML Catalog Features — References on Catalog Entries](Features/XMLCatalogFeatures.md#references-on-catalog-entries) for full details.

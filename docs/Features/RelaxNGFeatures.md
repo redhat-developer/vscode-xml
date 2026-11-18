@@ -78,6 +78,24 @@ When you click on this menu item, VS Code will open the `rng` or `rnc` grammar f
 
 ![Go to Type Definition result](../images/RelaxNG/GoToTypeDefinitionResult.png)
 
+# Workspace Index
+
+When [Workspace Index](../WorkspaceIndex.md) is enabled (`"xml.workspaceIndex.enabled": true`), RelaxNG grammar files gain two additional cross-file features.
+
+## Code lens — N references
+
+A **"N references"** code lens appears above the root element of the `.rng` file, showing how many XML files in the workspace reference it. Click it (or use **Find All References**) to open the References panel with the exact location of each reference.
+
+> **Prerequisite:** Code lens must also be enabled — set `"xml.codeLens.enabled": true`.
+
+<!-- TODO: add screenshot here (WorkspaceIndexCodeLensRNG.png) -->
+
+## Rename grammar file
+
+Renaming an `.rng` file in the VS Code Explorer automatically updates all XML files that reference it (via `<?xml-model?>`).
+
+See [Workspace Index](../WorkspaceIndex.md) for full setup and details.
+
 # How to start?
 
 ## Using snippets

@@ -361,3 +361,21 @@ Selecting `addressBook` as root element generates:
 ```
 
 See [Generate XML from Grammar](../GenerateXMLFromGrammar.md) for more details.
+
+## Workspace Index
+
+When [Workspace Index](../WorkspaceIndex.md) is enabled (`"xml.workspaceIndex.enabled": true`), RNC grammar files gain two additional cross-file features.
+
+### Code lens — N references
+
+A **"N references"** code lens appears above the root element of the `.rnc` file, showing how many XML files in the workspace reference it. Click it (or use **Find All References**) to open the References panel with the exact location of each reference.
+
+> **Prerequisite:** Code lens must also be enabled — set `"xml.codeLens.enabled": true`.
+
+<!-- TODO: add screenshot here (WorkspaceIndexCodeLensRNC.png) -->
+
+### Rename grammar file
+
+Renaming an `.rnc` file in the VS Code Explorer automatically updates all XML files that reference it (via `<?xml-model?>`).
+
+See [Workspace Index](../WorkspaceIndex.md) for full setup and details.
