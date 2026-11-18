@@ -92,3 +92,10 @@ export const GENERATE_XML_FROM_GRAMMAR = 'xml.generate.fromGrammar';
  * VSCode client command to generate a grammar (XSD, DTD, RelaxNG) from an XML file.
  */
 export const GENERATE_GRAMMAR_FROM_XML = 'xml.generate.grammarFromXml';
+
+/**
+ * VSCode client command to find all workspace XML files that reference a grammar file.
+ * Available from the Explorer context menu and editor context menu on grammar files
+ * when the workspace index is enabled.
+ */
+export const GRAMMAR_FIND_REFERENCES = 'xml.grammar.findReferences';

@@ -78,6 +78,88 @@ When you click on this menu item, VS Code will open the `rng` or `rnc` grammar f
 
 ![Go to Type Definition result](../images/RelaxNG/GoToTypeDefinitionResult.png)
 
+# Workspace Index
+
+When [Workspace Index](../WorkspaceIndex.md) is enabled (`"xml.workspaceIndex.enabled": true`), RelaxNG grammar files gain two additional cross-file features.
+
+## Sample files
+
+Consider a workspace with one RNG grammar, a second RNG that includes it, and two XML files that reference it:
+
+**`order-schema.rng`**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <element name="order">
+      <attribute name="id"/>
+      <oneOrMore>
+        <element name="item">
+          <text/>
+        </element>
+      </oneOrMore>
+    </element>
+  </start>
+</grammar>
+```
+
+**`order-schema-extended.rng`** — includes the base RNG via `<include>`
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <include href="order-schema.rng">
+    <start>
+      <element name="orders">
+        <oneOrMore>
+          <ref name="order-content"/>
+        </oneOrMore>
+      </element>
+    </start>
+  </include>
+  <define name="order-content">
+    <element name="order">
+      <attribute name="id"/>
+      <oneOrMore>
+        <element name="item"><text/></element>
+      </oneOrMore>
+    </element>
+  </define>
+</grammar>
+```
+
+**`order-xml-model.xml`** — references the RNG via `<?xml-model?>`
+```xml
+<?xml-model href="order-schema.rng"?>
+<order id="1">
+  <item>Widget</item>
+</order>
+```
+
+**`orders-xml-model.xml`** — references the extended RNG
+```xml
+<?xml-model href="order-schema-extended.rng"?>
+<orders>
+  <order id="1"><item>Widget</item></order>
+  <order id="2"><item>Gadget</item></order>
+</orders>
+```
+
+Opening `order-schema.rng` shows a **"1 reference"** code lens (`order-xml-model.xml`). `order-schema-extended.rng` shows **"1 reference"** (`orders-xml-model.xml`) and also appears as a referencing file of `order-schema.rng` via the `<include>`.
+
+## Code lens — N references
+
+A **"N references"** code lens appears above the root element of the `.rng` file, showing how many XML files in the workspace reference it. Click it (or use **Find All References**) to open the References panel with the exact location of each reference.
+
+> **Prerequisite:** Code lens must also be enabled — set `"xml.codeLens.enabled": true`.
+
+<!-- TODO: add screenshot here (WorkspaceIndexCodeLensRNG.png) -->
+
+## Rename grammar file
+
+Renaming an `.rng` file in the VS Code Explorer automatically updates all XML files that reference it (via `<?xml-model?>`).
+
+See [Workspace Index](../WorkspaceIndex.md) for full setup and details.
+
 # How to start?
 
 ## Using snippets

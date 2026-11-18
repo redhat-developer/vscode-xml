@@ -48,7 +48,7 @@
 			"2": { "name": "entity.name.type.namespace.rnc" },
 			"3": { "name": "keyword.operator.assignment.rnc" }
 		},
-		"match": "\\b(default\\s+namespace)(?:\\s+([a-zA-Z][a-zA-Z_0-9.-]*))?\\s*(=)"
+		"match": "(?<![a-zA-Z0-9_.-])(default\\s+namespace)(?:\\s+([a-zA-Z][a-zA-Z_0-9.-]*))?\\s*(=)"
 	},
 	{
 		"captures": {
@@ -56,7 +56,7 @@
 			"2": { "name": "entity.name.type.namespace.rnc" },
 			"3": { "name": "keyword.operator.assignment.rnc" }
 		},
-		"match": "\\b(namespace)\\s+([a-zA-Z][a-zA-Z_0-9.-]*)\\s*(=)"
+		"match": "(?<![a-zA-Z0-9_.-])(namespace)\\s+([a-zA-Z][a-zA-Z_0-9.-]*)\\s*(=)"
 	},
 	{
 		"captures": {
@@ -64,14 +64,14 @@
 			"2": { "name": "entity.name.type.namespace.rnc" },
 			"3": { "name": "keyword.operator.assignment.rnc" }
 		},
-		"match": "\\b(datatypes)\\s+([a-zA-Z][a-zA-Z_0-9.-]*)\\s*(=)"
+		"match": "(?<![a-zA-Z0-9_.-])(datatypes)\\s+([a-zA-Z][a-zA-Z_0-9.-]*)\\s*(=)"
 	},
 	{
-		"match": "\\b(default\\s+namespace|namespace|datatypes)\\b",
+		"match": "(?<![a-zA-Z0-9_.-])(default\\s+namespace|namespace|datatypes)(?![a-zA-Z0-9_.-])",
 		"name": "keyword.other.declaration.rnc"
 	},
 	{
-		"begin": "\\b(include)\\s+(\"[^\"]*\"|'[^']*')\\s*(\\{)",
+		"begin": "(?<![a-zA-Z0-9_.-])(include)\\s+(\"[^\"]*\"|'[^']*')\\s*(\\{)",
 		"beginCaptures": {
 			"1": { "name": "keyword.control.import.rnc" },
 			"2": { "name": "string.quoted.double.rnc" },
@@ -88,13 +88,13 @@
 					"1": { "name": "entity.name.function.override.rnc" },
 					"2": { "name": "keyword.operator.assignment.rnc" }
 				},
-				"match": "\\b(start|[a-zA-Z][a-zA-Z_0-9.-]*)\\s*([|&]?=)"
+				"match": "(?<![a-zA-Z0-9_.-])(start|[a-zA-Z][a-zA-Z_0-9.-]*)\\s*([|&]?=)"
 			},
 			{ "include": "$self" }
 		]
 	},
 	{
-		"match": "\\b(include|external|inherit)\\b",
+		"match": "(?<![a-zA-Z0-9_.-])(include|external|inherit)(?![a-zA-Z0-9_.-])",
 		"name": "keyword.control.import.rnc"
 	},
 	{
@@ -102,10 +102,10 @@
 			"1": { "name": "keyword.other.rnc" },
 			"2": { "name": "keyword.operator.assignment.rnc" }
 		},
-		"match": "\\b(start)\\s*([|&]?=)"
+		"match": "(?<![a-zA-Z0-9_.-])(start)\\s*([|&]?=)"
 	},
 	{
-		"begin": "\\b(grammar)\\s*(\\{)",
+		"begin": "(?<![a-zA-Z0-9_.-])(grammar)\\s*(\\{)",
 		"beginCaptures": {
 			"1": { "name": "keyword.other.rnc" },
 			"2": { "name": "punctuation.section.block.rnc" }
@@ -118,7 +118,7 @@
 		"patterns": [{ "include": "$self" }]
 	},
 	{
-		"begin": "\\b(div)\\s*(\\{)",
+		"begin": "(?<![a-zA-Z0-9_.-])(div)\\s*(\\{)",
 		"beginCaptures": {
 			"1": { "name": "keyword.other.rnc" },
 			"2": { "name": "punctuation.section.block.rnc" }
@@ -131,21 +131,21 @@
 		"patterns": [{ "include": "$self" }]
 	},
 	{
-		"match": "\\b(start|grammar|div)\\b",
+		"match": "(?<![a-zA-Z0-9_.-])(start|grammar|div)(?![a-zA-Z0-9_.-])",
 		"name": "keyword.other.rnc"
 	},
 	{
-		"match": "\\b(text|empty|notAllowed|mixed|list|parent)\\b",
+		"match": "(?<![a-zA-Z0-9_.-])(text|empty|notAllowed|mixed|list|parent)(?![a-zA-Z0-9_.-])",
 		"name": "keyword.other.pattern.rnc"
 	},
 	{
-		"match": "\\b(string|token)\\b",
+		"match": "(?<![a-zA-Z0-9_.-])(string|token)(?![a-zA-Z0-9_.-])",
 		"name": "storage.type.builtin.rnc"
 	},
 	{
-		"begin": "\\b(element)\\s+",
+		"begin": "(?<![a-zA-Z0-9_.-])(element)\\s+",
 		"beginCaptures": { "1": { "name": "keyword.other.element.rnc" } },
-		"end": "(?=\\{)",
+		"end": "(?=\\{|(?<![a-zA-Z0-9_.-])[a-zA-Z][a-zA-Z_0-9.-]*\\s*[|&]?=)",
 		"name": "meta.element.nameclass.rnc",
 		"patterns": [
 			{
@@ -154,9 +154,9 @@
 					"2": { "name": "punctuation.separator.namespace.rnc" },
 					"3": { "name": "entity.name.type.element.rnc" }
 				},
-				"match": "\\b([a-zA-Z][a-zA-Z_0-9.-]*)(\\:)([a-zA-Z][a-zA-Z_0-9.-]*|\\*)"
+				"match": "(?<![a-zA-Z0-9_.-])([a-zA-Z][a-zA-Z_0-9.-]*)(\\:)([a-zA-Z][a-zA-Z_0-9.-]*|\\*)"
 			},
-			{ "match": "\\b[a-zA-Z][a-zA-Z_0-9.-]*\\b", "name": "entity.name.type.element.rnc" },
+			{ "match": "(?<![a-zA-Z0-9_.-])[a-zA-Z][a-zA-Z_0-9.-]*(?![a-zA-Z0-9_.-])", "name": "entity.name.type.element.rnc" },
 			{ "match": "\\*", "name": "entity.name.type.element.rnc" },
 			{ "match": "\\|", "name": "keyword.operator.rnc" },
 			{ "match": "-", "name": "keyword.operator.except.rnc" },
@@ -165,9 +165,9 @@
 		]
 	},
 	{
-		"begin": "\\b(attribute)\\s+",
+		"begin": "(?<![a-zA-Z0-9_.-])(attribute)\\s+",
 		"beginCaptures": { "1": { "name": "keyword.other.attribute.rnc" } },
-		"end": "(?=\\{)",
+		"end": "(?=\\{|(?<![a-zA-Z0-9_.-])[a-zA-Z][a-zA-Z_0-9.-]*\\s*[|&]?=)",
 		"name": "meta.attribute.nameclass.rnc",
 		"patterns": [
 			{
@@ -176,9 +176,9 @@
 					"2": { "name": "punctuation.separator.namespace.rnc" },
 					"3": { "name": "entity.other.attribute-name.rnc" }
 				},
-				"match": "\\b([a-zA-Z][a-zA-Z_0-9.-]*)(\\:)([a-zA-Z][a-zA-Z_0-9.-]*|\\*)"
+				"match": "(?<![a-zA-Z0-9_.-])([a-zA-Z][a-zA-Z_0-9.-]*)(\\:)([a-zA-Z][a-zA-Z_0-9.-]*|\\*)"
 			},
-			{ "match": "\\b[a-zA-Z][a-zA-Z_0-9.-]*\\b", "name": "entity.other.attribute-name.rnc" },
+			{ "match": "(?<![a-zA-Z0-9_.-])[a-zA-Z][a-zA-Z_0-9.-]*(?![a-zA-Z0-9_.-])", "name": "entity.other.attribute-name.rnc" },
 			{ "match": "\\*", "name": "entity.other.attribute-name.rnc" },
 			{ "match": "\\|", "name": "keyword.operator.rnc" },
 			{ "match": "-", "name": "keyword.operator.except.rnc" },
@@ -187,7 +187,7 @@
 		]
 	},
 	{
-		"match": "\\b(element|attribute)\\b",
+		"match": "(?<![a-zA-Z0-9_.-])(element|attribute)(?![a-zA-Z0-9_.-])",
 		"name": "keyword.other.rnc"
 	},
 	{
@@ -196,7 +196,7 @@
 			"2": { "name": "punctuation.separator.namespace.rnc" },
 			"3": { "name": "support.type.datatype.rnc" }
 		},
-		"match": "\\b([a-zA-Z][a-zA-Z_0-9]*)(\\:)([a-zA-Z][a-zA-Z_0-9.-]*|\\*)",
+		"match": "(?<![a-zA-Z0-9_.-])([a-zA-Z][a-zA-Z_0-9.-]*)(\\:)([a-zA-Z][a-zA-Z_0-9.-]*|\\*)",
 		"name": "meta.datatype.qualified.rnc"
 	},
 	{
@@ -204,10 +204,10 @@
 			"1": { "name": "entity.name.function.definition.rnc" },
 			"2": { "name": "keyword.operator.assignment.rnc" }
 		},
-		"match": "\\b([a-zA-Z][a-zA-Z_0-9.-]*)\\s*([|&]?=)"
+		"match": "(?<![a-zA-Z0-9_.-])([a-zA-Z][a-zA-Z_0-9.-]*)\\s*([|&]?=)"
 	},
 	{
-		"match": "\\b[a-zA-Z][a-zA-Z_0-9.-]*\\b",
+		"match": "(?<![a-zA-Z0-9_.-])[a-zA-Z][a-zA-Z_0-9.-]*(?![a-zA-Z0-9_.-])",
 		"name": "variable.other.reference.rnc"
 	},
 	{
