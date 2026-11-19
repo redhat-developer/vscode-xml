@@ -22,7 +22,7 @@
       needs: setup-xml-version
       env:
         GRAALVM_DISTRO: graalvm-community
-        GRAALVM_JAVA: 17
+        GRAALVM_JAVA: 25
       strategy:
         fail-fast: true
         matrix:
@@ -78,7 +78,7 @@
       needs: setup-xml-version
       env:
         GRAALVM_DISTRO: graalvm-community
-        GRAALVM_JAVA: 17
+        GRAALVM_JAVA: 25
       steps:
       - name: Check out LemMinX
         uses: actions/checkout@v4
