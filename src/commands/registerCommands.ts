@@ -123,6 +123,35 @@ function registerCodeLensReferencesCommands(context: ExtensionContext, languageC
       })
     })
   }));
+
+  // Find all workspace XML files that reference a grammar file (Explorer / editor context menu).
+  context.subscriptions.push(commands.registerCommand(ClientCommandConstants.GRAMMAR_FIND_REFERENCES, async (fileUri?: Uri) => {
+    const uri = fileUri ?? window.activeTextEditor?.document.uri;
+    if (!uri) {
+      return;
+    }
+    const enabled = workspace.getConfiguration().get<boolean>('xml.workspaceIndex.enabled', false);
+    if (!enabled) {
+      const action = await window.showWarningMessage(
+        'The Workspace Index is not enabled. Enable it to find cross-file grammar references.',
+        'Enable'
+      );
+      if (action !== 'Enable') {
+        return;
+      }
+      await workspace.getConfiguration().update('xml.workspaceIndex.enabled', true, ConfigurationTarget.Global);
+    }
+    // Open the grammar file so it becomes the active editor, then trigger Find All References.
+    // references-view.findReferences always uses window.activeTextEditor, so the file must
+    // be open. { preview: true } opens a temporary tab that is replaced on next navigation.
+    // Position (0, 1) avoids the DOMContainerNode.findNodeAt document-node issue —
+    // findNodeAt(root.getStart()) returns the document node instead of the element,
+    // causing XSDReferenceParticipant to return all internal XSD cross-references.
+    const doc = await workspace.openTextDocument(uri);
+    const editor = await window.showTextDocument(doc, { preview: true });
+    editor.selection = new Selection(new Position(0, 1), new Position(0, 1));
+    await commands.executeCommand('references-view.findReferences');
+  }));
 }
 
 /**

@@ -52,6 +52,7 @@ This VS Code extension provides support for creating and editing XML documents, 
   * [Generate Schema from XML](https://github.com/redhat-developer/vscode-xml/blob/main/docs/BindingWithGrammar.md#binding-with-new-grammar)
   * *[Code Lens](https://github.com/redhat-developer/vscode-xml/blob/main/docs/CodeLens.md) when `xml.codeLens.enabled` is enabled*
   * *[Inlay Hints](https://github.com/redhat-developer/vscode-xml/blob/main/docs/InlayHint.md) when `xml.inlayHint.enabled` is enabled*
+  * *[Workspace Index](https://github.com/redhat-developer/vscode-xml/blob/main/docs/WorkspaceIndex.md) when `xml.workspaceIndex.enabled` is enabled — cross-file grammar references, "N references" code lens on grammar files, automatic reference updates on grammar file rename*
 
 See the [changelog](CHANGELOG.md) for the latest release.
 

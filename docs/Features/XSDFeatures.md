@@ -46,6 +46,24 @@ To rename a `Type` definition and its associated `element` `type` attribute valu
 
 ![Rename Type Reference XSD](../images/Features/RenameTypeReferenceXSD.gif)
 
+## Workspace Index
+
+When [Workspace Index](../WorkspaceIndex.md) is enabled (`"xml.workspaceIndex.enabled": true`), XSD grammar files gain two additional cross-file features.
+
+### Code lens — N references
+
+A **"N references"** code lens appears above the root element of the `.xsd` file, showing how many XML files in the workspace reference it. Click it (or use **Find All References**) to open the References panel with the exact location of each reference.
+
+> **Prerequisite:** Code lens must also be enabled — set `"xml.codeLens.enabled": true`.
+
+<!-- TODO: add screenshot here (WorkspaceIndexCodeLensXSD.png) -->
+
+### Rename grammar file
+
+Renaming an `.xsd` file in the VS Code Explorer automatically updates all XML files that reference it (via `xsi:noNamespaceSchemaLocation`, `xsi:schemaLocation`, or `<?xml-model?>`).
+
+See [Workspace Index](../WorkspaceIndex.md) for full setup and details.
+
 ## Syntax Validation
 
 XSD syntax validation is enabled for any `.xsd` file.
