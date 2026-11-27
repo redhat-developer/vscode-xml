@@ -64,7 +64,7 @@
  * RNG documentation string encoding problem. See [#1097](https://github.com/redhat-developer/vscode-xml/issues/1097).
  * Fix MissingResourceException for RelaxNG regex pattern validation. See [#1095](https://github.com/redhat-developer/vscode-xml/issues/1095).
  * `/` triggers `End with '</Tag>'`, resulting in erroneous markup. See [#1088](https://github.com/redhat-developer/vscode-xml/issues/1088).
- * ix attribute completion for cross-namespace XSD extensions. See [#1079](https://github.com/redhat-developer/vscode-xml/issues/1079).
+ * Fix attribute completion for cross-namespace XSD extensions. See [#1079](https://github.com/redhat-developer/vscode-xml/issues/1079).
  * Strings with multiple whitespaces are formatted with single one. See [#1026](https://github.com/redhat-developer/vscode-xml/issues/1026).
  * Fix formatter zigzag effect for text-only elements exceeding maxLineWidth. See [#1010](https://github.com/redhat-developer/vscode-xml/issues/1010).
  * Autocomplete ignoring imported xsd namespace prefix on xsd files. See [#1000](https://github.com/redhat-developer/vscode-xml/issues/1000).
