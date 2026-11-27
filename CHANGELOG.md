@@ -42,7 +42,7 @@
  * Add xsi:type attribute value completion with derived types. See [lemminx#1832](https://github.com/eclipse-lemminx/lemminx/pull/1832).
  * Add support for `textDocument/inlineCompletion`. See [lemminx#1780](https://github.com/eclipse-lemminx/lemminx/issues/1780).
  * Auto-open self-closing tags (e.g. `<element />`) when the `/` is removed. See [lemminx#1505](https://github.com/eclipse-lemminx/lemminx/issues/1505).
- * Quick fix to generate RelaxNG RNC file based on an XML file. See [lemminx#1406](https://github.com/eclipse-lemminx/lemminx/issues/1406), [#842](https://github.com/eclipse-lemminx/lemminx/issues/842).
+ * Quick fix to generate RelaxNG RNC file based on an XML file. See [lemminx#1406](https://github.com/eclipse-lemminx/lemminx/issues/1406), [lemminx#842](https://github.com/eclipse-lemminx/lemminx/issues/842).
  * Add file path completion to `href` in `<?xml-model...?>` PI. See [lemminx#1307](https://github.com/eclipse-lemminx/lemminx/issues/1307).
  * Quick fix to add missing required attributes when validating against an RelaxNG grammar. See [#1419](https://github.com/eclipse-lemminx/lemminx/issues/1419).
 
