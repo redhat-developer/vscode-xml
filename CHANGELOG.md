@@ -1,5 +1,113 @@
 # Change Log
 
+## [0.30.0](https://github.com/redhat-developer/vscode-xml/milestone/45?closed=1) (November 30, 2026)
+
+### Enhancements
+
+ * Resolve environment variables in catalog URI. See [#1198](https://github.com/redhat-developer/vscode-xml/issues/1198).
+ * Add workspace bloom index for cross-file grammar reference tracking. See [#1194](https://github.com/redhat-developer/vscode-xml/pull/1194).
+ * Add RNC language service with completion, hover, definition, and folding support. See [#1189](https://github.com/redhat-developer/vscode-xml/pull/1189).
+ * Change xml.validation.* settings scope from window to resource. See [#1188](https://github.com/redhat-developer/vscode-xml/pull/1188).
+ * Add an inlay hint that displays the default values for unset attributes, based on the content of the grammar. See [#1187](https://github.com/redhat-developer/vscode-xml/pull/1187).
+ * Support binding a document to a grammar via XML catalog in the existing "Bind to Grammar" CodeLens wizard. See [#1185](https://github.com/redhat-developer/vscode-xml/pull/1185).
+ * Add Generate Grammar from XML command with multi-step wizard. See [#1181](https://github.com/redhat-developer/vscode-xml/pull/1181).
+ * Move variable substitution for file associations from client-side to server side. See [#1179](https://github.com/redhat-developer/vscode-xml/pull/1179).
+ * Support scoped workspace/configuration with scopeUri for per-document-settings. See [#1178](https://github.com/redhat-developer/vscode-xml/pull/1178).
+ * Add DocumentMatcher and `xml.format.profiles` for per-document settings. See [#1177](https://github.com/redhat-developer/vscode-xml/pull/1177).
+ * Add new splitAttributes values to package.json and Formatting docs. See [#1176](https://github.com/redhat-developer/vscode-xml/pull/1176).
+ * Add `xml.format.mixedContent` and `xml.format.blockElements` settings to specify which elements should and shouldn't be put on their own line by the formatter. See [#1175](https://github.com/redhat-developer/vscode-xml/pull/1175).
+ * Add auto-insertion support for quotes and tag closing. See [#1170](https://github.com/redhat-developer/vscode-xml/pull/1170).
+ * Add command and context menu item to surround a selection with "ignore formatting" comments (`<!-- @formatter:off/on -->`). See [#1169](https://github.com/redhat-developer/vscode-xml/pull/1169).
+ * Fix/xml encoding detection encoding. See [#1166](https://github.com/redhat-developer/vscode-xml/pull/1166).
+ * xml.fileAssociations and xml.catalogs do not support per-folder override in multi-root workspaces. See [#1156](https://github.com/redhat-developer/vscode-xml/issues/1156).
+ * changes to support inline completion. See [#1151](https://github.com/redhat-developer/vscode-xml/pull/1151).
+ * Allow settings to be overriden on a per-language basis. See [#967](https://github.com/redhat-developer/vscode-xml/issues/967).
+ * Feature request: Support resource scoped settings. See [#722](https://github.com/redhat-developer/vscode-xml/issues/722).
+ * Auto-create quotes after inserting the `=` sign after an attribute. See [#669](https://github.com/redhat-developer/vscode-xml/issues/669).
+ * Add wizard to generate XML from grammar (XSD, DTD, RelaxNG, RNC). See [#598](https://github.com/redhat-developer/vscode-xml/issues/598).
+ * Support `~` in `xml.extension.jars`. See [#383](https://github.com/redhat-developer/vscode-xml/issues/383).
+ * Add semantic tokens support, along with documentation and a setting to toggle the support. See [#1184](https://github.com/redhat-developer/vscode-xml/pull/1184).
+ * Add support for generating sample XML from an XSD schema. See [#907](https://github.com/redhat-developer/vscode-xml/issues/907).
+ * Bind schema / grammar should provide the capability to associate the XML with an entry of XML catalog. See [#838](https://github.com/redhat-developer/vscode-xml/issues/838).
+ * Add new `splitAttributes` formatting setting values & behaviour to match VS Code HTML `wrapAttributes` setting values & behaviour. See [#631](https://github.com/redhat-developer/vscode-xml/issues/631), [#273](https://github.com/redhat-developer/vscode-xml/issues/273).
+ * Add comprehensive RNG grammar error ranges and code actions. See [lemminx#1910](https://github.com/eclipse-lemminx/lemminx/pull/1910).
+ * Add proper error ranges and quick fixes for some previously unhandled XSD error codes from Xerces. See [lemminx#1908](https://github.com/eclipse-lemminx/lemminx/pull/1908).
+ * Add proper error ranges and quick fixes for some previously unhandled DTD error codes from Xerces. See [lemminx#1906](https://github.com/eclipse-lemminx/lemminx/pull/1906).
+ * Add proper error ranges and quick fixes for some previously unhandled XML syntax error codes from Xerces. See [lemminx#1903](https://github.com/eclipse-lemminx/lemminx/pull/1903).
+ * Add codeLens refresh on enabled setting change. See [lemminx#1895](https://github.com/eclipse-lemminx/lemminx/pull/1895).
+ * Add type definition support for DTD (internal and external). See [lemminx#1889](https://github.com/eclipse-lemminx/lemminx/pull/1889).
+ * Add many more quick fixes for DTD, XSD, and RelaxNG errors. See [lemminx#1888](https://github.com/eclipse-lemminx/lemminx/pull/1888).
+ * Add SnippetTextEdit support (i.e. snippet-style cursor positioning and drop down menus) to quick fixes that set an attribute. See [lemminx#1887](https://github.com/eclipse-lemminx/lemminx/pull/1887).
+ * In "insert required elements", don't add anything when `xsd:choice` is specified by the grammar, and support snippet-style tab positioning. See [lemminx#1886](https://github.com/eclipse-lemminx/lemminx/pull/1886).
+ * Add xsi:type attribute value completion with derived types. See [lemminx#1832](https://github.com/eclipse-lemminx/lemminx/pull/1832).
+ * Add support for `textDocument/inlineCompletion`. See [lemminx#1780](https://github.com/eclipse-lemminx/lemminx/issues/1780).
+ * Auto-open self-closing tags (e.g. `<element />`) when the `/` is removed. See [lemminx#1505](https://github.com/eclipse-lemminx/lemminx/issues/1505).
+ * Quick fix to generate RelaxNG RNC file based on an XML file. See [lemminx#1406](https://github.com/eclipse-lemminx/lemminx/issues/1406), [lemminx#842](https://github.com/eclipse-lemminx/lemminx/issues/842).
+ * Add file path completion to `href` in `<?xml-model...?>` PI. See [lemminx#1307](https://github.com/eclipse-lemminx/lemminx/issues/1307).
+ * Quick fix to add missing required attributes when validating against an RelaxNG grammar. See [#1419](https://github.com/eclipse-lemminx/lemminx/issues/1419).
+
+### Performance
+
+ * Reduce DOM memory by ~70 MB with first-child/next-sibling linked list. See [lemminx#1805](https://github.com/eclipse-lemminx/lemminx/pull/1805).
+ * Reduce DOM memory by 64 MB via tag interning and attribute node move. See [lemminx#1803](https://github.com/eclipse-lemminx/lemminx/pull/1803).
+ * Add CharSequence API to avoid String allocation on document updates. See [lemminx#1802](https://github.com/eclipse-lemminx/lemminx/pull/1802).
+ * Fix DOM not freed from memory when closing documents. See [lemminx#1804](https://github.com/eclipse-lemminx/lemminx/pull/1804).
+ * Fix content duplication when range formatting large XML files. See [lemminx#1791](https://github.com/eclipse-lemminx/lemminx/issues/1791).
+
+### Bug Fixes
+
+ * Fix dead MavenCompletionParticipant links in extension docs. See [#1193](https://github.com/redhat-developer/vscode-xml/pull/1193).
+ * Upgrade to latest language client to fix errors in logs. See [#1167](https://github.com/redhat-developer/vscode-xml/issues/1167).
+ * XML formatter produces inconsistent line wrapping and indentation. See [#1131](https://github.com/redhat-developer/vscode-xml/issues/1131).
+ * Fix hover documentation for elements declared inside `xs:group`. See [#1129](https://github.com/redhat-developer/vscode-xml/issues/1129).
+ * Fix RelaxNG completion not respecting choice tag for attributes. See [#1107](https://github.com/redhat-developer/vscode-xml/issues/1107), [#1022](https://github.com/redhat-developer/vscode-xml/issues/1022).
+ * RNG documentation string encoding problem. See [#1097](https://github.com/redhat-developer/vscode-xml/issues/1097).
+ * Fix MissingResourceException for RelaxNG regex pattern validation. See [#1095](https://github.com/redhat-developer/vscode-xml/issues/1095).
+ * `/` triggers `End with '</Tag>'`, resulting in erroneous markup. See [#1088](https://github.com/redhat-developer/vscode-xml/issues/1088).
+ * Fix attribute completion for cross-namespace XSD extensions. See [#1079](https://github.com/redhat-developer/vscode-xml/issues/1079).
+ * Strings with multiple whitespaces are formatted with single one. See [#1026](https://github.com/redhat-developer/vscode-xml/issues/1026).
+ * Fix formatter zigzag effect for text-only elements exceeding maxLineWidth. See [#1010](https://github.com/redhat-developer/vscode-xml/issues/1010).
+ * Autocomplete ignoring imported xsd namespace prefix on xsd files. See [#1000](https://github.com/redhat-developer/vscode-xml/issues/1000).
+ * `Insert only required elements` adds optional elements. See [#993](https://github.com/redhat-developer/vscode-xml/issues/993).
+ * Code completion does not work for derived type specified using xsi:type attribute. See [#920](https://github.com/redhat-developer/vscode-xml/issues/920).
+ * Respect XML document encoding. See [#759](https://github.com/redhat-developer/vscode-xml/issues/759).
+ * Large XML Files crash language server. See [#696](https://github.com/redhat-developer/vscode-xml/issues/696).
+ * Schema binding by file association with variable works only for active file. See [#629](https://github.com/redhat-developer/vscode-xml/issues/629).
+ * Fix RelaxNG completion for elements with ChoiceNameClass names. See [#1119](https://github.com/redhat-developer/vscode-xml/issues/1119).
+ * xml.fileAssociations glob pattern miss. See [#932](https://github.com/redhat-developer/vscode-xml/issues/932).
+ * Fix xsi:type content model resolution for schemas with targetNamespace. See [#1126](https://github.com/redhat-developer/vscode-xml/issues/1126).
+ * Fix auto tag closing in the binary build. See [lemminx#1937](https://github.com/eclipse-lemminx/lemminx/issues/1937).
+ * Never reuse a model parsed from an older document content. See [lemminx#1931](https://github.com/eclipse-lemminx/lemminx/pull/1931).
+ * Schema based validation doesn't respect `"xml.validation.schema.enabled": "never"` when referenced through xml-model. See [lemminx#1912](https://github.com/eclipse-lemminx/lemminx/issues/1912).
+ * Use XMLValidationFilter to hide Bind grammar CodeLens for filtered files. See [lemminx#1899](https://github.com/eclipse-lemminx/lemminx/pull/1899).
+ * Fix missing NoGrammar quick fixes with scoped settings. See [lemminx#1883](https://github.com/eclipse-lemminx/lemminx/pull/1883).
+ * Fix NullPointerException in color presentation for text nodes. See [lemminx#1882](https://github.com/eclipse-lemminx/lemminx/pull/1882).
+ * Fix unchecked CompletionException escaping on failed resource download. See [lemminx#1874](https://github.com/eclipse-lemminx/lemminx/pull/1874).
+ * Fix mixed content maxLineWidth element wrapping. See [lemminx#1865](https://github.com/eclipse-lemminx/lemminx/pull/1865).
+ * Add more reflection config to support latest version of LSP. See [lemminx#1863](https://github.com/eclipse-lemminx/lemminx/pull/1863).
+ * Fix completion item resolve without URI. See [lemminx#1861](https://github.com/eclipse-lemminx/lemminx/pull/1861).
+ * Fix XML encoding detection for schema documentation hover. See [lemminx#1846](https://github.com/eclipse-lemminx/lemminx/pull/1846).
+ * Add SelectedCompletionInfo to native-image reflect-config. See [lemminx#1841](https://github.com/eclipse-lemminx/lemminx/pull/1841).
+ * Fix `MissingChildElementCodeActionTest.with_codeAction_resolver_support_choice_pretext`. See [lemminx#1799](https://github.com/eclipse-lemminx/lemminx/issues/1799).
+ * Fix `codeAction/resolve` returning `null` for already-resolved code actions. See [lemminx#1796](https://github.com/eclipse-lemminx/lemminx/issues/1796).
+ * Fix xml scanner to handle angle brackets in PI content. See [lemminx#1794](https://github.com/eclipse-lemminx/lemminx/pull/1794).
+ * Register InlineCompletion LSP4J classes for native image reflection. See [#1792](https://github.com/eclipse-lemminx/lemminx/issues/1792).
+ * Hover documentation not resolved for child elements of xsi:type-derived complex types across namespaces. See [lemminx#1787](https://github.com/eclipse-lemminx/lemminx/issues/1787).
+ * Fix completions ignoring `maxOccurs` restriction. See [lemminx#1747](https://github.com/eclipse-lemminx/lemminx/issues/1747).
+ * Documentation for RelaxNG child elements colliding. See [lemminx#1745](https://github.com/eclipse-lemminx/lemminx/issues/1745).
+ * Fix `ArrayIndexOutOfBoundsException` in DTD entity name resolution. See [lemminx#1651](https://github.com/eclipse-lemminx/lemminx/issues/1651).
+ * Fix single glob wildcard patterns in `fileAssociations`. See [lemminx#1643](https://github.com/eclipse-lemminx/lemminx/issues/1643).
+ * Add self-close code action for unclosed elements. See [lemminx#1544](https://github.com/eclipse-lemminx/lemminx/issues/1544).
+ * Fix error range for "Cannot bind prefix `xml` to namespace". See [lemminx#1335](https://github.com/eclipse-lemminx/lemminx/issues/1335).
+ * Fix error range for `xsd(src-ct.2.1)`. See [lemminx#1269](https://github.com/eclipse-lemminx/lemminx/issues/1269).
+ * Handle Xerces NPE for empty element name in XSD validation. See [lemminx#437](https://github.com/eclipse-lemminx/lemminx/issues/437).
+ * Fix AutoClosing tags for nested elements with the same name. See [lemminx#357](https://github.com/eclipse-lemminx/lemminx/issues/357).
+
+### Build
+
+ * Publish to extension registries with trusted publishing. See [#1190](https://github.com/redhat-developer/vscode-xml/pull/1190).
+ * Upgrade to TypeScript 6 and latest language client. See [#1168](https://github.com/redhat-developer/vscode-xml/pull/1168).
+
 ## [0.29.3](https://github.com/redhat-developer/vscode-xml/milestone/44?closed=1) (June 8, 2026)
 
 ### Bug Fixes
