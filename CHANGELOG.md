@@ -27,7 +27,7 @@
  * Add wizard to generate XML from grammar (XSD, DTD, RelaxNG, RNC). See [#598](https://github.com/redhat-developer/vscode-xml/issues/598).
  * Support `~` in `xml.extension.jars`. See [#383](https://github.com/redhat-developer/vscode-xml/issues/383).
  * Add semantic tokens support, along with documentation and a setting to toggle the support. See [#1184](https://github.com/redhat-developer/vscode-xml/pull/1184).
- * Can it generate sample XML based on XSD specification?. See [#907](https://github.com/redhat-developer/vscode-xml/issues/907).
+ * Add support for generating sample XML from an XSD schema. See [#907](https://github.com/redhat-developer/vscode-xml/issues/907).
  * Bind schema / grammar should provide the capability to associate the XML with an entry of XML catalog. See [#838](https://github.com/redhat-developer/vscode-xml/issues/838).
  * Add new `splitAttributes` formatting setting values & behaviour to match VS Code HTML `wrapAttributes` setting values & behaviour. See [#631](https://github.com/redhat-developer/vscode-xml/issues/631), [#273](https://github.com/redhat-developer/vscode-xml/issues/273).
  * Add comprehensive RNG grammar error ranges and code actions. See [lemminx#1910](https://github.com/eclipse-lemminx/lemminx/pull/1910).
